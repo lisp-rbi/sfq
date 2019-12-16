@@ -1,7 +1,7 @@
 [package]
 name = "fqlzt"
 version = "0.1.0"
-authors = ["Robert Bakaric <rbakaric@exaltum.eu>"]
+authors = ["Robert Bakaric <rbakaric@irb.hr>, Damir Korencic <dkorencic@irb.hr>"]
 edition = "2018"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
