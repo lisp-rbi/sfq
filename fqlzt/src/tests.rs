@@ -16,7 +16,7 @@
  * <http://www.doctrine-project.org>.
  */
 
- 
+
 // Integration tests
 
 #[test]
@@ -45,5 +45,9 @@ fn read_lztidx() {
 }
 #[test]
 fn query_lztidx() {
+        assert_eq!(2 + 2, 4);
+}
+#[test]
+fn Lzt_get_records() {
         assert_eq!(2 + 2, 4);
 }
