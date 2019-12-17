@@ -15,3 +15,19 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
+mod cli;
+
+use cli::fqlzt::parse_cli;
+
+
+fn main (){
+
+
+    let cli = parse_cli();
+
+    println!("{:#?}", cli);
+
+    println!("NO function works at this point");
+   
+}
