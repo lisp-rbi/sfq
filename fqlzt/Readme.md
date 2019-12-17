@@ -7,14 +7,25 @@ Short description
 
 ## Installation
 
-To install fqlzt, first install Rust (> v1.38) and g++ (> v8.0.0 ). lzt is currently tested on Rust 1.39.0, but it is likely to work on other subsequent versions as well.
+To install fqlzt, first install Rust (> v1.38) and g++ (> v... ). lzt is currently tested on Rust 1.39.0, but it is likely to work on other subsequent versions as well.
 
 To install library:
 
 ```
+// not applicible at this time
 cargo install fqlzt
 ```
 
+To create run the app (debuf by def):
+
+
+```
+cargo run 
+
+// or 
+
+cargo run -- -h
+```
 To create binary:
 
 ```
