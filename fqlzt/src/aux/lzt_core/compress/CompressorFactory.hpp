@@ -8,7 +8,6 @@
 #include "lz_compressor/LzCompressor.h"
 #include "sa_compressor/SaCompressor.hpp"
 #include "sa_compressor/LCPTreeCompressor.hpp"
-#include "fsa_convert/FsaConverter.hpp"
 
 using namespace std;
 
@@ -76,14 +75,6 @@ ICompressor<TNodeArray>* CompressorFactory<TNodeArray>::createFromDesc(string de
         }
 
         return new LCPTreeCompressor<TNodeArray>(conf);
-    }
-    else if (algoId.compare("FSA") == 0) {
-        bool compress = false;
-        if (desc.length() > 3) {
-            string switches = desc.substr(3);
-            if (switches.find('c') != string::npos) compress = true;
-        }       
-        return new FsaConverter<TNodeArray>(compress);
     }
     else {
         SaCompressorConfig conf;
