@@ -1,0 +1,242 @@
+## -*- Makefile -*-
+##
+## User: damir
+## Time: Dec 18, 2019 4:17:34 PM
+## Makefile created by Oracle Developer Studio.
+##
+## This file is generated automatically.
+##
+
+
+#### Compiler and tool definitions shared by all build targets #####
+CCC = g++
+CXX = g++
+BASICOPTS = -O -m64
+CCFLAGS = $(BASICOPTS) 
+CXXFLAGS = $(BASICOPTS) -fpermissive
+CCADMIN = 
+
+
+# Define the target directories.
+TARGETDIR_lzt-testrun.cpp=GNU-amd64-Linux
+
+
+all: $(TARGETDIR_lzt-testrun.cpp)/lzt-testrun.cpp
+
+## Target: lzt-testrun.cpp
+CPPFLAGS_lzt-testrun.cpp = $(CCFLAGS) $(CXXFLAGS) \
+	-Ilzt_core 
+OBJS_lzt-testrun.cpp =  \
+	$(TARGETDIR_lzt-testrun.cpp)/lzt-interface.o \
+	$(TARGETDIR_lzt-testrun.cpp)/lzt-testrun.o \
+	$(TARGETDIR_lzt-testrun.cpp)/na_utils.o \
+	$(TARGETDIR_lzt-testrun.cpp)/CompactArrayTest.o \
+	$(TARGETDIR_lzt-testrun.cpp)/CmmExporter.o \
+	$(TARGETDIR_lzt-testrun.cpp)/CmmExporterTest.o \
+	$(TARGETDIR_lzt-testrun.cpp)/NodeArrayBrowser.o \
+	$(TARGETDIR_lzt-testrun.cpp)/char_symbol.o \
+	$(TARGETDIR_lzt-testrun.cpp)/instantiator.o \
+	$(TARGETDIR_lzt-testrun.cpp)/EnumArrayTest.o \
+	$(TARGETDIR_lzt-testrun.cpp)/NodeArrayTest.o \
+	$(TARGETDIR_lzt-testrun.cpp)/CompressorTest.o \
+	$(TARGETDIR_lzt-testrun.cpp)/SuffixStructTest.o \
+	$(TARGETDIR_lzt-testrun.cpp)/TempFile.o \
+	$(TARGETDIR_lzt-testrun.cpp)/etimer.o \
+	$(TARGETDIR_lzt-testrun.cpp)/Timer.o \
+	$(TARGETDIR_lzt-testrun.cpp)/utils.o \
+	$(TARGETDIR_lzt-testrun.cpp)/FileReaderTest.o \
+	$(TARGETDIR_lzt-testrun.cpp)/TestCaseReaderTest.o \
+	$(TARGETDIR_lzt-testrun.cpp)/HuffmanIndexMapTest.o \
+	$(TARGETDIR_lzt-testrun.cpp)/LzTrieDictTest.o \
+	$(TARGETDIR_lzt-testrun.cpp)/HuffmanCodecCreator.o \
+	$(TARGETDIR_lzt-testrun.cpp)/HuffmanCoder.o \
+	$(TARGETDIR_lzt-testrun.cpp)/HuffmanDecoder.o \
+	$(TARGETDIR_lzt-testrun.cpp)/HuffmanTest.o \
+	$(TARGETDIR_lzt-testrun.cpp)/WordListTest.o \
+	$(TARGETDIR_lzt-testrun.cpp)/LzTrieIteratorTest.o \
+	$(TARGETDIR_lzt-testrun.cpp)/LzTrieTest.o \
+	$(TARGETDIR_lzt-testrun.cpp)/WordIndexerTest.o \
+	$(TARGETDIR_lzt-testrun.cpp)/TrieTest.o \
+	$(TARGETDIR_lzt-testrun.cpp)/BitPointer.o \
+	$(TARGETDIR_lzt-testrun.cpp)/SerializationUtils.o \
+	$(TARGETDIR_lzt-testrun.cpp)/BitSequenceArray.o \
+	$(TARGETDIR_lzt-testrun.cpp)/BitSequence.o \
+	$(TARGETDIR_lzt-testrun.cpp)/BitVector.o \
+	$(TARGETDIR_lzt-testrun.cpp)/serialization.o \
+	$(TARGETDIR_lzt-testrun.cpp)/BitSequenceArraySer.o \
+	$(TARGETDIR_lzt-testrun.cpp)/CompactArraySerTest.o \
+	$(TARGETDIR_lzt-testrun.cpp)/BitSequenceTest.o \
+	$(TARGETDIR_lzt-testrun.cpp)/IntBitArrayTest.o \
+	$(TARGETDIR_lzt-testrun.cpp)/BitVectorTest.o \
+	$(TARGETDIR_lzt-testrun.cpp)/SerializationTest.o \
+	$(TARGETDIR_lzt-testrun.cpp)/BitSequenceArrayTest.o \
+	$(TARGETDIR_lzt-testrun.cpp)/DebugException.o \
+	$(TARGETDIR_lzt-testrun.cpp)/TestException.o \
+	$(TARGETDIR_lzt-testrun.cpp)/StackTrace.o \
+	$(TARGETDIR_lzt-testrun.cpp)/CharStringSA.o
+USERLIBS_lzt-testrun.cpp = $(SYSLIBS_lzt-testrun.cpp) 
+DEPLIBS_lzt-testrun.cpp =  
+LDLIBS_lzt-testrun.cpp = $(USERLIBS_lzt-testrun.cpp)
+
+
+# Link or archive
+$(TARGETDIR_lzt-testrun.cpp)/lzt-testrun.cpp: $(TARGETDIR_lzt-testrun.cpp) $(OBJS_lzt-testrun.cpp) $(DEPLIBS_lzt-testrun.cpp)
+	$(LINK.cc) $(CCFLAGS_lzt-testrun.cpp) $(CPPFLAGS_lzt-testrun.cpp) -o $@ $(OBJS_lzt-testrun.cpp) $(LDLIBS_lzt-testrun.cpp)
+
+
+# Compile source files into .o files
+$(TARGETDIR_lzt-testrun.cpp)/lzt-interface.o: $(TARGETDIR_lzt-testrun.cpp) lzt-interface.cpp
+	$(COMPILE.cc) $(CCFLAGS_lzt-testrun.cpp) $(CPPFLAGS_lzt-testrun.cpp) -o $@ lzt-interface.cpp
+
+$(TARGETDIR_lzt-testrun.cpp)/lzt-testrun.o: $(TARGETDIR_lzt-testrun.cpp) lzt-testrun.cpp
+	$(COMPILE.cc) $(CCFLAGS_lzt-testrun.cpp) $(CPPFLAGS_lzt-testrun.cpp) -o $@ lzt-testrun.cpp
+
+$(TARGETDIR_lzt-testrun.cpp)/na_utils.o: $(TARGETDIR_lzt-testrun.cpp) lzt_core/node_array/na_utils.cpp
+	$(COMPILE.cc) $(CCFLAGS_lzt-testrun.cpp) $(CPPFLAGS_lzt-testrun.cpp) -o $@ lzt_core/node_array/na_utils.cpp
+
+$(TARGETDIR_lzt-testrun.cpp)/CompactArrayTest.o: $(TARGETDIR_lzt-testrun.cpp) lzt_core/node_array/compact_array/test/CompactArrayTest.cpp
+	$(COMPILE.cc) $(CCFLAGS_lzt-testrun.cpp) $(CPPFLAGS_lzt-testrun.cpp) -o $@ lzt_core/node_array/compact_array/test/CompactArrayTest.cpp
+
+$(TARGETDIR_lzt-testrun.cpp)/CmmExporter.o: $(TARGETDIR_lzt-testrun.cpp) lzt_core/node_array/util/CmmExporter.cpp
+	$(COMPILE.cc) $(CCFLAGS_lzt-testrun.cpp) $(CPPFLAGS_lzt-testrun.cpp) -o $@ lzt_core/node_array/util/CmmExporter.cpp
+
+$(TARGETDIR_lzt-testrun.cpp)/CmmExporterTest.o: $(TARGETDIR_lzt-testrun.cpp) lzt_core/node_array/util/utest/CmmExporterTest.cpp
+	$(COMPILE.cc) $(CCFLAGS_lzt-testrun.cpp) $(CPPFLAGS_lzt-testrun.cpp) -o $@ lzt_core/node_array/util/utest/CmmExporterTest.cpp
+
+$(TARGETDIR_lzt-testrun.cpp)/NodeArrayBrowser.o: $(TARGETDIR_lzt-testrun.cpp) lzt_core/node_array/na_browser/NodeArrayBrowser.cpp
+	$(COMPILE.cc) $(CCFLAGS_lzt-testrun.cpp) $(CPPFLAGS_lzt-testrun.cpp) -o $@ lzt_core/node_array/na_browser/NodeArrayBrowser.cpp
+
+$(TARGETDIR_lzt-testrun.cpp)/char_symbol.o: $(TARGETDIR_lzt-testrun.cpp) lzt_core/node_array/types/symbol/char/char_symbol.cpp
+	$(COMPILE.cc) $(CCFLAGS_lzt-testrun.cpp) $(CPPFLAGS_lzt-testrun.cpp) -o $@ lzt_core/node_array/types/symbol/char/char_symbol.cpp
+
+$(TARGETDIR_lzt-testrun.cpp)/instantiator.o: $(TARGETDIR_lzt-testrun.cpp) lzt_core/node_array/concepts/instantiator.cpp
+	$(COMPILE.cc) $(CCFLAGS_lzt-testrun.cpp) $(CPPFLAGS_lzt-testrun.cpp) -o $@ lzt_core/node_array/concepts/instantiator.cpp
+
+$(TARGETDIR_lzt-testrun.cpp)/EnumArrayTest.o: $(TARGETDIR_lzt-testrun.cpp) lzt_core/node_array/test/EnumArrayTest.cpp
+	$(COMPILE.cc) $(CCFLAGS_lzt-testrun.cpp) $(CPPFLAGS_lzt-testrun.cpp) -o $@ lzt_core/node_array/test/EnumArrayTest.cpp
+
+$(TARGETDIR_lzt-testrun.cpp)/NodeArrayTest.o: $(TARGETDIR_lzt-testrun.cpp) lzt_core/node_array/test/NodeArrayTest.cpp
+	$(COMPILE.cc) $(CCFLAGS_lzt-testrun.cpp) $(CPPFLAGS_lzt-testrun.cpp) -o $@ lzt_core/node_array/test/NodeArrayTest.cpp
+
+$(TARGETDIR_lzt-testrun.cpp)/CompressorTest.o: $(TARGETDIR_lzt-testrun.cpp) lzt_core/compress/utest/CompressorTest.cpp
+	$(COMPILE.cc) $(CCFLAGS_lzt-testrun.cpp) $(CPPFLAGS_lzt-testrun.cpp) -o $@ lzt_core/compress/utest/CompressorTest.cpp
+
+$(TARGETDIR_lzt-testrun.cpp)/SuffixStructTest.o: $(TARGETDIR_lzt-testrun.cpp) lzt_core/compress/sa_compressor/utest/SuffixStructTest.cpp
+	$(COMPILE.cc) $(CCFLAGS_lzt-testrun.cpp) $(CPPFLAGS_lzt-testrun.cpp) -o $@ lzt_core/compress/sa_compressor/utest/SuffixStructTest.cpp
+
+$(TARGETDIR_lzt-testrun.cpp)/TempFile.o: $(TARGETDIR_lzt-testrun.cpp) lzt_core/util/TempFile.cpp
+	$(COMPILE.cc) $(CCFLAGS_lzt-testrun.cpp) $(CPPFLAGS_lzt-testrun.cpp) -o $@ lzt_core/util/TempFile.cpp
+
+$(TARGETDIR_lzt-testrun.cpp)/etimer.o: $(TARGETDIR_lzt-testrun.cpp) lzt_core/util/etimer.cpp
+	$(COMPILE.cc) $(CCFLAGS_lzt-testrun.cpp) $(CPPFLAGS_lzt-testrun.cpp) -o $@ lzt_core/util/etimer.cpp
+
+$(TARGETDIR_lzt-testrun.cpp)/Timer.o: $(TARGETDIR_lzt-testrun.cpp) lzt_core/util/Timer.cpp
+	$(COMPILE.cc) $(CCFLAGS_lzt-testrun.cpp) $(CPPFLAGS_lzt-testrun.cpp) -o $@ lzt_core/util/Timer.cpp
+
+$(TARGETDIR_lzt-testrun.cpp)/utils.o: $(TARGETDIR_lzt-testrun.cpp) lzt_core/util/utils.cpp
+	$(COMPILE.cc) $(CCFLAGS_lzt-testrun.cpp) $(CPPFLAGS_lzt-testrun.cpp) -o $@ lzt_core/util/utils.cpp
+
+$(TARGETDIR_lzt-testrun.cpp)/FileReaderTest.o: $(TARGETDIR_lzt-testrun.cpp) lzt_core/util/utest/FileReaderTest.cpp
+	$(COMPILE.cc) $(CCFLAGS_lzt-testrun.cpp) $(CPPFLAGS_lzt-testrun.cpp) -o $@ lzt_core/util/utest/FileReaderTest.cpp
+
+$(TARGETDIR_lzt-testrun.cpp)/TestCaseReaderTest.o: $(TARGETDIR_lzt-testrun.cpp) lzt_core/util/utest/TestCaseReaderTest.cpp
+	$(COMPILE.cc) $(CCFLAGS_lzt-testrun.cpp) $(CPPFLAGS_lzt-testrun.cpp) -o $@ lzt_core/util/utest/TestCaseReaderTest.cpp
+
+$(TARGETDIR_lzt-testrun.cpp)/HuffmanIndexMapTest.o: $(TARGETDIR_lzt-testrun.cpp) lzt_core/dictionary/lztrie_dict/utest/HuffmanIndexMapTest.cpp
+	$(COMPILE.cc) $(CCFLAGS_lzt-testrun.cpp) $(CPPFLAGS_lzt-testrun.cpp) -o $@ lzt_core/dictionary/lztrie_dict/utest/HuffmanIndexMapTest.cpp
+
+$(TARGETDIR_lzt-testrun.cpp)/LzTrieDictTest.o: $(TARGETDIR_lzt-testrun.cpp) lzt_core/dictionary/lztrie_dict/utest/LzTrieDictTest.cpp
+	$(COMPILE.cc) $(CCFLAGS_lzt-testrun.cpp) $(CPPFLAGS_lzt-testrun.cpp) -o $@ lzt_core/dictionary/lztrie_dict/utest/LzTrieDictTest.cpp
+
+$(TARGETDIR_lzt-testrun.cpp)/HuffmanCodecCreator.o: $(TARGETDIR_lzt-testrun.cpp) lzt_core/dictionary/lztrie_dict/huffman/HuffmanCodecCreator.cpp
+	$(COMPILE.cc) $(CCFLAGS_lzt-testrun.cpp) $(CPPFLAGS_lzt-testrun.cpp) -o $@ lzt_core/dictionary/lztrie_dict/huffman/HuffmanCodecCreator.cpp
+
+$(TARGETDIR_lzt-testrun.cpp)/HuffmanCoder.o: $(TARGETDIR_lzt-testrun.cpp) lzt_core/dictionary/lztrie_dict/huffman/HuffmanCoder.cpp
+	$(COMPILE.cc) $(CCFLAGS_lzt-testrun.cpp) $(CPPFLAGS_lzt-testrun.cpp) -o $@ lzt_core/dictionary/lztrie_dict/huffman/HuffmanCoder.cpp
+
+$(TARGETDIR_lzt-testrun.cpp)/HuffmanDecoder.o: $(TARGETDIR_lzt-testrun.cpp) lzt_core/dictionary/lztrie_dict/huffman/HuffmanDecoder.cpp
+	$(COMPILE.cc) $(CCFLAGS_lzt-testrun.cpp) $(CPPFLAGS_lzt-testrun.cpp) -o $@ lzt_core/dictionary/lztrie_dict/huffman/HuffmanDecoder.cpp
+
+$(TARGETDIR_lzt-testrun.cpp)/HuffmanTest.o: $(TARGETDIR_lzt-testrun.cpp) lzt_core/dictionary/lztrie_dict/huffman/utest/HuffmanTest.cpp
+	$(COMPILE.cc) $(CCFLAGS_lzt-testrun.cpp) $(CPPFLAGS_lzt-testrun.cpp) -o $@ lzt_core/dictionary/lztrie_dict/huffman/utest/HuffmanTest.cpp
+
+$(TARGETDIR_lzt-testrun.cpp)/WordListTest.o: $(TARGETDIR_lzt-testrun.cpp) lzt_core/dictionary/util/test/WordListTest.cpp
+	$(COMPILE.cc) $(CCFLAGS_lzt-testrun.cpp) $(CPPFLAGS_lzt-testrun.cpp) -o $@ lzt_core/dictionary/util/test/WordListTest.cpp
+
+$(TARGETDIR_lzt-testrun.cpp)/LzTrieIteratorTest.o: $(TARGETDIR_lzt-testrun.cpp) lzt_core/dictionary/lz_trie/test/LzTrieIteratorTest.cpp
+	$(COMPILE.cc) $(CCFLAGS_lzt-testrun.cpp) $(CPPFLAGS_lzt-testrun.cpp) -o $@ lzt_core/dictionary/lz_trie/test/LzTrieIteratorTest.cpp
+
+$(TARGETDIR_lzt-testrun.cpp)/LzTrieTest.o: $(TARGETDIR_lzt-testrun.cpp) lzt_core/dictionary/lz_trie/test/LzTrieTest.cpp
+	$(COMPILE.cc) $(CCFLAGS_lzt-testrun.cpp) $(CPPFLAGS_lzt-testrun.cpp) -o $@ lzt_core/dictionary/lz_trie/test/LzTrieTest.cpp
+
+$(TARGETDIR_lzt-testrun.cpp)/WordIndexerTest.o: $(TARGETDIR_lzt-testrun.cpp) lzt_core/dictionary/char_trie/test/WordIndexerTest.cpp
+	$(COMPILE.cc) $(CCFLAGS_lzt-testrun.cpp) $(CPPFLAGS_lzt-testrun.cpp) -o $@ lzt_core/dictionary/char_trie/test/WordIndexerTest.cpp
+
+$(TARGETDIR_lzt-testrun.cpp)/TrieTest.o: $(TARGETDIR_lzt-testrun.cpp) lzt_core/dictionary/char_trie/test/TrieTest.cpp
+	$(COMPILE.cc) $(CCFLAGS_lzt-testrun.cpp) $(CPPFLAGS_lzt-testrun.cpp) -o $@ lzt_core/dictionary/char_trie/test/TrieTest.cpp
+
+$(TARGETDIR_lzt-testrun.cpp)/BitPointer.o: $(TARGETDIR_lzt-testrun.cpp) lzt_core/serialization/BitPointer.cpp
+	$(COMPILE.cc) $(CCFLAGS_lzt-testrun.cpp) $(CPPFLAGS_lzt-testrun.cpp) -o $@ lzt_core/serialization/BitPointer.cpp
+
+$(TARGETDIR_lzt-testrun.cpp)/SerializationUtils.o: $(TARGETDIR_lzt-testrun.cpp) lzt_core/serialization/SerializationUtils.cpp
+	$(COMPILE.cc) $(CCFLAGS_lzt-testrun.cpp) $(CPPFLAGS_lzt-testrun.cpp) -o $@ lzt_core/serialization/SerializationUtils.cpp
+
+$(TARGETDIR_lzt-testrun.cpp)/BitSequenceArray.o: $(TARGETDIR_lzt-testrun.cpp) lzt_core/serialization/BitSequenceArray.cpp
+	$(COMPILE.cc) $(CCFLAGS_lzt-testrun.cpp) $(CPPFLAGS_lzt-testrun.cpp) -o $@ lzt_core/serialization/BitSequenceArray.cpp
+
+$(TARGETDIR_lzt-testrun.cpp)/BitSequence.o: $(TARGETDIR_lzt-testrun.cpp) lzt_core/serialization/BitSequence.cpp
+	$(COMPILE.cc) $(CCFLAGS_lzt-testrun.cpp) $(CPPFLAGS_lzt-testrun.cpp) -o $@ lzt_core/serialization/BitSequence.cpp
+
+$(TARGETDIR_lzt-testrun.cpp)/BitVector.o: $(TARGETDIR_lzt-testrun.cpp) lzt_core/serialization/BitVector.cpp
+	$(COMPILE.cc) $(CCFLAGS_lzt-testrun.cpp) $(CPPFLAGS_lzt-testrun.cpp) -o $@ lzt_core/serialization/BitVector.cpp
+
+$(TARGETDIR_lzt-testrun.cpp)/serialization.o: $(TARGETDIR_lzt-testrun.cpp) lzt_core/serialization/serialization.cpp
+	$(COMPILE.cc) $(CCFLAGS_lzt-testrun.cpp) $(CPPFLAGS_lzt-testrun.cpp) -o $@ lzt_core/serialization/serialization.cpp
+
+$(TARGETDIR_lzt-testrun.cpp)/BitSequenceArraySer.o: $(TARGETDIR_lzt-testrun.cpp) lzt_core/serialization/array/BitSequenceArraySer.cpp
+	$(COMPILE.cc) $(CCFLAGS_lzt-testrun.cpp) $(CPPFLAGS_lzt-testrun.cpp) -o $@ lzt_core/serialization/array/BitSequenceArraySer.cpp
+
+$(TARGETDIR_lzt-testrun.cpp)/CompactArraySerTest.o: $(TARGETDIR_lzt-testrun.cpp) lzt_core/serialization/array/test/CompactArraySerTest.cpp
+	$(COMPILE.cc) $(CCFLAGS_lzt-testrun.cpp) $(CPPFLAGS_lzt-testrun.cpp) -o $@ lzt_core/serialization/array/test/CompactArraySerTest.cpp
+
+$(TARGETDIR_lzt-testrun.cpp)/BitSequenceTest.o: $(TARGETDIR_lzt-testrun.cpp) lzt_core/serialization/test/BitSequenceTest.cpp
+	$(COMPILE.cc) $(CCFLAGS_lzt-testrun.cpp) $(CPPFLAGS_lzt-testrun.cpp) -o $@ lzt_core/serialization/test/BitSequenceTest.cpp
+
+$(TARGETDIR_lzt-testrun.cpp)/IntBitArrayTest.o: $(TARGETDIR_lzt-testrun.cpp) lzt_core/serialization/test/IntBitArrayTest.cpp
+	$(COMPILE.cc) $(CCFLAGS_lzt-testrun.cpp) $(CPPFLAGS_lzt-testrun.cpp) -o $@ lzt_core/serialization/test/IntBitArrayTest.cpp
+
+$(TARGETDIR_lzt-testrun.cpp)/BitVectorTest.o: $(TARGETDIR_lzt-testrun.cpp) lzt_core/serialization/test/BitVectorTest.cpp
+	$(COMPILE.cc) $(CCFLAGS_lzt-testrun.cpp) $(CPPFLAGS_lzt-testrun.cpp) -o $@ lzt_core/serialization/test/BitVectorTest.cpp
+
+$(TARGETDIR_lzt-testrun.cpp)/SerializationTest.o: $(TARGETDIR_lzt-testrun.cpp) lzt_core/serialization/test/SerializationTest.cpp
+	$(COMPILE.cc) $(CCFLAGS_lzt-testrun.cpp) $(CPPFLAGS_lzt-testrun.cpp) -o $@ lzt_core/serialization/test/SerializationTest.cpp
+
+$(TARGETDIR_lzt-testrun.cpp)/BitSequenceArrayTest.o: $(TARGETDIR_lzt-testrun.cpp) lzt_core/serialization/test/BitSequenceArrayTest.cpp
+	$(COMPILE.cc) $(CCFLAGS_lzt-testrun.cpp) $(CPPFLAGS_lzt-testrun.cpp) -o $@ lzt_core/serialization/test/BitSequenceArrayTest.cpp
+
+$(TARGETDIR_lzt-testrun.cpp)/DebugException.o: $(TARGETDIR_lzt-testrun.cpp) lzt_core/debug/DebugException.cpp
+	$(COMPILE.cc) $(CCFLAGS_lzt-testrun.cpp) $(CPPFLAGS_lzt-testrun.cpp) -o $@ lzt_core/debug/DebugException.cpp
+
+$(TARGETDIR_lzt-testrun.cpp)/TestException.o: $(TARGETDIR_lzt-testrun.cpp) lzt_core/debug/TestException.cpp
+	$(COMPILE.cc) $(CCFLAGS_lzt-testrun.cpp) $(CPPFLAGS_lzt-testrun.cpp) -o $@ lzt_core/debug/TestException.cpp
+
+$(TARGETDIR_lzt-testrun.cpp)/StackTrace.o: $(TARGETDIR_lzt-testrun.cpp) lzt_core/debug/StackTrace.cpp
+	$(COMPILE.cc) $(CCFLAGS_lzt-testrun.cpp) $(CPPFLAGS_lzt-testrun.cpp) -o $@ lzt_core/debug/StackTrace.cpp
+
+$(TARGETDIR_lzt-testrun.cpp)/CharStringSA.o: $(TARGETDIR_lzt-testrun.cpp) lzt_core/suffix_array/CharStringSA.cpp
+	$(COMPILE.cc) $(CCFLAGS_lzt-testrun.cpp) $(CPPFLAGS_lzt-testrun.cpp) -o $@ lzt_core/suffix_array/CharStringSA.cpp
+
+
+
+
+
+
+# Create the target directory (if needed)
+$(TARGETDIR_lzt-testrun.cpp):
+	mkdir -p $(TARGETDIR_lzt-testrun.cpp)
+
+
+# Enable dependency checking
+# .KEEP_STATE:
+# .KEEP_STATE_FILE:.make.state.GNU-amd64-Linux
+
