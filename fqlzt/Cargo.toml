@@ -10,3 +10,6 @@ edition = "2018"
 # aux = // add compiled sources
 snafu = "*"
 clap  = "*"
+cpp = "*"
+cbindgen = "*"
+log   = "*"
