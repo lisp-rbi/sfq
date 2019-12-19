@@ -7,7 +7,7 @@ Short description
 
 ## Installation
 
-To install fqlzt, first install Rust (> v1.38) and g++ (> v8.0.0 ). lzt is currently tested on Rust 1.39.0, but it is likely to work on other subsequent versions as well.
+To install fqlzt, first install Rust (> v1.38) and g++ (> v8.0.0 ). fqlzt is currently tested on Rust 1.39.0, but it is likely to work on other subsequent versions as well.
 
 To install library:
 
@@ -44,4 +44,3 @@ cargo build fqlzt
 ## License
 
 The software is licensed under the  [MIT license](http://opensource.org/licenses/MIT).
-
