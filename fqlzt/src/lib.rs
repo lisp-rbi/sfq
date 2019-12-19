@@ -19,7 +19,7 @@
 
 mod io;
 mod util;
-mod aux;
+//mod aux;
 #[cfg(test)]
 mod tests;
 
