@@ -1,7 +1,9 @@
 #ifndef LZT_HPP
 #define LZT_HPP
 
+#include <iostream>
 
+using namespace std;
 
 class Lzt {
 
@@ -13,7 +15,7 @@ public:
 	~Lzt();
 
    /* Functions */
-  void test_binding (int64_t x);
+  // void test_binding (int64_t x);
 
 
 //	vector<vector<char>>& get_records(vector<vector<char>>& prefix);
@@ -42,22 +44,20 @@ Lzt::Lzt(){
 
 // Implement functions here
 
-void Lzt::test_binding (int64_t x){
-   return x+x;
-}
+//void Lzt::test_binding (int64_t x){
+//   return x+x;
+//}
 
 
 /* Getters */
 
-vector<vector<char>>& Lzt::get_records(vector<vector<char>>& prefix){
+//vector<vector<char>>& Lzt::get_records(vector<vector<char>>& prefix){
+//
+//  vector<vector<int>> vec(prefix.size(), vector<char>(prefix.size(),'x'));
+//  // lzt magic happens here ..................
+//  return vec
+//
+//}
 
-  vector<vector<int>> vec(prefix.size(), vector<char>(prefix.size(),'x'));
-  // lzt magic happens here ..................
-  return vec
-
-}
-
-
-/* Setters */
 
 #endif
