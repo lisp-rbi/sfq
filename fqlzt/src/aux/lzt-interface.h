@@ -33,6 +33,7 @@ typedef LzTrie<CompactArray<TSymbol, TIndex> > TLzTrie; // final compressed trie
 bool createLzTrie(vector<vector<TSymbol> >* words, string fname, bool sortWords = false);
 TLzTrie* loadLzTrie(string trieFile);
 vector<vector<TSymbol> >* queryLzTrie(TLzTrie* trie, vector<TSymbol> query);
+void freeTrieMemory(TLzTrie* trie);
 /**************************************************************/
 
 /**************** HELPER FUNCTIONS ****************/

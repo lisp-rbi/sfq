@@ -48,6 +48,13 @@ vector<vector<TSymbol> >* queryLzTrie(TLzTrie* trie, vector<TSymbol> query) {
     return result;
 }
 
+/**
+ * Deallocates all memory used by the trie structure.
+ */
+void freeTrieMemory(TLzTrie* trie) {
+    delete trie;
+}
+
 /** 
  * Converts set of words represented as vector of symbol vectors 
  * to WordList object used as input for trie creation. 

@@ -1,3 +1,8 @@
+/**
+ * CLI utility for testing the lzt-interface.
+ * Code in interface function is also an example of using the lzt-interface.
+ */
+
 #include "lzt.hpp"
 #include "lzt-interface.h"
 
@@ -9,10 +14,13 @@ using namespace std;
 
 map<string, string> params;
 
-static void createParameterMap(int argc, char** argv);
+/**************** INTERFACE FUNCTIONS ****************/
 static void compressTrie();
 static void loadAndListTrie();
 static void queryTrie();
+/**************************************************************/
+
+static void createParameterMap(int argc, char** argv);
 static void printWordList(string query, TLzTrie* lzTrie);
 static TSymbol* stringToTSymbolString(string& str);
 static vector<TSymbol> str2SymbolVec(string s);
@@ -43,6 +51,7 @@ void loadAndListTrie() {
     TLzTrie* trie = loadLzTrie(params["-d"]);
     string query = "*";
     printWordList(query, trie);
+    freeTrieMemory(trie);
 }
 
 void queryTrie() {        
@@ -53,6 +62,7 @@ void queryTrie() {
     for(size_t i = 0; i < result->size(); ++i) {        
         cout<<symbolVec2string((*result)[i])<<endl;
     }
+    freeTrieMemory(trie);
 }
 
 void printWordList(string query, TLzTrie* lzTrie) {
