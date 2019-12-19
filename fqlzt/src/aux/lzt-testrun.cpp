@@ -19,6 +19,7 @@ map<string, string> params;
 static void compressTrie();
 static void loadAndListTrie();
 static void queryTrie();
+static void testInterfaceClass();
 /**************************************************************/
 
 static void createParameterMap(int argc, char** argv);
@@ -35,6 +36,9 @@ int main(int argc, char** argv) {
         }
         else if (command == "s") {
             queryTrie();
+        }
+        else if (command == "cls") {
+            testInterfaceClass();
         }
         else {
             cout << "unknown command";
@@ -62,6 +66,26 @@ void queryTrie() {
         cout<<symbolVec2string((*result)[i])<<endl;
     }
     freeTrieMemory(trie);
+}
+
+/** 
+ * Test Lzt class interface by creating a trie, 
+ * loading it, and listing all words to stdout. 
+ */
+void testInterfaceClass() {
+    Lzt lzt;
+    // create and save    
+    vector<vector<TSymbol> >* words = readWordsFromFile(params["-i"]);    
+    assert(lzt.make(words, params["-d"]));
+    // load
+    assert(lzt.read(params["-d"]));
+    // list all words
+    vector<TSymbol> prefix; // empty prefix
+    vector<vector<TSymbol> >* result = lzt.getFastqRecords(prefix);   
+    assert(result != NULL);
+    for(size_t i = 0; i < result->size(); ++i) {        
+        cout<<symbolVec2string((*result)[i])<<endl;
+    }
 }
 
 void printWordList(string query, TLzTrie* lzTrie) {

@@ -1,63 +1,40 @@
 #ifndef LZT_HPP
 #define LZT_HPP
 
+#include "lzt-interface.h"
+
 #include <iostream>
+#include <cstddef>
 
 using namespace std;
 
 class Lzt {
 
-   void *internal;
-
-public:
-   /* Constructor/Desctructor */
+    public:   
 	Lzt();
 	~Lzt();
 
-   /* Functions */
-  // void test_binding (int64_t x);
+        /** 
+         * Creates compressed trie from a sorted list of words 
+         * assumes dict does not exist and overwrites it 
+         */
+        bool make(vector<vector<TSymbol> >* words, string savePath);
 
+        /**
+         *  If trie exists, load the data structure into self 
+         *  Return true if loading is successful, else false.
+         */
+        bool read(string triePath);
 
-//	vector<vector<char>>& get_records(vector<vector<char>>& prefix);
-//  bool load();
-//  bool make();
+        /**
+         * Query (loaded) trie by prefix, return a list of all words sharing the prefix.
+         * Empty prefix lists all words.
+         */
+        vector<vector<TSymbol> > * getFastqRecords(vector<TSymbol> prefix);
 
-
+    private:
+        TLzTrie *trie = NULL;
 };
-
-
-///////////////////////////////////////////////////////////////////////////////
-//
-//   For now just implement functions here and test them seperatly using plain
-//   c++. Binding is not working and I have no more time today to fix it ...
-//   Sorry..  RB
-//
-///////////////////////////////////////////////////////////////////////////////
-
-/*  Constructor  */
-
-Lzt::Lzt(){
-  cout << "Constructor works" << endl;
-}
-
-/* Functions */
-
-// Implement functions here
-
-//void Lzt::test_binding (int64_t x){
-//   return x+x;
-//}
-
-
-/* Getters */
-
-//vector<vector<char>>& Lzt::get_records(vector<vector<char>>& prefix){
-//
-//  vector<vector<int>> vec(prefix.size(), vector<char>(prefix.size(),'x'));
-//  // lzt magic happens here ..................
-//  return vec
-//
-//}
 
 
 #endif

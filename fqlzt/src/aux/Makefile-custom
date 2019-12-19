@@ -28,6 +28,7 @@ CPPFLAGS_lzt-testrun.cpp = $(CCFLAGS) $(CXXFLAGS) \
 	-Ilzt_core 
 OBJS_lzt-testrun.cpp =  \
 	$(TARGETDIR_lzt-testrun.cpp)/lzt-interface.o \
+	$(TARGETDIR_lzt-testrun.cpp)/lzt.o \
 	$(TARGETDIR_lzt-testrun.cpp)/lzt-testrun.o \
 	$(TARGETDIR_lzt-testrun.cpp)/lzt-utils.o \
 	$(TARGETDIR_lzt-testrun.cpp)/na_utils.o \
@@ -88,6 +89,9 @@ $(TARGETDIR_lzt-testrun.cpp)/lzt-testrun.cpp: $(TARGETDIR_lzt-testrun.cpp) $(OBJ
 # Compile source files into .o files
 $(TARGETDIR_lzt-testrun.cpp)/lzt-interface.o: $(TARGETDIR_lzt-testrun.cpp) lzt-interface.cpp
 	$(COMPILE.cc) $(CCFLAGS_lzt-testrun.cpp) $(CPPFLAGS_lzt-testrun.cpp) -o $@ lzt-interface.cpp
+
+$(TARGETDIR_lzt-testrun.cpp)/lzt.o: $(TARGETDIR_lzt-testrun.cpp) lzt.cpp
+	$(COMPILE.cc) $(CCFLAGS_lzt-testrun.cpp) $(CPPFLAGS_lzt-testrun.cpp) -o $@ lzt.cpp
 
 $(TARGETDIR_lzt-testrun.cpp)/lzt-testrun.o: $(TARGETDIR_lzt-testrun.cpp) lzt-testrun.cpp
 	$(COMPILE.cc) $(CCFLAGS_lzt-testrun.cpp) $(CPPFLAGS_lzt-testrun.cpp) -o $@ lzt-testrun.cpp
