@@ -29,6 +29,7 @@ CPPFLAGS_lzt-testrun.cpp = $(CCFLAGS) $(CXXFLAGS) \
 OBJS_lzt-testrun.cpp =  \
 	$(TARGETDIR_lzt-testrun.cpp)/lzt-interface.o \
 	$(TARGETDIR_lzt-testrun.cpp)/lzt-testrun.o \
+	$(TARGETDIR_lzt-testrun.cpp)/lzt-utils.o \
 	$(TARGETDIR_lzt-testrun.cpp)/na_utils.o \
 	$(TARGETDIR_lzt-testrun.cpp)/CompactArrayTest.o \
 	$(TARGETDIR_lzt-testrun.cpp)/CmmExporter.o \
@@ -90,6 +91,9 @@ $(TARGETDIR_lzt-testrun.cpp)/lzt-interface.o: $(TARGETDIR_lzt-testrun.cpp) lzt-i
 
 $(TARGETDIR_lzt-testrun.cpp)/lzt-testrun.o: $(TARGETDIR_lzt-testrun.cpp) lzt-testrun.cpp
 	$(COMPILE.cc) $(CCFLAGS_lzt-testrun.cpp) $(CPPFLAGS_lzt-testrun.cpp) -o $@ lzt-testrun.cpp
+
+$(TARGETDIR_lzt-testrun.cpp)/lzt-utils.o: $(TARGETDIR_lzt-testrun.cpp) lzt-utils.cpp
+	$(COMPILE.cc) $(CCFLAGS_lzt-testrun.cpp) $(CPPFLAGS_lzt-testrun.cpp) -o $@ lzt-utils.cpp
 
 $(TARGETDIR_lzt-testrun.cpp)/na_utils.o: $(TARGETDIR_lzt-testrun.cpp) lzt_core/node_array/na_utils.cpp
 	$(COMPILE.cc) $(CCFLAGS_lzt-testrun.cpp) $(CPPFLAGS_lzt-testrun.cpp) -o $@ lzt_core/node_array/na_utils.cpp

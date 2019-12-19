@@ -5,6 +5,7 @@
 
 #include "lzt.hpp"
 #include "lzt-interface.h"
+#include "lzt-utils.h"
 
 #include "lzt_core/util/regex.h"
 
@@ -22,8 +23,6 @@ static void queryTrie();
 
 static void createParameterMap(int argc, char** argv);
 static void printWordList(string query, TLzTrie* lzTrie);
-static TSymbol* stringToTSymbolString(string& str);
-static vector<TSymbol> str2SymbolVec(string s);
 
 int main(int argc, char** argv) {        
     string command = argv[1];        
@@ -57,7 +56,7 @@ void loadAndListTrie() {
 void queryTrie() {        
     TLzTrie* trie = loadLzTrie(params["-d"]);
     string query = params["-s"];
-    vector<TSymbol> q = str2SymbolVec(query);
+    vector<TSymbol> q = string2SymbolVec(query);
     vector<vector<TSymbol> >* result = queryLzTrie(trie, q);
     for(size_t i = 0; i < result->size(); ++i) {        
         cout<<symbolVec2string((*result)[i])<<endl;
@@ -90,20 +89,6 @@ void printWordList(string query, TLzTrie* lzTrie) {
     }
 
     delete [] queryTS;
-}
-
-TSymbol* stringToTSymbolString(string& str) {
-    TSymbol *tss = new TSymbol[str.size()+1];
-    int i;
-    for (i = 0; i < str.size(); ++i) tss[i] = (TSymbol)str[i];
-    tss[i] = zeroSymbol<TSymbol>();
-    return tss;
-}
-
-vector<TSymbol> str2SymbolVec(string s) {
-    vector<TSymbol> sv(s.size());
-    for (int i = 0; i < s.size(); ++i) sv[i] = (TSymbol)s[i];
-    return sv;
 }
 
 /**
