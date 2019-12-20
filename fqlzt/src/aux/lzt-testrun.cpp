@@ -9,6 +9,8 @@
 
 #include "lzt_core/util/regex.h"
 
+#include <cstdlib>
+#include <ctime>
 #include <map>
 
 using namespace std;
@@ -20,6 +22,7 @@ static void compressTrie();
 static void loadAndListTrie();
 static void queryTrie();
 static void testInterfaceClass();
+static void testSequentialQueries();
 /**************************************************************/
 
 static void createParameterMap(int argc, char** argv);
@@ -39,6 +42,9 @@ int main(int argc, char** argv) {
         }
         else if (command == "cls") {
             testInterfaceClass();
+        }
+        else if (command == "sq") {
+            testSequentialQueries();
         }
         else {
             cout << "unknown command";
@@ -86,6 +92,63 @@ void testInterfaceClass() {
     for(size_t i = 0; i < result->size(); ++i) {        
         cout<<symbolVec2string((*result)[i])<<endl;
     }
+}
+
+/**
+ * Test scenario when a trie is loaded and queried multiple (many) times.
+ * Run several runs (-n cli param) of queries of all words in the trie, checking the result, 
+ * and interleave word queries with list-all-words and list-by-prefix queries.
+ */
+void testSequentialQueries() {    
+    // load trie and list all words
+    TLzTrie* trie = loadLzTrie(params["-d"]);    
+    vector<TSymbol> emptyQuery;
+    vector<vector<TSymbol> >* allwords = queryLzTrie(trie, emptyQuery);
+    size_t numWords = allwords->size();
+    // perform testing runs
+    int numRuns = 1;
+    // how often to perform list-all and list-prefix queries
+    // decision is random, expected to happen once in this many words
+    int listallFreq = 5000, listPrefix = 500;
+    if (params.count("-n") > 0) numRuns = atoi(params["-n"].c_str());
+    srand(time(0));
+    for (int i = 0; i < numRuns; ++i) {
+        cout << "RUN " << i+1 << endl;
+        for (size_t j = 0; j < numWords; ++j) {            
+            vector<TSymbol> wrd = allwords->at(j); // get j-th words
+            // perform random list all and list by prefix tests
+            int r =rand();
+            if (r % listallFreq == 0) {
+                //cout<<"listall"<<endl;
+                vector<vector<TSymbol> >* words = queryLzTrie(trie, emptyQuery);
+                delete words;
+            }            
+            if (wrd.size() > 1 and r % listPrefix == 0) {
+                // prefix size should be between 1 and wrd.size-1
+                int prefixLen = (rand()%(wrd.size()-1))+1;               
+//                vector<TSymbol>::iterator first = 
+//                vector<TSymbol>::iterator last = 
+                vector<TSymbol> q(wrd.begin(), wrd.begin()+prefixLen);
+                //cout<<"listbyprefix:["<<symbolVec2string(q)<<"]"<<endl;
+                vector<vector<TSymbol> >* words = queryLzTrie(trie, q);
+                delete words;
+            }
+            vector<vector<TSymbol> >* result = queryLzTrie(trie, wrd);
+            // can return more than one word if its a prefix of another            
+            assert(result->size() > 0); 
+            bool found = false;
+            for (size_t k = 0; k < result->size(); ++k) {
+                if (wrd == result->at(k)) {
+                    found = true;
+                    break;
+                }
+            }
+            assert(found);
+            delete result;
+        }
+    }
+    delete allwords;
+    freeTrieMemory(trie);
 }
 
 void printWordList(string query, TLzTrie* lzTrie) {
