@@ -97,6 +97,7 @@ private:
     int removeUsedSegments();
 
     void printStack();
+    void clearStack();
 
 };
 
@@ -125,7 +126,10 @@ LzTrie<TNodeArray>::getWordsByPrefix(TSymbol const * word, long maxWords=0, bool
     // check if there are words to search in the trie
     if (!prefixEmpty) {
         // if the word does not exist in the trie as a prefix, end
-        if (wordEnded == false) return NULL;
+        if (wordEnded == false) {
+            clearStack();
+            return NULL;
+        }
 
         /* Check if there are any suffixes. After the trie search with the word,
          * stack will describe a position of the last symbol symbol matched. */
@@ -135,6 +139,7 @@ LzTrie<TNodeArray>::getWordsByPrefix(TSymbol const * word, long maxWords=0, bool
                 // no continuation, word found -> result is only the word
                 WordList<TSymbol>* list = new WordList<TSymbol>();
                 list->addWord(word);
+                clearStack();
                 return list;
             }
             else {
@@ -161,6 +166,7 @@ LzTrie<TNodeArray>::getWordsByPrefix(TSymbol const * word, long maxWords=0, bool
     depthFirstSearch(offset);
     
     wordBuffer.clear();
+    clearStack();
     return wordList;
 }
 
@@ -344,6 +350,19 @@ void LzTrie<TNodeArray>::printStack() {
         stackCopy.pop();
     }
     cout << nodeToString(nodes[last.pos]) <<"|" << nodeToString(nodes[last.pos+1]) << endl;
+}
+
+/** Clear stack data and bookkeeping. */
+template <typename TNodeArray>
+void LzTrie<TNodeArray>::clearStack() {
+    // lzStack can be-non empty because it is not cleared after searchWord()
+    // since the method must record stack position to continue DFS (listing of prefixes)
+    // from the position of the word
+    while (lzStack.empty() == false) lzStack.pop();    
+    // these stack should be empty since they are used only in DFS where 
+    // all stack operations are reverted upon finishing node traversal
+    assert(lzStackPopped.empty());
+    assert(lzStackChanges.empty());
 }
 
 /** Find the maximal prefix of the word that exists in the Trie.
