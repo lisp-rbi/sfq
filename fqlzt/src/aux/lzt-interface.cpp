@@ -17,8 +17,7 @@ bool createLzTrie(vector<vector<TSymbol> >* words, string fname, bool sortWords)
     CompactArrayCreator<TNodeArray> compacter(*array);
     TCompactArray* carray =  compacter.createCompactArray();
     delete array;
-    // serialize compact array to file
-    // TODO I/O checking: is file writeable
+    // serialize compact array to file    
     ofstream output(fname.c_str());
     CompactArraySerializer<TSymbol, TIndex> serializer(carray);
     serializer.arrayToStream(output);

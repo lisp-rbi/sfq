@@ -65,8 +65,9 @@ LDLIBS =
 ## MAKE's default rule: COMPILE.cc  = $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c
 BASICOPTS = -m64 -fpermissive 
 # C++ optimization/debug/valgrind/...
-#CPPOPT=-g
-CPPOPT=-Ofast -march=native
+#CPPOPT=-g # debug
+#CPPOPT=-Ofast -march=native # fast code, slower compile
+CPPOPT=-O2
 INCLUDEFLAGS=-Ilzt_core 
 CXXFLAGS = $(BASICOPTS) $(CPPOPT) $(INCLUDEFLAGS)
 COMPILER_FLAGS = # compiler-only flags
