@@ -9,12 +9,14 @@ using namespace std;
 #include <iostream>
 #include <cstddef>
 #include <vector>
-
+#include <iterator>
+#include <algorithm>
+#include <numeric>
 class Lzt {
 
   public:
 
-    Lzt();
+    Lzt(string Path);
     ~Lzt();
 
     /**

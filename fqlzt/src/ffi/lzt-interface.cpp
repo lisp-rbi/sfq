@@ -35,7 +35,6 @@ bool createLzTrie(vector<vector<TSymbol> >* words, string fname, bool sortWords)
  * @return pointer to lz-trie or NULL if loading failed
  */
 TLzTrie* loadLzTrie(string trieFile) {
-  cout<< trieFile << "|" << endl;
     TLzTrie* lzTrie = getLzTrieFromCompressedFile<unsigned char, long>(trieFile);
     return lzTrie;
 }
@@ -50,6 +49,7 @@ vector<vector<TSymbol> >* queryLzTrie(TLzTrie* trie, vector<TSymbol> query) {
     vector<vector<TSymbol> >* result = wordList2VecOfVec(words);
     delete words;
     delete [] nativeQuery;
+
     return result;
 }
 
