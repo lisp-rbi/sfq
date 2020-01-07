@@ -27,13 +27,13 @@ bool Lzt::read(string triePath) {
 
 // FXME: This needs to be re-written. Only simple structs are allowed
 vector<vector<TSymbol> >* Lzt::getFastqRecords(vector<TSymbol> prefix) {
-  if(trie != NULL){cout <<"problem !!\n";}
     return queryLzTrie(trie, prefix);
 }
 
 
 // ABI
 extern "C" {
+
 // ABI -> create an lzt object but do not keep it ...
     bool make_lzt( uchar* words, unsigned long wln, uchar* path, int pln) {
 
@@ -59,50 +59,39 @@ extern "C" {
 
 
 // ABI -> create an lzt object and keep it ...
-
-
     Lzt* open_lzt( uchar* path, int pln){
       std::string inPath(reinterpret_cast<char*>(path),pln);
       return new Lzt(inPath);
     }
 
 // ABI -> manually delete an lzt object -> destruct
-
     void delete_lzt(Lzt *obj) {
         delete obj;
     }
 
-		void query_lzt (Lzt *obj, uchar* pattern, unsigned long pln, uchar* res, unsigned long rln){
+// ABI -> query lzt : prefix search
+		unsigned long query_lzt (Lzt *obj, uchar* pattern, unsigned long pln){
 
       vector<uchar> ptt(pattern, pattern + pln);
-
-      for (unsigned long i =0; i< pln; i++){
-        cout << ptt[i] << "\n";
-      }
-
       vector<vector<uchar>>* out = obj->getFastqRecords(ptt);
 
-      vector<uchar> vec1d = std::accumulate(
+      obj->objvec = std::accumulate(
         out->begin(), out->end(), vector<uchar>(), [](vector<uchar> (a), vector<uchar> (b)) {
           a.insert(a.end(), b.begin(), b.end());
           a.push_back('\n');
           return a;
         }
       );
-/*      vector<char> vec1d(
-        reinterpret_cast<char*>(uvec1d.data()),
-        reinterpret_cast<char*>(uvec1d.data()) + uvec1d.size()
-      );
 
-      vector<uchar>().swap(uvec1d);
-*/
-      for (unsigned long i =0; i< vec1d.size(); i++){
-        cout << vec1d[i] << "\n";
-      }
-      res = &vec1d[0];
-      rln = vec1d.size();
-
+      return (unsigned long) obj->objvec.size();
 		}
+
+// ABI -> get query results
+    void get_query_results (Lzt *obj, uchar* results){
+      for (unsigned long i =0; i< obj->objvec.size(); i++){
+        results[i] = obj->objvec[i];
+      }
+    }
 
 }
 

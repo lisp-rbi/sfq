@@ -16,6 +16,8 @@ class Lzt {
 
   public:
 
+    vector < TSymbol> objvec;
+
     Lzt(string Path);
     ~Lzt();
 
@@ -35,10 +37,12 @@ class Lzt {
      * Query (loaded) trie by prefix, return a list of all words sharing the prefix.
      * Empty prefix lists all words.
      */
-    vector< vector < TSymbol> >* getFastqRecords(vector<TSymbol> prefix);
+
 
   private:
+    vector< vector < TSymbol> >* getFastqRecords(vector<TSymbol> prefix);
 
     TLzTrie *trie = NULL;
+
 
 };
