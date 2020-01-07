@@ -28,14 +28,15 @@ mod opaque {
     struct LztObj {
         _opaque: [*const u8; 0],
     }
+
 }
 #[cfg(test)]
 mod tests;
 
+use std::iter::FromIterator;
 use opaque::LztObj;
 use util::common::*;
-use std::ffi::CStr;
-use std::os::raw::c_char;
+use std::str;
 
 
 extern "C" {
@@ -59,10 +60,12 @@ extern "C" {
         obj: *mut LztObj,
         vst: *const libc::c_uchar,
         vln: libc::c_ulong,
-        res: *const libc::c_uchar,
-        rln: libc::c_ulong
-    );
+    )-> u64;
 
+    fn get_query_results (
+        obj: *mut LztObj,
+        results: *const libc::c_uchar
+    );
 }
 
 pub struct LztFFI {
@@ -113,34 +116,30 @@ impl LztFFI {
 
     pub fn query(&self, pattern: String)-> Vec<String> {
 
-        let mut res : Vec<u8> = vec![64,102,87,65];
-        let mut rln = 4;
-        let mut result : Vec<u8> = Vec::new();
+        let mut qres : Vec<String> = Vec::new();
 
-        use std::slice;
-
-        let result = unsafe{
-            query_lzt(
+         unsafe{
+            let size = query_lzt(
                 self.raw,
                 pattern.as_bytes().to_vec().as_ptr(),
                 pattern.len() as libc::c_ulong,
-                res.as_mut_ptr(),
-                rln as libc::c_ulong
-            );
+            ) as usize;
 
-            slice::from_raw_parts(res.as_mut_ptr(), rln)
+            let mut vec1d : Vec<u8> = vec![0u8;size];
+            get_query_results(
+                self.raw,
+                vec1d.as_mut_ptr()
+            );
+            {
+                let mut tmp : String = str::from_utf8(&vec1d).unwrap().to_string();
+                trim_nl(&mut tmp);
+                qres = Vec::from_iter(
+                    tmp.split("\n").map(String::from)
+                );
+            }
 
         };
-        println!("{}", rln);
-        for i in 0..rln {
-            println!(">>  {:?}", result[i]);
-        }
-        println!("{}", rln);
-
-        //out.split("\n").map(String::from).collect()
-
-        let e : Vec<String> = vec!["b".to_string()];
-        e
+        qres
     }
 
 }
