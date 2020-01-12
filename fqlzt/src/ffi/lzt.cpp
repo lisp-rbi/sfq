@@ -37,22 +37,34 @@ extern "C" {
 // ABI -> create an lzt object but do not keep it ...
     bool make_lzt( uchar* words, unsigned long wln, uchar* path, int pln) {
 
-      unsigned long l=0, x=0;
+      unsigned long l=0, i=0, j=0, c=0, d=0;
       // Get output path
       std::string oPath(reinterpret_cast<char*>(path),pln);
 
       // Compute word length -> FXME: this coule be done better by passing word length
+
       for (unsigned long i = 0; i < wln; i++){
-        if ( words[i] == '\n' ){break;}
-        l++;
-      }
-      // Make 2d vec -> N= x(l+1)
-      vector<vector<unsigned char> > vec2d((wln+1)/(l+1) , vector<unsigned char> (l));
-      for (unsigned long i = 0; i < wln+1; i+=(l+1)){
-        for(unsigned long j = 0; j < l; j++){
-          vec2d[x][j] = words[i+j];
+        if ( words[i] == '\n' ){
+          l++;
+          if (c>d) {
+            d=c;
+          }
+          c=0;
+        }else{
+          c++;
         }
-        x++;
+      }
+
+      // Make 2d vec -> N= x(l+1)
+
+      vector<vector<unsigned char> > vec2d(l+1 , vector<unsigned char> (d));
+      for (unsigned long k = 0; k < wln+1; k++){
+          vec2d[i][j] = words[k];
+          if ( words[k] == '\n' ){
+            i++;j=0;
+            continue;
+          }
+          j++;
       }
       return Lzt::make(&vec2d, oPath);
     }
