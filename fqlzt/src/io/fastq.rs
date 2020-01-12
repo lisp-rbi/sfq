@@ -17,38 +17,37 @@
  */
 
 
+ use crate::Fdb;
+ use crate::util::error::Error;
+ use std::io::{self, prelude::*, stdout, Write, Read, BufReader, BufWriter};
 
-// is there a need for a db ??
- impl FastqaDb{
+ impl Fdb{
      pub(crate) fn fastq_up<R: BufRead>(&mut self,  reader:  R ) -> Result<bool,Error> {
 
-         // check if fastq
-
-         let mut i= self.head.len();
          let mut cnt=0;
-         self.findex.push(i);  // not sure what this is about...
+         let mut r = 0;
 
          for line in reader.lines() {
              let  str = line.unwrap();
              if &str[..1] == "@" && cnt == 0 {
-                 self.head.push(str.clone());
-                 let id = (&str[1..str.find(" ").unwrap()]).to_string();
-                 self.id.push(id.clone());
-                 self.rindex.entry(id).or_insert(Vec::new()).push(i);
-                 i=i+1;
+                 self.head.extend(str.as_bytes());
+                 self.head.extend(b"\n");
+                 r = r+1;
              }else if cnt == 1 {
-                 self.mindex.push(self.seq.len());
                  self.seq.extend(str.as_bytes());
+                 self.seq.extend(b"\n");
              }else if cnt == 3 {
                  self.qual.extend(str.as_bytes());
+                 self.qual.extend(b"\n");
                  cnt = 0;
                  continue;
              }
              cnt = cnt+1;
          }
+         self.nrec = r;
          Ok(true)
      }
-
+/*
      pub(crate) fn fastq_dw<W: Write> (&self, mut writer:  W)   -> Result<bool,Error>  {
 
          for pos in self.qres.clone().into_iter() {
@@ -68,5 +67,5 @@
          Ok(true)
 
      }
-
+*/
  }
