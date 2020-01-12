@@ -9,42 +9,99 @@ Short description
 
 To install fqlzt, first install Rust (> v1.38) and g++ (> v4.9.1). fqlzt is currently tested on Rust 1.38.0, but it is likely to work on other subsequent versions as well.
 
-To install library:
+1. Download the library:
 
 ```
-// not applicible at this time
+git clone path...
+```
+2. Install:
+
+To install the library please go to:
+```
+cd ./fqlzt/
+```
+and run:
+
+```
 cargo install fqlzt
 ```
 
-To create run the app (debuf by def):
+This will install fqlzt library which than ca be used in your personal projects.
 
 
-```
-cargo run
+## Compile binary
 
-// or
-
-cargo run -- -h
-```
-To create binary:
+To create new binaries please go to your local `fqlzt/` folder and  run:
 
 ```
-cargo build fqlzt
+cargo build --release
+
 ```
 
-## Usage (temporary)
+After compilation is complete binaries will be located in :
+
+```
+./target/release/fqlzt
 ```
 
-  fqlzt -h
+## Usage
 
-# make index
+Once the binaries have been compiled, so see the quick
+help menu please run:
 
-  fqlzt -i file.fq -o file.fq.lzt -a c
+```
+./target/release/fqlzt -h
 
-# de(compress/index)
+fqlzt 0.01
+Robert Bakaric <rbakaric@irb.hr>, Damir Korencic<dkorencic@irb.hr>
+
+    _     _      				
+   | |   | |       			
+   | |___| |_ __ _ 			
+   | |_  / __/ _` |			
+   | |/ /| || (_| |			
+   |_/___|\__\__, |			
+                | |			
+                |_|			
+
+            Auth: Bakaric R. Korencic, D. & Ristov, S.
+
+USAGE:
+    fqlzt [OPTIONS] --action <c|d|e> --direction <bi|fwd|rew> --format <H+F+R+Fq+Rq|...> --ftype <fastq|fasta|raw> --list <file.csv|rand(10)> --memory-mode <0|1|2|..|5>
+
+FLAGS:
+    -h, --help       Prints help information
+    -V, --version    Prints version information
+
+OPTIONS:
+    -a, --action <c|d|e>              Action: (c) compress, (d) decompress, (e) extract <requires --list >  [default: c]
+    -d, --direction <bi|fwd|rew>      Condition to be met when extraction (--action e ) is invoked! [default: bi]
+    -f, --format <H+F+R+Fq+Rq|...>    Types of reformatting supported [default: H(F,R,Fq,Rq)]
+    -t, --ftype <fastq|fasta|raw>     File types supported [default: fastq]
+    -i, --input <FILE>                Input file [fasta,fastq,lzt] [default: stdin]
+    -l, --list <file.csv|rand(10)>    Please provide a list of prefixes, records of which are to be extracted (works
+                                      only with -a e) [default: rand(10)]
+    -m, --memory-mode <0|1|2|..|5>    Memory mode: defines memory sparsity level [0- low,5- high] [default: 0]
+    -o, --output <FILE>               Output file [default: dict.lzt]
+
+```
+
+To simple compress fastq file using a default data model:
+
+```
+./target/release/fqlzt -a c -i file.fq -o file.fq
+```
+
+ -a: action(c=compress)  
+ -i: input path
+ -o: output file (program will split the output according to the model provided)
+
+### To be implemented !
+
+# de(compress)
   fqlzt -i file.fq.lzt -a d -o file.fq
 
-#extract (random access)
+# extract (random access)
   fqlzt -i file.fq.lzt -a e -o file.fq -l list.csv -d bi
   fqlzt -i file.fq.lzt -a e -o file.fq -l "rand(15)" -d fwd
 
