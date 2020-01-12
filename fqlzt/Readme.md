@@ -47,8 +47,9 @@ and can be executed by running:
 
 ## Usage
 
-Once the binaries have been compiled, so see the quick
-help menu please run:
+Once the binaries have been compiled, accessing quick
+help menu can be achieved by executing:
+
 
 ```
 
@@ -92,16 +93,34 @@ OPTIONS:
     -o, --output <FILE>               Output file [default: dict.lzt]
 
 ```
-
-To simple compress fastq file using a default data model:
+As a result a short list of options is printed out. To see the complete documentation  
+manual please compile the doc by executing:
 
 ```
-./target/release/fqlzt -a c -i file.fq -o file.fq
+cargo doc
+```
+This will generate full list of documentation manuals for each library used in the
+project including documenataion manula for `fqlzt` which is located at:
+
+```
+./target/doc/fqlzt/all.html
 ```
 
+In order to compress a simple fastq file using a default data model, the following
+needs to be executed:
+
+```
+./target/release/fqlzt -a c -i ./example/data/fq.tmp -o compressed
+
+# Result:
+
+compressed.lzt
+```
+Options used in this example are:
  -a: action(c=compress)  
- -i: input path
- -o: output file (program will split the output according to the model provided)
+ -i: ./relative/or/abs/input/file.path
+ -o: output file (program will split the output according to the model provided
+     def. model = "H(R,F,Rq,Fq)")
 
 ### To be implemented !
 
