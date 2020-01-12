@@ -51,24 +51,30 @@ Once the binaries have been compiled, so see the quick
 help menu please run:
 
 ```
+
 ./target/release/fqlzt -h
 
 fqlzt 0.01
 Robert Bakaric <rbakaric@irb.hr>, Damir Korencic<dkorencic@irb.hr>
 
-    _     _      				
-   | |   | |       			
-   | |___| |_ __ _ 			
-   | |_  / __/ _` |			
-   | |/ /| || (_| |			
-   |_/___|\__\__, |			
-                | |			
-                |_|			
+ ________ ________  ___       ________  _________    	
+|\  _____\\   __  \|\  \     |\_____  \|\___   ___\    	
+\ \  \__/\ \  \|\  \ \  \     \|___/  /\|___ \  \_|    	
+ \ \   __\\ \  \\\  \ \  \        /  / /    \ \  \     	
+  \ \  \_| \ \  \\\  \ \  \____  /  /_/__    \ \  \    	
+   \ \__\   \ \_____  \ \_______\\________\   \ \__\   	
+    \|__|    \|___| \__\|_______|\|_______|    \|__|   	
+                   \|__|                               	
 
             Auth: Bakaric R. Korencic, D. & Ristov, S.
 
 USAGE:
-    fqlzt [OPTIONS] --action <c|d|e> --direction <bi|fwd|rew> --format <H+F+R+Fq+Rq|...> --ftype <fastq|fasta|raw> --list <file.csv|rand(10)> --memory-mode <0|1|2|..|5>
+    fqlzt [OPTIONS] --action <c|d|e>
+                    --direction <bi|fwd|rew>
+                    --format <H+F+R+Fq+Rq|...>
+                    --ftype <fastq|fasta|raw>
+                    --list <file.csv|rand(10)>
+                    --memory-mode <0|1|2|..|5>
 
 FLAGS:
     -h, --help       Prints help information
