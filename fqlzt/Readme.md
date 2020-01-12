@@ -38,7 +38,8 @@ cargo build --release
 
 ```
 
-After compilation is complete binaries will be located in :
+After build completes, binaries will be located in `./target/release/`
+and can be executed by running:
 
 ```
 ./target/release/fqlzt
