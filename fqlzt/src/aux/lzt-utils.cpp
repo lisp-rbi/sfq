@@ -1,4 +1,5 @@
 #include "lzt-utils.h"
+#include "util/utils.h"
 
 /**
  * Converts cpp string to array of TSymbols.
@@ -54,6 +55,40 @@ WordList<TSymbol>* vecOfVec2WordList(vector<vector<TSymbol> >* words) {
     return wlist;
 }
 
+/** 
+ * Converts  flat words' wordset representation
+ * to native WordList used as input for trie creation. 
+ */
+WordList<TSymbol>* flatwords2WordList(FlatWordList<TSymbol> fwords) {
+    WordList<TSymbol>* wlist = new WordList<TSymbol>(false);    
+    bool add = true;    
+    for(size_t i = 0; i < fwords.length; ++i) {                        
+        if (add) wlist->addWordNocopy(fwords.words);  
+        if (*fwords.words == zeroSymbol<TSymbol>()) add = true;
+        else add = false;
+        fwords.words++;        
+        //cout<<nw<<endl;
+    }
+    return wlist;
+}
+
+FlatWordList<TSymbol> wordList2Flatwords(WordList<TSymbol>* words) {
+    FlatWordList<TSymbol> fwords(0, 0);        
+    // calc length of all words incl. term zero-symbols
+    for (size_t i = 0; i < words->numberOfWords(); ++i) 
+        fwords.length += (wordLength((*words)[i])+1);     
+    // copy words to flat array
+    fwords.words = new TSymbol[fwords.length];       
+    TSymbol *wordLoc = fwords.words;    
+    for (size_t i = 0; i < words->numberOfWords(); ++i) {
+        TSymbol const * word = (*words)[i];        
+        wordCopy(wordLoc, word);
+        wordLoc += (wordLength(word)+1);
+    }    
+    assert(wordLoc == fwords.words + fwords.length);
+    return fwords;
+}
+
 /**
  * Converts WordList to vector of vectors representation. 
  * This is for testing purposes, since loaders in the library produce WordLists 
@@ -72,9 +107,21 @@ vector<vector<TSymbol> >* wordList2VecOfVec(WordList<TSymbol>* words) {
 }
 
 /**
- * Reads words from word-per-line txt file to vector-of-vectors format.
+ * Reads words from word-per-line txt file to flat words format.
  */
-vector<vector<TSymbol> >* readWordsFromFile(string file) {
+FlatWordList<TSymbol> readWordsFromFile(string file) {
+    WordFileReader<TSymbol> reader(file);
+    WordList<TSymbol>* words = reader.getWords();
+    FlatWordList<TSymbol> fwords = wordList2Flatwords(words);    
+    delete words;
+    return fwords;
+}
+
+
+/**
+ * Reads words from word-per-line txt file to (legacy) vector-of-vectors format.
+ */
+vector<vector<TSymbol> >* readWordsFromFileVecVec(string file) {
     WordFileReader<TSymbol> reader(file);
     WordList<TSymbol>* words = reader.getWords();
     vector<vector<TSymbol> >* vvwords = wordList2VecOfVec(words);

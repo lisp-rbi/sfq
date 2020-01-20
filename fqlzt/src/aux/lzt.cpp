@@ -7,8 +7,8 @@ Lzt::~Lzt(){
     if (trie != NULL) freeTrieMemory(trie);
 }
 
-bool Lzt::make(vector<vector<TSymbol> >* words, string savePath) {
-    return createLzTrie(words, savePath);
+bool Lzt::make(TSymbol* words, long length, string savePath, bool sortWords) {
+    return createLzTrie(words, length, savePath, sortWords);
 }
 
 bool Lzt::read(string triePath) {

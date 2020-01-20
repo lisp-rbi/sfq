@@ -6,10 +6,11 @@
  * @param sortWords if true, words will be sorted lexicographically before compression
  * @return true if save operation is successful
  */
-bool createLzTrie(vector<vector<TSymbol> >* words, string fname, bool sortWords) { 
+bool createLzTrie(TSymbol* words, long length, string fname, bool sortWords) { 
     // derived from doCompress(string inputFile, string outputFile)
     // create lz-compressed trie, ie. array of nodes
-    WordList<TSymbol>* wlist = vecOfVec2WordList(words);
+    FlatWordList<TSymbol> fwords(words, length);
+    WordList<TSymbol>* wlist = flatwords2WordList(fwords);
     if (sortWords) wlist->sort();
     TNodeArray* array = getLzArrayLCT<TNodeArray>(*wlist);
     delete wlist;        

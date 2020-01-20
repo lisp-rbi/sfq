@@ -18,7 +18,7 @@ using namespace std;
 #include "lzt_core/node_array/compact_array/CompactArrayCreator.h"
 #include "lzt_core/serialization/array/CompactArraySerializer.h"
 
-/**************** DEFINITION OF IMPORTANT TEMPLATED TYPES ****************/
+/**************** DEFINITION OF TEMPLATED AND UTIL TYPES ****************/
 typedef long TIndex;
 typedef unsigned char TSymbol;
 //typedef short int TSymbol;
@@ -30,18 +30,10 @@ typedef LzTrie<CompactArray<TSymbol, TIndex> > TLzTrie; // final compressed trie
 /**************************************************************/
 
 /**************** INTERFACE FUNCTIONS ****************/
-bool createLzTrie(vector<vector<TSymbol> >* words, string fname, bool sortWords = false);
+bool createLzTrie(TSymbol* words, long length, string fname, bool sortWords = false);
 TLzTrie* loadLzTrie(string trieFile);
 vector<vector<TSymbol> >* queryLzTrie(TLzTrie* trie, vector<TSymbol> query);
 void freeTrieMemory(TLzTrie* trie);
-/**************************************************************/
-
-/**************** HELPER FUNCTIONS ****************/
-WordList<TSymbol>* vecOfVec2WordList(vector<vector<TSymbol> >* words);
-vector<vector<TSymbol> >* wordList2VecOfVec(WordList<TSymbol>* words);
-vector<vector<TSymbol> >* readWordsFromFile(string file);
-TSymbol* symbolVec2array(vector<TSymbol> w);
-string symbolVec2string(vector<TSymbol> w);
 /**************************************************************/
 
 #endif /* LZT_INTERFACE_H */
