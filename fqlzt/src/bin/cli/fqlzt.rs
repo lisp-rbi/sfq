@@ -23,16 +23,16 @@ use std::str;
 
 pub(crate) fn parse_cli ()->  clap::ArgMatches<'static> {
 
-    let head : &str ="                               \t
-    _     _      			\t
-   | |   | |       		\t
-   | |___| |_ __ _ 		\t
-   | |_  / __/ _` |		\t
-   | |/ /| || (_| |		\t
-   |_/___|\\__\\__, |		\t
-                | |		\t
-                |_|		\t
-                        \t
+    let head : &str =" \t
+ ________ ________  ___       ________  _________    \t
+|\\  _____\\\\   __  \\|\\  \\     |\\_____  \\|\\___   ___\\    \t
+\\ \\  \\__/\\ \\  \\|\\  \\ \\  \\     \\|___/  /\\|___ \\  \\_|    \t
+ \\ \\   __\\\\ \\  \\\\\\  \\ \\  \\        /  / /    \\ \\  \\     \t
+  \\ \\  \\_| \\ \\  \\\\\\  \\ \\  \\____  /  /_/__    \\ \\  \\    \t
+   \\ \\__\\   \\ \\_____  \\ \\_______\\\\________\\   \\ \\__\\   \t
+    \\|__|    \\|___| \\__\\|_______|\\|_______|    \\|__|   \t
+                   \\|__|                               \t
+                                                      \t
             Auth: Bakaric R. Korencic, D. & Ristov, S.";
 
     let  matches = App::new("fqlzt")
@@ -46,7 +46,7 @@ pub(crate) fn parse_cli ()->  clap::ArgMatches<'static> {
                .required(false)
                .default_value("stdin")
                .value_name("FILE")
-               .help("Input file [txt,fasta,fastq]")
+               .help("Input file [fasta,fastq,lzt]")
                .takes_value(true))
 
           .arg(Arg::with_name("output")
@@ -54,7 +54,7 @@ pub(crate) fn parse_cli ()->  clap::ArgMatches<'static> {
                .long("output")
                .required(false)
                .value_name("FILE")
-               .default_value("stdout")
+               .default_value("dict.lzt")
                .help("Output file")
                .takes_value(true))
 
@@ -67,13 +67,40 @@ pub(crate) fn parse_cli ()->  clap::ArgMatches<'static> {
                .help("Action: (c) compress, (d) decompress, (e) extract <requires --list > ")
                .takes_value(true))
 
+          .arg(Arg::with_name("ftype")
+               .short("t")
+               .long("ftype")
+               .default_value("fastq")
+               .required(true)
+               .value_name("fastq|fasta|raw")
+               .help("File types supported")
+               .takes_value(true))
+
+          .arg(Arg::with_name("format")
+               .short("f")
+               .long("format")
+               .default_value("H(F,R,Fq,Rq)")
+               .required(true)
+               .value_name("H+F+R+Fq+Rq|...")
+               .help("Types of reformating supported")
+               .takes_value(true))
+
+          .arg(Arg::with_name("mem-mod")
+               .short("m")
+               .long("memory-mode")
+               .default_value("0")
+               .required(true)
+               .value_name("0|1|2|..|5")
+               .help("Moemory mode: defines memory sparsity level [0- low,5- high]")
+               .takes_value(true))
+
           .arg(Arg::with_name("list")
                .short("l")
                .long("list")
                .required(true)
                .default_value("rand(10)")
                .value_name("file.csv|rand(10)")
-               .help("Please provide a list of records to be extracted (works only with -a e)")
+               .help("Please provide a list of prefixes, records of which are to be extracted (works only with -a e)")
                .takes_value(true))
 
           .arg(Arg::with_name("direction")

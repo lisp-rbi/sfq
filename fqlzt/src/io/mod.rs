@@ -1,2 +1,2 @@
 pub mod fastq;
-pub mod fasta;
+//pub mod fasta;

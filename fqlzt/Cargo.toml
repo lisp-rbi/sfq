@@ -3,6 +3,8 @@ name = "fqlzt"
 version = "0.1.0"
 authors = ["Robert Bakaric <rbakaric@irb.hr>, Damir Korencic <dkorencic@irb.hr>"]
 edition = "2018"
+build = "build.rs"
+
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -10,6 +12,9 @@ edition = "2018"
 # aux = // add compiled sources
 snafu = "*"
 clap  = "*"
-cpp = "*"
-cbindgen = "*"
-log   = "*"
+libc  = "*"
+fxhash= "*"
+
+[build-dependencies]
+
+cc = "*"
