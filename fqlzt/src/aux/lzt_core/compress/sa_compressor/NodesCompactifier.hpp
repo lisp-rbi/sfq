@@ -3,7 +3,7 @@
 
 #include <cassert>
 
-#include "serialization/BitVector.h"
+#include "serialization_legacy/BitVector.h"
 #include "node_array/na_utils.h"
 
 /** Class that works on node array after the compression phase, when

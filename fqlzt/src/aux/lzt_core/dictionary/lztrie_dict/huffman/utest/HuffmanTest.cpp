@@ -9,9 +9,9 @@
 #include <algorithm>
 
 #include "debug/lzt_test.h"
-#include "serialization/BitSequence.h"
-#include "serialization/BitVector.h"
-#include "serialization/IntBitArray.h"
+#include "serialization_legacy/BitSequence.h"
+#include "serialization_legacy/BitVector.h"
+#include "serialization_legacy/IntBitArray.h"
 #include "util/TempFile.h"
 
 HuffmanTest::~HuffmanTest() {

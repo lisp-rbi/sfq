@@ -6,11 +6,11 @@
 #include <string>
 #include <sstream>
 
-#include "serialization/BitSequence.h"
-#include "serialization/BitSequenceArray.h"
-#include "serialization/serialization.h"
-#include "serialization/array/BitSequenceArraySer.h"
-#include "serialization/SerializationUtils.h"
+#include "serialization_legacy/BitSequence.h"
+#include "serialization_legacy/BitSequenceArray.h"
+#include "serialization_legacy/serialization.h"
+#include "serialization_legacy/array/BitSequenceArraySer.h"
+#include "serialization_legacy/SerializationUtils.h"
 
 using namespace std;
 

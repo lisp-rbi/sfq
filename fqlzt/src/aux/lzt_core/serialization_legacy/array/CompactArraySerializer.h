@@ -5,8 +5,8 @@
 #include <cassert>
 
 #include "node_array/compact_array/CompactArray.h"
-#include "serialization/SerializationUtils.h"
-#include "serialization/array/BitSequenceArraySer.h"
+#include "serialization_legacy/SerializationUtils.h"
+#include "serialization_legacy/array/BitSequenceArraySer.h"
 #include "node_array/compact_array/CompactSymbolArray.h"
 #include "node_array/compact_array/CompactSymbolArraySer.h"
 

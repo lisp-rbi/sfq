@@ -8,7 +8,7 @@
 #include "util/utils.h"
 #include "util/TempFile.h"
 #include "util/constants.h"
-#include "serialization/BitSequenceArray.h"
+#include "serialization_legacy/BitSequenceArray.h"
 #include "../array/BitSequenceArraySer.h"
 
 SerializationTest::SerializationTest() {

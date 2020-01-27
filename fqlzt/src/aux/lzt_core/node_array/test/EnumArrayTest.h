@@ -9,7 +9,7 @@
 #include "util/WordFileReader.h"
 #include "debug/lzt_test.h"
 #include "util/TempFile.h"
-#include "serialization/array/CompactArraySerializer.h"
+#include "serialization_legacy/array/CompactArraySerializer.h"
 #include "node_array/compact_array/CompactArray.h"
 #include "node_array/compact_array/CompactArrayCreator.h"
 

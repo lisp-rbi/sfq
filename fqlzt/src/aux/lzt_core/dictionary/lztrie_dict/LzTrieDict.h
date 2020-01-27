@@ -10,7 +10,7 @@
 #include "dictionary/char_trie/WordIndexer.h"
 #include "dictionary/lztrie_dict/HuffmanIndexMap.h"
 #include "dictionary/lz_trie/LzTrieIterator.h"
-#include "serialization/array/CompactArraySerializer.h"
+#include "serialization_legacy/array/CompactArraySerializer.h"
 #include "dictionary/util/WordList.h"
 #include "WordPair.h"
 #include "util/utils.h"

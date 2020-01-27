@@ -10,7 +10,7 @@
 #include "compress/ICompressor.h"
 #include "SaCompressor.hpp"
 #include "SuffixStructCreator.hpp"
-#include "serialization/BitVector.h"
+#include "serialization_legacy/BitVector.h"
 #include "NodesCompactifier.hpp"
 #include "node_array/na_utils.h"
 #include "util/etimer.h"

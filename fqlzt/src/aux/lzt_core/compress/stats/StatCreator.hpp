@@ -26,7 +26,7 @@
 #include "compress/sa_compressor/SaCompressor.hpp"
 #include "node_array/compact_array/CompactArray.h"
 #include "node_array/compact_array/CompactArrayCreator.h"
-#include "serialization/array/CompactArraySerializer.h"
+#include "serialization_legacy/array/CompactArraySerializer.h"
 #include "node_array/na_utils.h"
 #include "node_array/util/CmmExporter.h"
 #include "util/etimer.h"

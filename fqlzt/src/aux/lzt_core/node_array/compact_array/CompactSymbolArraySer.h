@@ -5,9 +5,9 @@
 #include <cassert>
 
 #include "CompactSymbolArray.h"
-#include "serialization/SerializationUtils.h"
-#include "serialization/BitSequenceArray.h"
-#include "serialization/array/BitSequenceArraySer.h"
+#include "serialization_legacy/SerializationUtils.h"
+#include "serialization_legacy/BitSequenceArray.h"
+#include "serialization_legacy/array/BitSequenceArraySer.h"
 
 /** (De)Serializer for CompactSymbolArray. */
 template <typename TSymbol>

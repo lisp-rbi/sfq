@@ -7,10 +7,10 @@
 #include <cassert>
 #include <iostream>
 
-#include "serialization/serialization.h"
-#include "serialization/BitVector.h"
-#include "serialization/BitSequenceArray.h"
-#include "serialization/BitSequence.h"
+#include "serialization_legacy/serialization.h"
+#include "serialization_legacy/BitVector.h"
+#include "serialization_legacy/BitSequenceArray.h"
+#include "serialization_legacy/BitSequence.h"
 
 #include "huffman/HuffmanCodecCreator.h"
 #include "huffman/HuffmanCoder.h"

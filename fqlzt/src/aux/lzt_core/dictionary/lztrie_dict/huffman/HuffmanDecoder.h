@@ -4,9 +4,9 @@
 #include <cstddef>
 #include <iostream>
 
-#include "serialization/BitSequenceArray.h"
-#include "serialization/BitSequence.h"
-#include "serialization/IntBitArray.h"
+#include "serialization_legacy/BitSequenceArray.h"
+#include "serialization_legacy/BitSequence.h"
+#include "serialization_legacy/IntBitArray.h"
 
 class HuffmanCodecCreator;
 class HuffmanTest;

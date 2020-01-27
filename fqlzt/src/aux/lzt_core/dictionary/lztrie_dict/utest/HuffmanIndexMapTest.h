@@ -9,7 +9,7 @@
 #include "../HuffmanIndexMap.h"
 #include "../HuffmanMapCreator.h"
 #include "debug/lzt_debug.h"
-#include "serialization/BitVector.h"
+#include "serialization_legacy/BitVector.h"
 #include "util/utils.h"
 #include "util/TempFile.h"
 

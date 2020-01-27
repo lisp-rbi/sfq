@@ -7,11 +7,11 @@
 #include <iostream>
 
 #include "huffman/HuffmanDecoder.h"
-#include "serialization/IntBitArray.h"
-#include "serialization/BitVector.h"
-#include "serialization/BitSequence.h"
+#include "serialization_legacy/IntBitArray.h"
+#include "serialization_legacy/BitVector.h"
+#include "serialization_legacy/BitSequence.h"
 #include "huffman/HuffmanCode.h"
-#include "serialization/SerializationUtils.h"
+#include "serialization_legacy/SerializationUtils.h"
 
 using namespace std;
 

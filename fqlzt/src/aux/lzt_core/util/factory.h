@@ -11,7 +11,7 @@
 #include "compress/lz_compressor/LzCompressor.h"
 #include "node_array/compact_array/CompactArray.h"
 #include "node_array/compact_array/CompactArrayCreator.h"
-#include "serialization/array/CompactArraySerializer.h"
+#include "serialization_legacy/array/CompactArraySerializer.h"
 #include "compress/sa_compressor/LCPTreeCompressor.hpp"
 #include "vizualization/NodeArrayVisualizer.hpp"
 #include "node_array/na_utils.h"

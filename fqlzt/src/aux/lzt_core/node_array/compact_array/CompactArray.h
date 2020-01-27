@@ -7,8 +7,8 @@
 
 #include "utils.h"
 #include "CompactArrayNode.h"
-#include "serialization/BitSequenceArray.h"
-#include "serialization/serialization.h"
+#include "serialization_legacy/BitSequenceArray.h"
+#include "serialization_legacy/serialization.h"
 #include "CompactSymbolArray.h"
 
 /** Implementation of const NodeArray concept.

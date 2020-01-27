@@ -3,8 +3,8 @@
 
 #include <iostream>
 
-#include "serialization/BitSequenceArray.h"
-#include "serialization/BitSequence.h"
+#include "serialization_legacy/BitSequenceArray.h"
+#include "serialization_legacy/BitSequence.h"
 
 /** Serializes BitSequenceArray to and deserializes from stream objects. */
 class BitSequenceArraySer {

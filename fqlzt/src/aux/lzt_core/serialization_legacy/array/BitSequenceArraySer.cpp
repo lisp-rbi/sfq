@@ -1,5 +1,5 @@
 #include "BitSequenceArraySer.h"
-#include "serialization/SerializationUtils.h"
+#include "serialization_legacy/SerializationUtils.h"
 #include <cassert>
 
 /** Serializes BitSequenceArray to output stream. */

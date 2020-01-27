@@ -12,7 +12,7 @@
 
 #include "SuffixStructCreator.hpp"
 #include "compress/ICompressor.h"
-#include "serialization/BitVector.h"
+#include "serialization_legacy/BitVector.h"
 #include "node_array/types/symbol.h"
 #include "node_array/na_utils.h"
 #include "vizualization/NodeArrayVisualizer.hpp"

@@ -1,8 +1,8 @@
 #include "HuffmanDecoder.h"
 #include <iostream>
 
-#include "serialization/SerializationUtils.h"
-#include "serialization/array/BitSequenceArraySer.h"
+#include "serialization_legacy/SerializationUtils.h"
+#include "serialization_legacy/array/BitSequenceArraySer.h"
 
 HuffmanDecoder::~HuffmanDecoder() {}
 

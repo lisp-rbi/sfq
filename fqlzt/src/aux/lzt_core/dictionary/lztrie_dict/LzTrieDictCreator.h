@@ -16,7 +16,7 @@
 #include "dictionary/lztrie_dict/HuffmanMapCreator.h"
 #include "dictionary/lztrie_dict/HuffmanIndexMap.h"
 #include "util/WordComparator.h"
-#include "serialization/BitVector.h"
+#include "serialization_legacy/BitVector.h"
 #include "util/utils.h"
 #include "compress/sa_compressor/LCPTreeCompressor.hpp"
 

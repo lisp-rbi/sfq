@@ -5,8 +5,8 @@
 
 #include "HuffmanDecoder.h"
 #include "HuffmanCoder.h"
-#include "serialization/BitSequenceArray.h"
-#include "serialization/BitSequence.h"
+#include "serialization_legacy/BitSequenceArray.h"
+#include "serialization_legacy/BitSequence.h"
 
 /** Creates HuffmanDecoder for given symbols and their frequencies. */
 class HuffmanCodecCreator {

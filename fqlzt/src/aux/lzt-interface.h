@@ -16,7 +16,7 @@ using namespace std;
 #include "lzt_core/node_array/vector_array/VectorArray.h"
 #include "lzt_core/node_array/compact_array/CompactArray.h"
 #include "lzt_core/node_array/compact_array/CompactArrayCreator.h"
-#include "lzt_core/serialization/array/CompactArraySerializer.h"
+#include "lzt_core/serialization_legacy/array/CompactArraySerializer.h"
 
 /**************** DEFINITION OF TEMPLATED AND UTIL TYPES ****************/
 typedef long TIndex;
