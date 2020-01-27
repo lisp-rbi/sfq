@@ -5,7 +5,7 @@
 #include <iostream>
 #include <cassert>
 
-#include "node_array/compact_array/CompactArray.h"
+#include "node_array/compact_array_legacy/CompactArray.h"
 #include "dictionary/lz_trie/LzTrie.h"
 #include "dictionary/char_trie/WordIndexer.h"
 #include "dictionary/lztrie_dict/HuffmanIndexMap.h"

@@ -107,8 +107,8 @@ $(BUILD_FOLDER)/lzt-utils.o: $(BUILD_FOLDER) lzt-utils.cpp
 $(BUILD_FOLDER)/na_utils.o: $(BUILD_FOLDER) lzt_core/node_array/na_utils.cpp
 	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/node_array/na_utils.cpp
 
-$(BUILD_FOLDER)/CompactArrayTest.o: $(BUILD_FOLDER) lzt_core/node_array/compact_array/test/CompactArrayTest.cpp
-	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/node_array/compact_array/test/CompactArrayTest.cpp
+$(BUILD_FOLDER)/CompactArrayTest.o: $(BUILD_FOLDER) lzt_core/node_array/compact_array_legacy/test/CompactArrayTest.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/node_array/compact_array_legacy/test/CompactArrayTest.cpp
 
 $(BUILD_FOLDER)/CmmExporter.o: $(BUILD_FOLDER) lzt_core/node_array/util/CmmExporter.cpp
 	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/node_array/util/CmmExporter.cpp

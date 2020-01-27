@@ -10,8 +10,8 @@
 #include "debug/lzt_test.h"
 #include "util/TempFile.h"
 #include "serialization_legacy/array/CompactArraySerializer.h"
-#include "node_array/compact_array/CompactArray.h"
-#include "node_array/compact_array/CompactArrayCreator.h"
+#include "node_array/compact_array_legacy/CompactArray.h"
+#include "node_array/compact_array_legacy/CompactArrayCreator.h"
 
 /** Test correct performance of algorithms with classes implementing
  * enumerated array concept. */

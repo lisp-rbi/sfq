@@ -7,7 +7,7 @@
 #include "../CompactArraySerializer.h"
 #include "dictionary/char_trie/Trie.h"
 #include "dictionary/lz_trie/LzTrie.h"
-#include "node_array/compact_array/CompactArrayCreator.h"
+#include "node_array/compact_array_legacy/CompactArrayCreator.h"
 #include "util/TempFile.h"
 #include "util/WordFileReader.h"
 #include "compress/lz_compressor/LzCompressor.h"

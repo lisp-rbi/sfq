@@ -14,8 +14,8 @@ using namespace std;
 #include "lzt_core/util/factory.h"
 #include "lzt_core/dictionary/util/WordList.h"
 #include "lzt_core/node_array/vector_array/VectorArray.h"
-#include "lzt_core/node_array/compact_array/CompactArray.h"
-#include "lzt_core/node_array/compact_array/CompactArrayCreator.h"
+#include "lzt_core/node_array/compact_array_legacy/CompactArray.h"
+#include "lzt_core/node_array/compact_array_legacy/CompactArrayCreator.h"
 #include "lzt_core/serialization_legacy/array/CompactArraySerializer.h"
 
 /**************** DEFINITION OF TEMPLATED AND UTIL TYPES ****************/

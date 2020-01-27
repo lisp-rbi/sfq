@@ -4,11 +4,11 @@
 #include <iostream>
 #include <cassert>
 
-#include "node_array/compact_array/CompactArray.h"
+#include "node_array/compact_array_legacy/CompactArray.h"
 #include "serialization_legacy/SerializationUtils.h"
 #include "serialization_legacy/array/BitSequenceArraySer.h"
-#include "node_array/compact_array/CompactSymbolArray.h"
-#include "node_array/compact_array/CompactSymbolArraySer.h"
+#include "node_array/compact_array_legacy/CompactSymbolArray.h"
+#include "node_array/compact_array_legacy/CompactSymbolArraySer.h"
 
 //TODO improve interface, integrate it with CompactArray
 template <typename TSymbol, typename TIndex>
