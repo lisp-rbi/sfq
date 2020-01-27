@@ -25,8 +25,8 @@ typedef unsigned char TSymbol;
 //typedef int TSymbol;
 
 typedef VectorArray<TSymbol, TIndex> TNodeArray; // used in compression
-typedef CompactArray<TSymbol, TIndex> TCompactArray; // final smaller representation
-typedef LzTrie<CompactArray<TSymbol, TIndex> > TLzTrie; // final compressed trie
+typedef CompactArrayL<TSymbol, TIndex> TCompactArray; // final smaller representation
+typedef LzTrie<CompactArrayL<TSymbol, TIndex> > TLzTrie; // final compressed trie
 /**************************************************************/
 
 /**************** INTERFACE FUNCTIONS ****************/

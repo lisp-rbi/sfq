@@ -69,7 +69,7 @@ void CompactSymbolTester<TSymbol>::fillArray() {
 
 template <typename TSymbol>
 void CompactSymbolTester<TSymbol>::testCreate() {
-    CompactSymbolArray<TSymbol> carray(array, arrayLength);
+    CompactSymbolArrayL<TSymbol> carray(array, arrayLength);
     
     ostringstream bm;
     bm << "min: " << MIN << " max: " << MAX << " arrayLength: "
@@ -97,17 +97,17 @@ void CompactSymbolTester<TSymbol>::testCreate() {
 /** Test (De)Serialization of CompactSymbolArray to a stream. */
 template <typename TSymbol>
 void CompactSymbolTester<TSymbol>::testSerialize() {
-    CompactSymbolArray<TSymbol> carray(array, arrayLength);
+    CompactSymbolArrayL<TSymbol> carray(array, arrayLength);
     // serialize
     TempFile file;
     fstream stream(file.getName());
-    CompactSymbolArraySer<TSymbol>::arrayToStream(carray, stream);
+    CompactSymbolArraySerL<TSymbol>::arrayToStream(carray, stream);
     stream.close();
 
     // deserialize
-    CompactSymbolArray<TSymbol> deserArray;
+    CompactSymbolArrayL<TSymbol> deserArray;
     stream.open(file.getName());
-    CompactSymbolArraySer<TSymbol>::arrayFromStream(deserArray, stream);
+    CompactSymbolArraySerL<TSymbol>::arrayFromStream(deserArray, stream);
     stream.close();
 
     // check equality

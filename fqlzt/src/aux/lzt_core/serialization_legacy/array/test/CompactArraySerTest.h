@@ -59,8 +59,8 @@ void CompactArraySerTemplate<TNodeArray>::testWithDictionaries() {
         TNodeArray& nodes = trie.exportNodeArray();
         comp.compressArray(nodes);
 
-        CompactArrayCreator<TNodeArray> compactCreator(nodes);
-        CompactArray<TSymbol, TIndex>* compactArray = compactCreator.createCompactArray();
+        CompactArrayCreatorL<TNodeArray> compactCreator(nodes);
+        CompactArrayL<TSymbol, TIndex>* compactArray = compactCreator.createCompactArray();
 
         TempFile file;
 
@@ -70,7 +70,7 @@ void CompactArraySerTemplate<TNodeArray>::testWithDictionaries() {
         stream.close();
 
         stream.open(file.getName());
-        CompactArray<TSymbol, TIndex>* compArrayDeser = ser.arrayFromStream(stream);
+        CompactArrayL<TSymbol, TIndex>* compArrayDeser = ser.arrayFromStream(stream);
 
         // test deserialzied and original node Array equality
         ostringstream message;
@@ -82,7 +82,7 @@ void CompactArraySerTemplate<TNodeArray>::testWithDictionaries() {
         TEST_ASSERT_MESSAGE(compArrayStr == compArrayDeserStr, message.str());
 
         // LZTrie based on deserialized compact array must contain all words
-        LzTrie<CompactArray<TSymbol, TIndex> > lztrie(*compArrayDeser);
+        LzTrie<CompactArrayL<TSymbol, TIndex> > lztrie(*compArrayDeser);
 
         for (size_t j = 0; j < reader.getNumberOfWords(); ++j) {
             TSymbol const * word = reader.getWord(j);

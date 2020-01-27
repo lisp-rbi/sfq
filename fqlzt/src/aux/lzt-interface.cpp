@@ -15,7 +15,7 @@ bool createLzTrie(TSymbol* words, long length, string fname, bool sortWords) {
     TNodeArray* array = getLzArrayLCT<TNodeArray>(*wlist);
     delete wlist;        
     // build compact array
-    CompactArrayCreator<TNodeArray> compacter(*array);
+    CompactArrayCreatorL<TNodeArray> compacter(*array);
     TCompactArray* carray =  compacter.createCompactArray();
     delete array;
     // serialize compact array to file    

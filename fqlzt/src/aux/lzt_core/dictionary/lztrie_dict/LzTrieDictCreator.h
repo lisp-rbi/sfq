@@ -35,7 +35,7 @@ public:
 private:
 
     typedef VectorArray<TSymbol, TIndex> TNodeArray;
-    typedef CompactArray<TSymbol, TIndex> TCompactArray;
+    typedef CompactArrayL<TSymbol, TIndex> TCompactArray;
 
     // dictionary being created
     LzTrieDict<TSymbol, TIndex>* dict;
@@ -111,8 +111,8 @@ void LzTrieDictCreator<TSymbol, TIndex>::createIndex(const bool first, bool old)
     if (old) lzCompressor.compressArray(*array);
     else lcptCompressor.compressArray(*array);
 
-    CompactArrayCreator<TNodeArray> compacter(*array);
-    CompactArray<TSymbol, TIndex>* compactArray = compacter.createCompactArray();
+    CompactArrayCreatorL<TNodeArray> compacter(*array);
+    CompactArrayL<TSymbol, TIndex>* compactArray = compacter.createCompactArray();
 
     delete array;
 

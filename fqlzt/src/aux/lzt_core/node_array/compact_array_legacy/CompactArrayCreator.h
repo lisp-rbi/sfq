@@ -18,22 +18,22 @@ using namespace std;
 
 /** Creates a compact node array from a node array. */
 template <typename TNodeArray>
-class CompactArrayCreator {
+class CompactArrayCreatorL {
     
 public:
 
     typedef typename TNodeArray::Symbol TSymbol;
     typedef typename TNodeArray::Index TIndex;
 
-    CompactArrayCreator(TNodeArray const & nodeArray);
-    virtual ~CompactArrayCreator();
+    CompactArrayCreatorL(TNodeArray const & nodeArray);
+    virtual ~CompactArrayCreatorL();
 
-    CompactArray<TSymbol, TIndex>* createCompactArray();
+    CompactArrayL<TSymbol, TIndex>* createCompactArray();
 
 private:
 
     TNodeArray const & nodeArray;
-    CompactArray<TSymbol, TIndex>* compactArray;
+    CompactArrayL<TSymbol, TIndex>* compactArray;
 
     static const int NUM_OFFSETS = 4;
 
@@ -86,15 +86,15 @@ private:
 };
 
 template <typename TNodeArray>
-CompactArrayCreator<TNodeArray>::CompactArrayCreator(TNodeArray const & na)
+CompactArrayCreatorL<TNodeArray>::CompactArrayCreatorL(TNodeArray const & na)
 : nodeArray(na) { }
 
 template <typename TNodeArray>
-CompactArrayCreator<TNodeArray>::~CompactArrayCreator() { }
+CompactArrayCreatorL<TNodeArray>::~CompactArrayCreatorL() { }
 
 template <typename TNodeArray>
-CompactArray<typename TNodeArray::Symbol, typename TNodeArray::Index>*
-CompactArrayCreator<TNodeArray>::createCompactArray() {    
+CompactArrayL<typename TNodeArray::Symbol, typename TNodeArray::Index>*
+CompactArrayCreatorL<TNodeArray>::createCompactArray() {    
     // preprocess data
     selectDistinctIndexes();
     sortIndexes();
@@ -102,7 +102,7 @@ CompactArrayCreator<TNodeArray>::createCompactArray() {
     // Create and fill the compact array.
     //TODO zahtjev na tip
     compactArray =
-     new CompactArray<TSymbol, TIndex>
+     new CompactArrayL<TSymbol, TIndex>
      (numOfDistinct, (size_t)nodeArray.getSize(), nodeArray.isEnumerated());
 
     // Store cow and eow flags of distinct nodes using offsets.
@@ -122,7 +122,7 @@ CompactArrayCreator<TNodeArray>::createCompactArray() {
 
 /** Extract indexes of all distinct nodes. */
 template <typename TNodeArray>
-void CompactArrayCreator<TNodeArray>::selectDistinctIndexes() {
+void CompactArrayCreatorL<TNodeArray>::selectDistinctIndexes() {
     NodeIndexCompare comp(nodeArray);
     typedef set<TIndex, NodeIndexCompare> TIndexSet;
     TIndexSet indexSet(comp);
@@ -139,7 +139,7 @@ void CompactArrayCreator<TNodeArray>::selectDistinctIndexes() {
 
 /** Sort distinct indexes, first by eow-cow flags and than by other data members. */
 template <typename TNodeArray>
-void CompactArrayCreator<TNodeArray>::sortIndexes() {
+void CompactArrayCreatorL<TNodeArray>::sortIndexes() {
     IndexOrdering lessThan(nodeArray);
     sort(distinctInd, distinctInd + numOfDistinct, lessThan);
 }
@@ -147,7 +147,7 @@ void CompactArrayCreator<TNodeArray>::sortIndexes() {
 /** Distinct nodes are sorted by cow and eow flags, as first criteria.
  * Here the starting indexes of flag combinations 01, 10 and 11 are calculated */
 template <typename TNodeArray>
-void CompactArrayCreator<TNodeArray>::calculateFlagOffsets() {
+void CompactArrayCreatorL<TNodeArray>::calculateFlagOffsets() {
     int oldFlags = 0; flagOffsets[0] = 0;
     for (size_t i = 0; i < numOfDistinct; ++i) {
         typename TNodeArray::NodeConst n = nodeArray[distinctInd[i]];
@@ -167,7 +167,7 @@ void CompactArrayCreator<TNodeArray>::calculateFlagOffsets() {
 
 /** Copy symbols from distinct nodes to compact array. */
 template <typename TNodeArray>
-void CompactArrayCreator<TNodeArray>::copySymbols() {
+void CompactArrayCreatorL<TNodeArray>::copySymbols() {
     // fill an array with distinct symbols
     TSymbol* distinctSymbols = new TSymbol[numOfDistinct];
     for (size_t i = 0; i < numOfDistinct; ++i) {
@@ -182,7 +182,7 @@ void CompactArrayCreator<TNodeArray>::copySymbols() {
 
 /** Copy siblings from distinct nodes to compact array. */
 template <typename TNodeArray>
-void CompactArrayCreator<TNodeArray>::copySiblings() {
+void CompactArrayCreatorL<TNodeArray>::copySiblings() {
     // Store values from distinct nodes to array.
     TIndex* dist = new TIndex[numOfDistinct];
     for (size_t i = 0; i < numOfDistinct; ++i)
@@ -196,7 +196,7 @@ void CompactArrayCreator<TNodeArray>::copySiblings() {
 
 /** Copy numOfWords from distinct nodes to compact array. */
 template <typename TNodeArray>
-void CompactArrayCreator<TNodeArray>::copyNumOfWords() {
+void CompactArrayCreatorL<TNodeArray>::copyNumOfWords() {
     // Store values from distinct nodes to array.
     TIndex* dist = new TIndex[numOfDistinct];
     for (size_t i = 0; i < numOfDistinct; ++i)
@@ -211,7 +211,7 @@ void CompactArrayCreator<TNodeArray>::copyNumOfWords() {
 /** For each node in nodeArray, find it's distinct index and copy
  * it to compact array at the position of the node. */
 template <typename TNodeArray>
-void CompactArrayCreator<TNodeArray>::copyNodeIndexes() {
+void CompactArrayCreatorL<TNodeArray>::copyNodeIndexes() {
     IndexOrdering lessThan(nodeArray);
     //TODO TIndex ili size_t
     for (TIndex i = 0; i < nodeArray.getSize(); ++i) {

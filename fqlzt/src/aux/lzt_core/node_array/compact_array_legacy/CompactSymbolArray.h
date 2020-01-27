@@ -12,18 +12,18 @@ using namespace std;
  * is stored an BitSequenceArray of indexes. Efficient for storing 
  * large array with small number of distinct symbols. */
 template <typename TSymbol>
-class CompactSymbolArray {
+class CompactSymbolArrayL {
 public:
 
-    CompactSymbolArray();
-    CompactSymbolArray(TSymbol const * symbols, size_t numOfSymbols);
-    virtual ~CompactSymbolArray();
+    CompactSymbolArrayL();
+    CompactSymbolArrayL(TSymbol const * symbols, size_t numOfSymbols);
+    virtual ~CompactSymbolArrayL();
 
     TSymbol operator[](size_t i) const;
     size_t size() const;
     void createFromArray(TSymbol const * symbols, size_t numOfSymbols);
 
-    template <typename TSymb> friend class CompactSymbolArraySer;
+    template <typename TSymb> friend class CompactSymbolArraySerL;
 
 private:
 
@@ -43,40 +43,40 @@ private:
 };
 
 template <typename TSymbol>
-CompactSymbolArray<TSymbol>::CompactSymbolArray()
+CompactSymbolArrayL<TSymbol>::CompactSymbolArrayL()
 : numOfDistinct(0), numOfSymbols(0), symbolTable(NULL) {}
 
 template <typename TSymbol>
-CompactSymbolArray<TSymbol>::CompactSymbolArray(TSymbol const * symbols, size_t numOfSymbols)
+CompactSymbolArrayL<TSymbol>::CompactSymbolArrayL(TSymbol const * symbols, size_t numOfSymbols)
 : symbolTable(NULL) {
     createFromArray(symbols, numOfSymbols);
 }
 
 template <typename TSymbol>
-CompactSymbolArray<TSymbol>::~CompactSymbolArray() {
+CompactSymbolArrayL<TSymbol>::~CompactSymbolArrayL() {
     freeTable();
 }
 
 template <typename TSymbol>
-void CompactSymbolArray<TSymbol>::freeTable() {
+void CompactSymbolArrayL<TSymbol>::freeTable() {
     if (symbolTable != NULL) delete [] symbolTable;
 }
 
 template <typename TSymbol>
-inline TSymbol CompactSymbolArray<TSymbol>::operator[](size_t i) const {
+inline TSymbol CompactSymbolArrayL<TSymbol>::operator[](size_t i) const {
     BitSequence indexBits = indexes[i];
     size_t tableIndex = numberFromBits<size_t>(indexBits, bitsPerIndex);
     return symbolTable[tableIndex];
 }
 
 template <typename TSymbol>
-size_t CompactSymbolArray<TSymbol>::size() const {
+size_t CompactSymbolArrayL<TSymbol>::size() const {
     return numOfSymbols;
 }
 
 /** Set compact array to be a copy of the symbols array. */
 template <typename TSymbol>
-void CompactSymbolArray<TSymbol>::createFromArray(TSymbol const * symbols, size_t numSymbols) {
+void CompactSymbolArrayL<TSymbol>::createFromArray(TSymbol const * symbols, size_t numSymbols) {
     freeTable();
 
     numOfSymbols = numSymbols;

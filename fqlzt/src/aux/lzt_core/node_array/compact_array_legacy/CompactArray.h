@@ -16,11 +16,11 @@
  * sequence of indexes pointing to these nodes. Eow and Cow flags are not
  * stored, they are calculated from index position. */
 template <typename TSymbol, typename TIndex>
-class CompactArray {
+class CompactArrayL {
 
 public:
        
-    virtual ~CompactArray();
+    virtual ~CompactArrayL();
 
     typedef TSymbol Symbol;
     typedef TIndex Index;
@@ -30,13 +30,13 @@ public:
     NodeConst operator[](TIndex i) const;
     TIndex getSize() const;
 
-    template <typename TNodeArray> friend class CompactArrayCreator;
+    template <typename TNodeArray> friend class CompactArrayCreatorL;
     template <typename TS, typename TI> friend class CompactArraySerializer;
 
 private:
 
-    CompactArray(bool enumerated = false);
-    CompactArray(size_t numOfDistinct, size_t numOfNodes, bool enumerated = false);
+    CompactArrayL(bool enumerated = false);
+    CompactArrayL(size_t numOfDistinct, size_t numOfNodes, bool enumerated = false);
 
     static const int NUM_OFFSETS = 4;
 
@@ -65,7 +65,7 @@ private:
     BitSequenceArrayL siblings;
     // number of words a node contains
     BitSequenceArrayL numOfWords;
-    CompactSymbolArray<TSymbol> symbols;
+    CompactSymbolArrayL<TSymbol> symbols;
     
 };
 
@@ -73,25 +73,25 @@ int numberOfBits(size_t numberOfValues);
 
 /** Default constructor, safe to use only for deserialization. */
 template <typename TSymbol, typename TIndex>
-CompactArray<TSymbol, TIndex>::CompactArray(bool e)
+CompactArrayL<TSymbol, TIndex>::CompactArrayL(bool e)
 : numOfDistinct(0), numOfNodes(0), bitsPerIndex(0), enumerated(e) { }
 
 template <typename TSymbol, typename TIndex>
-CompactArray<TSymbol, TIndex>::CompactArray(size_t distinct, size_t nodes, bool e)
+CompactArrayL<TSymbol, TIndex>::CompactArrayL(size_t distinct, size_t nodes, bool e)
 : numOfDistinct(distinct), numOfNodes(nodes), enumerated(e),
    bitsPerIndex(numberOfBits(distinct)), array(nodes, bitsPerIndex)
 { }
 
 template <typename TSymbol, typename TIndex>
-CompactArray<TSymbol, TIndex>::~CompactArray() { }
+CompactArrayL<TSymbol, TIndex>::~CompactArrayL() { }
 
 template <typename TSymbol, typename TIndex>
-TIndex CompactArray<TSymbol, TIndex>::getSize() const {
+TIndex CompactArrayL<TSymbol, TIndex>::getSize() const {
     return numOfNodes;
 }
 
 template <typename TSymbol, typename TIndex>
-void CompactArray<TSymbol, TIndex>::printIndexes() const {
+void CompactArrayL<TSymbol, TIndex>::printIndexes() const {
     for (size_t i = 0; i < numOfNodes; ++i) {
         size_t index = fromBitSequence<size_t>(array[i]);
         cout<<index<<endl;
@@ -100,7 +100,7 @@ void CompactArray<TSymbol, TIndex>::printIndexes() const {
 
 template <typename TSymbol, typename TIndex>
 inline CompactArrayNode<TSymbol, TIndex>
-CompactArray<TSymbol, TIndex>::operator[](TIndex i) const {
+CompactArrayL<TSymbol, TIndex>::operator[](TIndex i) const {
     CompactArrayNode<TSymbol, TIndex> node;
     // decode node-table index of a node
     BitSequence indexBits = array[i];
@@ -129,14 +129,14 @@ CompactArray<TSymbol, TIndex>::operator[](TIndex i) const {
 /** Set nodeIndex on position i in the BitSequenceArray, wich means
  * that i-th node in the array will be the distinct node at position nodeIndex */
 template <typename TSymbol, typename TIndex>
-void CompactArray<TSymbol, TIndex>::setNodeIndex(size_t i, size_t nodeIndex) {    
+void CompactArrayL<TSymbol, TIndex>::setNodeIndex(size_t i, size_t nodeIndex) {    
     array.setSequence(i, toBitSequence(nodeIndex, bitsPerIndex));
 }
 
 /** Calculate int representation of eow-cow, from position
  * in distinct nodes array.  */
 template <typename TSymbol, typename TIndex>
-int CompactArray<TSymbol, TIndex>::flagsFromPosition(size_t p) const {
+int CompactArrayL<TSymbol, TIndex>::flagsFromPosition(size_t p) const {
     for (int i = 0; i < NUM_OFFSETS; ++i) {
         size_t start = flagOffsets[i], end;
         // calculate end of range for current flags
@@ -150,7 +150,7 @@ int CompactArray<TSymbol, TIndex>::flagsFromPosition(size_t p) const {
 }
 
 template <typename TSymbol, typename TIndex>
-void CompactArray<TSymbol, TIndex>::setFlagOffsets(size_t offsets[NUM_OFFSETS]) {
+void CompactArrayL<TSymbol, TIndex>::setFlagOffsets(size_t offsets[NUM_OFFSETS]) {
     for (int i = 0; i < NUM_OFFSETS; ++i) flagOffsets[i] = offsets[i];
 }
 

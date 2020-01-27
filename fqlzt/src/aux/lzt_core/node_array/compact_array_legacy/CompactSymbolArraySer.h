@@ -11,15 +11,15 @@
 
 /** (De)Serializer for CompactSymbolArray. */
 template <typename TSymbol>
-class CompactSymbolArraySer {
+class CompactSymbolArraySerL {
 public:
 
     static int const BITS_PER_SYMBOL = sizeof(TSymbol) * BITS_PER_CHAR;
 
-    static void arrayToStream(CompactSymbolArray<TSymbol> const & array, ostream& stream);
-    static void arrayFromStream(CompactSymbolArray<TSymbol>& array, istream& stream);
+    static void arrayToStream(CompactSymbolArrayL<TSymbol> const & array, ostream& stream);
+    static void arrayFromStream(CompactSymbolArrayL<TSymbol>& array, istream& stream);
 
-    virtual ~CompactSymbolArraySer() {};
+    virtual ~CompactSymbolArraySerL() {};
 
 private:
 
@@ -27,8 +27,8 @@ private:
 
 /** Serialize CompactSymbolArray to ostream. */
 template <typename TSymbol>
-void CompactSymbolArraySer<TSymbol>::
-arrayToStream(CompactSymbolArray<TSymbol> const & array, ostream& stream) {
+void CompactSymbolArraySerL<TSymbol>::
+arrayToStream(CompactSymbolArrayL<TSymbol> const & array, ostream& stream) {
     // serialize integer members
     SerializationUtils::integerToStream(array.numOfSymbols, stream);
     SerializationUtils::integerToStream(array.numOfDistinct, stream);
@@ -52,8 +52,8 @@ arrayToStream(CompactSymbolArray<TSymbol> const & array, ostream& stream) {
 
 /** Deserialize CompactSymbolArray from istream. */
 template <typename TSymbol>
-void CompactSymbolArraySer<TSymbol>::
-arrayFromStream(CompactSymbolArray<TSymbol>& array, istream& stream) {
+void CompactSymbolArraySerL<TSymbol>::
+arrayFromStream(CompactSymbolArrayL<TSymbol>& array, istream& stream) {
     // deallocate array memory
     array.freeTable();
 

@@ -93,12 +93,12 @@ LzTrie<TNodeArray>* getLzTrie(WordList<typename TNodeArray::Symbol>& words, bool
 
 /** Get Compact array constructed from lz-compressed TNodeArray */
 template <typename TNodeArray>
-CompactArray<typename TNodeArray::Symbol, typename TNodeArray::Index> *
+CompactArrayL<typename TNodeArray::Symbol, typename TNodeArray::Index> *
 getCompactedLzArray(WordList<typename TNodeArray::Symbol>& words, bool enumerated = false) {
     TNodeArray* nodes = getLzArray<TNodeArray>(words, enumerated);
 
-    CompactArrayCreator<TNodeArray> creator(*nodes);
-    CompactArray<typename TNodeArray::Symbol, typename TNodeArray::Index> *carray =
+    CompactArrayCreatorL<TNodeArray> creator(*nodes);
+    CompactArrayL<typename TNodeArray::Symbol, typename TNodeArray::Index> *carray =
             creator.createCompactArray();
 
     delete nodes;
@@ -106,14 +106,14 @@ getCompactedLzArray(WordList<typename TNodeArray::Symbol>& words, bool enumerate
 }
 
 template <typename TSymbol, typename TIndex>
-LzTrie<CompactArray<TSymbol, TIndex> > * getLzTrieFromCompressedFile(string file) {
+LzTrie<CompactArrayL<TSymbol, TIndex> > * getLzTrieFromCompressedFile(string file) {
     CompactArraySerializer<TSymbol, TIndex> ser;
     fstream stream(file.c_str());
     if (stream.good()) {
-        CompactArray<TSymbol, TIndex>* array = ser.arrayFromStream(stream);
+        CompactArrayL<TSymbol, TIndex>* array = ser.arrayFromStream(stream);
 
-        LzTrie<CompactArray<TSymbol, TIndex> >* lzTrie =
-                new LzTrie<CompactArray<TSymbol, TIndex> >(*array);
+        LzTrie<CompactArrayL<TSymbol, TIndex> >* lzTrie =
+                new LzTrie<CompactArrayL<TSymbol, TIndex> >(*array);
 
         return lzTrie;
     }
@@ -121,11 +121,11 @@ LzTrie<CompactArray<TSymbol, TIndex> > * getLzTrieFromCompressedFile(string file
 }
 
 template <typename TSymbol, typename TIndex>
-CompactArray<TSymbol, TIndex>* getCompactArrayFromCompressedFile(string file) {
+CompactArrayL<TSymbol, TIndex>* getCompactArrayFromCompressedFile(string file) {
     CompactArraySerializer<TSymbol, TIndex> ser;
     fstream stream(file.c_str());
     if (stream.good()) {
-        CompactArray<TSymbol, TIndex>* array = ser.arrayFromStream(stream);
+        CompactArrayL<TSymbol, TIndex>* array = ser.arrayFromStream(stream);
         return array;
     }
     else return NULL;

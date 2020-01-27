@@ -16,20 +16,20 @@ class CompactArraySerializer {
 public:
 
     CompactArraySerializer();
-    CompactArraySerializer(CompactArray<TSymbol, TIndex> const* arr);
+    CompactArraySerializer(CompactArrayL<TSymbol, TIndex> const* arr);
 
     void arrayToStream(ostream& stream);
-    CompactArray<TSymbol, TIndex>* arrayFromStream(istream& stream);
+    CompactArrayL<TSymbol, TIndex>* arrayFromStream(istream& stream);
 
 private:
-    CompactArray<TSymbol, TIndex> const *carray;
-    CompactArray<TSymbol, TIndex>* array;
+    CompactArrayL<TSymbol, TIndex> const *carray;
+    CompactArrayL<TSymbol, TIndex>* array;
     // bits necessary to write symbol and index
     /* TODO ovo ce se morati racunati kad bude podrzana serijalizacija
        simbola i indexa koji su custom klase. */
     static const int SYMBOL_BITS = sizeof(TSymbol) * BITS_PER_CHAR;
 
-    static const int NUM_OFFSETS = CompactArray<TSymbol, TIndex>::NUM_OFFSETS;
+    static const int NUM_OFFSETS = CompactArrayL<TSymbol, TIndex>::NUM_OFFSETS;
 
     void writeSymbols(ostream& stream);
     void readSymbols(istream& stream);
@@ -44,7 +44,7 @@ private:
 
 template <typename TSymbol, typename TIndex>
 CompactArraySerializer<TSymbol, TIndex>
-::CompactArraySerializer(const CompactArray<TSymbol,TIndex>* arr): carray(arr) {
+::CompactArraySerializer(const CompactArrayL<TSymbol,TIndex>* arr): carray(arr) {
     
 }
 
@@ -86,13 +86,13 @@ void CompactArraySerializer<TSymbol, TIndex>::writeNumWords(ostream& stream) {
 
 template <typename TSymbol, typename TIndex>
 void CompactArraySerializer<TSymbol, TIndex>::writeSymbols(ostream& stream) {
-    CompactSymbolArraySer<TSymbol>::arrayToStream(carray->symbols, stream);
+    CompactSymbolArraySerL<TSymbol>::arrayToStream(carray->symbols, stream);
 }
 
 template <typename TSymbol, typename TIndex>
-CompactArray<TSymbol, TIndex>* CompactArraySerializer<TSymbol, TIndex>
+CompactArrayL<TSymbol, TIndex>* CompactArraySerializer<TSymbol, TIndex>
 ::arrayFromStream(istream& stream) {
-    array = new CompactArray<TSymbol, TIndex>();
+    array = new CompactArrayL<TSymbol, TIndex>();
 
     // read integer variables
     array->numOfDistinct = SerializationUtils::integerFromStream<size_t>(stream);
@@ -118,7 +118,7 @@ CompactArray<TSymbol, TIndex>* CompactArraySerializer<TSymbol, TIndex>
 
 template <typename TSymbol, typename TIndex>
 void CompactArraySerializer<TSymbol, TIndex>::readSymbols(istream& stream) {
-    CompactSymbolArraySer<TSymbol>::arrayFromStream(array->symbols, stream);
+    CompactSymbolArraySerL<TSymbol>::arrayFromStream(array->symbols, stream);
 }
 
 template <typename TSymbol, typename TIndex>

@@ -39,7 +39,7 @@ public:
 private:
 
     // node array type used to store words in a compact form
-    typedef CompactArray<TSymbol, TIndex> TCompactArray;
+    typedef CompactArrayL<TSymbol, TIndex> TCompactArray;
     // indexer of compact, lz-compressed array
     typedef WordIndexer<TCompactArray, LzTrieIterator<TCompactArray> > TCompactIndexer;
 

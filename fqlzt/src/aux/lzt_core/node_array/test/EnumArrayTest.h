@@ -81,7 +81,7 @@ template <typename TNodeArray>
 void EnumArrayTester<TNodeArray>::testSerialization() {
     for (int i = 0; i < numOfDicts; ++i) {
         WordList<TSymbol>* words = getWords(i);
-        CompactArray<TSymbol, TIndex>* carray = getCompactedLzArray<TNodeArray>(*words, true);
+        CompactArrayL<TSymbol, TIndex>* carray = getCompactedLzArray<TNodeArray>(*words, true);
 
         TempFile file;
 
@@ -91,7 +91,7 @@ void EnumArrayTester<TNodeArray>::testSerialization() {
         stream.close();
 
         stream.open(file.getName());
-        CompactArray<TSymbol, TIndex>* carrayDeser = ser.arrayFromStream(stream);
+        CompactArrayL<TSymbol, TIndex>* carrayDeser = ser.arrayFromStream(stream);
         stream.close();
 
         stringstream m; m << "array size: " << carray->getSize()
