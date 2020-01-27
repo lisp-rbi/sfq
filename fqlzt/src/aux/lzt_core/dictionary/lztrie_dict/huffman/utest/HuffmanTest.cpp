@@ -83,7 +83,7 @@ void HuffmanTest::testDecoderCreation() {
             file >> freqs[j] >> symbols[j];
 
         // fill bit array with symbol codes
-        BitSequenceArray symArray(numSymbols, BITS_PER_SYMBOL);
+        BitSequenceArrayL symArray(numSymbols, BITS_PER_SYMBOL);
         for (int j = 0; j < numSymbols; ++j)
             symArray.setSequence(j, numberToBits<size_t>(symbols[j]));
 

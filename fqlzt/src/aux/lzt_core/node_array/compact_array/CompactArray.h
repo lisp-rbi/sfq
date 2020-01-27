@@ -61,10 +61,10 @@ private:
      * [ flagOffsets[flags], flagOffsets[flags+1] - 1 ]. */
     size_t flagOffsets[NUM_OFFSETS];
 
-    BitSequenceArray array;    
-    BitSequenceArray siblings;
+    BitSequenceArrayL array;    
+    BitSequenceArrayL siblings;
     // number of words a node contains
-    BitSequenceArray numOfWords;
+    BitSequenceArrayL numOfWords;
     CompactSymbolArray<TSymbol> symbols;
     
 };

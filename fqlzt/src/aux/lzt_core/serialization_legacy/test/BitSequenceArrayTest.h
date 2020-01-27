@@ -19,7 +19,7 @@ private:
     static size_t const ONE = 1;
 
     void readWriteNumberResize(long initSize, int B, long resizeStep, int numSteps);
-    void readWriteNumbers(BitSequenceArray* array, size_t arraySize, int numberSize);
+    void readWriteNumbers(BitSequenceArrayL* array, size_t arraySize, int numberSize);
 
 };
 

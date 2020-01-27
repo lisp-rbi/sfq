@@ -15,7 +15,7 @@ public:
     HuffmanCodecCreator(size_t numSymbols, const size_t* freqs);
     virtual ~HuffmanCodecCreator();
 
-    void createDecoder(HuffmanDecoder* dec, const BitSequenceArray& symbols);
+    void createDecoder(HuffmanDecoder* dec, const BitSequenceArrayL& symbols);
     void createCoder(HuffmanCoder* coder);
 
 private:

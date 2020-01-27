@@ -7,12 +7,12 @@
 #include "serialization_legacy/BitSequence.h"
 
 /** Serializes BitSequenceArray to and deserializes from stream objects. */
-class BitSequenceArraySer {
+class BitSequenceArraySerL {
 public:
-    virtual ~BitSequenceArraySer() {};
+    virtual ~BitSequenceArraySerL() {};
     //TODO add serialization test
-    static void arrayToStream(BitSequenceArray const & array, ostream & stream);
-    static void arrayFromStream(BitSequenceArray &array, istream& stream);
+    static void arrayToStream(BitSequenceArrayL const & array, ostream & stream);
+    static void arrayFromStream(BitSequenceArrayL &array, istream& stream);
 
 private:
 

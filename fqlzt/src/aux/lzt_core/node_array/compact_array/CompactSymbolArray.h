@@ -34,7 +34,7 @@ private:
     // table of distinct symbols
     TSymbol* symbolTable;
 
-    BitSequenceArray indexes;    
+    BitSequenceArrayL indexes;    
     // number of bits necessary to store an index
     int bitsPerIndex;
 

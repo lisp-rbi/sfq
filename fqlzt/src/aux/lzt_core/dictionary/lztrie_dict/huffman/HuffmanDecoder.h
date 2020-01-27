@@ -44,7 +44,7 @@ private:
      * codes are of given length, indexes are zero based. */
     IntBitArray<size_t> lengthOffset;
 
-    BitSequenceArray symbolTable;
+    BitSequenceArrayL symbolTable;
 
     // indicated if end of symbol code was reached for last processed bit
     bool endOfCode;

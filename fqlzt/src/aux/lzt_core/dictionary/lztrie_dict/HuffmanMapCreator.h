@@ -63,7 +63,7 @@ private:
 
     static const int INIT_DIFF_SIZE = 100;
     // array of index difference codes
-    BitSequenceArray diff;
+    BitSequenceArrayL diff;
     // number of distinct difference code
     size_t diffCount;
     /* Mapping of differences (indexes of bit-coded differences

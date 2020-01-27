@@ -3,16 +3,16 @@
 #include "BitSequenceArray.h"
 
 /** Create empty array. */
-BitSequenceArray::BitSequenceArray()
+BitSequenceArrayL::BitSequenceArrayL()
 : bitsPerSequence(0), numOfSequences(0), numOfBlocks(0), blocks(NULL) {
 
 }
 
-BitSequenceArray::BitSequenceArray(size_t size, int bitsPerSeq): blocks(NULL) {
+BitSequenceArrayL::BitSequenceArrayL(size_t size, int bitsPerSeq): blocks(NULL) {
     changeFormat(size, bitsPerSeq);
 }
 
-BitSequenceArray::BitSequenceArray(const BitSequenceArray& src)
+BitSequenceArrayL::BitSequenceArrayL(const BitSequenceArrayL& src)
 : numOfBlocks(src.numOfBlocks), numOfSequences(src.numOfSequences),
   bitsPerSequence(src.bitsPerSequence) {
     freeBlocks();
@@ -22,7 +22,7 @@ BitSequenceArray::BitSequenceArray(const BitSequenceArray& src)
 
 /** Resize the array so that it can store newSize sequences, keeping the
  * values of the sequences up to the lesser of two sizes. */
-void BitSequenceArray::resize(size_t newSize) {
+void BitSequenceArrayL::resize(size_t newSize) {
     numOfSequences = newSize;
     size_t numOfBits = numOfSequences * bitsPerSequence;
     numOfBlocks = numberOfBlocks(numOfBits, BLOCK_SIZE);
@@ -32,7 +32,7 @@ void BitSequenceArray::resize(size_t newSize) {
 /** Change size and/or bitsPerSequence to new values, reallocating if
  * necessary, if the bitsPerSeq changed, values in the new array are undefinded,
  * else the array is just resized. */
-void BitSequenceArray::changeFormat(size_t size, int bitsPerSeq) {
+void BitSequenceArrayL::changeFormat(size_t size, int bitsPerSeq) {
     freeBlocks();
     bitsPerSequence = bitsPerSeq; numOfSequences = size;
     size_t numOfBits = numOfSequences * bitsPerSequence;
@@ -40,7 +40,7 @@ void BitSequenceArray::changeFormat(size_t size, int bitsPerSeq) {
     allocateBlocks();
 }
 
-BitSequenceArray& BitSequenceArray::operator=(const BitSequenceArray& rhs) {
+BitSequenceArrayL& BitSequenceArrayL::operator=(const BitSequenceArrayL& rhs) {
     if (this == &rhs) return *this;
 
     numOfBlocks = rhs.numOfBlocks;
@@ -54,17 +54,17 @@ BitSequenceArray& BitSequenceArray::operator=(const BitSequenceArray& rhs) {
     return *this;
 }
 
-BitSequenceArray::~BitSequenceArray() {
+BitSequenceArrayL::~BitSequenceArrayL() {
     freeBlocks();
 }
 
 /** Reallocate memory for numOfBlocks blocks. */
-void BitSequenceArray::allocateBlocks() {
+void BitSequenceArrayL::allocateBlocks() {
     blocks = (char *)malloc(numOfBlocks);
 }
 
 /** Free blocks memory. */
-void BitSequenceArray::freeBlocks() {
+void BitSequenceArrayL::freeBlocks() {
  if (blocks != NULL) {
      free(blocks);
      blocks = NULL;
@@ -72,13 +72,13 @@ void BitSequenceArray::freeBlocks() {
 }
 
 /** Set all bits in the array to 0. */
-void BitSequenceArray::nullArray() {
+void BitSequenceArrayL::nullArray() {
     for (size_t i = 0; i < numOfBlocks; ++i)
         blocks[i] = zeroBits<char>();    
 }
 
 /** Set i-th bit sequence to seq, i is zero-based. */
-void BitSequenceArray::setSequence(size_t index, BitSequence seq) {
+void BitSequenceArrayL::setSequence(size_t index, BitSequence seq) {
     // pointer to the bit in the array where first bit of the seq will be stored
     BitPointer bp(1, index * bitsPerSequence);
 
@@ -94,17 +94,17 @@ void BitSequenceArray::setSequence(size_t index, BitSequence seq) {
     }
 }
 
-char const * BitSequenceArray::getBlocks() const {
+char const * BitSequenceArrayL::getBlocks() const {
     return blocks;
 }
 
-size_t BitSequenceArray::getNumOfBlocks() const {
+size_t BitSequenceArrayL::getNumOfBlocks() const {
     return numOfBlocks;
 }
 
 
 
-BSAEquals::BSAEquals(const BitSequenceArray& a): array(a) {
+BSAEquals::BSAEquals(const BitSequenceArrayL& a): array(a) {
     bits = array.getSequenceSize();
 }
 

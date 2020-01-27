@@ -7,18 +7,18 @@
 #include "BitPointer.h"
 #include "serialization.h"
 
-class BitSequenceArraySer;
+class BitSequenceArraySerL;
 
 /** Array for space efficient storing and fetching of large number
  * of BitSequences with predefined size, with the ability to export as chars. */
-class BitSequenceArray {
+class BitSequenceArrayL {
 public:
 
-    BitSequenceArray();
-    BitSequenceArray(size_t size, int bitsPerSequence);
-    BitSequenceArray(const BitSequenceArray& orig);
-    BitSequenceArray& operator=(const BitSequenceArray& rhs);
-    virtual ~BitSequenceArray();   
+    BitSequenceArrayL();
+    BitSequenceArrayL(size_t size, int bitsPerSequence);
+    BitSequenceArrayL(const BitSequenceArrayL& orig);
+    BitSequenceArrayL& operator=(const BitSequenceArrayL& rhs);
+    virtual ~BitSequenceArrayL();   
 
     BitSequence operator[](size_t i) const;
     void changeFormat(size_t size, int bitsPerSequence);
@@ -31,7 +31,7 @@ public:
     size_t getSequenceSize() const;
 
     // Friend so that it can serialzie/deserialze the array
-    friend class BitSequenceArraySer;
+    friend class BitSequenceArraySerL;
 
 private:
 
@@ -54,7 +54,7 @@ private:
 /** Get index-th bit sequence, index is zero-based.
  * ONLY THE FIRST sequenceSize BITS WILL BE SET set,
  * other bits of the returned BitSequence are left uninitialzed. */
-inline BitSequence BitSequenceArray::operator[](size_t index) const {
+inline BitSequence BitSequenceArrayL::operator[](size_t index) const {
     BitSequence seq;
     // pointer to the first bit of the i-th stored sequence
     BitPointer bp(1, index * bitsPerSequence);
@@ -74,11 +74,11 @@ inline BitSequence BitSequenceArray::operator[](size_t index) const {
     return seq;
 }
 
-inline size_t BitSequenceArray::getNumOfSequences() const {
+inline size_t BitSequenceArrayL::getNumOfSequences() const {
     return numOfSequences;
 }
 
-inline size_t BitSequenceArray::getSequenceSize() const {
+inline size_t BitSequenceArrayL::getSequenceSize() const {
     return bitsPerSequence;
 }
 
@@ -86,10 +86,10 @@ inline size_t BitSequenceArray::getSequenceSize() const {
  * they point to equal sequences in a BitSequenceArray. */
 class BSAEquals {
 public:
-    BSAEquals(const BitSequenceArray& a);
+    BSAEquals(const BitSequenceArrayL& a);
     inline bool operator()(size_t i1, size_t i2) const;
 private:
-    const BitSequenceArray& array;
+    const BitSequenceArrayL& array;
     int bits;
 };
 

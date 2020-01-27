@@ -3,7 +3,7 @@
 #include <cassert>
 
 /** Serializes BitSequenceArray to output stream. */
-void BitSequenceArraySer::arrayToStream(BitSequenceArray const & array, ostream& stream) {
+void BitSequenceArraySerL::arrayToStream(BitSequenceArrayL const & array, ostream& stream) {
     // write integer members
     SerializationUtils::integerToStream(array.numOfBlocks, stream);
     SerializationUtils::integerToStream(array.numOfSequences, stream);
@@ -15,7 +15,7 @@ void BitSequenceArraySer::arrayToStream(BitSequenceArray const & array, ostream&
 
 //TODO make the method write directly to an array
 /** Deserializes BitSequenceArray from input stream. */
-void BitSequenceArraySer::arrayFromStream(BitSequenceArray &array, istream& stream) {
+void BitSequenceArraySerL::arrayFromStream(BitSequenceArrayL &array, istream& stream) {
     array.freeBlocks();
 
     // read integer members

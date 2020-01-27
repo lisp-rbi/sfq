@@ -36,14 +36,14 @@ arrayToStream(CompactSymbolArray<TSymbol> const & array, ostream& stream) {
 
     //TODO write generic method for serializing arrays of integer types
     // serialize symbolTable
-    BitSequenceArray symbols(array.numOfDistinct, BITS_PER_SYMBOL );
+    BitSequenceArrayL symbols(array.numOfDistinct, BITS_PER_SYMBOL );
     for (size_t i = 0; i < array.numOfDistinct; ++i)
         symbols.setSequence(i, toBitSequence(array.symbolTable[i], BITS_PER_SYMBOL));
 
-    BitSequenceArraySer::arrayToStream(symbols, stream);
+    BitSequenceArraySerL::arrayToStream(symbols, stream);
 
     // serialize indexes
-    BitSequenceArraySer::arrayToStream(array.indexes, stream);
+    BitSequenceArraySerL::arrayToStream(array.indexes, stream);
 }
 
 //    TSymbol* symbolTable;
@@ -63,8 +63,8 @@ arrayFromStream(CompactSymbolArray<TSymbol>& array, istream& stream) {
     array.bitsPerIndex = SerializationUtils::integerFromStream<int>(stream);
 
     // deserialize symbolTable
-    BitSequenceArray* bitArray = new BitSequenceArray;
-    BitSequenceArraySer::arrayFromStream(*bitArray, stream);
+    BitSequenceArrayL* bitArray = new BitSequenceArrayL;
+    BitSequenceArraySerL::arrayFromStream(*bitArray, stream);
     array.symbolTable = new TSymbol[array.numOfDistinct];
     assert(array.numOfDistinct == bitArray->getNumOfSequences());
     for (size_t i = 0; i < array.numOfDistinct; ++i) {
@@ -74,7 +74,7 @@ arrayFromStream(CompactSymbolArray<TSymbol>& array, istream& stream) {
     delete bitArray;
 
     // deserialize indexes
-    BitSequenceArraySer::arrayFromStream(array.indexes, stream);
+    BitSequenceArraySerL::arrayFromStream(array.indexes, stream);
 }
 
 

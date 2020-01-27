@@ -25,7 +25,7 @@ public:
     static BitSequence fromNonzeroBlocks(BitBlocksArray blocks);
     
     template <typename T>
-    static void positiveIntegersToBits(const T* ints, size_t num, BitSequenceArray& bitArray);
+    static void positiveIntegersToBits(const T* ints, size_t num, BitSequenceArrayL& bitArray);
 
     template <typename T>
     static void integerToStream(T integer, ostream& stream);
@@ -80,7 +80,7 @@ T SerializationUtils::integerFromStream(istream& stream) {
 
 /** Copy an array of positive numbers to BitSequenceArray. */
 template <typename T> void SerializationUtils::
-positiveIntegersToBits(const T* ints, size_t num, BitSequenceArray& bitArray) {
+positiveIntegersToBits(const T* ints, size_t num, BitSequenceArrayL& bitArray) {
     // Calculate number of bits needed to store largest integer.
     int maxBits = 1;
     for (size_t i = 0; i < num; ++i) {

@@ -66,7 +66,7 @@ void CompactArraySerializer<TSymbol, TIndex>::arrayToStream(ostream& stream) {
     for (size_t i = 0; i < NUM_OFFSETS; ++i)
         SerializationUtils::integerToStream(carray->flagOffsets[i], stream);
 
-    BitSequenceArraySer::arrayToStream(carray->array, stream);
+    BitSequenceArraySerL::arrayToStream(carray->array, stream);
 
     writeSymbols(stream);
     writeSiblings(stream);
@@ -76,12 +76,12 @@ void CompactArraySerializer<TSymbol, TIndex>::arrayToStream(ostream& stream) {
 
 template <typename TSymbol, typename TIndex>
 void CompactArraySerializer<TSymbol, TIndex>::writeSiblings(ostream& stream) {
-    BitSequenceArraySer::arrayToStream(carray->siblings, stream);
+    BitSequenceArraySerL::arrayToStream(carray->siblings, stream);
 }
 
 template <typename TSymbol, typename TIndex>
 void CompactArraySerializer<TSymbol, TIndex>::writeNumWords(ostream& stream) {
-    BitSequenceArraySer::arrayToStream(carray->numOfWords, stream);
+    BitSequenceArraySerL::arrayToStream(carray->numOfWords, stream);
 }
 
 template <typename TSymbol, typename TIndex>
@@ -105,7 +105,7 @@ CompactArray<TSymbol, TIndex>* CompactArraySerializer<TSymbol, TIndex>
         array->flagOffsets[i] = SerializationUtils::integerFromStream<size_t>(stream);
 
     // read array (indexes)
-    BitSequenceArraySer::arrayFromStream(array->array, stream);
+    BitSequenceArraySerL::arrayFromStream(array->array, stream);
 
     // read distinct symbols and siblings
     readSymbols(stream);
@@ -123,12 +123,12 @@ void CompactArraySerializer<TSymbol, TIndex>::readSymbols(istream& stream) {
 
 template <typename TSymbol, typename TIndex>
 void CompactArraySerializer<TSymbol, TIndex>::readSiblings(istream& stream) {
-    BitSequenceArraySer::arrayFromStream(array->siblings, stream);
+    BitSequenceArraySerL::arrayFromStream(array->siblings, stream);
 }
 
 template <typename TSymbol, typename TIndex>
 void CompactArraySerializer<TSymbol, TIndex>::readNumWords(istream& stream) {
-    BitSequenceArraySer::arrayFromStream(array->numOfWords, stream);
+    BitSequenceArraySerL::arrayFromStream(array->numOfWords, stream);
 }
 
 #endif	/* COMPACTARRAYSERIALIZER_H */

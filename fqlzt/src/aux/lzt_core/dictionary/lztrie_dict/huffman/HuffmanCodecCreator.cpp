@@ -110,7 +110,7 @@ void HuffmanCodecCreator::calcStartCodes() {
 /** Create a decoder of cannonical huff. codes for
  * given symbols and frequencies */
 void HuffmanCodecCreator::
-createDecoder(HuffmanDecoder* dec, const BitSequenceArray& symbols) {
+createDecoder(HuffmanDecoder* dec, const BitSequenceArrayL& symbols) {
     /* Copy first codes to decoder, temp array is used for copying because
      * array in the decoder is 0-based and array in the creator is 1-based. */
     size_t fc[maxLen];

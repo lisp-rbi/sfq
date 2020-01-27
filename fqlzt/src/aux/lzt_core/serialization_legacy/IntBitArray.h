@@ -28,7 +28,7 @@ public:
     void setArray(T* ints, size_t len);
     size_t getSize() const;
     T operator[](size_t i) const;
-    const BitSequenceArray& getBits() const;
+    const BitSequenceArrayL& getBits() const;
 
     string toString();
 
@@ -38,7 +38,7 @@ public:
 private:
     // True if integers are signed.
     bool signum;
-    BitSequenceArray numbers;
+    BitSequenceArrayL numbers;
 
     int calculateMinBits(T* ints, size_t len);
     void calculateSignum(T* ints, size_t len);
@@ -98,7 +98,7 @@ size_t IntBitArray<T>::getSize() const {
 }
 
 template <typename T>
-const BitSequenceArray& IntBitArray<T>::getBits() const {
+const BitSequenceArrayL& IntBitArray<T>::getBits() const {
     return numbers;
 }
 
@@ -160,13 +160,13 @@ string IntBitArray<T>::toString() {
 template <typename T>
 void IntBitArray<T>::writeToStream(ostream& stream) const {
     SerializationUtils::integerToStream(signum, stream);
-    BitSequenceArraySer::arrayToStream(numbers, stream);
+    BitSequenceArraySerL::arrayToStream(numbers, stream);
 }
 
 template <typename T>
 void IntBitArray<T>::readFromStream(istream& stream) {
     signum = SerializationUtils::integerFromStream<bool>(stream);
-    BitSequenceArraySer::arrayFromStream(numbers, stream);
+    BitSequenceArraySerL::arrayFromStream(numbers, stream);
 }
 
 #endif	/* INTBITARRAY_H */
