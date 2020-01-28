@@ -7,7 +7,6 @@ CLI_EXEC=lzt-cli
 OBJECT_FILES =  \
 	$(BUILD_FOLDER)/lzt-interface.o \
 	$(BUILD_FOLDER)/lzt.o \
-	$(BUILD_FOLDER)/lzt-testrun.o \
 	$(BUILD_FOLDER)/lzt-utils.o \
 	$(BUILD_FOLDER)/na_utils.o \
 	$(BUILD_FOLDER)/CompactArrayTest.o \
@@ -53,7 +52,8 @@ OBJECT_FILES =  \
 	$(BUILD_FOLDER)/DebugException.o \
 	$(BUILD_FOLDER)/TestException.o \
 	$(BUILD_FOLDER)/StackTrace.o \
-	$(BUILD_FOLDER)/CharStringSA.o
+	$(BUILD_FOLDER)/CharStringSA.o \
+	$(BUILD_FOLDER)/MemCharArray.o
 	
 # COMPILER AND LOADER PARAMS
 # TODO: better separate compile and link options (remove unnecessary for each)
@@ -67,7 +67,8 @@ BASICOPTS = -m64 -fpermissive
 # C++ optimization/debug/valgrind/...
 #CPPOPT=-g # debug
 #CPPOPT=-Ofast -march=native # fast code, slower compile
-CPPOPT=-O2
+CPPOPT=-O2 
+#CPPOPT=-O0 # slow code, fast compile
 INCLUDEFLAGS=-Ilzt_core 
 CXXFLAGS = $(BASICOPTS) $(CPPOPT) $(INCLUDEFLAGS)
 COMPILER_FLAGS = # compiler-only flags
@@ -83,23 +84,32 @@ LDFLAGS=-flto
 
 
 # TARGETS
-
 all: $(BUILD_FOLDER)/$(CLI_EXEC)
 
-# Link or archive
-$(BUILD_FOLDER)/$(CLI_EXEC): $(BUILD_FOLDER) $(OBJECT_FILES) 
-	$(LINK.cc) -o $@ $(OBJECT_FILES) $(LDLIBS)
+test: $(BUILD_FOLDER)/serializationTests
+
+# EXECUTABLE TARGET LINKING
+$(BUILD_FOLDER)/$(CLI_EXEC): $(BUILD_FOLDER) $(OBJECT_FILES) $(BUILD_FOLDER)/lzt-testrun.o
+	$(LINK.cc) -o $@ $(OBJECT_FILES) $(BUILD_FOLDER)/lzt-testrun.o $(LDLIBS)	
+
+$(BUILD_FOLDER)/serializationTests: $(BUILD_FOLDER) $(OBJECT_FILES) $(BUILD_FOLDER)/serializationTestRunner.o
+	$(LINK.cc) -o $@ $(OBJECT_FILES) $(BUILD_FOLDER)/serializationTestRunner.o $(LDLIBS)
 
 
 # Compile source files into .o files
-$(BUILD_FOLDER)/lzt-interface.o: $(BUILD_FOLDER) lzt-interface.cpp
-	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt-interface.cpp
+# FILES WITH MAIN FUNCTIONS
+$(BUILD_FOLDER)/lzt-testrun.o: $(BUILD_FOLDER) lzt-testrun.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt-testrun.cpp
 
+$(BUILD_FOLDER)/serializationTestRunner.o: $(BUILD_FOLDER) lzt_core/serialization/test/serializationTestRunner.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/serialization/test/serializationTestRunner.cpp
+	
+# THE REST OF THE FILES
 $(BUILD_FOLDER)/lzt.o: $(BUILD_FOLDER) lzt.cpp
 	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt.cpp
 
-$(BUILD_FOLDER)/lzt-testrun.o: $(BUILD_FOLDER) lzt-testrun.cpp
-	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt-testrun.cpp
+$(BUILD_FOLDER)/lzt-interface.o: $(BUILD_FOLDER) lzt-interface.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt-interface.cpp
 
 $(BUILD_FOLDER)/lzt-utils.o: $(BUILD_FOLDER) lzt-utils.cpp
 	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt-utils.cpp
@@ -238,8 +248,10 @@ $(BUILD_FOLDER)/StackTrace.o: $(BUILD_FOLDER) lzt_core/debug/StackTrace.cpp
 
 $(BUILD_FOLDER)/CharStringSA.o: $(BUILD_FOLDER) lzt_core/suffix_array/CharStringSA.cpp
 	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/suffix_array/CharStringSA.cpp
-
-
+		
+$(BUILD_FOLDER)/MemCharArray.o: $(BUILD_FOLDER) lzt_core/serialization/MemCharArray.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/serialization/MemCharArray.cpp
+	
 #### Clean target deletes all generated files ####
 clean:
 	rm -f OBJECT_FILES			
