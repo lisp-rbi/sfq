@@ -1,0 +1,248 @@
+## -*- Makefile -*-
+
+# Define the build targets
+BUILD_FOLDER=build-folder
+CLI_EXEC=lzt-cli
+
+OBJECT_FILES =  \
+	$(BUILD_FOLDER)/lzt-interface.o \
+	$(BUILD_FOLDER)/lzt.o \
+	$(BUILD_FOLDER)/lzt-testrun.o \
+	$(BUILD_FOLDER)/lzt-utils.o \
+	$(BUILD_FOLDER)/na_utils.o \
+	$(BUILD_FOLDER)/CmmExporter.o \
+	$(BUILD_FOLDER)/CmmExporterTest.o \
+	$(BUILD_FOLDER)/NodeArrayBrowser.o \
+	$(BUILD_FOLDER)/char_symbol.o \
+	$(BUILD_FOLDER)/instantiator.o \
+	$(BUILD_FOLDER)/EnumArrayTest.o \
+	$(BUILD_FOLDER)/NodeArrayTest.o \
+	$(BUILD_FOLDER)/CompressorTest.o \
+	$(BUILD_FOLDER)/SuffixStructTest.o \
+	$(BUILD_FOLDER)/TempFile.o \
+	$(BUILD_FOLDER)/etimer.o \
+	$(BUILD_FOLDER)/Timer.o \
+	$(BUILD_FOLDER)/utils.o \
+	$(BUILD_FOLDER)/FileReaderTest.o \
+	$(BUILD_FOLDER)/TestCaseReaderTest.o \
+	$(BUILD_FOLDER)/HuffmanIndexMapTest.o \
+	$(BUILD_FOLDER)/LzTrieDictTest.o \
+	$(BUILD_FOLDER)/HuffmanCodecCreator.o \
+	$(BUILD_FOLDER)/HuffmanCoder.o \
+	$(BUILD_FOLDER)/HuffmanDecoder.o \
+	$(BUILD_FOLDER)/HuffmanTest.o \
+	$(BUILD_FOLDER)/WordListTest.o \
+	$(BUILD_FOLDER)/LzTrieIteratorTest.o \
+	$(BUILD_FOLDER)/LzTrieTest.o \
+	$(BUILD_FOLDER)/WordIndexerTest.o \
+	$(BUILD_FOLDER)/TrieTest.o \
+	$(BUILD_FOLDER)/BitPointer.o \
+	$(BUILD_FOLDER)/SerializationUtils.o \
+	$(BUILD_FOLDER)/BitSequenceArray.o \
+	$(BUILD_FOLDER)/BitSequence.o \
+	$(BUILD_FOLDER)/BitVector.o \
+	$(BUILD_FOLDER)/serialization.o \
+	$(BUILD_FOLDER)/BitSequenceArraySer.o \
+	$(BUILD_FOLDER)/BitSequenceTest.o \
+	$(BUILD_FOLDER)/IntBitArrayTest.o \
+	$(BUILD_FOLDER)/BitVectorTest.o \
+	$(BUILD_FOLDER)/SerializationTest.o \
+	$(BUILD_FOLDER)/BitSequenceArrayTest.o \
+	$(BUILD_FOLDER)/DebugException.o \
+	$(BUILD_FOLDER)/TestException.o \
+	$(BUILD_FOLDER)/StackTrace.o \
+	$(BUILD_FOLDER)/CharStringSA.o
+
+# COMPILER AND LOADER PARAMS
+# TODO: better separate compile and link options (remove unnecessary for each)
+CCC = g++
+CXX = g++
+LDLIBS =
+
+# COMPILATION
+## MAKE's default rule: COMPILE.cc  = $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c
+BASICOPTS = -m64 -fpermissive
+# C++ optimization/debug/valgrind/...
+#CPPOPT=-g # debug
+#CPPOPT=-Ofast -march=native # fast code, slower compile
+CPPOPT=-O2
+INCLUDEFLAGS=-Ilzt_core
+CXXFLAGS = $(BASICOPTS) $(CPPOPT) $(INCLUDEFLAGS)
+COMPILER_FLAGS = # compiler-only flags
+
+# LINKING
+## MAKE's default rule: LINK.cc = $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(LDFLAGS) $(TARGET_ARCH)
+# Linking optimizations
+#LDLIBSOPTIONS=-flto -Ofast
+LDFLAGS=-flto
+
+# variable printout code, for testing
+#$(info VAR IS $(VAR))
+
+
+# TARGETS
+
+all: $(BUILD_FOLDER)/$(CLI_EXEC)
+
+# Link or archive
+$(BUILD_FOLDER)/$(CLI_EXEC): $(BUILD_FOLDER) $(OBJECT_FILES)
+	$(LINK.cc) -o $@ $(OBJECT_FILES) $(LDLIBS)
+
+
+# Compile source files into .o files
+$(BUILD_FOLDER)/lzt-interface.o: $(BUILD_FOLDER) lzt-interface.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt-interface.cpp
+
+$(BUILD_FOLDER)/lzt.o: $(BUILD_FOLDER) lzt.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt.cpp
+
+$(BUILD_FOLDER)/lzt-testrun.o: $(BUILD_FOLDER) lzt-testrun.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt-testrun.cpp
+
+$(BUILD_FOLDER)/lzt-utils.o: $(BUILD_FOLDER) lzt-utils.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt-utils.cpp
+
+$(BUILD_FOLDER)/na_utils.o: $(BUILD_FOLDER) lzt_core/node_array/na_utils.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/node_array/na_utils.cpp
+
+#$(BUILD_FOLDER)/CompactArrayTest.o: $(BUILD_FOLDER) lzt_core/node_array/compact_array/test/CompactArrayTest.cpp
+#	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/node_array/compact_array/test/CompactArrayTest.cpp
+
+$(BUILD_FOLDER)/CmmExporter.o: $(BUILD_FOLDER) lzt_core/node_array/util/CmmExporter.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/node_array/util/CmmExporter.cpp
+
+$(BUILD_FOLDER)/CmmExporterTest.o: $(BUILD_FOLDER) lzt_core/node_array/util/utest/CmmExporterTest.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/node_array/util/utest/CmmExporterTest.cpp
+
+$(BUILD_FOLDER)/NodeArrayBrowser.o: $(BUILD_FOLDER) lzt_core/node_array/na_browser/NodeArrayBrowser.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/node_array/na_browser/NodeArrayBrowser.cpp
+
+$(BUILD_FOLDER)/char_symbol.o: $(BUILD_FOLDER) lzt_core/node_array/types/symbol/char/char_symbol.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/node_array/types/symbol/char/char_symbol.cpp
+
+$(BUILD_FOLDER)/instantiator.o: $(BUILD_FOLDER) lzt_core/node_array/concepts/instantiator.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/node_array/concepts/instantiator.cpp
+
+$(BUILD_FOLDER)/EnumArrayTest.o: $(BUILD_FOLDER) lzt_core/node_array/test/EnumArrayTest.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/node_array/test/EnumArrayTest.cpp
+
+$(BUILD_FOLDER)/NodeArrayTest.o: $(BUILD_FOLDER) lzt_core/node_array/test/NodeArrayTest.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/node_array/test/NodeArrayTest.cpp
+
+$(BUILD_FOLDER)/CompressorTest.o: $(BUILD_FOLDER) lzt_core/compress/utest/CompressorTest.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/compress/utest/CompressorTest.cpp
+
+$(BUILD_FOLDER)/SuffixStructTest.o: $(BUILD_FOLDER) lzt_core/compress/sa_compressor/utest/SuffixStructTest.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/compress/sa_compressor/utest/SuffixStructTest.cpp
+
+$(BUILD_FOLDER)/TempFile.o: $(BUILD_FOLDER) lzt_core/util/TempFile.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/util/TempFile.cpp
+
+$(BUILD_FOLDER)/etimer.o: $(BUILD_FOLDER) lzt_core/util/etimer.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/util/etimer.cpp
+
+$(BUILD_FOLDER)/Timer.o: $(BUILD_FOLDER) lzt_core/util/Timer.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/util/Timer.cpp
+
+$(BUILD_FOLDER)/utils.o: $(BUILD_FOLDER) lzt_core/util/utils.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/util/utils.cpp
+
+$(BUILD_FOLDER)/FileReaderTest.o: $(BUILD_FOLDER) lzt_core/util/utest/FileReaderTest.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/util/utest/FileReaderTest.cpp
+
+$(BUILD_FOLDER)/TestCaseReaderTest.o: $(BUILD_FOLDER) lzt_core/util/utest/TestCaseReaderTest.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/util/utest/TestCaseReaderTest.cpp
+
+$(BUILD_FOLDER)/HuffmanIndexMapTest.o: $(BUILD_FOLDER) lzt_core/dictionary/lztrie_dict/utest/HuffmanIndexMapTest.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/dictionary/lztrie_dict/utest/HuffmanIndexMapTest.cpp
+
+$(BUILD_FOLDER)/LzTrieDictTest.o: $(BUILD_FOLDER) lzt_core/dictionary/lztrie_dict/utest/LzTrieDictTest.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/dictionary/lztrie_dict/utest/LzTrieDictTest.cpp
+
+$(BUILD_FOLDER)/HuffmanCodecCreator.o: $(BUILD_FOLDER) lzt_core/dictionary/lztrie_dict/huffman/HuffmanCodecCreator.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/dictionary/lztrie_dict/huffman/HuffmanCodecCreator.cpp
+
+$(BUILD_FOLDER)/HuffmanCoder.o: $(BUILD_FOLDER) lzt_core/dictionary/lztrie_dict/huffman/HuffmanCoder.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/dictionary/lztrie_dict/huffman/HuffmanCoder.cpp
+
+$(BUILD_FOLDER)/HuffmanDecoder.o: $(BUILD_FOLDER) lzt_core/dictionary/lztrie_dict/huffman/HuffmanDecoder.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/dictionary/lztrie_dict/huffman/HuffmanDecoder.cpp
+
+$(BUILD_FOLDER)/HuffmanTest.o: $(BUILD_FOLDER) lzt_core/dictionary/lztrie_dict/huffman/utest/HuffmanTest.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/dictionary/lztrie_dict/huffman/utest/HuffmanTest.cpp
+
+$(BUILD_FOLDER)/WordListTest.o: $(BUILD_FOLDER) lzt_core/dictionary/util/test/WordListTest.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/dictionary/util/test/WordListTest.cpp
+
+$(BUILD_FOLDER)/LzTrieIteratorTest.o: $(BUILD_FOLDER) lzt_core/dictionary/lz_trie/test/LzTrieIteratorTest.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/dictionary/lz_trie/test/LzTrieIteratorTest.cpp
+
+$(BUILD_FOLDER)/LzTrieTest.o: $(BUILD_FOLDER) lzt_core/dictionary/lz_trie/test/LzTrieTest.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/dictionary/lz_trie/test/LzTrieTest.cpp
+
+$(BUILD_FOLDER)/WordIndexerTest.o: $(BUILD_FOLDER) lzt_core/dictionary/char_trie/test/WordIndexerTest.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/dictionary/char_trie/test/WordIndexerTest.cpp
+
+$(BUILD_FOLDER)/TrieTest.o: $(BUILD_FOLDER) lzt_core/dictionary/char_trie/test/TrieTest.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/dictionary/char_trie/test/TrieTest.cpp
+
+$(BUILD_FOLDER)/BitPointer.o: $(BUILD_FOLDER) lzt_core/serialization/BitPointer.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/serialization/BitPointer.cpp
+
+$(BUILD_FOLDER)/SerializationUtils.o: $(BUILD_FOLDER) lzt_core/serialization/SerializationUtils.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/serialization/SerializationUtils.cpp
+
+$(BUILD_FOLDER)/BitSequenceArray.o: $(BUILD_FOLDER) lzt_core/serialization/BitSequenceArray.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/serialization/BitSequenceArray.cpp
+
+$(BUILD_FOLDER)/BitSequence.o: $(BUILD_FOLDER) lzt_core/serialization/BitSequence.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/serialization/BitSequence.cpp
+
+$(BUILD_FOLDER)/BitVector.o: $(BUILD_FOLDER) lzt_core/serialization/BitVector.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/serialization/BitVector.cpp
+
+$(BUILD_FOLDER)/serialization.o: $(BUILD_FOLDER) lzt_core/serialization/serialization.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/serialization/serialization.cpp
+
+$(BUILD_FOLDER)/BitSequenceArraySer.o: $(BUILD_FOLDER) lzt_core/serialization/array/BitSequenceArraySer.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/serialization/array/BitSequenceArraySer.cpp
+
+$(BUILD_FOLDER)/CompactArraySerTest.o: $(BUILD_FOLDER) lzt_core/serialization/array/test/CompactArraySerTest.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/serialization/array/test/CompactArraySerTest.cpp
+
+$(BUILD_FOLDER)/BitSequenceTest.o: $(BUILD_FOLDER) lzt_core/serialization/test/BitSequenceTest.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/serialization/test/BitSequenceTest.cpp
+
+$(BUILD_FOLDER)/IntBitArrayTest.o: $(BUILD_FOLDER) lzt_core/serialization/test/IntBitArrayTest.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/serialization/test/IntBitArrayTest.cpp
+
+$(BUILD_FOLDER)/BitVectorTest.o: $(BUILD_FOLDER) lzt_core/serialization/test/BitVectorTest.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/serialization/test/BitVectorTest.cpp
+
+$(BUILD_FOLDER)/SerializationTest.o: $(BUILD_FOLDER) lzt_core/serialization/test/SerializationTest.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/serialization/test/SerializationTest.cpp
+
+$(BUILD_FOLDER)/BitSequenceArrayTest.o: $(BUILD_FOLDER) lzt_core/serialization/test/BitSequenceArrayTest.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/serialization/test/BitSequenceArrayTest.cpp
+
+$(BUILD_FOLDER)/DebugException.o: $(BUILD_FOLDER) lzt_core/debug/DebugException.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/debug/DebugException.cpp
+
+$(BUILD_FOLDER)/TestException.o: $(BUILD_FOLDER) lzt_core/debug/TestException.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/debug/TestException.cpp
+
+$(BUILD_FOLDER)/StackTrace.o: $(BUILD_FOLDER) lzt_core/debug/StackTrace.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/debug/StackTrace.cpp
+
+$(BUILD_FOLDER)/CharStringSA.o: $(BUILD_FOLDER) lzt_core/suffix_array/CharStringSA.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/suffix_array/CharStringSA.cpp
+
+
+#### Clean target deletes all generated files ####
+clean:
+	rm -f OBJECT_FILES
+	rm -f -r $(BUILD_FOLDER)
+
+# Create the target directory (if needed)
+$(BUILD_FOLDER):
+	mkdir -p $(BUILD_FOLDER)

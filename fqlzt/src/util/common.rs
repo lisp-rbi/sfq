@@ -45,6 +45,23 @@ pub fn make_writer (file: &str)-> BufWriter<Box<dyn Write>> {
 
 
 
+pub fn make_hash_key(pos: usize, alpha: usize, word: usize) -> String{
+
+    let mut i = pos;
+    let mut s = "".to_string();
+    let mut j = word;
+
+    while j > 0 {
+        let r = i % alpha;
+        s.push((r+97) as u8 as char);
+        i = (i-r)/alpha;
+        j=j-1;
+    }
+
+    s
+
+}
+
 
 pub fn make_sort_idx(hash: &mut FxHashMap<usize, Vec<usize>>, vec: &mut Vec<String>)-> bool {
 
