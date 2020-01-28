@@ -14,5 +14,5 @@ int main(int argc, char** argv) {
 
 void memArrayTests() {
     CharArrayTests<MemCharArray> memArrayTests;    
-    memArrayTests.test1();
+    memArrayTests.basicInterfaceTest();
 }

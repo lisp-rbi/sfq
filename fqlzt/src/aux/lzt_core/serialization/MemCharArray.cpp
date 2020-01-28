@@ -2,9 +2,8 @@
 
 MemCharArray::MemCharArray(): numOfBlocks(0), blocks(NULL) { }
 
-char& MemCharArray::operator[](size_t i) {
-    char a = 'a';
-    return a;
+char& MemCharArray::operator[](size_t i) {    
+    return blocks[i];
 }
 
 bool MemCharArray::allocate(size_t size) {
@@ -21,8 +20,8 @@ bool MemCharArray::resize(size_t size) {
     else return false;    
 }
 
-void MemCharArray::free() {
-    if (blocks != NULL) {
+void MemCharArray::freeMemory() {
+    if (blocks != NULL) {        
         free(blocks);
         blocks = NULL;
     }

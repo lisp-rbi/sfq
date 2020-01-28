@@ -67,8 +67,8 @@ BASICOPTS = -m64 -fpermissive
 # C++ optimization/debug/valgrind/...
 #CPPOPT=-g # debug
 #CPPOPT=-Ofast -march=native # fast code, slower compile
-#CPPOPT=-O2 
-CPPOPT=-O0 # slow code, fast compile
+CPPOPT=-O2 
+#CPPOPT=-O0 # slow code, fast compile
 INCLUDEFLAGS=-Ilzt_core 
 CXXFLAGS = $(BASICOPTS) $(CPPOPT) $(INCLUDEFLAGS)
 COMPILER_FLAGS = # compiler-only flags

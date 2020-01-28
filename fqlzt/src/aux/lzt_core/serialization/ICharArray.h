@@ -21,7 +21,7 @@ public:
      * up to the smaller of two sizes (existing and new). */
     virtual bool resize(size_t size) = 0;
     /** Free all memory. */
-    virtual void free() = 0;
+    virtual void freeMemory() = 0;
     
     virtual ~ICharArray() {}; // just in case    
     

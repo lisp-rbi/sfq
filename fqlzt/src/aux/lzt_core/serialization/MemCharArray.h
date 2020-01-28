@@ -18,7 +18,7 @@ public:
     char& operator[](size_t i);            
     bool allocate(size_t size);    
     bool resize(size_t size); 
-    void free();
+    void freeMemory();
         
 private:
     size_t numOfBlocks;
