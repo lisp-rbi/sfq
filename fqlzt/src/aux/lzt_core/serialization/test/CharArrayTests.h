@@ -25,6 +25,11 @@ void CharArrayTests<TCharArray>::test1() {
 }
 
 template <typename TCharArray>
+void CharArrayTests<TCharArray>::basicInterfaceTest() { 
+    cout<<"char array test1"<<endl;
+}
+
+template <typename TCharArray>
 CharArrayTests<TCharArray>::~CharArrayTests() {
 }
 

@@ -6,16 +6,23 @@
 #define MEMCHARARRAY_H
 
 #include <cstddef>
+#include <cstdlib>
 
 #include "ICharArray.h"
 
 class MemCharArray : public ICharArray {
 public:
     MemCharArray();
-    // ? MemCharArray(const MemCharArray& orig);
-    char& operator[](size_t i) = 0;
     ~MemCharArray();
+        
+    char& operator[](size_t i);            
+    bool allocate(size_t size);    
+    bool resize(size_t size); 
+    void free();
+        
 private:
+    size_t numOfBlocks;
+    char *blocks;
 
 };
 
