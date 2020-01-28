@@ -1,5 +1,7 @@
 #include "lzt.hpp"
 
+
+extern "C"
 Lzt::Lzt(){
 }
 

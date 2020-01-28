@@ -1,0 +1,302 @@
+In file included from lzt_core/util/factory.h:8:0,
+                 from lzt-interface.h:14,
+                 from lzt-interface.cpp:1:
+lzt_core/dictionary/char_trie/Trie.h:120:1: warning: redeclaration of ‘Trie<TNodeArray>::Trie(Trie<TNodeArray>::TIndex, bool)’ may not have default arguments [-fpermissive]
+ Trie<TNodeArray>::Trie(TIndex capacity = 0, bool enumerated) :
+ ^~~~~~~~~~~~~~~~
+In file included from lzt_core/util/factory.h:9:0,
+                 from lzt-interface.h:14,
+                 from lzt-interface.cpp:1:
+lzt_core/dictionary/lz_trie/LzTrie.h:120:1: warning: redeclaration of ‘WordList<typename TNodeArray::Symbol>* LzTrie<TNodeArray>::getWordsByPrefix(const TSymbol*, long int, bool)’ may not have default arguments [-fpermissive]
+ LzTrie<TNodeArray>::getWordsByPrefix(TSymbol const * word, long maxWords=0, bool diag=false) {
+ ^~~~~~~~~~~~~~~~~~
+In file included from lzt_core/util/factory.h:8:0,
+                 from lzt-interface.h:14,
+                 from lzt.hpp:4,
+                 from lzt.cpp:1:
+lzt_core/dictionary/char_trie/Trie.h:120:1: warning: redeclaration of ‘Trie<TNodeArray>::Trie(Trie<TNodeArray>::TIndex, bool)’ may not have default arguments [-fpermissive]
+ Trie<TNodeArray>::Trie(TIndex capacity = 0, bool enumerated) :
+ ^~~~~~~~~~~~~~~~
+In file included from lzt_core/util/factory.h:9:0,
+                 from lzt-interface.h:14,
+                 from lzt.hpp:4,
+                 from lzt.cpp:1:
+lzt_core/dictionary/lz_trie/LzTrie.h:120:1: warning: redeclaration of ‘WordList<typename TNodeArray::Symbol>* LzTrie<TNodeArray>::getWordsByPrefix(const TSymbol*, long int, bool)’ may not have default arguments [-fpermissive]
+ LzTrie<TNodeArray>::getWordsByPrefix(TSymbol const * word, long maxWords=0, bool diag=false) {
+ ^~~~~~~~~~~~~~~~~~
+In file included from lzt_core/util/factory.h:8:0,
+                 from lzt-interface.h:14,
+                 from lzt.hpp:4,
+                 from lzt-testrun.cpp:6:
+lzt_core/dictionary/char_trie/Trie.h:120:1: warning: redeclaration of ‘Trie<TNodeArray>::Trie(Trie<TNodeArray>::TIndex, bool)’ may not have default arguments [-fpermissive]
+ Trie<TNodeArray>::Trie(TIndex capacity = 0, bool enumerated) :
+ ^~~~~~~~~~~~~~~~
+In file included from lzt_core/util/factory.h:9:0,
+                 from lzt-interface.h:14,
+                 from lzt.hpp:4,
+                 from lzt-testrun.cpp:6:
+lzt_core/dictionary/lz_trie/LzTrie.h:120:1: warning: redeclaration of ‘WordList<typename TNodeArray::Symbol>* LzTrie<TNodeArray>::getWordsByPrefix(const TSymbol*, long int, bool)’ may not have default arguments [-fpermissive]
+ LzTrie<TNodeArray>::getWordsByPrefix(TSymbol const * word, long maxWords=0, bool diag=false) {
+ ^~~~~~~~~~~~~~~~~~
+In file included from lzt_core/util/factory.h:8:0,
+                 from lzt-interface.h:14,
+                 from lzt-utils.h:4,
+                 from lzt-utils.cpp:1:
+lzt_core/dictionary/char_trie/Trie.h:120:1: warning: redeclaration of ‘Trie<TNodeArray>::Trie(Trie<TNodeArray>::TIndex, bool)’ may not have default arguments [-fpermissive]
+ Trie<TNodeArray>::Trie(TIndex capacity = 0, bool enumerated) :
+ ^~~~~~~~~~~~~~~~
+In file included from lzt_core/util/factory.h:9:0,
+                 from lzt-interface.h:14,
+                 from lzt-utils.h:4,
+                 from lzt-utils.cpp:1:
+lzt_core/dictionary/lz_trie/LzTrie.h:120:1: warning: redeclaration of ‘WordList<typename TNodeArray::Symbol>* LzTrie<TNodeArray>::getWordsByPrefix(const TSymbol*, long int, bool)’ may not have default arguments [-fpermissive]
+ LzTrie<TNodeArray>::getWordsByPrefix(TSymbol const * word, long maxWords=0, bool diag=false) {
+ ^~~~~~~~~~~~~~~~~~
+In file included from lzt_core/util/factory.h:8:0,
+                 from lzt_core/node_array/util/utest/CmmExporterTest.h:9,
+                 from lzt_core/node_array/util/utest/CmmExporterTest.cpp:1:
+lzt_core/dictionary/char_trie/Trie.h:120:1: warning: redeclaration of ‘Trie<TNodeArray>::Trie(Trie<TNodeArray>::TIndex, bool)’ may not have default arguments [-fpermissive]
+ Trie<TNodeArray>::Trie(TIndex capacity = 0, bool enumerated) :
+ ^~~~~~~~~~~~~~~~
+In file included from lzt_core/util/factory.h:9:0,
+                 from lzt_core/node_array/util/utest/CmmExporterTest.h:9,
+                 from lzt_core/node_array/util/utest/CmmExporterTest.cpp:1:
+lzt_core/dictionary/lz_trie/LzTrie.h:120:1: warning: redeclaration of ‘WordList<typename TNodeArray::Symbol>* LzTrie<TNodeArray>::getWordsByPrefix(const TSymbol*, long int, bool)’ may not have default arguments [-fpermissive]
+ LzTrie<TNodeArray>::getWordsByPrefix(TSymbol const * word, long maxWords=0, bool diag=false) {
+ ^~~~~~~~~~~~~~~~~~
+In file included from lzt_core/util/factory.h:8:0,
+                 from lzt_core/node_array/test/EnumArrayTest.h:7,
+                 from lzt_core/node_array/test/EnumArrayTest.cpp:1:
+lzt_core/dictionary/char_trie/Trie.h:120:1: warning: redeclaration of ‘Trie<TNodeArray>::Trie(Trie<TNodeArray>::TIndex, bool)’ may not have default arguments [-fpermissive]
+ Trie<TNodeArray>::Trie(TIndex capacity = 0, bool enumerated) :
+ ^~~~~~~~~~~~~~~~
+In file included from lzt_core/util/factory.h:9:0,
+                 from lzt_core/node_array/test/EnumArrayTest.h:7,
+                 from lzt_core/node_array/test/EnumArrayTest.cpp:1:
+lzt_core/dictionary/lz_trie/LzTrie.h:120:1: warning: redeclaration of ‘WordList<typename TNodeArray::Symbol>* LzTrie<TNodeArray>::getWordsByPrefix(const TSymbol*, long int, bool)’ may not have default arguments [-fpermissive]
+ LzTrie<TNodeArray>::getWordsByPrefix(TSymbol const * word, long maxWords=0, bool diag=false) {
+ ^~~~~~~~~~~~~~~~~~
+In file included from lzt_core/util/factory.h:8:0,
+                 from lzt_core/compress/utest/CompressorTest.h:12,
+                 from lzt_core/compress/utest/CompressorTest.cpp:1:
+lzt_core/dictionary/char_trie/Trie.h:120:1: warning: redeclaration of ‘Trie<TNodeArray>::Trie(Trie<TNodeArray>::TIndex, bool)’ may not have default arguments [-fpermissive]
+ Trie<TNodeArray>::Trie(TIndex capacity = 0, bool enumerated) :
+ ^~~~~~~~~~~~~~~~
+In file included from lzt_core/util/factory.h:9:0,
+                 from lzt_core/compress/utest/CompressorTest.h:12,
+                 from lzt_core/compress/utest/CompressorTest.cpp:1:
+lzt_core/dictionary/lz_trie/LzTrie.h:120:1: warning: redeclaration of ‘WordList<typename TNodeArray::Symbol>* LzTrie<TNodeArray>::getWordsByPrefix(const TSymbol*, long int, bool)’ may not have default arguments [-fpermissive]
+ LzTrie<TNodeArray>::getWordsByPrefix(TSymbol const * word, long maxWords=0, bool diag=false) {
+ ^~~~~~~~~~~~~~~~~~
+In file included from lzt_core/compress/utest/CompressorTest.h:16:0,
+                 from lzt_core/compress/utest/CompressorTest.cpp:1:
+lzt_core/compress/stats/StatCreator.hpp:97:1: warning: redeclaration of ‘StatCreator<TNodeArray>::StatCreator(bool, bool, bool, bool)’ may not have default arguments [-fpermissive]
+ StatCreator<TNodeArray>::StatCreator(bool s, bool t, bool ethrow, bool cmm = false):
+ ^~~~~~~~~~~~~~~~~~~~~~~
+In file included from lzt_core/util/factory.h:8:0,
+                 from lzt_core/compress/sa_compressor/utest/SuffixStructTest.hpp:8,
+                 from lzt_core/compress/sa_compressor/utest/SuffixStructTest.cpp:1:
+lzt_core/dictionary/char_trie/Trie.h:120:1: warning: redeclaration of ‘Trie<TNodeArray>::Trie(Trie<TNodeArray>::TIndex, bool)’ may not have default arguments [-fpermissive]
+ Trie<TNodeArray>::Trie(TIndex capacity = 0, bool enumerated) :
+ ^~~~~~~~~~~~~~~~
+In file included from lzt_core/util/factory.h:9:0,
+                 from lzt_core/compress/sa_compressor/utest/SuffixStructTest.hpp:8,
+                 from lzt_core/compress/sa_compressor/utest/SuffixStructTest.cpp:1:
+lzt_core/dictionary/lz_trie/LzTrie.h:120:1: warning: redeclaration of ‘WordList<typename TNodeArray::Symbol>* LzTrie<TNodeArray>::getWordsByPrefix(const TSymbol*, long int, bool)’ may not have default arguments [-fpermissive]
+ LzTrie<TNodeArray>::getWordsByPrefix(TSymbol const * word, long maxWords=0, bool diag=false) {
+ ^~~~~~~~~~~~~~~~~~
+In file included from lzt_core/dictionary/lztrie_dict/utest/../LzTrieDict.h:9:0,
+                 from lzt_core/dictionary/lztrie_dict/utest/LzTrieDictTest.h:4,
+                 from lzt_core/dictionary/lztrie_dict/utest/LzTrieDictTest.cpp:1:
+lzt_core/dictionary/lz_trie/LzTrie.h:120:1: warning: redeclaration of ‘WordList<typename TNodeArray::Symbol>* LzTrie<TNodeArray>::getWordsByPrefix(const TSymbol*, long int, bool)’ may not have default arguments [-fpermissive]
+ LzTrie<TNodeArray>::getWordsByPrefix(TSymbol const * word, long maxWords=0, bool diag=false) {
+ ^~~~~~~~~~~~~~~~~~
+In file included from lzt_core/dictionary/char_trie/WordIndexer.h:8:0,
+                 from lzt_core/dictionary/lztrie_dict/utest/../LzTrieDict.h:10,
+                 from lzt_core/dictionary/lztrie_dict/utest/LzTrieDictTest.h:4,
+                 from lzt_core/dictionary/lztrie_dict/utest/LzTrieDictTest.cpp:1:
+lzt_core/dictionary/char_trie/Trie.h:120:1: warning: redeclaration of ‘Trie<TNodeArray>::Trie(Trie<TNodeArray>::TIndex, bool)’ may not have default arguments [-fpermissive]
+ Trie<TNodeArray>::Trie(TIndex capacity = 0, bool enumerated) :
+ ^~~~~~~~~~~~~~~~
+In file included from lzt_core/util/utils.h:14:0,
+                 from lzt_core/dictionary/lz_trie/LzTrie.h:9,
+                 from lzt_core/dictionary/lztrie_dict/utest/../LzTrieDict.h:9,
+                 from lzt_core/dictionary/lztrie_dict/utest/LzTrieDictTest.h:4,
+                 from lzt_core/dictionary/lztrie_dict/utest/LzTrieDictTest.cpp:1:
+lzt_core/dictionary/lztrie_dict/WordPair.h: In instantiation of ‘bool WordPairsEqual<TSymbol>::operator()(WordPair<TSymbol>, WordPair<TSymbol>) [with TSymbol = char]’:
+lzt_core/dictionary/lztrie_dict/utest/LzTrieDictTest.h:207:19:   required from ‘void LzTrieDictTester<TSymbol, TIndex>::testPrefixFind(LzTrieDictTester<TSymbol, TIndex>::TDict*, LzTrieDictTester<TSymbol, TIndex>::TRawDict*, WordList<TSymbol>*, std::__cxx11::string) [with TSymbol = char; TIndex = unsigned int; LzTrieDictTester<TSymbol, TIndex>::TDict = LzTrieDict<char, unsigned int>; LzTrieDictTester<TSymbol, TIndex>::TRawDict = std::map<char*, std::vector<char*, std::allocator<char*> >, WordComparator<char>, std::allocator<std::pair<char* const, std::vector<char*, std::allocator<char*> > > > >; std::__cxx11::string = std::__cxx11::basic_string<char>]’
+lzt_core/dictionary/lztrie_dict/utest/LzTrieDictTest.h:114:27:   required from ‘void LzTrieDictTester<TSymbol, TIndex>::testDictionary(std::__cxx11::string) [with TSymbol = char; TIndex = unsigned int; std::__cxx11::string = std::__cxx11::basic_string<char>]’
+lzt_core/dictionary/lztrie_dict/utest/LzTrieDictTest.h:42:23:   required from ‘void LzTrieDictTester<TSymbol, TIndex>::test() [with TSymbol = char; TIndex = unsigned int]’
+lzt_core/dictionary/lztrie_dict/utest/LzTrieDictTest.cpp:8:17:   required from here
+lzt_core/dictionary/lztrie_dict/WordPair.h:56:26: warning: ‘wordsEqual’ was not declared in this scope, and no declarations were found by argument-dependent lookup at the point of instantiation [-fpermissive]
+         return wordsEqual(p1.first, p2.first) && wordsEqual(p1.second, p2.second);
+                ~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~
+In file included from lzt_core/dictionary/lz_trie/LzTrie.h:9:0,
+                 from lzt_core/dictionary/lztrie_dict/utest/../LzTrieDict.h:9,
+                 from lzt_core/dictionary/lztrie_dict/utest/LzTrieDictTest.h:4,
+                 from lzt_core/dictionary/lztrie_dict/utest/LzTrieDictTest.cpp:1:
+lzt_core/util/utils.h:122:13: note: ‘template<class TSymbol> bool wordsEqual(const TSymbol*, const TSymbol*)’ declared here, later in the translation unit
+ inline bool wordsEqual(TSymbol const *w1, TSymbol const *w2) {
+             ^~~~~~~~~~
+In file included from lzt_core/util/utils.h:14:0,
+                 from lzt_core/dictionary/lz_trie/LzTrie.h:9,
+                 from lzt_core/dictionary/lztrie_dict/utest/../LzTrieDict.h:9,
+                 from lzt_core/dictionary/lztrie_dict/utest/LzTrieDictTest.h:4,
+                 from lzt_core/dictionary/lztrie_dict/utest/LzTrieDictTest.cpp:1:
+lzt_core/dictionary/lztrie_dict/WordPair.h:56:60: warning: ‘wordsEqual’ was not declared in this scope, and no declarations were found by argument-dependent lookup at the point of instantiation [-fpermissive]
+         return wordsEqual(p1.first, p2.first) && wordsEqual(p1.second, p2.second);
+                                                  ~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~
+In file included from lzt_core/dictionary/lz_trie/LzTrie.h:9:0,
+                 from lzt_core/dictionary/lztrie_dict/utest/../LzTrieDict.h:9,
+                 from lzt_core/dictionary/lztrie_dict/utest/LzTrieDictTest.h:4,
+                 from lzt_core/dictionary/lztrie_dict/utest/LzTrieDictTest.cpp:1:
+lzt_core/util/utils.h:122:13: note: ‘template<class TSymbol> bool wordsEqual(const TSymbol*, const TSymbol*)’ declared here, later in the translation unit
+ inline bool wordsEqual(TSymbol const *w1, TSymbol const *w2) {
+             ^~~~~~~~~~
+In file included from lzt_core/util/utils.h:13:0,
+                 from lzt_core/dictionary/lz_trie/LzTrie.h:9,
+                 from lzt_core/dictionary/lztrie_dict/utest/../LzTrieDict.h:9,
+                 from lzt_core/dictionary/lztrie_dict/utest/LzTrieDictTest.h:4,
+                 from lzt_core/dictionary/lztrie_dict/utest/LzTrieDictTest.cpp:1:
+lzt_core/dictionary/util/WordList.h: In instantiation of ‘void WordList<TSymbol>::addWord(const TSymbol*) [with TSymbol = char]’:
+lzt_core/util/TestCaseReader.h:100:13:   required from ‘WordList<TSymbol>* TestCaseReader<TSymbol>::listFromVector(const std::vector<TSymbol*>&) const [with TSymbol = char]’
+lzt_core/util/TestCaseReader.h:38:74:   required from ‘WordList<TSymbol>* TestCaseReader<TSymbol>::getWords(size_t) const [with TSymbol = char; size_t = long unsigned int]’
+lzt_core/dictionary/lztrie_dict/utest/LzTrieDictTest.h:84:28:   required from ‘void LzTrieDictTester<TSymbol, TIndex>::testDictionary(std::__cxx11::string) [with TSymbol = char; TIndex = unsigned int; std::__cxx11::string = std::__cxx11::basic_string<char>]’
+lzt_core/dictionary/lztrie_dict/utest/LzTrieDictTest.h:42:23:   required from ‘void LzTrieDictTester<TSymbol, TIndex>::test() [with TSymbol = char; TIndex = unsigned int]’
+lzt_core/dictionary/lztrie_dict/utest/LzTrieDictTest.cpp:8:17:   required from here
+lzt_core/dictionary/util/WordList.h:56:28: warning: ‘wordLength’ was not declared in this scope, and no declarations were found by argument-dependent lookup at the point of instantiation [-fpermissive]
+     size_t len = wordLength(word);
+                  ~~~~~~~~~~^~~~~~
+In file included from lzt_core/dictionary/lz_trie/LzTrie.h:9:0,
+                 from lzt_core/dictionary/lztrie_dict/utest/../LzTrieDict.h:9,
+                 from lzt_core/dictionary/lztrie_dict/utest/LzTrieDictTest.h:4,
+                 from lzt_core/dictionary/lztrie_dict/utest/LzTrieDictTest.cpp:1:
+lzt_core/util/utils.h:60:15: note: ‘template<class TSymbol> size_t wordLength(const TSymbol*)’ declared here, later in the translation unit
+ inline size_t wordLength(TSymbol const * word) {
+               ^~~~~~~~~~
+In file included from lzt_core/util/utils.h:13:0,
+                 from lzt_core/dictionary/lz_trie/LzTrie.h:9,
+                 from lzt_core/dictionary/lztrie_dict/utest/../LzTrieDict.h:9,
+                 from lzt_core/dictionary/lztrie_dict/utest/LzTrieDictTest.h:4,
+                 from lzt_core/dictionary/lztrie_dict/utest/LzTrieDictTest.cpp:1:
+lzt_core/dictionary/util/WordList.h:58:13: warning: ‘wordCopy’ was not declared in this scope, and no declarations were found by argument-dependent lookup at the point of instantiation [-fpermissive]
+     wordCopy(w, word);
+     ~~~~~~~~^~~~~~~~~
+In file included from lzt_core/dictionary/lz_trie/LzTrie.h:9:0,
+                 from lzt_core/dictionary/lztrie_dict/utest/../LzTrieDict.h:9,
+                 from lzt_core/dictionary/lztrie_dict/utest/LzTrieDictTest.h:4,
+                 from lzt_core/dictionary/lztrie_dict/utest/LzTrieDictTest.cpp:1:
+lzt_core/util/utils.h:67:13: note: ‘template<class TSymbol> void wordCopy(TSymbol*, const TSymbol*)’ declared here, later in the translation unit
+ inline void wordCopy(TSymbol *dest, TSymbol const *src) {
+             ^~~~~~~~
+In file included from /usr/include/c++/7/backward/strstream:50:0,
+                 from lzt_core/dictionary/util/test/WordListTest.h:4,
+                 from lzt_core/dictionary/util/test/WordListTest.cpp:1:
+/usr/include/c++/7/backward/backward_warning.h:32:2: warning: #warning This file includes at least one deprecated or antiquated header which may be removed without further notice at a future date. Please use a non-deprecated interface with equivalent functionality instead. For a listing of replacement headers and interfaces, consult the file backward_warning.h. To disable this warning use -Wno-deprecated. [-Wcpp]
+ #warning \
+  ^~~~~~~
+In file included from lzt_core/util/factory.h:8:0,
+                 from lzt_core/dictionary/lz_trie/test/LzTrieIteratorTest.h:9,
+                 from lzt_core/dictionary/lz_trie/test/LzTrieIteratorTest.cpp:1:
+lzt_core/dictionary/char_trie/Trie.h:120:1: warning: redeclaration of ‘Trie<TNodeArray>::Trie(Trie<TNodeArray>::TIndex, bool)’ may not have default arguments [-fpermissive]
+ Trie<TNodeArray>::Trie(TIndex capacity = 0, bool enumerated) :
+ ^~~~~~~~~~~~~~~~
+In file included from lzt_core/util/factory.h:9:0,
+                 from lzt_core/dictionary/lz_trie/test/LzTrieIteratorTest.h:9,
+                 from lzt_core/dictionary/lz_trie/test/LzTrieIteratorTest.cpp:1:
+lzt_core/dictionary/lz_trie/LzTrie.h:120:1: warning: redeclaration of ‘WordList<typename TNodeArray::Symbol>* LzTrie<TNodeArray>::getWordsByPrefix(const TSymbol*, long int, bool)’ may not have default arguments [-fpermissive]
+ LzTrie<TNodeArray>::getWordsByPrefix(TSymbol const * word, long maxWords=0, bool diag=false) {
+ ^~~~~~~~~~~~~~~~~~
+In file included from lzt_core/dictionary/lz_trie/test/LzTrieTest.h:8:0,
+                 from lzt_core/dictionary/lz_trie/test/LzTrieTest.cpp:1:
+lzt_core/dictionary/lz_trie/test/../LzTrie.h:120:1: warning: redeclaration of ‘WordList<typename TNodeArray::Symbol>* LzTrie<TNodeArray>::getWordsByPrefix(const TSymbol*, long int, bool)’ may not have default arguments [-fpermissive]
+ LzTrie<TNodeArray>::getWordsByPrefix(TSymbol const * word, long maxWords=0, bool diag=false) {
+ ^~~~~~~~~~~~~~~~~~
+In file included from lzt_core/util/factory.h:8:0,
+                 from lzt_core/dictionary/lz_trie/test/LzTrieTest.h:13,
+                 from lzt_core/dictionary/lz_trie/test/LzTrieTest.cpp:1:
+lzt_core/dictionary/char_trie/Trie.h:120:1: warning: redeclaration of ‘Trie<TNodeArray>::Trie(Trie<TNodeArray>::TIndex, bool)’ may not have default arguments [-fpermissive]
+ Trie<TNodeArray>::Trie(TIndex capacity = 0, bool enumerated) :
+ ^~~~~~~~~~~~~~~~
+In file included from lzt_core/util/utils.h:13:0,
+                 from lzt_core/dictionary/lz_trie/test/../LzTrie.h:9,
+                 from lzt_core/dictionary/lz_trie/test/LzTrieTest.h:8,
+                 from lzt_core/dictionary/lz_trie/test/LzTrieTest.cpp:1:
+lzt_core/dictionary/util/WordList.h: In instantiation of ‘void WordList<TSymbol>::addWord(const TSymbol*) [with TSymbol = char]’:
+lzt_core/dictionary/lz_trie/test/../LzTrie.h:141:17:   required from ‘WordList<typename TNodeArray::Symbol>* LzTrie<TNodeArray>::getWordsByPrefix(const TSymbol*, long int, bool) [with TNodeArray = VectorArray<char, unsigned int>; typename TNodeArray::Symbol = char; LzTrie<TNodeArray>::TSymbol = char]’
+lzt_core/dictionary/lz_trie/test/LzTrieTest.h:82:32:   required from ‘void LzTrieTester<TSymbol, TIndex>::testListCases() [with TSymbol = char; TIndex = unsigned int]’
+lzt_core/dictionary/lz_trie/test/LzTrieTest.cpp:5:26:   required from here
+lzt_core/dictionary/util/WordList.h:56:28: warning: ‘wordLength’ was not declared in this scope, and no declarations were found by argument-dependent lookup at the point of instantiation [-fpermissive]
+     size_t len = wordLength(word);
+                  ~~~~~~~~~~^~~~~~
+In file included from lzt_core/dictionary/lz_trie/test/../LzTrie.h:9:0,
+                 from lzt_core/dictionary/lz_trie/test/LzTrieTest.h:8,
+                 from lzt_core/dictionary/lz_trie/test/LzTrieTest.cpp:1:
+lzt_core/util/utils.h:60:15: note: ‘template<class TSymbol> size_t wordLength(const TSymbol*)’ declared here, later in the translation unit
+ inline size_t wordLength(TSymbol const * word) {
+               ^~~~~~~~~~
+In file included from lzt_core/util/utils.h:13:0,
+                 from lzt_core/dictionary/lz_trie/test/../LzTrie.h:9,
+                 from lzt_core/dictionary/lz_trie/test/LzTrieTest.h:8,
+                 from lzt_core/dictionary/lz_trie/test/LzTrieTest.cpp:1:
+lzt_core/dictionary/util/WordList.h:58:13: warning: ‘wordCopy’ was not declared in this scope, and no declarations were found by argument-dependent lookup at the point of instantiation [-fpermissive]
+     wordCopy(w, word);
+     ~~~~~~~~^~~~~~~~~
+In file included from lzt_core/dictionary/lz_trie/test/../LzTrie.h:9:0,
+                 from lzt_core/dictionary/lz_trie/test/LzTrieTest.h:8,
+                 from lzt_core/dictionary/lz_trie/test/LzTrieTest.cpp:1:
+lzt_core/util/utils.h:67:13: note: ‘template<class TSymbol> void wordCopy(TSymbol*, const TSymbol*)’ declared here, later in the translation unit
+ inline void wordCopy(TSymbol *dest, TSymbol const *src) {
+             ^~~~~~~~
+In file included from lzt_core/dictionary/char_trie/test/../WordIndexer.h:8:0,
+                 from lzt_core/dictionary/char_trie/test/WordIndexerTest.h:7,
+                 from lzt_core/dictionary/char_trie/test/WordIndexerTest.cpp:1:
+lzt_core/dictionary/char_trie/test/../Trie.h:120:1: warning: redeclaration of ‘Trie<TNodeArray>::Trie(Trie<TNodeArray>::TIndex, bool)’ may not have default arguments [-fpermissive]
+ Trie<TNodeArray>::Trie(TIndex capacity = 0, bool enumerated) :
+ ^~~~~~~~~~~~~~~~
+In file included from lzt_core/util/factory.h:9:0,
+                 from lzt_core/dictionary/char_trie/test/WordIndexerTest.h:9,
+                 from lzt_core/dictionary/char_trie/test/WordIndexerTest.cpp:1:
+lzt_core/dictionary/lz_trie/LzTrie.h:120:1: warning: redeclaration of ‘WordList<typename TNodeArray::Symbol>* LzTrie<TNodeArray>::getWordsByPrefix(const TSymbol*, long int, bool)’ may not have default arguments [-fpermissive]
+ LzTrie<TNodeArray>::getWordsByPrefix(TSymbol const * word, long maxWords=0, bool diag=false) {
+ ^~~~~~~~~~~~~~~~~~
+In file included from lzt_core/util/utils.h:13:0,
+                 from lzt_core/dictionary/char_trie/test/../Trie.h:13,
+                 from lzt_core/dictionary/char_trie/test/../WordIndexer.h:8,
+                 from lzt_core/dictionary/char_trie/test/WordIndexerTest.h:7,
+                 from lzt_core/dictionary/char_trie/test/WordIndexerTest.cpp:1:
+lzt_core/dictionary/util/WordList.h: In instantiation of ‘void WordList<TSymbol>::addWord(const TSymbol*) [with TSymbol = char]’:
+lzt_core/util/TestCaseReader.h:100:13:   required from ‘WordList<TSymbol>* TestCaseReader<TSymbol>::listFromVector(const std::vector<TSymbol*>&) const [with TSymbol = char]’
+lzt_core/util/TestCaseReader.h:38:74:   required from ‘WordList<TSymbol>* TestCaseReader<TSymbol>::getWords(size_t) const [with TSymbol = char; size_t = long unsigned int]’
+lzt_core/dictionary/char_trie/test/WordIndexerTest.h:73:32:   required from ‘void EnumTrieTester<TNodeArray, TIterator>::testWordCounting() [with TNodeArray = VectorArray<char, unsigned int>; TIterator = unsigned int]’
+lzt_core/dictionary/char_trie/test/WordIndexerTest.cpp:5:29:   required from here
+lzt_core/dictionary/util/WordList.h:56:28: warning: ‘wordLength’ was not declared in this scope, and no declarations were found by argument-dependent lookup at the point of instantiation [-fpermissive]
+     size_t len = wordLength(word);
+                  ~~~~~~~~~~^~~~~~
+In file included from lzt_core/dictionary/char_trie/test/../Trie.h:13:0,
+                 from lzt_core/dictionary/char_trie/test/../WordIndexer.h:8,
+                 from lzt_core/dictionary/char_trie/test/WordIndexerTest.h:7,
+                 from lzt_core/dictionary/char_trie/test/WordIndexerTest.cpp:1:
+lzt_core/util/utils.h:60:15: note: ‘template<class TSymbol> size_t wordLength(const TSymbol*)’ declared here, later in the translation unit
+ inline size_t wordLength(TSymbol const * word) {
+               ^~~~~~~~~~
+In file included from lzt_core/util/utils.h:13:0,
+                 from lzt_core/dictionary/char_trie/test/../Trie.h:13,
+                 from lzt_core/dictionary/char_trie/test/../WordIndexer.h:8,
+                 from lzt_core/dictionary/char_trie/test/WordIndexerTest.h:7,
+                 from lzt_core/dictionary/char_trie/test/WordIndexerTest.cpp:1:
+lzt_core/dictionary/util/WordList.h:58:13: warning: ‘wordCopy’ was not declared in this scope, and no declarations were found by argument-dependent lookup at the point of instantiation [-fpermissive]
+     wordCopy(w, word);
+     ~~~~~~~~^~~~~~~~~
+In file included from lzt_core/dictionary/char_trie/test/../Trie.h:13:0,
+                 from lzt_core/dictionary/char_trie/test/../WordIndexer.h:8,
+                 from lzt_core/dictionary/char_trie/test/WordIndexerTest.h:7,
+                 from lzt_core/dictionary/char_trie/test/WordIndexerTest.cpp:1:
+lzt_core/util/utils.h:67:13: note: ‘template<class TSymbol> void wordCopy(TSymbol*, const TSymbol*)’ declared here, later in the translation unit
+ inline void wordCopy(TSymbol *dest, TSymbol const *src) {
+             ^~~~~~~~
+In file included from lzt_core/dictionary/char_trie/test/TrieTest.h:7:0,
+                 from lzt_core/dictionary/char_trie/test/TrieTest.cpp:3:
+lzt_core/dictionary/char_trie/Trie.h:120:1: warning: redeclaration of ‘Trie<TNodeArray>::Trie(Trie<TNodeArray>::TIndex, bool)’ may not have default arguments [-fpermissive]
+ Trie<TNodeArray>::Trie(TIndex capacity = 0, bool enumerated) :
+ ^~~~~~~~~~~~~~~~

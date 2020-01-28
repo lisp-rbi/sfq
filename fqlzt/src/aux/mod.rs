@@ -1,3 +1,5 @@
+#[macro_use]
+extern crate cpp;
 use cpp::cpp;
 
 

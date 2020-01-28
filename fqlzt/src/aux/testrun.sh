@@ -3,10 +3,10 @@
 buildfolder=build-folder
 cliexec=lzt-cli
 
-dictfolder=$1
-dictfile=$2
-#testfile=lzt\_core/test\_files/smallDict.txt
-testfile=$dictfolder/$dictfile
+#dictfolder=$1
+#dictfile=$2
+testfile=lzt\_core/test\_files/smallDict.txt
+#testfile=$dictfolder/$dictfile
 #testfile=test-dicts/german.txt
 outdict=$dictfile.lzt
 outfile=$dictfile.out.txt

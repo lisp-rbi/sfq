@@ -55,12 +55,12 @@ void CharStringSA::createSA() {
 int CharStringSA::calcLCP(const char *s1, const char *s2) {
     int i = 0;
     while (s1[i] != 0 && s2[i] != 0 && s1[i] == s2[i]) i++;
-    
+
     return i;
 }
 
 void CharStringSA::computeLCPInt(bool details = true) {
-    stack<TLcpInt> intStack;   
+    stack<TLcpInt> intStack;
     TLcpInt init(0, 0, TLcpInt::UNDEF);
     intStack.push(init);
     // L is the length of string with terminating char appended
@@ -98,7 +98,7 @@ void CharStringSA::computeLCPInt(bool details = true) {
 
             if (details) cout<<"   pushed: " << ival.toString() << endl;
         }
-        
+
         if (details) cout << endl;
     }
 }
@@ -112,7 +112,7 @@ void CharStringSA::computeLPF() {
     lcp[L] = 0;
     stack<int> st; vector<int> buff;
     st.push(0);
-    
+
     for (int i = 1; i <= L; ++i) {
         int top = st.top();
 
@@ -138,7 +138,7 @@ void CharStringSA::computeLPF() {
                 cout << "...while iter > 1" << endl;
                 cout << "i: " << i << " top: " << top << endl
                     << "SA[i]: " << sarray[i]  << " LCP[i]: " << lcp[i]
-                    << " SA[top]: " << sarray[top] << " LCP[top]: " << lcp[top] << endl;                                
+                    << " SA[top]: " << sarray[top] << " LCP[top]: " << lcp[top] << endl;
             } else first = false;
 
             if (sarray[i] < sarray[top]) {
@@ -157,9 +157,9 @@ void CharStringSA::computeLPF() {
             st.pop();
 
             if (st.empty() == false) top = st.top();
-            else break;            
+            else break;
         }
-        
+
         if (i < L) {
             st.push(i);
             cout << "push i: " << i << endl;
