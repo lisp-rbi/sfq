@@ -5,21 +5,21 @@
 #include <cassert>
 
 #include "CompactSymbolArray.h"
-#include "serialization/SerializationUtils.h"
-#include "serialization/BitSequenceArray.h"
-#include "serialization/array/BitSequenceArraySer.h"
+#include "serialization_legacy/SerializationUtils.h"
+#include "serialization_legacy/BitSequenceArray.h"
+#include "serialization_legacy/array/BitSequenceArraySer.h"
 
 /** (De)Serializer for CompactSymbolArray. */
 template <typename TSymbol>
-class CompactSymbolArraySer {
+class CompactSymbolArraySerL {
 public:
 
     static int const BITS_PER_SYMBOL = sizeof(TSymbol) * BITS_PER_CHAR;
 
-    static void arrayToStream(CompactSymbolArray<TSymbol> const & array, ostream& stream);
-    static void arrayFromStream(CompactSymbolArray<TSymbol>& array, istream& stream);
+    static void arrayToStream(CompactSymbolArrayL<TSymbol> const & array, ostream& stream);
+    static void arrayFromStream(CompactSymbolArrayL<TSymbol>& array, istream& stream);
 
-    virtual ~CompactSymbolArraySer() {};
+    virtual ~CompactSymbolArraySerL() {};
 
 private:
 
@@ -27,8 +27,8 @@ private:
 
 /** Serialize CompactSymbolArray to ostream. */
 template <typename TSymbol>
-void CompactSymbolArraySer<TSymbol>::
-arrayToStream(CompactSymbolArray<TSymbol> const & array, ostream& stream) {
+void CompactSymbolArraySerL<TSymbol>::
+arrayToStream(CompactSymbolArrayL<TSymbol> const & array, ostream& stream) {
     // serialize integer members
     SerializationUtils::integerToStream(array.numOfSymbols, stream);
     SerializationUtils::integerToStream(array.numOfDistinct, stream);
@@ -36,14 +36,14 @@ arrayToStream(CompactSymbolArray<TSymbol> const & array, ostream& stream) {
 
     //TODO write generic method for serializing arrays of integer types
     // serialize symbolTable
-    BitSequenceArray symbols(array.numOfDistinct, BITS_PER_SYMBOL );
+    BitSequenceArrayL symbols(array.numOfDistinct, BITS_PER_SYMBOL );
     for (size_t i = 0; i < array.numOfDistinct; ++i)
         symbols.setSequence(i, toBitSequence(array.symbolTable[i], BITS_PER_SYMBOL));
 
-    BitSequenceArraySer::arrayToStream(symbols, stream);
+    BitSequenceArraySerL::arrayToStream(symbols, stream);
 
     // serialize indexes
-    BitSequenceArraySer::arrayToStream(array.indexes, stream);
+    BitSequenceArraySerL::arrayToStream(array.indexes, stream);
 }
 
 //    TSymbol* symbolTable;
@@ -52,8 +52,8 @@ arrayToStream(CompactSymbolArray<TSymbol> const & array, ostream& stream) {
 
 /** Deserialize CompactSymbolArray from istream. */
 template <typename TSymbol>
-void CompactSymbolArraySer<TSymbol>::
-arrayFromStream(CompactSymbolArray<TSymbol>& array, istream& stream) {
+void CompactSymbolArraySerL<TSymbol>::
+arrayFromStream(CompactSymbolArrayL<TSymbol>& array, istream& stream) {
     // deallocate array memory
     array.freeTable();
 
@@ -63,8 +63,8 @@ arrayFromStream(CompactSymbolArray<TSymbol>& array, istream& stream) {
     array.bitsPerIndex = SerializationUtils::integerFromStream<int>(stream);
 
     // deserialize symbolTable
-    BitSequenceArray* bitArray = new BitSequenceArray;
-    BitSequenceArraySer::arrayFromStream(*bitArray, stream);
+    BitSequenceArrayL* bitArray = new BitSequenceArrayL;
+    BitSequenceArraySerL::arrayFromStream(*bitArray, stream);
     array.symbolTable = new TSymbol[array.numOfDistinct];
     assert(array.numOfDistinct == bitArray->getNumOfSequences());
     for (size_t i = 0; i < array.numOfDistinct; ++i) {
@@ -74,7 +74,7 @@ arrayFromStream(CompactSymbolArray<TSymbol>& array, istream& stream) {
     delete bitArray;
 
     // deserialize indexes
-    BitSequenceArraySer::arrayFromStream(array.indexes, stream);
+    BitSequenceArraySerL::arrayFromStream(array.indexes, stream);
 }
 
 

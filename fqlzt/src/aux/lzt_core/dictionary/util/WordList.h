@@ -18,11 +18,12 @@ template <typename TSymbol>
 class WordList {
 public:
 
-    WordList() {};
+    WordList(bool cpyWords=true);
     WordList(const WordList& orig);
     virtual ~WordList();
 
     void addWord(TSymbol const * word);
+    void addWordNocopy(TSymbol *word);
     size_t numberOfWords() const;
     void sort();
     TSymbol const* operator[](size_t i) const;
@@ -31,17 +32,23 @@ public:
 private:
 
     typedef typename vector<TSymbol*>::iterator TIter;
+    bool copyWords;
 
     vector<TSymbol*> words;
 
-    WordComparator<TSymbol> wordCompare;
+    WordComparator<TSymbol> wordCompare;            
 
 };
 
 template <typename TSymbol>
+WordList<TSymbol>::WordList(bool cpyWords): copyWords(cpyWords) {}
+
+template <typename TSymbol>
 WordList<TSymbol>::~WordList() {
-    for (TIter it = words.begin(); it != words.end(); ++it) {
-        delete [] *it;
+    if (copyWords) {
+        for (TIter it = words.begin(); it != words.end(); ++it) {
+            delete [] *it;
+        }
     }
 }
 
@@ -57,6 +64,11 @@ void WordList<TSymbol>::addWord(TSymbol const * word) {
     TSymbol* w = new TSymbol[len+1];
     wordCopy(w, word);
     words.push_back(w);
+}
+
+template <typename TSymbol>
+void WordList<TSymbol>::addWordNocopy(TSymbol* word) {
+    words.push_back(word);
 }
 
 template <typename TSymbol>

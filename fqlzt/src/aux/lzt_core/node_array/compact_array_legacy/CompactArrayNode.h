@@ -22,7 +22,7 @@ public:
     bool operator==(CompactArrayNode n2) const;
     bool operator!=(CompactArrayNode n2) const;
 
-    template <typename T1, typename T2> friend class CompactArray;
+    template <typename T1, typename T2> friend class CompactArrayL;
 
 private:
 

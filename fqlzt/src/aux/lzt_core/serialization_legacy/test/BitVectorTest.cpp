@@ -5,8 +5,8 @@
 #include <fstream>
 
 #include "debug/lzt_debug.h"
-#include "serialization/serialization.h"
-#include "serialization/BitSequence.h"
+#include "serialization_legacy/serialization.h"
+#include "serialization_legacy/BitSequence.h"
 #include "util/TempFile.h"
 
 BitVectorTest::~BitVectorTest() {

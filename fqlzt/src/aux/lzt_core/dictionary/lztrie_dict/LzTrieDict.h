@@ -5,12 +5,12 @@
 #include <iostream>
 #include <cassert>
 
-#include "node_array/compact_array/CompactArray.h"
+#include "node_array/compact_array_legacy/CompactArray.h"
 #include "dictionary/lz_trie/LzTrie.h"
 #include "dictionary/char_trie/WordIndexer.h"
 #include "dictionary/lztrie_dict/HuffmanIndexMap.h"
 #include "dictionary/lz_trie/LzTrieIterator.h"
-#include "serialization/array/CompactArraySerializer.h"
+#include "serialization_legacy/array/CompactArraySerializer.h"
 #include "dictionary/util/WordList.h"
 #include "WordPair.h"
 #include "util/utils.h"
@@ -39,7 +39,7 @@ public:
 private:
 
     // node array type used to store words in a compact form
-    typedef CompactArray<TSymbol, TIndex> TCompactArray;
+    typedef CompactArrayL<TSymbol, TIndex> TCompactArray;
     // indexer of compact, lz-compressed array
     typedef WordIndexer<TCompactArray, LzTrieIterator<TCompactArray> > TCompactIndexer;
 

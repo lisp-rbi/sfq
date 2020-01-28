@@ -107,8 +107,8 @@ $(BUILD_FOLDER)/lzt-utils.o: $(BUILD_FOLDER) lzt-utils.cpp
 $(BUILD_FOLDER)/na_utils.o: $(BUILD_FOLDER) lzt_core/node_array/na_utils.cpp
 	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/node_array/na_utils.cpp
 
-$(BUILD_FOLDER)/CompactArrayTest.o: $(BUILD_FOLDER) lzt_core/node_array/compact_array/test/CompactArrayTest.cpp
-	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/node_array/compact_array/test/CompactArrayTest.cpp
+$(BUILD_FOLDER)/CompactArrayTest.o: $(BUILD_FOLDER) lzt_core/node_array/compact_array_legacy/test/CompactArrayTest.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/node_array/compact_array_legacy/test/CompactArrayTest.cpp
 
 $(BUILD_FOLDER)/CmmExporter.o: $(BUILD_FOLDER) lzt_core/node_array/util/CmmExporter.cpp
 	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/node_array/util/CmmExporter.cpp
@@ -188,44 +188,44 @@ $(BUILD_FOLDER)/WordIndexerTest.o: $(BUILD_FOLDER) lzt_core/dictionary/char_trie
 $(BUILD_FOLDER)/TrieTest.o: $(BUILD_FOLDER) lzt_core/dictionary/char_trie/test/TrieTest.cpp
 	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/dictionary/char_trie/test/TrieTest.cpp
 
-$(BUILD_FOLDER)/BitPointer.o: $(BUILD_FOLDER) lzt_core/serialization/BitPointer.cpp
-	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/serialization/BitPointer.cpp
+$(BUILD_FOLDER)/BitPointer.o: $(BUILD_FOLDER) lzt_core/serialization_legacy/BitPointer.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/serialization_legacy/BitPointer.cpp
 
-$(BUILD_FOLDER)/SerializationUtils.o: $(BUILD_FOLDER) lzt_core/serialization/SerializationUtils.cpp
-	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/serialization/SerializationUtils.cpp
+$(BUILD_FOLDER)/SerializationUtils.o: $(BUILD_FOLDER) lzt_core/serialization_legacy/SerializationUtils.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/serialization_legacy/SerializationUtils.cpp
 
-$(BUILD_FOLDER)/BitSequenceArray.o: $(BUILD_FOLDER) lzt_core/serialization/BitSequenceArray.cpp
-	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/serialization/BitSequenceArray.cpp
+$(BUILD_FOLDER)/BitSequenceArray.o: $(BUILD_FOLDER) lzt_core/serialization_legacy/BitSequenceArray.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/serialization_legacy/BitSequenceArray.cpp
 
-$(BUILD_FOLDER)/BitSequence.o: $(BUILD_FOLDER) lzt_core/serialization/BitSequence.cpp
-	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/serialization/BitSequence.cpp
+$(BUILD_FOLDER)/BitSequence.o: $(BUILD_FOLDER) lzt_core/serialization_legacy/BitSequence.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/serialization_legacy/BitSequence.cpp
 
-$(BUILD_FOLDER)/BitVector.o: $(BUILD_FOLDER) lzt_core/serialization/BitVector.cpp
-	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/serialization/BitVector.cpp
+$(BUILD_FOLDER)/BitVector.o: $(BUILD_FOLDER) lzt_core/serialization_legacy/BitVector.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/serialization_legacy/BitVector.cpp
 
-$(BUILD_FOLDER)/serialization.o: $(BUILD_FOLDER) lzt_core/serialization/serialization.cpp
-	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/serialization/serialization.cpp
+$(BUILD_FOLDER)/serialization.o: $(BUILD_FOLDER) lzt_core/serialization_legacy/serialization.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/serialization_legacy/serialization.cpp
 
-$(BUILD_FOLDER)/BitSequenceArraySer.o: $(BUILD_FOLDER) lzt_core/serialization/array/BitSequenceArraySer.cpp
-	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/serialization/array/BitSequenceArraySer.cpp
+$(BUILD_FOLDER)/BitSequenceArraySer.o: $(BUILD_FOLDER) lzt_core/serialization_legacy/array/BitSequenceArraySer.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/serialization_legacy/array/BitSequenceArraySer.cpp
 
-$(BUILD_FOLDER)/CompactArraySerTest.o: $(BUILD_FOLDER) lzt_core/serialization/array/test/CompactArraySerTest.cpp
-	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/serialization/array/test/CompactArraySerTest.cpp
+$(BUILD_FOLDER)/CompactArraySerTest.o: $(BUILD_FOLDER) lzt_core/serialization_legacy/array/test/CompactArraySerTest.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/serialization_legacy/array/test/CompactArraySerTest.cpp
 
-$(BUILD_FOLDER)/BitSequenceTest.o: $(BUILD_FOLDER) lzt_core/serialization/test/BitSequenceTest.cpp
-	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/serialization/test/BitSequenceTest.cpp
+$(BUILD_FOLDER)/BitSequenceTest.o: $(BUILD_FOLDER) lzt_core/serialization_legacy/test/BitSequenceTest.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/serialization_legacy/test/BitSequenceTest.cpp
 
-$(BUILD_FOLDER)/IntBitArrayTest.o: $(BUILD_FOLDER) lzt_core/serialization/test/IntBitArrayTest.cpp
-	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/serialization/test/IntBitArrayTest.cpp
+$(BUILD_FOLDER)/IntBitArrayTest.o: $(BUILD_FOLDER) lzt_core/serialization_legacy/test/IntBitArrayTest.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/serialization_legacy/test/IntBitArrayTest.cpp
 
-$(BUILD_FOLDER)/BitVectorTest.o: $(BUILD_FOLDER) lzt_core/serialization/test/BitVectorTest.cpp
-	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/serialization/test/BitVectorTest.cpp
+$(BUILD_FOLDER)/BitVectorTest.o: $(BUILD_FOLDER) lzt_core/serialization_legacy/test/BitVectorTest.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/serialization_legacy/test/BitVectorTest.cpp
 
-$(BUILD_FOLDER)/SerializationTest.o: $(BUILD_FOLDER) lzt_core/serialization/test/SerializationTest.cpp
-	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/serialization/test/SerializationTest.cpp
+$(BUILD_FOLDER)/SerializationTest.o: $(BUILD_FOLDER) lzt_core/serialization_legacy/test/SerializationTest.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/serialization_legacy/test/SerializationTest.cpp
 
-$(BUILD_FOLDER)/BitSequenceArrayTest.o: $(BUILD_FOLDER) lzt_core/serialization/test/BitSequenceArrayTest.cpp
-	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/serialization/test/BitSequenceArrayTest.cpp
+$(BUILD_FOLDER)/BitSequenceArrayTest.o: $(BUILD_FOLDER) lzt_core/serialization_legacy/test/BitSequenceArrayTest.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/serialization_legacy/test/BitSequenceArrayTest.cpp
 
 $(BUILD_FOLDER)/DebugException.o: $(BUILD_FOLDER) lzt_core/debug/DebugException.cpp
 	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/debug/DebugException.cpp

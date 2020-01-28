@@ -27,7 +27,7 @@ void BitSequenceArrayTest::testAccess() {
 }
 
 void BitSequenceArrayTest::testChangeFormat() {
-    BitSequenceArray* array = new BitSequenceArray();
+    BitSequenceArrayL* array = new BitSequenceArrayL();
 
     // test array enlargement
     for (int i = 1; i < 15; ++i) {
@@ -61,7 +61,7 @@ void BitSequenceArrayTest::testResize() {
  * and assert the array holds the right numbers. */
 void BitSequenceArrayTest::
 readWriteNumberResize(long initSize, int B, long resizeStep, int numSteps) {
-    BitSequenceArray array(initSize, B);
+    BitSequenceArrayL array(initSize, B);
     // number of integers representable by B bits
     long N = 1;
     for (int i = 0; i < B; ++i) N *= 2;
@@ -107,11 +107,11 @@ readWriteNumberResize(long initSize, int B, long resizeStep, int numSteps) {
 /** Write and read BitSequences of size numberSize interpreting them as
  * binary form of natural numbers in range [0, arraySize> .
  * Largest number representable by numberSize bits must not be less than arraySize */
-void BitSequenceArrayTest::readWriteNumbers(BitSequenceArray* array, size_t arraySize, int numberSize) {
+void BitSequenceArrayTest::readWriteNumbers(BitSequenceArrayL* array, size_t arraySize, int numberSize) {
     bool created = false;
 
     if (array == NULL) {
-        array = new BitSequenceArray(arraySize, numberSize);
+        array = new BitSequenceArrayL(arraySize, numberSize);
         created = true;
     }    
     

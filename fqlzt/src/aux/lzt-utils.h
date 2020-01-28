@@ -18,10 +18,20 @@ string symbolVec2string(vector<TSymbol> w);
 /**************** WORD SET CONVERSIONS ****************/
 WordList<TSymbol>* vecOfVec2WordList(vector<vector<TSymbol> >* words);
 vector<vector<TSymbol> >* wordList2VecOfVec(WordList<TSymbol>* words);
+
+
+template <typename TSymbol> struct FlatWordList {   
+    FlatWordList(TSymbol* w, long l): words(w), length(l) {}
+    TSymbol *words;
+    long length;
+};
+WordList<TSymbol>* flatwords2WordList(FlatWordList<TSymbol> fwords);
+FlatWordList<TSymbol> wordList2Flatwords(WordList<TSymbol>* words);
 /**************************************************************/
 
 /**************** MISC HELPER FUNCTIONS ****************/
-vector<vector<TSymbol> >* readWordsFromFile(string file);
+FlatWordList<TSymbol> readWordsFromFile(string file);
+vector<vector<TSymbol> >* readWordsFromFileVecVec(string file);
 /**************************************************************/
 
 #endif /* LZT_UTILS_H */

@@ -1,7 +1,7 @@
 #ifndef INDEXSERIALIZER_H
 #define	INDEXSERIALIZER_H
 
-#include "serialization/BitSequence.h"
+#include "serialization_legacy/BitSequence.h"
 
 class IndexSerializer {
 public:

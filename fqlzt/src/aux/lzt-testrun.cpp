@@ -52,8 +52,9 @@ int main(int argc, char** argv) {
 }
 
 void compressTrie() {    
-    vector<vector<TSymbol> >* words = readWordsFromFile(params["-i"]);
-    createLzTrie(words, params["-d"], true);    
+    FlatWordList<TSymbol> fwords = readWordsFromFile(params["-i"]);        
+    createLzTrie(fwords.words, fwords.length, params["-d"]);    
+    delete [] fwords.words;
 }
 
 void loadAndListTrie() {        
@@ -81,8 +82,9 @@ void queryTrie() {
 void testInterfaceClass() {
     Lzt lzt;
     // create and save    
-    vector<vector<TSymbol> >* words = readWordsFromFile(params["-i"]);    
-    assert(lzt.make(words, params["-d"]));
+    FlatWordList<TSymbol> fwords = readWordsFromFile(params["-i"]);    
+    assert(lzt.make(fwords.words, fwords.length, params["-d"]));
+    delete [] fwords.words;
     // load
     assert(lzt.read(params["-d"]));
     // list all words

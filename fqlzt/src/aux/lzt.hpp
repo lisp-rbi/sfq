@@ -18,7 +18,7 @@ class Lzt {
          * Creates compressed trie from a sorted list of words
          * assumes dict does not exist and overwrites it
          */
-        bool make(vector<vector<TSymbol> >* words, string savePath);
+        bool make(TSymbol* words, long length, string savePath, bool sortWords=false);
 
         /**
          *  If trie exists, load the data structure into self

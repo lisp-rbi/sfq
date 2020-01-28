@@ -49,8 +49,8 @@ void CompactArrayTestTemplate<TNodeArray>::simpleTests() {
     for (size_t i = 0; i < reader.getNumberOfWords(); ++i) {
         string strArray = reader.getWord(i);
         TNodeArray* array = nodeArrayFromString<TNodeArray>(strArray);
-        CompactArrayCreator<TNodeArray> compactCreator(*array);
-        CompactArray<TSymbol, TIndex>* compactArray = compactCreator.createCompactArray();
+        CompactArrayCreatorL<TNodeArray> compactCreator(*array);
+        CompactArrayL<TSymbol, TIndex>* compactArray = compactCreator.createCompactArray();
         string strCompArray = nodeArrayToString(*compactArray);
 
         ostringstream message; message << "i: " << i << endl;
@@ -90,8 +90,8 @@ void CompactArrayTestTemplate<TNodeArray>::testWithDictionaries() {
         TNodeArray& nodes = trie.exportNodeArray();
         comp.compressArray(nodes);        
 
-        CompactArrayCreator<TNodeArray> compactCreator(nodes);
-        CompactArray<TSymbol, TIndex>* compactArray = compactCreator.createCompactArray();
+        CompactArrayCreatorL<TNodeArray> compactCreator(nodes);
+        CompactArrayL<TSymbol, TIndex>* compactArray = compactCreator.createCompactArray();
 
         // test nodeArray and compact node Array equality
         string nodesString = nodeArrayToString(nodes);
@@ -99,7 +99,7 @@ void CompactArrayTestTemplate<TNodeArray>::testWithDictionaries() {
         TEST_ASSERT_MESSAGE(nodesString == compactString, message.str());
 
         // LZTrie based on compact array must contain all words
-        LzTrie<CompactArray<TSymbol, TIndex> > lztrie(*compactArray);
+        LzTrie<CompactArrayL<TSymbol, TIndex> > lztrie(*compactArray);
 
         for (size_t j = 0; j < reader.getNumberOfWords(); ++j) {
             TSymbol const * word = reader.getWord(j);

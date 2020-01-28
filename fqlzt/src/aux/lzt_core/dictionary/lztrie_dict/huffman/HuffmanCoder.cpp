@@ -1,5 +1,5 @@
 #include "HuffmanCoder.h"
-#include "serialization/BitSequence.h"
+#include "serialization_legacy/BitSequence.h"
 
 HuffmanCoder::HuffmanCoder(): codes(NULL), lengths(NULL) {}
 

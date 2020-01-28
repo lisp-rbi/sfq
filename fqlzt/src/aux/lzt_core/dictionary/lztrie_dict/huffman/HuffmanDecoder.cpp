@@ -1,8 +1,8 @@
 #include "HuffmanDecoder.h"
 #include <iostream>
 
-#include "serialization/SerializationUtils.h"
-#include "serialization/array/BitSequenceArraySer.h"
+#include "serialization_legacy/SerializationUtils.h"
+#include "serialization_legacy/array/BitSequenceArraySer.h"
 
 HuffmanDecoder::~HuffmanDecoder() {}
 
@@ -38,14 +38,14 @@ int HuffmanDecoder::bitsPerSymbol() {
 
 /** Serialize decoder to stream. */
 void HuffmanDecoder::writeToStream(ostream& stream) const {
-    BitSequenceArraySer::arrayToStream(symbolTable, stream);
+    BitSequenceArraySerL::arrayToStream(symbolTable, stream);
     firstCode.writeToStream(stream);
     lengthOffset.writeToStream(stream);
 }
 
 /** Deserialize decoder from stream. */
 void HuffmanDecoder::readFromStream(istream& stream) {
-    BitSequenceArraySer::arrayFromStream(symbolTable, stream);
+    BitSequenceArraySerL::arrayFromStream(symbolTable, stream);
     firstCode.readFromStream(stream);
     lengthOffset.readFromStream(stream);
 }

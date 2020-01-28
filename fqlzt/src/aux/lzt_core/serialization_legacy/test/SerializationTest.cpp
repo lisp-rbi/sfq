@@ -8,7 +8,7 @@
 #include "util/utils.h"
 #include "util/TempFile.h"
 #include "util/constants.h"
-#include "serialization/BitSequenceArray.h"
+#include "serialization_legacy/BitSequenceArray.h"
 #include "../array/BitSequenceArraySer.h"
 
 SerializationTest::SerializationTest() {
@@ -122,7 +122,7 @@ void SerializationTest::testBitSequenceArray() {
 /** Generate BitSequenceArray of random sequences, serialze to file and check
  * it is equal to the read array. */
 void SerializationTest::serializeArrayOfRandomSeqs(size_t numOfSequences, int bitsPerSeq) {
-    BitSequenceArray array(numOfSequences, bitsPerSeq);
+    BitSequenceArrayL array(numOfSequences, bitsPerSeq);
     for (size_t i = 0; i < numOfSequences; ++i) {
         BitSequence bits;
         for (int j = 0; j < bitsPerSeq; ++j) {
@@ -135,12 +135,12 @@ void SerializationTest::serializeArrayOfRandomSeqs(size_t numOfSequences, int bi
     TempFile file;
     fstream stream(file.getName());
 
-    BitSequenceArraySer::arrayToStream(array, stream);
+    BitSequenceArraySerL::arrayToStream(array, stream);
     stream.close();
 
     stream.open(file.getName());
-    BitSequenceArray* arrayDeser = new BitSequenceArray;
-    BitSequenceArraySer::arrayFromStream(*arrayDeser, stream);
+    BitSequenceArrayL* arrayDeser = new BitSequenceArrayL;
+    BitSequenceArraySerL::arrayFromStream(*arrayDeser, stream);
 
     ostringstream ss;
     ss << "numOfSeq: " << array.getNumOfSequences()
