@@ -1,5 +1,5 @@
-#ifndef BITSEQUENCEARRAY_H
-#define	BITSEQUENCEARRAY_H
+#ifndef BITSEQUENCEARRAYLEGACY_H
+#define	BITSEQUENCEARRAYLEGACY_H
 
 #include <cstddef>
 
@@ -93,5 +93,5 @@ private:
     int bits;
 };
 
-#endif	/* BITSEQUENCEARRAY_H */
+#endif	/* BITSEQUENCEARRAYLEGACY_H */
 
