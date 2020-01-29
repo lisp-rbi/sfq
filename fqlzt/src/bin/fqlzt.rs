@@ -57,12 +57,76 @@ fn main (){
 
         },
         "c" => {
+
+            println!("I am here {}", cli.value_of("format").unwrap());
             let mut fdb = Fdb::new(
-                        cli.value_of("ftype").unwrap()
+                        cli.value_of("ftype").unwrap(),
+                        500 //MB
                     );
-            fdb.open(
+            fdb.load(
                         cli.value_of("input").unwrap(),
                     );
+
+            match cli.value_of("format").unwrap() {
+
+                "H(F,R,Fq,Rq)" => {
+
+                    // Get strings  : FXME -> enable revers complement returs
+
+                    let mut strings: Vec<Vec<u8>> = fdb.get(
+                                "H(F,R)",
+                                //rcR | rcF
+                            );
+
+
+                    let mut qualities: Vec<Vec<u8>> = fdb.get(
+                                "H(Fq,Rq)",
+                                //rFq | rRq
+                            );
+
+                    // Format output file
+                    let out_s = format!("{}.{}",cli.value_of("output").unwrap(),"seq.lzt");
+                    let out_q = format!("{}.{}",cli.value_of("output").unwrap(),"qual.lzt");
+
+
+                    let before = Instant::now();
+                    let mut lzt_s = FFI::new(
+                                &out_s,
+                                &mut strings[0]
+                            );
+                    lzt_s.drop();
+                    let mut lzt_q = FFI::new(
+                                &out_q,
+                                &mut qualities[0]
+                            );
+                    println!("Elapsed time: {:.2?}", before.elapsed());
+                    lzt_q.drop();
+
+                },
+                "Experimental" => {
+                    let mut strings: Vec<Vec<u8>> = fdb.get(
+                                cli.value_of("format").unwrap()
+                            );
+
+
+                    let out = format!("{}.{}",cli.value_of("output").unwrap(),"lzt");
+                    let before = Instant::now();
+                    let mut lzt = FFI::new(
+                                &out,
+                                &mut strings[0]
+                            );
+                    println!("Elapsed time: {:.2?}", before.elapsed());
+                    lzt.drop();
+                },
+                _ => {
+                    panic!("xxxx");
+                }
+
+            }
+
+
+
+/*
             match cli.value_of("format").unwrap() {
 
                 "H(F,R)" | "H(R,F)" => {
@@ -124,7 +188,7 @@ fn main (){
                 },
                 _ => {panic!("Format {} not supported!", cli.value_of("format").unwrap())}
             }
-
+*/
         },
         "d" => {
             println!("Decompressing...");
@@ -133,20 +197,24 @@ fn main (){
                         cli.value_of("input").unwrap(),
                     )
                     .query(
-                        "*"
-                    )
-                    .get();
+                        "@"
+                    );
+
+        for i in strings.iter(){
+            print!("{}", *i as char);
+        }
 
             let mut fdb = Fdb::new(
                         cli.value_of("ftype").unwrap(),
                     )
-                    .make(
+                    .format(
                         strings
                     )
                     .save(
                         cli.value_of("output").unwrap()
                     );
 */
+
         },
         _   => {panic!("Unknown action: --action \"{}\" ", cli.value_of("action").unwrap() )}
     }
