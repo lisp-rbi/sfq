@@ -59,12 +59,12 @@ pub trait Drop{
 }
 
 pub trait IO{
-    fn open(&mut self, path: &str) -> &mut Self;
+    fn load(&mut self, path: &str) -> &mut Self;
     fn save(path: &str) -> bool;
 }
 
 pub trait GetSet {
-    fn get(&mut self, format: &str)-> Vec<u8>;
+    fn get(&mut self, format: &str)-> Vec<Vec<u8>>;
     fn set(data: Vec<u8>)-> bool;
 }
 
@@ -140,12 +140,12 @@ impl FFI {
     }
 
 
-    pub fn open( path: String) -> Self {
+    pub fn open( path: &str) -> Self {
 
         unsafe {
             FFI {
                 raw:  open_lzt(
-                    path.as_bytes().to_vec().as_ptr(),
+                    path.as_ptr(),
                     path.len() as libc::c_int,
                 )
             }
@@ -153,31 +153,35 @@ impl FFI {
 
     }
 
-    pub fn query(&self, pattern: String)-> Vec<String> {
+    pub fn query(&self, pattern: &str)-> Vec<u8> {
 
-        let mut qres : Vec<String> = Vec::new();  // FXME: maybe avoid string -> for future
+        let mut qres : Vec<u8> = Vec::new();  // FXME: maybe avoid string -> for future
+
+        println!("{}", pattern.len());
 
          unsafe{
             let size = query_lzt(
                 self.raw,
-                pattern.as_bytes().to_vec().as_ptr(),
+                pattern.as_ptr(),
                 pattern.len() as libc::c_ulong,
             ) as usize;
+            println!("here");
 
-            let mut vec1d : Vec<u8> = vec![0u8;size];
+            qres = vec![0u8;size];
+            println!("here");
             get_query_results(
                 self.raw,
-                vec1d.as_mut_ptr()
+                qres.as_mut_ptr()
             );
-            {
+/*            {
                 let mut tmp : String = str::from_utf8(&vec1d).unwrap().to_string();
                 trim_nl(&mut tmp);
                 qres = Vec::from_iter(
                     tmp.split("\n").map(String::from)
                 );
             }
-
-        };
+*/
+        }
         qres
     }
 
@@ -205,10 +209,11 @@ pub struct Fdb {
     seq:  Vec<u8>,
     qual: Vec<u8>,
     head: Vec<u8>,
+    mem: usize
 }
 
 impl Fdb {
-    pub fn new (rtype: &str)-> Self{
+    pub fn new (rtype: &str, mem: usize)-> Self{
 
         let ftype : String   = match rtype {
             "fasta" | "fastq" | "raw" => rtype.to_string(),
@@ -220,32 +225,250 @@ impl Fdb {
             nrec: 0,
             seq: Vec::new(),
             qual: Vec::new(),
-            head: Vec::new()
+            head: Vec::new(),
+            mem: mem
         }
     }
 
-    fn sort(&self, hash: &mut FxHashMap<usize, Vec<usize>>, vec: &mut Vec<u8>) -> bool{
 
-        let mut st = String::from_utf8(vec.clone()).unwrap();
+    fn sort (&self, invec: &mut Vec<u8>) -> Vec<Vec<u8>>{
+
+        let mut v = String::from_utf8(invec.clone()).unwrap();
+        v.pop();
+        let vec: Vec<String> = v.split("\n").map(|s| s.to_string()).collect();
+
+        let mut ht = String::from_utf8(self.head.clone()).unwrap();
+        ht.pop();
+        let mut head: Vec<String> = ht.split("\n").map(|s| s.to_string()).collect();
+
+        for i in 0..vec.len() {
+            head[i].push('\t');
+            head[i].push_str(&vec[i]);
+        }
+
+        head.sort();
+
+        let lpm = self.mem*140;
+        let fractions  = ((head.len() as f64 / lpm as f64) as f64).ceil();
+        let mut memvec : Vec<Vec<u8>>  = vec![Vec::with_capacity(lpm as usize);fractions as usize];
+
+        let mut j=0;
+        let mut l=0;
+
+        for i in head.into_iter() {
+            l=l+1;
+            memvec[j].extend(i.as_bytes());
+            memvec[j].push(0u8);
+            //println!("line {} :  {:?}",j, memvec[j] );
+            if l == lpm{
+                j=j+1;
+                l=0;
+            }
+
+
+//            vecu8.extend(i.as_bytes());
+//            vecu8.push('\n' as u8);
+
+        }
+/*
+        for i in 0..vecu8.len(){
+            print!("{}", vecu8[i] as char);
+        }
+*/
+//        vecu8
+
+        memvec
+    }
+
+    fn isort(
+        &self,
+        ulist: &mut Vec<u8>,
+    ) -> bool{
+
+        let mut hash_prim : FxHashMap<usize, usize> = FxHashMap::default();
+        let mut hash_sec  : FxHashMap<usize, usize> = FxHashMap::default();
+       // if i can sort on u8 this is unnecessary
+        let mut st = String::from_utf8(self.seq.clone()).unwrap();
         st.pop();
         let seq: Vec<String> = st.split("\n").map(|s| s.to_string()).collect();
+
+        let mut qt = String::from_utf8(self.qual.clone()).unwrap();
+        qt.pop();
+        let qual: Vec<String> = qt.split("\n").map(|s| s.to_string()).collect();
+
         let mut ht = String::from_utf8(self.head.clone()).unwrap();
         ht.pop();
         let head: Vec<String> = ht.split("\n").map(|s| s.to_string()).collect();
-        let mut res : Vec<String> =  vec!["".to_string();seq.len()];
 
-        for i in 0..seq.len() {
-            res[i].push_str(&seq[i]);
-            res[i].push('\t');
-            res[i].push_str(&head[i].len().to_string());
-            res[i].push('\t');
-            res[i].push_str(&i.clone().to_string());
+
+        let mut vec : Vec<String> =  vec!["".to_string(); qual.len()];
+
+        for i in 0..qual.len() {
+            vec[i].push_str(&qual[i]);
+            vec[i].push('\t');
+            vec[i].push_str(&i.to_string());
         }
 
 
-        make_sort_idx(hash, &mut res);
+        vec.sort();
+        self.index_prim(ulist, &vec, &mut hash_prim, &mut hash_sec);
+
+        println!("{:?}",hash_prim);
+        println!("{:?}",hash_sec);
+
+        vec = vec!["".to_string(); seq.len()];
+
+        for i in 0..seq.len() {
+            vec[i].push_str(&seq[i]);
+            vec[i].push('\t');
+            vec[i].push_str(&i.to_string());
+        }
+
+
+        vec.sort();
+
+        self.index_sec (ulist, &vec, &hash_prim, &hash_sec);
+
+
+        //make_sort_idx(hash, &mut res);
 
         true
+    }
+
+    // move to sort index
+
+    fn index_prim(
+        &self,
+        ulist: &mut Vec<u8>,
+        vec: &Vec<String>,
+        hash_prim: &mut FxHashMap<usize, usize>,
+        hash_sec: &mut FxHashMap<usize, usize>,
+    ) {
+        let mut j = 0;
+        let mut c = 1;
+        let alpha = 25;
+        let poly = vec.len() as f64;
+        let mut pvec : Vec<String> =  vec[0].split("\t").map(|s| s.to_string()).collect();
+
+        for i in 1..vec.len() {
+            let cvec : Vec<String> = vec[i].split("\t").map(|s| s.to_string()).collect();
+
+            if cvec[0] != pvec[0] {
+
+                ulist.extend(make_hash_key(
+                    j,
+                    alpha,
+                    poly.log(alpha as f64).ceil() as usize
+                ).into_bytes());
+
+                ulist.push(b'\t');
+                ulist.extend(pvec[0].clone().into_bytes());
+                ulist.push(b'\t');
+                ulist.extend(c.to_string().into_bytes());
+                ulist.push(b'\n');
+
+                hash_prim.insert(pvec[1].parse::<usize>().unwrap(),j);
+
+                j = j+1;
+                c=1;
+
+            }else{
+                c = c+1;
+                hash_sec.insert(pvec[1].parse::<usize>().unwrap(),j);
+            }
+            pvec = cvec;
+        }
+
+        ulist.extend(pvec[0].clone().into_bytes());
+        ulist.push(b'\t');
+        ulist.extend(c.to_string().into_bytes());
+        ulist.push(b'\n');
+        hash_prim.insert(pvec[1].parse::<usize>().unwrap(),j);
+
+
+    }
+
+    fn index_sec(
+        &self,
+        ulist: &mut Vec<u8>,
+        vec: &Vec<String>,
+        hash_prim: &FxHashMap<usize, usize>,
+        hash_sec: &FxHashMap<usize, usize>,
+    ) {
+
+        let mut j = 0;
+        let mut c = 1;
+        println!("{}", vec[0]   );
+        let mut pvec : Vec<String> =  vec[0].split("\t").map(|s| s.to_string()).collect();
+        let mut idx  = "".to_string();
+
+        for i in 1..vec.len() {
+            println!("{}", vec[i]   );
+            let cvec : Vec<String> = vec[i].split("\t").map(|s| s.to_string()).collect();
+
+            if cvec[0] != pvec[0] {
+                println!("here {:?}",pvec[1].parse::<usize>());
+                if hash_prim.contains_key(&pvec[1].parse::<usize>().unwrap()) {
+                    ulist.extend(pvec[0].clone().into_bytes());
+                    ulist.push(b'\t');
+                    ulist.extend(c.to_string().into_bytes());
+                    ulist.push(b'\t');
+                    let d =  hash_prim.get(&pvec[1].parse::<usize>().unwrap()).unwrap();
+                    ulist.extend(d.to_string().into_bytes());
+                    ulist.extend(idx.clone().into_bytes());
+                    ulist.push(b'\n');
+                    idx="".to_string();
+                }else{
+                    println!("here else get sec: {}", pvec[1].parse::<usize>().unwrap());
+
+                    ulist.extend(pvec[0].clone().into_bytes());
+                    ulist.push(b'\t');
+                    ulist.extend(c.to_string().into_bytes());
+                    ulist.push(b'\t');
+                    let d =  hash_sec.get(&pvec[1].parse::<usize>().unwrap()).unwrap();
+                    ulist.extend(d.to_string().into_bytes());
+                    ulist.push(b'\n');
+
+                }
+                j=j+1;
+                c=1;
+            }else{
+                println!("here  eeee");
+                if hash_prim.contains_key(&pvec[1].parse::<usize>().unwrap()) {
+                    let d =  hash_prim.get(&pvec[1].parse::<usize>().unwrap()).unwrap();
+                    idx.push_str(",");
+                    idx.push_str(&d.to_string());
+
+                }
+                c= c+1;
+            }
+            pvec = cvec;
+        }
+
+        if hash_prim.contains_key(&pvec[1].parse::<usize>().unwrap()) {
+            ulist.extend(pvec[0].clone().into_bytes());
+            ulist.push(b'\t');
+            ulist.extend(c.to_string().into_bytes());
+            ulist.push(b'\t');
+            let d =  hash_prim.get(&pvec[1].parse::<usize>().unwrap()).unwrap();
+            ulist.extend(d.to_string().into_bytes());
+            ulist.extend(idx.clone().into_bytes());
+            ulist.push(b'\n');
+
+        }else{
+            println!("here else get sec: {}", pvec[1].parse::<usize>().unwrap());
+
+            ulist.extend(pvec[0].clone().into_bytes());
+            ulist.push(b'\t');
+            ulist.extend(c.to_string().into_bytes());
+            ulist.push(b'\t');
+            let d =  hash_sec.get(&pvec[1].parse::<usize>().unwrap()).unwrap();
+            ulist.extend(d.to_string().into_bytes());
+            ulist.push(b'\n');
+
+        }
+
+
     }
 
 
@@ -299,32 +522,52 @@ impl Fdb {
         vec.resize(tlen-1,  0x00);
         vec
     }
+/*
+    pub fn format(&mut self, data: Vec<u8>)-> &mut Self {
 
+        for i in data.into_iter() {
+
+        }
+        self
+    }
+*/
 
 }
 
 impl GetSet for Fdb {
-    fn get(&mut self, format: &str)-> Vec<u8>{
+    fn get(&mut self, format: &str)-> Vec<Vec<u8>>{
 
         let mut vec : Vec<u8> = Vec::new();
-        let mut hashmap : FxHashMap<usize, Vec<usize>> = FxHashMap::default();
+        let mut vec2d : Vec<Vec<u8>> = Vec::new();
+        //let mut hashmap : FxHashMap<usize, Vec<usize>> = FxHashMap::default();
 
         match format {
             "H+F+R+Fq+Rq" => {
                 panic!("Not implemented");
             },
+            "Experimental" => {
+
+                //let mut ulist : Vec<u8> = Vec::new();
+
+                self.isort(&mut vec);
+//                self.sort(&mut hash_prim, &mut hash_sec, &mut ulist, &mut self.qual.clone());
+
+                for i in vec.iter(){
+                    print!("{}", *i as char);
+                }
+            },
+
             "H(F,R)" => {
 
-                self.sort(&mut hashmap, &mut self.seq.clone());
-                vec = self.make_cvec(&mut self.seq.clone(),hashmap);
+                vec2d = self.sort(&mut self.seq.clone());
 
             },
             "H(Fq,Rq)" => {
 
-                self.sort(&mut hashmap, &mut self.qual.clone());
-                vec = self.make_cvec(&mut self.qual.clone(),hashmap);
+                vec2d = self.sort(&mut self.qual.clone());
 
             },
+
             "H(F+Fq,R+Rq)" =>{
                 panic!("Not implemented");
             },
@@ -334,7 +577,7 @@ impl GetSet for Fdb {
         }
 
         //println!("{:?}", String::from_utf8_lossy(&vec));
-        vec
+        vec2d
     }
 
     fn set (data: Vec<u8>)-> bool {
@@ -344,7 +587,7 @@ impl GetSet for Fdb {
 
 
 impl IO for Fdb {
-    fn open(&mut self, file: &str) -> &mut Self{
+    fn load(&mut self, file: &str) -> &mut Self{
 
         // make reader
         let reader = make_reader(file);

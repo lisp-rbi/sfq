@@ -4,9 +4,9 @@
 #include <cstddef>
 #include <iostream>
 
-#include "../../../serialization/BitSequenceArray.h"
-#include "../../../serialization/BitSequence.h"
-#include "../../../serialization/IntBitArray.h"
+#include "../../../serialization_legacy/BitSequenceArray.h"
+#include "../../../serialization_legacy/BitSequence.h"
+#include "../../../serialization_legacy/IntBitArray.h"
 
 class HuffmanCodecCreator;
 class HuffmanTest;
@@ -44,7 +44,7 @@ private:
      * codes are of given length, indexes are zero based. */
     IntBitArray<size_t> lengthOffset;
 
-    BitSequenceArray symbolTable;
+    BitSequenceArrayL symbolTable;
 
     // indicated if end of symbol code was reached for last processed bit
     bool endOfCode;

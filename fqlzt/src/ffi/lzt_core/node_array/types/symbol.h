@@ -3,6 +3,6 @@
 
 /** File that includes all available symbol definitions */
 
-#include "symbol/char/char_symbol.h"
+#include "./symbol/char/char_symbol.h"
 
 #endif	/* SYMBOL_H */

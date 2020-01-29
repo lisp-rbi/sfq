@@ -10,13 +10,13 @@
 #include "WordPair.h"
 #include "dictionary/char_trie/Trie.h"
 #include "node_array/vector_array/VectorArray.h"
-#include "node_array/compact_array/CompactArray.h"
-#include "node_array/compact_array/CompactArrayCreator.h"
+#include "node_array/compact_array_legacy/CompactArray.h"
+#include "node_array/compact_array_legacy/CompactArrayCreator.h"
 #include "compress/lz_compressor/LzCompressor.h"
 #include "dictionary/lztrie_dict/HuffmanMapCreator.h"
 #include "dictionary/lztrie_dict/HuffmanIndexMap.h"
 #include "util/WordComparator.h"
-#include "serialization/BitVector.h"
+#include "serialization_legacy/BitVector.h"
 #include "util/utils.h"
 #include "compress/sa_compressor/LCPTreeCompressor.hpp"
 
@@ -35,7 +35,7 @@ public:
 private:
 
     typedef VectorArray<TSymbol, TIndex> TNodeArray;
-    typedef CompactArray<TSymbol, TIndex> TCompactArray;
+    typedef CompactArrayL<TSymbol, TIndex> TCompactArray;
 
     // dictionary being created
     LzTrieDict<TSymbol, TIndex>* dict;
@@ -111,8 +111,8 @@ void LzTrieDictCreator<TSymbol, TIndex>::createIndex(const bool first, bool old)
     if (old) lzCompressor.compressArray(*array);
     else lcptCompressor.compressArray(*array);
 
-    CompactArrayCreator<TNodeArray> compacter(*array);
-    CompactArray<TSymbol, TIndex>* compactArray = compacter.createCompactArray();
+    CompactArrayCreatorL<TNodeArray> compacter(*array);
+    CompactArrayL<TSymbol, TIndex>* compactArray = compacter.createCompactArray();
 
     delete array;
 

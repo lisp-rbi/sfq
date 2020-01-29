@@ -94,6 +94,15 @@ pub(crate) fn parse_cli ()->  clap::ArgMatches<'static> {
                .help("Moemory mode: defines memory sparsity level [0- low,5- high]")
                .takes_value(true))
 
+          .arg(Arg::with_name("max-mem")
+               .short("M")
+               .long("max-memory-used")
+               .default_value("3600")
+               .required(true)
+               .value_name("3600")
+               .help("Max Memory to be used [in MB]")
+               .takes_value(true))
+
           .arg(Arg::with_name("list")
                .short("l")
                .long("list")

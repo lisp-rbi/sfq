@@ -6,7 +6,7 @@
 #include <string>
 #include <iostream>
 
-#include "../ILexicon.h"
+#include "../../dictionary/ILexicon.h"
 #include "../../node_array/vector_array/VectorArray.h"
 #include "../../node_array/types/symbol.h"
 #include "../../node_array/na_utils.h"
@@ -117,10 +117,8 @@ private:
 // ********************* IMPLEMENTATION ********************* //
 
 template <typename TNodeArray>
-/// capacity = 0
-Trie<TNodeArray>::Trie(TIndex capacity, bool enumerated) :
-    nodes( *(new TNodeArray(capacity, enumerated)) ), nodesExported(false) {
-
+Trie<TNodeArray>::Trie(TIndex capacity , bool enumerated) :
+    nodes( *(new TNodeArray( (capacity)?(capacity):(0), enumerated)) ), nodesExported(false) {
     //TODO init nodes-a
 }
 

@@ -1,7 +1,7 @@
 #ifndef HUFFMANCODE_H
 #define	HUFFMANCODE_H
 
-#include "../../../serialization/BitSequence.h"
+#include "../../../serialization_legacy/BitSequence.h"
 
 /** Simple structure representing huffman code of a symbol.
  * Bits of a code are stored at positions 0,..,length-1 , value

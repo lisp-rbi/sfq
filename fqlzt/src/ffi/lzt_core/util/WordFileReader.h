@@ -7,10 +7,9 @@
 #include <cstddef>
 #include <iostream>
 
-///#include "../node_array/types/symbol.h"
-#include "../node_array/types/symbol/char/char_symbol.h"
+#include "../node_array/types/symbol.h"
 #include "../dictionary/util/WordList.h"
-#include "./utils.h"
+#include "utils.h"
 
 #include "IteratorDictString.h"
 

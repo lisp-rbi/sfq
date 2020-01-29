@@ -9,13 +9,13 @@
 #include <sys/stat.h>
 
 #include "dictionary/lztrie_dict/huffman/utest/HuffmanTest.h"
-#include "serialization/test/BitVectorTest.h"
-#include "serialization/BitVector.h"
-#include "serialization/test/BitSequenceArrayTest.h"
+#include "serialization_legacy/test/BitVectorTest.h"
+#include "serialization_legacy/BitVector.h"
+#include "serialization_legacy/test/BitSequenceArrayTest.h"
 #include "dictionary/lztrie_dict/HuffmanMapCreator.h"
-#include "serialization/test/BitSequenceTest.h"
+#include "serialization_legacy/test/BitSequenceTest.h"
 #include "dictionary/lztrie_dict/utest/HuffmanIndexMapTest.h"
-#include "serialization/test/IntBitArrayTest.h"
+#include "serialization_legacy/test/IntBitArrayTest.h"
 #include "dictionary/lz_trie/LzTrieIterator.h"
 #include "node_array/vector_array/VectorArray.h"
 #include "dictionary/lz_trie/test/LzTrieTest.h"

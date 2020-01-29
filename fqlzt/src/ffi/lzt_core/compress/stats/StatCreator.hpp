@@ -24,9 +24,9 @@
 #include "compress/CompressorFactory.hpp"
 #include "compress/lz_compressor/LzCompressor.h"
 #include "compress/sa_compressor/SaCompressor.hpp"
-#include "node_array/compact_array/CompactArray.h"
-#include "node_array/compact_array/CompactArrayCreator.h"
-#include "serialization/array/CompactArraySerializer.h"
+#include "node_array/compact_array_legacy/CompactArray.h"
+#include "node_array/compact_array_legacy/CompactArrayCreator.h"
+#include "serialization_legacy/array/CompactArraySerializer.h"
 #include "node_array/na_utils.h"
 #include "node_array/util/CmmExporter.h"
 #include "util/etimer.h"
@@ -180,8 +180,8 @@ void StatCreator<TNodeArray>::makeStats(string algoDescs, string inFolder, strin
             
             TNodeArray* nodes = (*ait)->compressWords(inFolder + file);            
             startEvent("bit_packing");
-            CompactArrayCreator<TNodeArray> compacter(*nodes);
-            CompactArray<TSymbol, TIndex>* carray =  compacter.createCompactArray();       
+            CompactArrayCreatorL<TNodeArray> compacter(*nodes);
+            CompactArrayL<TSymbol, TIndex>* carray =  compacter.createCompactArray();       
             endEvent("bit_packing");            
             delete carray;
             
@@ -381,8 +381,8 @@ vector<ICompressor<TNodeArray>* > StatCreator<TNodeArray>::createLpfOnly() {
 /** Get size of the node array serialized to file. */
 template <typename TNodeArray>
 size_t StatCreator<TNodeArray>::getSerializedSize(TNodeArray* nodes) {
-    CompactArrayCreator<TNodeArray> compactCreator(*nodes);
-    CompactArray<TSymbol, TIndex>* compactArray = compactCreator.createCompactArray();
+    CompactArrayCreatorL<TNodeArray> compactCreator(*nodes);
+    CompactArrayL<TSymbol, TIndex>* compactArray = compactCreator.createCompactArray();
 
     TempFile file;
 
