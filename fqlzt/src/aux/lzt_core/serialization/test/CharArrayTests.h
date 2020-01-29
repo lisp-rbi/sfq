@@ -9,8 +9,7 @@ using namespace std;
 template <typename TCharArray>
 class CharArrayTests {
 public:
-    CharArrayTests();
-    void test1();
+    CharArrayTests();    
     void basicInterfaceTest();
     virtual ~CharArrayTests();
 private:
@@ -19,11 +18,6 @@ private:
 
 template <typename TCharArray>
 CharArrayTests<TCharArray>::CharArrayTests() {
-}
-
-template <typename TCharArray>
-void CharArrayTests<TCharArray>::test1() { 
-    cout<<"char array test1"<<endl;
 }
 
 template <typename TCharArray>
