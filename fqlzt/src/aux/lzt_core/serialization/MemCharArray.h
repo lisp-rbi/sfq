@@ -26,5 +26,9 @@ private:
 
 };
 
+inline char& MemCharArray::operator[](size_t i) {    
+    return blocks[i];
+}
+
 #endif /* MEMCHARARRAY_H */
 

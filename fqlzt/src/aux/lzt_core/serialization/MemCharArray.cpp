@@ -2,10 +2,6 @@
 
 MemCharArray::MemCharArray(): numOfBlocks(0), blocks(NULL) { }
 
-char& MemCharArray::operator[](size_t i) {    
-    return blocks[i];
-}
-
 bool MemCharArray::allocate(size_t size) {
     blocks = (char *)malloc(size);    
     return blocks != NULL;
