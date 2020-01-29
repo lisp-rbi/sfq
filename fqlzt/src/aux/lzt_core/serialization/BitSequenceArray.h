@@ -16,6 +16,7 @@ class  BitSequenceArray {
 public:
 
     BitSequenceArray();
+    BitSequenceArray(TCharArray* charArray);
     BitSequenceArray(size_t size, int bitsPerSequence);
     BitSequenceArray(const BitSequenceArray& orig);
     BitSequenceArray& operator=(const BitSequenceArray& rhs);
@@ -26,10 +27,11 @@ public:
     void resize(size_t newSize);
     void setSequence(size_t i, BitSequence seq);
     char const * getBlocks() const;
-    size_t getNumOfBlocks() const;
+    size_t getNumOfBlocks() const;    
 
     size_t getNumOfSequences() const;
     size_t getSequenceSize() const;
+    TCharArray* exportCharArray();
 
     // Friend so that it can serialzie/deserialze the array
     // friend class BitSequenceArraySerL;
@@ -42,11 +44,13 @@ private:
     static int const BLOCK_SIZE = sizeof(char);
     static char const ONE = 1;
 
-    size_t numOfBlocks;
-    size_t numOfSequences;
-    size_t bitsPerSequence;
+    size_t numOfBlocks = 0;
+    size_t numOfSequences = 0;
+    size_t bitsPerSequence = 0;
 
-    char *blocks;
+    char *blocks = NULL;
+    TCharArray* charArray;
+    bool carrayExported = false;
 
     void nullArray();
 
@@ -76,47 +80,17 @@ inline BitSequence BitSequenceArray<TCharArray>::operator[](size_t index) const 
     return seq;
 }
 
-template <typename TCharArray>
-inline size_t BitSequenceArray<TCharArray>::getNumOfSequences() const {
-    return numOfSequences;
-}
-
-template <typename TCharArray>
-inline size_t BitSequenceArray<TCharArray>::getSequenceSize() const {
-    return bitsPerSequence;
-}
-
-/** Hash map-set equality function, two indexes are equal iff
- * they point to equal sequences in a BitSequenceArray. */
-template <typename TCharArray>
-class BSAEquals {
-public:
-    BSAEquals(const BitSequenceArray<TCharArray>& a);
-    inline bool operator()(size_t i1, size_t i2) const;
-private:
-    const BitSequenceArray<TCharArray>& array;
-    int bits;
-};
-
-template <typename TCharArray>
-BSAEquals<TCharArray>::BSAEquals(const BitSequenceArray<TCharArray>& a): array(a) {
-    bits = array.getSequenceSize();
-}
-
-template <typename TCharArray>
-bool BSAEquals<TCharArray>::operator()(size_t i1, size_t i2) const {
-    return array[i1].equals(array[i2], bits);
-}
-
 /** Create empty array. */
 template <typename TCharArray>
-BitSequenceArray<TCharArray>::BitSequenceArray()
-: bitsPerSequence(0), numOfSequences(0), numOfBlocks(0), blocks(NULL) {
-
+BitSequenceArray<TCharArray>::BitSequenceArray() { 
+    charArray = new TCharArray();     
 }
 
 template <typename TCharArray>
-BitSequenceArray<TCharArray>::BitSequenceArray(size_t size, int bitsPerSeq): blocks(NULL) {
+BitSequenceArray<TCharArray>::BitSequenceArray(TCharArray* carray): charArray(carray), carrayExported(true) {}
+
+template <typename TCharArray>
+BitSequenceArray<TCharArray>::BitSequenceArray(size_t size, int bitsPerSeq) {
     changeFormat(size, bitsPerSeq);
 }
 
@@ -127,6 +101,28 @@ BitSequenceArray<TCharArray>::BitSequenceArray(const BitSequenceArray& src)
     freeBlocks();
     allocateBlocks();
     for (size_t i = 0; i < numOfBlocks; ++i) blocks[i] = src.blocks[i];
+}
+
+template <typename TCharArray>
+BitSequenceArray<TCharArray>::~BitSequenceArray() {
+    // ! carrayExported
+    freeBlocks();
+}
+
+template <typename TCharArray>
+inline size_t BitSequenceArray<TCharArray>::getNumOfSequences() const {
+    return numOfSequences;
+}
+
+template <typename TCharArray>
+inline size_t BitSequenceArray<TCharArray>::getSequenceSize() const {
+    return bitsPerSequence;
+}
+
+template <typename TCharArray>
+TCharArray* BitSequenceArray<TCharArray>::exportCharArray() {
+    carrayExported = true;
+    return charArray;
 }
 
 /** Resize the array so that it can store newSize sequences, keeping the
@@ -164,11 +160,6 @@ BitSequenceArray<TCharArray>& BitSequenceArray<TCharArray>::operator=(const BitS
     for (size_t i = 0; i < numOfBlocks; ++i) blocks[i] = rhs.blocks[i];
 
     return *this;
-}
-
-template <typename TCharArray>
-BitSequenceArray<TCharArray>::~BitSequenceArray() {
-    freeBlocks();
 }
 
 /** Reallocate memory for numOfBlocks blocks. */
