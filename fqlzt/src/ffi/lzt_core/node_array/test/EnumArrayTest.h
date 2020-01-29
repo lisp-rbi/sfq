@@ -9,9 +9,9 @@
 #include "util/WordFileReader.h"
 #include "debug/lzt_test.h"
 #include "util/TempFile.h"
-#include "serialization/array/CompactArraySerializer.h"
-#include "node_array/compact_array/CompactArray.h"
-#include "node_array/compact_array/CompactArrayCreator.h"
+#include "serialization_legacy/array/CompactArraySerializer.h"
+#include "node_array/compact_array_legacy/CompactArray.h"
+#include "node_array/compact_array_legacy/CompactArrayCreator.h"
 
 /** Test correct performance of algorithms with classes implementing
  * enumerated array concept. */
@@ -81,7 +81,7 @@ template <typename TNodeArray>
 void EnumArrayTester<TNodeArray>::testSerialization() {
     for (int i = 0; i < numOfDicts; ++i) {
         WordList<TSymbol>* words = getWords(i);
-        CompactArray<TSymbol, TIndex>* carray = getCompactedLzArray<TNodeArray>(*words, true);
+        CompactArrayL<TSymbol, TIndex>* carray = getCompactedLzArray<TNodeArray>(*words, true);
 
         TempFile file;
 
@@ -91,7 +91,7 @@ void EnumArrayTester<TNodeArray>::testSerialization() {
         stream.close();
 
         stream.open(file.getName());
-        CompactArray<TSymbol, TIndex>* carrayDeser = ser.arrayFromStream(stream);
+        CompactArrayL<TSymbol, TIndex>* carrayDeser = ser.arrayFromStream(stream);
         stream.close();
 
         stringstream m; m << "array size: " << carray->getSize()

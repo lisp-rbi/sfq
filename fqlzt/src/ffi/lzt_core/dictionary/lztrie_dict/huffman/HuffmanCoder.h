@@ -4,7 +4,7 @@
 #include <cstddef>
 
 #include "HuffmanCode.h"
-#include "../../../serialization/BitSequence.h"
+#include "../../../serialization_legacy/BitSequence.h"
 
 class HuffmanCodecCreator;
 

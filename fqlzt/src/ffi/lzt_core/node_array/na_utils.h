@@ -6,7 +6,7 @@
 #include <vector>
 #include <cassert>
 
-#include "./types/symbol.h"
+#include "types/symbol.h"
 #include "../dictionary/lz_trie/LzTrieIterator.h"
 
 using namespace std;

@@ -4,7 +4,7 @@
 #include <algorithm>
 
 #include "CharStringSA.h"
-//#include "debug/StackTrace.h"
+#include "../debug/StackTrace.h"
 
 CharStringSA::CharStringSA(const char* s) {
     // set str = s + '$'

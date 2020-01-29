@@ -7,10 +7,10 @@
 #include <cassert>
 #include <iostream>
 
-#include "serialization/serialization.h"
-#include "serialization/BitVector.h"
-#include "serialization/BitSequenceArray.h"
-#include "serialization/BitSequence.h"
+#include "serialization_legacy/serialization.h"
+#include "serialization_legacy/BitVector.h"
+#include "serialization_legacy/BitSequenceArray.h"
+#include "serialization_legacy/BitSequence.h"
 
 #include "huffman/HuffmanCodecCreator.h"
 #include "huffman/HuffmanCoder.h"
@@ -63,7 +63,7 @@ private:
 
     static const int INIT_DIFF_SIZE = 100;
     // array of index difference codes
-    BitSequenceArray diff;
+    BitSequenceArrayL diff;
     // number of distinct difference code
     size_t diffCount;
     /* Mapping of differences (indexes of bit-coded differences

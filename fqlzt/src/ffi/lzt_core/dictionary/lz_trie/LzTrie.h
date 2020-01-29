@@ -117,11 +117,10 @@ bool LzTrie<TNodeArray>::containsWord(TSymbol const * word) {
 
 /** Get list of all words in the trie with prefix word. */
 template <typename TNodeArray> WordList<typename TNodeArray::Symbol>*
-
-/// RB long maxWords=0, bool diag=false
 LzTrie<TNodeArray>::getWordsByPrefix(TSymbol const * word, long maxWords, bool diag) {
     // find a node whose subtree contains the suffixes
-    this->diag = diag; this->maxWords = maxWords;
+    this->diag = (diag) ? (diag) :(false); 
+    this->maxWords = (maxWords) ? (maxWords) : (0);
     searchWord(word);
     if (diag) cout<<"searchWord completed for word: ["<<word<<"]"<<endl;
     bool prefixEmpty = (word[0] == zeroSymbol<TSymbol>());
