@@ -26,8 +26,6 @@ public:
     void changeFormat(size_t size, int bitsPerSequence);
     void resize(size_t newSize);
     void setSequence(size_t i, BitSequence seq);
-    char const * getBlocks() const;
-    size_t getNumOfBlocks() const;    
 
     size_t getNumOfSequences() const;
     size_t getSequenceSize() const;
@@ -38,9 +36,6 @@ public:
 
 private:
 
-    void allocateBlocks();
-    void freeBlocks();
-
     static int const BLOCK_SIZE = sizeof(char);
     static char const ONE = 1;
 
@@ -48,11 +43,9 @@ private:
     size_t numOfSequences = 0;
     size_t bitsPerSequence = 0;
 
-    char *blocks = NULL;
+    // char *blocks = NULL;
     TCharArray* charArray;
     bool carrayExported = false;
-
-    void nullArray();
 
 };
 
@@ -64,12 +57,12 @@ inline BitSequence BitSequenceArray<TCharArray>::operator[](size_t index) const 
     BitSequence seq;
     // pointer to the first bit of the i-th stored sequence
     BitPointer bp(1, index * bitsPerSequence);
-    char block = blocks[bp.blockIndex];
+    char block = (*charArray)[bp.blockIndex]; // blocks[bp.blockIndex];
 
     for (int i = 0; i < bitsPerSequence; ++i) {
         // if increment advanced to the next block, get it
         if (bp.bitIndex == 0)
-            block = blocks[bp.blockIndex];
+            block =  (*charArray)[bp.blockIndex]; // blocks[bp.blockIndex];
 
         bool bit = (bool)(block & (ONE << bp.bitIndex));
         seq.setBit(i, bit);
@@ -98,15 +91,16 @@ template <typename TCharArray>
 BitSequenceArray<TCharArray>::BitSequenceArray(const BitSequenceArray& src)
 : numOfBlocks(src.numOfBlocks), numOfSequences(src.numOfSequences),
   bitsPerSequence(src.bitsPerSequence) {
-    freeBlocks();
-    allocateBlocks();
-    for (size_t i = 0; i < numOfBlocks; ++i) blocks[i] = src.blocks[i];
+    charArray->freeMemory(); // freeBlocks();
+    charArray->allocate(numOfBlocks); // allocateBlocks();
+    for (size_t i = 0; i < numOfBlocks; ++i) 
+        (*charArray)[i] = (*src.charArray)[i]; // blocks[i] = src.blocks[i];
 }
 
 template <typename TCharArray>
-BitSequenceArray<TCharArray>::~BitSequenceArray() {
-    // ! carrayExported
-    freeBlocks();
+BitSequenceArray<TCharArray>::~BitSequenceArray() {    
+    // freeBlocks();
+    if (carrayExported == false) charArray->freeMemory();
 }
 
 template <typename TCharArray>
@@ -132,7 +126,8 @@ void BitSequenceArray<TCharArray>::resize(size_t newSize) {
     numOfSequences = newSize;
     size_t numOfBits = numOfSequences * bitsPerSequence;
     numOfBlocks = numberOfBlocks(numOfBits, BLOCK_SIZE);
-    blocks = (char *)realloc(blocks, numOfBlocks);
+    charArray->resize(numOfBlocks);
+    // blocks = (char *)realloc(blocks, numOfBlocks);
 }
 
 /** Change size and/or bitsPerSequence to new values, reallocating if
@@ -140,11 +135,11 @@ void BitSequenceArray<TCharArray>::resize(size_t newSize) {
  * else the array is just resized. */
 template <typename TCharArray>
 void BitSequenceArray<TCharArray>::changeFormat(size_t size, int bitsPerSeq) {
-    freeBlocks();
+    charArray->freeMemory(); // freeBlocks();
     bitsPerSequence = bitsPerSeq; numOfSequences = size;
     size_t numOfBits = numOfSequences * bitsPerSequence;
     numOfBlocks = numberOfBlocks(numOfBits, BLOCK_SIZE);
-    allocateBlocks();
+    charArray->allocate(numOfBlocks); // allocateBlocks();
 }
 
 template <typename TCharArray>
@@ -155,33 +150,12 @@ BitSequenceArray<TCharArray>& BitSequenceArray<TCharArray>::operator=(const BitS
     numOfSequences = rhs.numOfSequences;
     bitsPerSequence = rhs.bitsPerSequence;
 
-    freeBlocks();
-    allocateBlocks();
-    for (size_t i = 0; i < numOfBlocks; ++i) blocks[i] = rhs.blocks[i];
+    charArray->freeMemory(); // freeBlocks();
+    charArray->allocate(numOfBlocks); // allocateBlocks();
+    for (size_t i = 0; i < numOfBlocks; ++i) 
+        (*charArray)[i] = (*rhs.charArray)[i]; // blocks[i] = rhs.blocks[i];
 
     return *this;
-}
-
-/** Reallocate memory for numOfBlocks blocks. */
-template <typename TCharArray>
-void BitSequenceArray<TCharArray>::allocateBlocks() {
-    blocks = (char *)malloc(numOfBlocks);
-}
-
-/** Free blocks memory. */
-template <typename TCharArray>
-void BitSequenceArray<TCharArray>::freeBlocks() {
- if (blocks != NULL) {
-     free(blocks);
-     blocks = NULL;
- }
-}
-
-/** Set all bits in the array to 0. */
-template <typename TCharArray>
-void BitSequenceArray<TCharArray>::nullArray() {
-    for (size_t i = 0; i < numOfBlocks; ++i)
-        blocks[i] = zeroBits<char>();    
 }
 
 /** Set i-th bit sequence to seq, i is zero-based. */
@@ -194,22 +168,14 @@ void BitSequenceArray<TCharArray>::setSequence(size_t index, BitSequence seq) {
         bool bit = seq[i];
         
         if (bit)
-            blocks[bp.blockIndex] |= (ONE << bp.bitIndex);
+            (*charArray)[bp.blockIndex] |= (ONE << bp.bitIndex);
+            // blocks[bp.blockIndex] |= (ONE << bp.bitIndex);
         else
-            blocks[bp.blockIndex] &= ~(ONE << bp.bitIndex);
+            (*charArray)[bp.blockIndex] &= ~(ONE << bp.bitIndex);
+            // blocks[bp.blockIndex] &= ~(ONE << bp.bitIndex);
 
         bp.increment();
     }
-}
-
-template <typename TCharArray>
-char const * BitSequenceArray<TCharArray>::getBlocks() const {
-    return blocks;
-}
-
-template <typename TCharArray>
-size_t BitSequenceArray<TCharArray>::getNumOfBlocks() const {
-    return numOfBlocks;
 }
 
 #endif	/* BITSEQUENCEARRAY_H */
