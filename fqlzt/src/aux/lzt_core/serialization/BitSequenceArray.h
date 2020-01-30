@@ -83,7 +83,7 @@ template <typename TCharArray>
 BitSequenceArray<TCharArray>::BitSequenceArray(TCharArray* carray): charArray(carray), carrayExported(true) {}
 
 template <typename TCharArray>
-BitSequenceArray<TCharArray>::BitSequenceArray(size_t size, int bitsPerSeq) {
+BitSequenceArray<TCharArray>::BitSequenceArray(size_t size, int bitsPerSeq): BitSequenceArray() {
     changeFormat(size, bitsPerSeq);
 }
 

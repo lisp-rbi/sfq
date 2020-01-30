@@ -26,5 +26,8 @@ void memArrayTests() {
 void bitSeqArrayTests() {
     cout<<"BIT SEQUENCE ARRAY TESTS..."<<endl;
     BitSequenceArrayTest<BitSequenceArray<MemCharArray> > bsaTest;
-    bsaTest.basicTest();
+    // bsaTest.basicTest();
+    bsaTest.testAccess();
+    bsaTest.testChangeFormat();
+    bsaTest.testResize();
 }
