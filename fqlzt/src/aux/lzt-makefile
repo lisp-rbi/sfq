@@ -53,7 +53,8 @@ OBJECT_FILES =  \
 	$(BUILD_FOLDER)/TestException.o \
 	$(BUILD_FOLDER)/StackTrace.o \
 	$(BUILD_FOLDER)/CharStringSA.o \
-	$(BUILD_FOLDER)/MemCharArray.o
+	$(BUILD_FOLDER)/MemCharArray.o \
+	$(BUILD_FOLDER)/DiskCharArray.o
 	
 # COMPILER AND LOADER PARAMS
 # TODO: better separate compile and link options (remove unnecessary for each)
@@ -251,6 +252,9 @@ $(BUILD_FOLDER)/CharStringSA.o: $(BUILD_FOLDER) lzt_core/suffix_array/CharString
 		
 $(BUILD_FOLDER)/MemCharArray.o: $(BUILD_FOLDER) lzt_core/serialization/MemCharArray.cpp
 	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/serialization/MemCharArray.cpp
+	
+$(BUILD_FOLDER)/DiskCharArray.o: $(BUILD_FOLDER) lzt_core/serialization/DiskCharArray.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/serialization/DiskCharArray.cpp
 	
 #### Clean target deletes all generated files ####
 clean:
