@@ -30,13 +30,14 @@ public:
     friend class DiskArrayChar;
         
 private:
-    size_t numOfBlocks;
-    char *blocks;
+    size_t numOfBlocks;    
     FILE *file;
+    char *iobuffer; // handled by openFile/closeFile methods
     string fname;
     bool fileOpened;    
     
     static const bool DEBUG = false;
+    static const size_t BUFFER_SIZE = 1024; // if set to 0, no buffering is used
     
     bool closeFile();
     bool openFile();

@@ -33,6 +33,7 @@ void DiskCharArray::writeCharacter(size_t i, char ch) {
 /** Close the file pointed to by this.fname */
 bool DiskCharArray::closeFile() {    
     bool res = fclose(file) == 0;
+    if (iobuffer != NULL) delete [] iobuffer;
     if (DEBUG) cout<<"closeFile()"<<" fname="<<fname<<" res="<<res<<endl;
     return res;
 }
@@ -45,6 +46,16 @@ bool DiskCharArray::openFile() {
     }
     file = fopen(fname.c_str(), "r+b");
     bool res = file != NULL;
+    if (res) { // setup buffering
+        if (BUFFER_SIZE > 0) {
+            iobuffer = new char[BUFFER_SIZE];
+            setvbuf(file, iobuffer, _IOFBF, BUFFER_SIZE);
+        }
+        else {
+            iobuffer = NULL;
+            setvbuf(file, NULL, _IONBF, 0); // no buffering
+        }
+    } else iobuffer = NULL;
     if (DEBUG) cout<<"openFile()"<<" fname="<<fname<<" res="<<res<<endl;
     return res;
 }
@@ -86,6 +97,7 @@ bool DiskCharArray::deleteFile() {
 /** Create file with a rnd filename, and use the file for this object's storage. */
 void DiskCharArray::bindToRandomFile() {
     // TODO return value
+    //string name = "/datafast/tmp/fastalzt/file_" + getRandomString(); // SSD
     string name = "file_" + getRandomString();
     name += ".tmp";
     fname = name;
