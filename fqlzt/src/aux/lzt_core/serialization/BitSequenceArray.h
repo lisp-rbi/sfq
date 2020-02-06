@@ -101,6 +101,7 @@ template <typename TCharArray>
 BitSequenceArray<TCharArray>::~BitSequenceArray() {    
     // freeBlocks();
     if (carrayExported == false) charArray->freeMemory();
+    delete charArray;
 }
 
 template <typename TCharArray>
