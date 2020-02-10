@@ -1,5 +1,5 @@
-#ifndef COMPACTSYMBOLARRAY_H
-#define	COMPACTSYMBOLARRAY_H
+#ifndef COMPACTSYMBOLARRAYLEGACY_H
+#define	COMPACTSYMBOLARRAYLEGACY_H
 
 #include <cstddef>
 #include <map>
@@ -115,5 +115,5 @@ void CompactSymbolArrayL<TSymbol>::createFromArray(TSymbol const * symbols, size
     
 }
 
-#endif	/* COMPACTSYMBOLARRAY_H */
+#endif	/* COMPACTSYMBOLARRAYLEGACY_H */
 
