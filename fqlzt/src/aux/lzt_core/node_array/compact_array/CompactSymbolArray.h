@@ -42,41 +42,41 @@ private:
 
 };
 
-template <typename TSymbol>
-CompactSymbolArray<TSymbol>::CompactSymbolArray()
+template <typename TSymbol, typename TBitSequenceArray>
+CompactSymbolArray<TSymbol, TBitSequenceArray>::CompactSymbolArray()
 : numOfDistinct(0), numOfSymbols(0), symbolTable(NULL) {}
 
-template <typename TSymbol>
-CompactSymbolArray<TSymbol>::CompactSymbolArray(TSymbol const * symbols, size_t numOfSymbols)
+template <typename TSymbol, typename TBitSequenceArray>
+CompactSymbolArray<TSymbol, TBitSequenceArray>::CompactSymbolArray(TSymbol const * symbols, size_t numOfSymbols)
 : symbolTable(NULL) {
     createFromArray(symbols, numOfSymbols);
 }
 
-template <typename TSymbol>
-CompactSymbolArray<TSymbol>::~CompactSymbolArray() {
+template <typename TSymbol, typename TBitSequenceArray>
+CompactSymbolArray<TSymbol, TBitSequenceArray>::~CompactSymbolArray() {
     freeTable();
 }
 
-template <typename TSymbol>
-void CompactSymbolArray<TSymbol>::freeTable() {
+template <typename TSymbol, typename TBitSequenceArray>
+void CompactSymbolArray<TSymbol, TBitSequenceArray>::freeTable() {
     if (symbolTable != NULL) delete [] symbolTable;
 }
 
-template <typename TSymbol>
-inline TSymbol CompactSymbolArray<TSymbol>::operator[](size_t i) const {
+template <typename TSymbol, typename TBitSequenceArray>
+inline TSymbol CompactSymbolArray<TSymbol, TBitSequenceArray>::operator[](size_t i) const {
     BitSequence indexBits = indexes[i];
     size_t tableIndex = numberFromBits<size_t>(indexBits, bitsPerIndex);
     return symbolTable[tableIndex];
 }
 
-template <typename TSymbol>
-size_t CompactSymbolArray<TSymbol>::size() const {
+template <typename TSymbol, typename TBitSequenceArray>
+size_t CompactSymbolArray<TSymbol, TBitSequenceArray>::size() const {
     return numOfSymbols;
 }
 
 /** Set compact array to be a copy of the symbols array. */
-template <typename TSymbol>
-void CompactSymbolArray<TSymbol>::createFromArray(TSymbol const * symbols, size_t numSymbols) {
+template <typename TSymbol, typename TBitSequenceArray>
+void CompactSymbolArray<TSymbol, TBitSequenceArray>::createFromArray(TSymbol const * symbols, size_t numSymbols) {
     freeTable();
 
     numOfSymbols = numSymbols;
