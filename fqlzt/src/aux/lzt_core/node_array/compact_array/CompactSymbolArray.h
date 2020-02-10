@@ -5,6 +5,8 @@
 #include <map>
 #include <cassert>
 
+#include "serialization_legacy/BitSequence.h"
+
 using namespace __gnu_cxx;
 using namespace std;
 

@@ -1,20 +1,6 @@
-#include <cstdlib>
-#include <iostream>
+#include "serializationTestRunner.h"
 
-#include "CharArrayTests.h"
-#include "../MemCharArray.h"
-#include "../DiskCharArray.h"
-#include "BitSequenceArrayTest.h"
-#include "../BitSequenceArray.h"
-
-using namespace std;
-
-void memArrayTests();
-void diskArrayTests();
-void bitSeqArrayMemTests();
-void bitSeqArrayDiskTests();
-
-int main(int argc, char** argv) {
+int runSerializationTests() {
     memArrayTests();
     diskArrayTests();
     bitSeqArrayMemTests();

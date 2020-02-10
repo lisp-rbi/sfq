@@ -54,7 +54,9 @@ OBJECT_FILES =  \
 	$(BUILD_FOLDER)/StackTrace.o \
 	$(BUILD_FOLDER)/CharStringSA.o \
 	$(BUILD_FOLDER)/MemCharArray.o \
-	$(BUILD_FOLDER)/DiskCharArray.o
+	$(BUILD_FOLDER)/DiskCharArray.o \
+	$(BUILD_FOLDER)/serializationTestRunner.o \
+	$(BUILD_FOLDER)/compactArrayTestRunner.o
 	
 # COMPILER AND LOADER PARAMS
 # TODO: better separate compile and link options (remove unnecessary for each)
@@ -87,25 +89,31 @@ LDFLAGS=-flto
 # TARGETS
 all: $(BUILD_FOLDER)/$(CLI_EXEC)
 
-test: $(BUILD_FOLDER)/serializationTests
+test: $(BUILD_FOLDER)/lzt-testrunner
 
 # EXECUTABLE TARGET LINKING
 $(BUILD_FOLDER)/$(CLI_EXEC): $(BUILD_FOLDER) $(OBJECT_FILES) $(BUILD_FOLDER)/lzt-testrun.o
 	$(LINK.cc) -o $@ $(OBJECT_FILES) $(BUILD_FOLDER)/lzt-testrun.o $(LDLIBS)	
 
-$(BUILD_FOLDER)/serializationTests: $(BUILD_FOLDER) $(OBJECT_FILES) $(BUILD_FOLDER)/serializationTestRunner.o
-	$(LINK.cc) -o $@ $(OBJECT_FILES) $(BUILD_FOLDER)/serializationTestRunner.o $(LDLIBS)
-
+$(BUILD_FOLDER)/lzt-testrunner: $(BUILD_FOLDER) $(OBJECT_FILES) $(BUILD_FOLDER)/lzt-testrunner.o
+	$(LINK.cc) -o $@ $(OBJECT_FILES) $(BUILD_FOLDER)/lzt-testrunner.o $(LDLIBS)	
 
 # Compile source files into .o files
 # FILES WITH MAIN FUNCTIONS
 $(BUILD_FOLDER)/lzt-testrun.o: $(BUILD_FOLDER) lzt-testrun.cpp
 	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt-testrun.cpp
+	
+$(BUILD_FOLDER)/lzt-testrunner.o: $(BUILD_FOLDER) lzt-testrunner.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt-testrunner.cpp
+
+# THE REST OF THE FILES
 
 $(BUILD_FOLDER)/serializationTestRunner.o: $(BUILD_FOLDER) lzt_core/serialization/test/serializationTestRunner.cpp
 	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/serialization/test/serializationTestRunner.cpp
-	
-# THE REST OF THE FILES
+
+$(BUILD_FOLDER)/compactArrayTestRunner.o: $(BUILD_FOLDER) lzt_core/node_array/compact_array/test/compactArrayTestRunner.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/node_array/compact_array/test/compactArrayTestRunner.cpp
+
 $(BUILD_FOLDER)/lzt.o: $(BUILD_FOLDER) lzt.cpp
 	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt.cpp
 
