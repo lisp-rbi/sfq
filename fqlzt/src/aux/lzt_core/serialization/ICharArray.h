@@ -9,6 +9,7 @@
 
 using namespace std;
 
+template <typename TCharLike>
 class ICharArray {
 public:        
     /**
@@ -18,7 +19,7 @@ public:
     // ICharArray();
     
     /** Fetch i-th element as a mutable reference. */
-    virtual char& operator[](size_t i) = 0;
+    virtual TCharLike operator[](size_t i) = 0;
     /** Allocate specified number of chars, possibly invalidating existing data. */
     virtual bool allocate(size_t size) = 0;
     /** Resize to specified number of chars, keeping existing data intact

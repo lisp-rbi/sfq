@@ -17,7 +17,7 @@
 
 class DiskArrayChar;
 
-class DiskCharArray {
+class DiskCharArray: public ICharArray<DiskArrayChar> {
 public:
     DiskCharArray();
     ~DiskCharArray();

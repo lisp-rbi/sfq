@@ -10,7 +10,7 @@
 
 #include "ICharArray.h"
 
-class MemCharArray : public ICharArray {
+class MemCharArray : public ICharArray<char&> {
 public:
     MemCharArray();
     ~MemCharArray();
