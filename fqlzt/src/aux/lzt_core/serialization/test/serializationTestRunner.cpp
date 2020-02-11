@@ -23,16 +23,17 @@ void diskArrayTests() {
 void bitSeqArrayMemTests() {
     cout<<"BIT SEQUENCE ARRAY (MEMORY) TESTS..."<<endl;
     BitSequenceArrayTest<BitSequenceArray<MemCharArray> > bsaTest;
-    // bsaTest.basicTest();
+    bsaTest.basicTest();
     bsaTest.testAccess();
     bsaTest.testChangeFormat();
     bsaTest.testResize();
+    bsaTest.testPersistence();
 }
 
 void bitSeqArrayDiskTests() {
     cout<<"BIT SEQUENCE ARRAY (DISK) TESTS..."<<endl;
     BitSequenceArrayTest<BitSequenceArray<DiskCharArray> > bsaTest;
-    // bsaTest.basicTest();
+    bsaTest.basicTest();
     bsaTest.testAccess();
     bsaTest.testChangeFormat();
     bsaTest.testResize();

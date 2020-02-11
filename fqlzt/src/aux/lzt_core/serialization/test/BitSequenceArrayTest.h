@@ -5,8 +5,9 @@
 #include <iostream>
 
 #include "debug/lzt_test.h"
-#include "../../serialization_legacy/serialization.h"
+#include "serialization_legacy/serialization.h"
 #include "../BitSequenceArray.h"
+#include "util/TempFile.h"
 
 template <typename TBitSequenceArray>
 class BitSequenceArrayTest {
@@ -18,6 +19,7 @@ public:
     void testAccess();
     void testResize();
     void testChangeFormat();
+    void testPersistence();    
 
 private:
 
@@ -25,6 +27,7 @@ private:
 
     void readWriteNumberResize(long initSize, int B, long resizeStep, int numSteps);
     void readWriteNumbers(TBitSequenceArray* array, size_t arraySize, int numberSize);
+    void serializeArrayOfRandomSeqs(size_t numOfSequences, int bitsPerSeq, bool toFolder);
 
 };
 
@@ -199,6 +202,75 @@ void BitSequenceArrayTest<TBitSequenceArray>::readWriteNumbers(TBitSequenceArray
     cout<<"BitSequenceArrayTest.readWriteNumbers "<<"PASSED"<<endl; 
 }
 
+template <typename TBitSequenceArray>
+void BitSequenceArrayTest<TBitSequenceArray>::testPersistence() {
+    cout<<"BitSequenceArrayTest.testPersistence"<<endl; 
+    size_t numOfSeqs = 1000;
+    for (int toFolder = 0; toFolder < 2; ++toFolder) {
+        serializeArrayOfRandomSeqs(numOfSeqs, 1, toFolder);
+        serializeArrayOfRandomSeqs(numOfSeqs, BITS_PER_CHAR - 1, toFolder);
+        serializeArrayOfRandomSeqs(numOfSeqs, BITS_PER_CHAR, toFolder);
+        serializeArrayOfRandomSeqs(numOfSeqs, 13, toFolder);
+        serializeArrayOfRandomSeqs(numOfSeqs, 79, toFolder);
+        serializeArrayOfRandomSeqs(numOfSeqs, 113, toFolder);
+    }    
+    cout<<"BitSequenceArrayTest.testPersistence PASSED"<<endl<<endl; 
+}
+
+
+/** Generate BitSequenceArray of random sequences, serialze to file and check
+ * it is equal to the read array. */
+template <typename TBitSequenceArray>
+void BitSequenceArrayTest<TBitSequenceArray>::serializeArrayOfRandomSeqs(size_t numOfSequences, int bitsPerSeq, bool toFolder) {
+    cout<<"BitSequenceArrayTest.serializeArrayOfRandomSeqs("<<numOfSequences<<","<<bitsPerSeq<<")"
+            " toFolder:"<<toFolder<<endl; 
+    TBitSequenceArray array(numOfSequences, bitsPerSeq);
+    for (size_t i = 0; i < numOfSequences; ++i) {
+        BitSequence bits;
+        for (int j = 0; j < bitsPerSeq; ++j) {
+            int rand = getRandomNumber<int>(0, 100);
+            bits.setBit(j, rand % 2 == 0);
+        }
+        array.setSequence(i, bits);
+    }
+
+    TempFile file(toFolder);    
+    array.persist(file.getName());
+
+    TBitSequenceArray* arrayDeser = new TBitSequenceArray();
+    arrayDeser->load(file.getName());
+
+    ostringstream ss;
+    ss << "numOfSeq: " << array.getNumOfSequences()
+       << " bitsPerSeq: " << array.getSequenceSize() << endl
+       << "ser numOfSeq: " << arrayDeser->getNumOfSequences()
+       << " ser bitsPerSeq: " << arrayDeser->getSequenceSize() << endl;
+    // check size parameters equality
+    TEST_ASSERT_MESSAGE(array.getNumOfSequences() == arrayDeser->getNumOfSequences(), ss.str());
+    TEST_ASSERT_MESSAGE(array.getSequenceSize() == arrayDeser->getSequenceSize(), ss.str());
+
+    for (size_t i = 0; i < array.getNumOfSequences(); ++i) {
+        BitSequence bits = array[i];
+        BitSequence bitsDeser = (*arrayDeser)[i];
+
+        ostringstream ss;
+        ss << "numOfSeq: " << array.getNumOfSequences()
+           << " bitsPerSeq: " << array.getSequenceSize() << endl
+           << " i: " << i << endl << "bits: " << bits.toString() << endl
+           << "bits deser: " << bitsDeser.toString() << endl;
+
+        bool bitsEqual = true;
+        for (int j = 0; j < bitsPerSeq; ++j)
+            if (bits[j] != bitsDeser[j]) {
+                bitsEqual = false;
+                break;
+            }
+
+        TEST_ASSERT_MESSAGE(bitsEqual, ss.str());
+    }
+
+    delete arrayDeser;
+}
 
 
 #endif	/* BITSEQUENCEARRAYTEST_H */
