@@ -151,6 +151,14 @@ void DiskCharArray::freeMemory() {
     openFile();    
 }
 
+bool DiskCharArray::persist(string f) {
+    return true;
+}
+
+bool DiskCharArray::load(string f) {
+    return true;
+}
+
 DiskCharArray::~DiskCharArray() { 
     deleteFile();
 }

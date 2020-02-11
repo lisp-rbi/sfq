@@ -19,6 +19,8 @@ public:
     bool allocate(size_t size);    
     bool resize(size_t size); 
     void freeMemory();
+    bool persist(string f);
+    bool load(string f);
         
 private:
     size_t numOfBlocks;

@@ -23,5 +23,13 @@ void MemCharArray::freeMemory() {
     }
 }
 
+bool MemCharArray::persist(string f) {
+    return true;
+}
+
+bool MemCharArray::load(string f) {
+    return true;
+}
+
 MemCharArray::~MemCharArray() { }
 
