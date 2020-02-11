@@ -6,11 +6,12 @@
 #define ICHARARRAY_H
 
 #include <string>
+#include "ISerializable.h"
 
 using namespace std;
 
 template <typename TCharLike>
-class ICharArray {
+class ICharArray : public ISerializable {
 public:        
     /**
      *  Subclass must implement a public default constructor
@@ -27,10 +28,10 @@ public:
     virtual bool resize(size_t size) = 0;
     /** Free all memory. */
     virtual void freeMemory() = 0;
-    /** Persist array data to a file or folder. */
-    virtual bool persist(string f) = 0;
-   /** Load array data from a file or folder. */
-    virtual bool load(string f) = 0;
+//    /** Persist array data to a file or folder. */
+//    virtual bool persist(string f) = 0;
+//   /** Load array data from a file or folder. */
+//    virtual bool load(string f) = 0;
     
     virtual ~ICharArray() {}; // just in case    
     

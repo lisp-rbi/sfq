@@ -1,9 +1,15 @@
+#include <fstream>
+
 #include "MemCharArray.h"
+
+const string MemCharArray::PERSIST_FNAME = "MemCharArray.bin";
 
 MemCharArray::MemCharArray(): numOfBlocks(0), blocks(NULL) { }
 
 bool MemCharArray::allocate(size_t size) {
     blocks = (char *)malloc(size);    
+    if (blocks != NULL) numOfBlocks = size;
+    else numOfBlocks = 0;
     return blocks != NULL;
 }
 
@@ -11,24 +17,52 @@ bool MemCharArray::resize(size_t size) {
     void *newblocks = realloc(blocks, size);
     if (newblocks != NULL) {
         blocks = (char *)newblocks;
+        numOfBlocks = size;
         return true;
     }
-    else return false;    
+    else return false;        
 }
 
 void MemCharArray::freeMemory() {
     if (blocks != NULL) {        
         free(blocks);
         blocks = NULL;
+        numOfBlocks = 0;
     }
 }
 
+void MemCharArray::writeToStream(ostream& stream) {
+    SerializationUtils::integerToStream(numOfBlocks, stream);    
+    stream.write(blocks, numOfBlocks);
+}
+
+void MemCharArray::readFromStream(istream& stream) {
+    numOfBlocks = SerializationUtils::integerFromStream<size_t>(stream);    
+    allocate(numOfBlocks);
+    stream.read(blocks, numOfBlocks);
+}
+
 bool MemCharArray::persist(string f) {
-    return true;
+    string fname = accessible_filename(f, PERSIST_FNAME);
+    if (fname == "") return false;
+    ofstream output(fname.c_str());
+    writeToStream(output);
+    output.close();    
+    return output.good();
 }
 
 bool MemCharArray::load(string f) {
-    return true;
+    string fname = accessible_filename(f, PERSIST_FNAME);
+    if (fname == "") return false;
+    ifstream stream(fname.c_str());
+    if (stream.good()) {  
+        freeMemory();
+        readFromStream(stream);
+        stream.close();
+        if (!stream.bad()) return true;
+        else return false;
+    }
+    else return false;    
 }
 
 MemCharArray::~MemCharArray() { }

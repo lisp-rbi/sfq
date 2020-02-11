@@ -26,8 +26,11 @@ public:
     bool allocate(size_t size);    
     bool resize(size_t size); 
     void freeMemory();
+    
     bool persist(string f);
     bool load(string f);
+    void writeToStream(ostream& stream);
+    void readFromStream(istream& stream);
     
     friend class DiskArrayChar;
         

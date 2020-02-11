@@ -159,6 +159,9 @@ bool DiskCharArray::load(string f) {
     return true;
 }
 
+void DiskCharArray::writeToStream(ostream& stream) {}
+void DiskCharArray::readFromStream(istream& stream) {}
+
 DiskCharArray::~DiskCharArray() { 
     deleteFile();
 }
