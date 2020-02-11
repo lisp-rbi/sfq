@@ -2,17 +2,22 @@
 #define	BITSEQUENCEARRAY_H
 
 #include <cstddef>
+#include <iostream>
+#include <fstream>
 
-#include "../serialization_legacy/BitSequence.h"
-#include "../serialization_legacy/BitPointer.h"
-#include "../serialization_legacy/serialization.h"
+#include "ISerializable.h"
+#include "serialization_legacy/BitSequence.h"
+#include "serialization_legacy/BitPointer.h"
+#include "serialization_legacy/serialization.h"
+#include "serialization_legacy/SerializationUtils.h"
+#include "util/filesystem_utils.h"
 
-// class BitSequenceArraySerL;
+using namespace std;
 
 /** Array for space efficient storing and fetching of large number
  * of BitSequences with predefined size, with the ability to export as chars. */
 template <typename TCharArray>
-class  BitSequenceArray {
+class  BitSequenceArray : public ISerializable {
 public:
 
     BitSequenceArray();
@@ -31,13 +36,19 @@ public:
     size_t getSequenceSize() const;
     TCharArray* exportCharArray();
 
-    // Friend so that it can serialzie/deserialze the array
-    // friend class BitSequenceArraySerL;
+    bool persist(string f);
+    bool load(string f);
+    void writeToStream(ostream& stream);
+    void readFromStream(istream& stream);
 
 private:
 
+    void writeFieldsToStream(ostream& stream);
+    void readFieldsFromStream(istream& stream);
+    
     static int const BLOCK_SIZE = sizeof(char);
     static char const ONE = 1;
+    static const string PERSIST_FNAME;
 
     size_t numOfBlocks = 0;
     size_t numOfSequences = 0;
@@ -48,6 +59,9 @@ private:
     bool carrayExported = false;
 
 };
+
+template <typename TCharArray>
+const string BitSequenceArray<TCharArray>::PERSIST_FNAME = "BitSequenceArray.bin";
 
 /** Get index-th bit sequence, index is zero-based.
  * ONLY THE FIRST sequenceSize BITS WILL BE SET set,
@@ -178,6 +192,83 @@ void BitSequenceArray<TCharArray>::setSequence(size_t index, BitSequence seq) {
         bp.increment();
     }
 }
+
+template <typename TCharArray>
+void BitSequenceArray<TCharArray>::writeToStream(ostream& stream) {
+    writeFieldsToStream(stream);
+    charArray->writeToStream(stream);
+}
+
+template <typename TCharArray>
+void BitSequenceArray<TCharArray>::writeFieldsToStream(ostream& stream) {
+    SerializationUtils::integerToStream(numOfBlocks, stream);
+    SerializationUtils::integerToStream(numOfSequences, stream);
+    SerializationUtils::integerToStream(bitsPerSequence, stream);
+}
+
+template <typename TCharArray>
+void BitSequenceArray<TCharArray>::readFromStream(istream& stream) {
+    readFieldsFromStream(stream);
+    charArray->readFromStream(stream);
+}
+
+template <typename TCharArray>
+void BitSequenceArray<TCharArray>::readFieldsFromStream(istream& stream) {
+    numOfBlocks = SerializationUtils::integerFromStream<size_t>(stream);
+    numOfSequences = SerializationUtils::integerFromStream<size_t>(stream);
+    bitsPerSequence = SerializationUtils::integerFromStream<size_t>(stream);    
+}
+
+template <typename TCharArray>
+bool BitSequenceArray<TCharArray>::persist(string f) {
+    if (file_accessible(f)) {
+        if (file_is_regular(f)) {
+            ofstream output(f.c_str());
+            writeToStream(output);            
+            output.close();    
+            return output.good();
+        }
+        else if (file_is_directory(f)) {                
+            string fname = accessible_filename(f, PERSIST_FNAME);
+            if (fname == "") return false;
+            ofstream output(fname.c_str());
+            writeFieldsToStream(output);
+            output.close();
+            bool arrayWrite = charArray->persist(f);
+            return output.good() and arrayWrite;
+        }
+        else return false;
+    }
+    else return false;
+}
+
+template <typename TCharArray>
+bool BitSequenceArray<TCharArray>::load(string f) {
+    if (file_accessible(f)) {
+        if (file_is_regular(f)) {            
+            ifstream stream(f.c_str());
+            if (stream.good()) {  
+                readFromStream(stream);
+                stream.close();
+                if (!stream.bad()) return true;
+                else return false;
+            }
+            else return false;    
+        }
+        else if (file_is_directory(f)) {                
+            string fname = accessible_filename(f, PERSIST_FNAME);
+            if (fname == "") return false;
+            ifstream stream(fname.c_str());
+            readFieldsFromStream(stream);
+            stream.close();
+            bool arrayRead = charArray->load(f);
+            return stream.good() and arrayRead;
+        }
+        else return false;
+    }
+    else return false;        
+}
+
 
 #endif	/* BITSEQUENCEARRAY_H */
 
