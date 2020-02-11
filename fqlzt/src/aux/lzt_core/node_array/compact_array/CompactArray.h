@@ -1,12 +1,12 @@
-#ifndef COMPACTARRAYLEGACY_H
-#define	COMPACTARRAYLEGACY_H
+#ifndef COMPACTARRAY_H
+#define	COMPACTARRAY_H
 
 #include <cstddef>
 #include <cassert>
 #include <iostream>
 
 #include "utils.h"
-#include "CompactArrayNode.h"
+#include "node_array/compact_array_legacy/CompactArrayNode.h"
 #include "serialization_legacy/BitSequenceArray.h"
 #include "serialization_legacy/serialization.h"
 #include "CompactSymbolArray.h"
@@ -15,12 +15,12 @@
  * It's a node array in wich only distinct nodes are stored and the array is a
  * sequence of indexes pointing to these nodes. Eow and Cow flags are not
  * stored, they are calculated from index position. */
-template <typename TSymbol, typename TIndex>
-class CompactArrayL {
+template <typename TSymbol, typename TIndex, typename TBitSequenceArray>
+class CompactArray {
 
 public:
        
-    virtual ~CompactArrayL();
+    virtual ~CompactArray();
 
     typedef TSymbol Symbol;
     typedef TIndex Index;
@@ -30,13 +30,13 @@ public:
     NodeConst operator[](TIndex i) const;
     TIndex getSize() const;
 
-    template <typename TNodeArray> friend class CompactArrayCreatorL;
-    template <typename TS, typename TI> friend class CompactArraySerializer;
+    //template <typename TNodeArray> friend class CompactArrayCreatorL;
+    //template <typename TS, typename TI> friend class CompactArraySerializer;
 
 private:
 
-    CompactArrayL(bool enumerated = false);
-    CompactArrayL(size_t numOfDistinct, size_t numOfNodes, bool enumerated = false);
+    CompactArray(bool enumerated = false);
+    CompactArray(size_t numOfDistinct, size_t numOfNodes, bool enumerated = false);
 
     static const int NUM_OFFSETS = 4;
 
@@ -61,46 +61,46 @@ private:
      * [ flagOffsets[flags], flagOffsets[flags+1] - 1 ]. */
     size_t flagOffsets[NUM_OFFSETS];
 
-    BitSequenceArrayL array;    
-    BitSequenceArrayL siblings;
+    TBitSequenceArray array;    
+    TBitSequenceArray siblings;
     // number of words a node contains
-    BitSequenceArrayL numOfWords;
-    CompactSymbolArrayL<TSymbol> symbols;
+    TBitSequenceArray numOfWords;
+    CompactSymbolArray<TSymbol, TBitSequenceArray> symbols;
     
 };
 
 int numberOfBits(size_t numberOfValues);
 
 /** Default constructor, safe to use only for deserialization. */
-template <typename TSymbol, typename TIndex>
-CompactArrayL<TSymbol, TIndex>::CompactArrayL(bool e)
+template <typename TSymbol, typename TIndex, typename TBitSequenceArray>
+CompactArray<TSymbol, TIndex, TBitSequenceArray>::CompactArray(bool e)
 : numOfDistinct(0), numOfNodes(0), bitsPerIndex(0), enumerated(e) { }
 
-template <typename TSymbol, typename TIndex>
-CompactArrayL<TSymbol, TIndex>::CompactArrayL(size_t distinct, size_t nodes, bool e)
+template <typename TSymbol, typename TIndex, typename TBitSequenceArray>
+CompactArray<TSymbol, TIndex, TBitSequenceArray>::CompactArray(size_t distinct, size_t nodes, bool e)
 : numOfDistinct(distinct), numOfNodes(nodes), enumerated(e),
    bitsPerIndex(numberOfBits(distinct)), array(nodes, bitsPerIndex)
 { }
 
-template <typename TSymbol, typename TIndex>
-CompactArrayL<TSymbol, TIndex>::~CompactArrayL() { }
+template <typename TSymbol, typename TIndex, typename TBitSequenceArray>
+CompactArray<TSymbol, TIndex, TBitSequenceArray>::~CompactArray() { }
 
-template <typename TSymbol, typename TIndex>
-TIndex CompactArrayL<TSymbol, TIndex>::getSize() const {
+template <typename TSymbol, typename TIndex, typename TBitSequenceArray>
+TIndex CompactArray<TSymbol, TIndex, TBitSequenceArray>::getSize() const {
     return numOfNodes;
 }
 
-template <typename TSymbol, typename TIndex>
-void CompactArrayL<TSymbol, TIndex>::printIndexes() const {
+template <typename TSymbol, typename TIndex, typename TBitSequenceArray>
+void CompactArray<TSymbol, TIndex, TBitSequenceArray>::printIndexes() const {
     for (size_t i = 0; i < numOfNodes; ++i) {
         size_t index = fromBitSequence<size_t>(array[i]);
         cout<<index<<endl;
     }
 }
 
-template <typename TSymbol, typename TIndex>
+template <typename TSymbol, typename TIndex, typename TBitSequenceArray>
 inline CompactArrayNode<TSymbol, TIndex>
-CompactArrayL<TSymbol, TIndex>::operator[](TIndex i) const {
+CompactArray<TSymbol, TIndex, TBitSequenceArray>::operator[](TIndex i) const {
     CompactArrayNode<TSymbol, TIndex> node;
     // decode node-table index of a node
     BitSequence indexBits = array[i];
@@ -128,15 +128,15 @@ CompactArrayL<TSymbol, TIndex>::operator[](TIndex i) const {
 
 /** Set nodeIndex on position i in the BitSequenceArray, wich means
  * that i-th node in the array will be the distinct node at position nodeIndex */
-template <typename TSymbol, typename TIndex>
-void CompactArrayL<TSymbol, TIndex>::setNodeIndex(size_t i, size_t nodeIndex) {    
+template <typename TSymbol, typename TIndex, typename TBitSequenceArray>
+void CompactArray<TSymbol, TIndex, TBitSequenceArray>::setNodeIndex(size_t i, size_t nodeIndex) {    
     array.setSequence(i, toBitSequence(nodeIndex, bitsPerIndex));
 }
 
 /** Calculate int representation of eow-cow, from position
  * in distinct nodes array.  */
-template <typename TSymbol, typename TIndex>
-int CompactArrayL<TSymbol, TIndex>::flagsFromPosition(size_t p) const {
+template <typename TSymbol, typename TIndex, typename TBitSequenceArray>
+int CompactArray<TSymbol, TIndex, TBitSequenceArray>::flagsFromPosition(size_t p) const {
     for (int i = 0; i < NUM_OFFSETS; ++i) {
         size_t start = flagOffsets[i], end;
         // calculate end of range for current flags
@@ -149,13 +149,13 @@ int CompactArrayL<TSymbol, TIndex>::flagsFromPosition(size_t p) const {
     assert(false);
 }
 
-template <typename TSymbol, typename TIndex>
-void CompactArrayL<TSymbol, TIndex>::setFlagOffsets(size_t offsets[NUM_OFFSETS]) {
+template <typename TSymbol, typename TIndex, typename TBitSequenceArray>
+void CompactArray<TSymbol, TIndex, TBitSequenceArray>::setFlagOffsets(size_t offsets[NUM_OFFSETS]) {
     for (int i = 0; i < NUM_OFFSETS; ++i) flagOffsets[i] = offsets[i];
 }
 
 //template <typename T>
 //BitSequence toBitSequence(T t);
 
-#endif	/* COMPACTARRAYLEGACY_H */
+#endif	/* COMPACTARRAY_H */
 
