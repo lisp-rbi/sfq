@@ -8,7 +8,7 @@
 using namespace std;
 
 int main(int argc, char** argv) {
-    //runSerializationTests();
+    runSerializationTests();
     testSymbolArray();
     return 0;
 }

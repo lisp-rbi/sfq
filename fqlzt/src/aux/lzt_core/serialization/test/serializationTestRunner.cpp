@@ -9,13 +9,13 @@ int runSerializationTests() {
 }
 
 void memArrayTests() {
-    cout<<"MEMORY CHAR ARRAY TESTS..."<<endl;
+    cout<<"MEMORY CHAR ARRAY BASIC TESTS..."<<endl;
     CharArrayTests<MemCharArray> memArrayTests;    
     memArrayTests.basicInterfaceTest();
 }
 
 void diskArrayTests() {
-    cout<<"DISK CHAR ARRAY TESTS..."<<endl;
+    cout<<"DISK CHAR ARRAY BASIC TESTS..."<<endl;
     CharArrayTests<DiskCharArray> diskArrayTests;    
     diskArrayTests.basicInterfaceTest();
 }
