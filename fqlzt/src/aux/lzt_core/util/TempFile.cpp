@@ -1,13 +1,10 @@
 #include "TempFile.h"
 #include "utils.h"
-#include <cstdio>
+#include <stdio.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
-
-#include <stdio.h>
 #include <ftw.h>
-#include <unistd.h>
 
 /* RECURSIVE DIRECTORY REMOVAL SOLUTION */
 int unlink(const char *path, const struct stat *sb, int tflag, struct FTW *buff) {
