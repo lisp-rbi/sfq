@@ -2,8 +2,11 @@
 #define FILESYSTEM_UTILS_H
 
 #include <string>
+#include <stdio.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <unistd.h>
+#include <ftw.h>
 
 using namespace std;
 
@@ -26,6 +29,9 @@ bool file_is_directory(string fname);
  * If either folder or file are nonexistent or non accessible, return "".
  */
 string accessible_filename(string f, string fname);
+
+/** Recursively remove all directory contents and the directory. */
+bool remove_directory(string dname);
 
 #endif /* FILESYSTEM_UTILS_H */
 

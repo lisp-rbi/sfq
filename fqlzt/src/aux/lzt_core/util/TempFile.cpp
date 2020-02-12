@@ -1,21 +1,4 @@
 #include "TempFile.h"
-#include "utils.h"
-#include <stdio.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <unistd.h>
-#include <ftw.h>
-
-/* RECURSIVE DIRECTORY REMOVAL SOLUTION */
-int unlink(const char *path, const struct stat *sb, int tflag, struct FTW *buff) {
-    int res = remove(path);
-    if (res) perror(path);
-    return res;
-}
-int remove_recursive(char *path) {
-    return nftw(path, unlink, 64, FTW_DEPTH | FTW_PHYS);
-}
-/* RECURSIVE DIRECTORY REMOVAL SOLUTION */
 
 TempFile::TempFile(bool folder): isFolder(folder) {
     if (isFolder) name = "tmpfolder_";
@@ -25,14 +8,12 @@ TempFile::TempFile(bool folder): isFolder(folder) {
     else {
         file = fopen(name.c_str(), "w+");
         fclose(file);
-    }
-    //printf("%s\n", name.c_str());
+    }    
 }
 
-TempFile::~TempFile() {
-    //fclose(file);
-    if (isFolder) remove_recursive(name.c_str());            
-    else remove(name.c_str());
+TempFile::~TempFile() {   
+    if (isFolder) remove_directory(name);            
+    else remove(name.c_str());    
 }
 
 const char * TempFile::getName() {

@@ -1,6 +1,9 @@
 #ifndef TEMPFILE_H
 #define	TEMPFILE_H
 
+#include "utils.h"
+#include "filesystem_utils.h"
+
 #include <string>
 
 using std::string;

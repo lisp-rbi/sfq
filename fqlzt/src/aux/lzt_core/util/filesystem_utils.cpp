@@ -36,3 +36,13 @@ string accessible_filename(string f, string fname) {
     }
     else return "";    
 }
+
+int unlink(const char *path, const struct stat *sb, int tflag, struct FTW *buff) {
+    int res = remove(path);    
+    return res;
+}
+
+bool remove_directory(string dname) {
+    int res = nftw(dname.c_str(), unlink, 64, FTW_DEPTH | FTW_PHYS);
+    return res == 0;
+}
