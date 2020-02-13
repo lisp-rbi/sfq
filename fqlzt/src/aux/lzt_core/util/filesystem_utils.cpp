@@ -46,3 +46,20 @@ bool remove_directory(string dname) {
     int res = nftw(dname.c_str(), unlink, 64, FTW_DEPTH | FTW_PHYS);
     return res == 0;
 }
+
+bool copy_file(string fnameSource, string fnameDest) { //(const char* source, const char* destination)
+    int input, output;    
+    if ((input = open(fnameSource.c_str(), O_RDONLY)) == -1) return false;    
+    if ((output = creat(fnameDest.c_str(), 0660)) == -1)
+    {
+        close(input);
+        return false;
+    }
+    off_t bytesCopied = 0;
+    struct stat fileinfo = {0};
+    fstat(input, &fileinfo);
+    int result = sendfile(output, input, &bytesCopied, fileinfo.st_size);
+    close(input);
+    close(output);
+    return result == fileinfo.st_size;
+}

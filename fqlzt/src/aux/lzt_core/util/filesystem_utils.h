@@ -7,6 +7,8 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <ftw.h>
+#include <fcntl.h>
+#include <sys/sendfile.h>
 
 using namespace std;
 
@@ -32,6 +34,8 @@ string accessible_filename(string f, string fname);
 
 /** Recursively remove all directory contents and the directory. */
 bool remove_directory(string dname);
+/** Copy file source to location dest, return true upon success. */
+bool copy_file(string fpathSource, string fpathDest);
 
 #endif /* FILESYSTEM_UTILS_H */
 
