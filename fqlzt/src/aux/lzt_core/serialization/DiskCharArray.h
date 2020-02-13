@@ -1,5 +1,5 @@
 /* 
- * Character array implemented on disk.
+ * Character array stored on disk.
  */
 
 #ifndef DISKCHARARRAY_H
@@ -11,9 +11,12 @@
 #include <string>
 #include <iostream>
 #include <unistd.h>
+#include <assert.h>
 
 #include "ICharArray.h"
+#include "serialization_legacy/SerializationUtils.h"
 #include "util/utils.h"
+#include "util/filesystem_utils.h"
 
 class DiskArrayChar;
 
@@ -25,11 +28,17 @@ public:
     DiskArrayChar operator[](size_t i);            
     bool allocate(size_t size);    
     bool resize(size_t size); 
+    /** Effectively, reset the object by deleting the file, setting array 
+     * size to 0, and creating new empty file for reading/writing. */
     void freeMemory();
     
     bool persist(string f);
     bool load(string f);
+    /** Write object state and (in-file) chars to the stream.
+     * Object's state remains unchanged. */
     void writeToStream(ostream& stream);
+    /** Read object's data from the stream. 
+     * Data is copied to the file currently used for storage and the old data is discarded. */
     void readFromStream(istream& stream);
     
     friend class DiskArrayChar;
@@ -40,9 +49,17 @@ private:
     char *iobuffer; // handled by openFile/closeFile methods
     string fname;
     bool fileOpened;    
+    int state;
     
     static const bool DEBUG = false;
     static const size_t BUFFER_SIZE = 1024; // if set to 0, no buffering is used
+    static const string PERSIST_FNAME;
+    
+    // indicators of object's state
+    static const int STATE_CLOSED = 0; // file closed, object should not be used anymore
+    static const int STATE_OPENED = 1; // file opened for read/write
+    static const int STATE_OPENED_READONLY = 2; // file opened for reading
+    static const int STATE_ERROR = 3; // file I/O error or other error
     
     bool closeFile();
     bool openFile();
