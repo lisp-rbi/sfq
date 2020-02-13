@@ -37,4 +37,5 @@ void bitSeqArrayDiskTests() {
     bsaTest.testAccess();
     bsaTest.testChangeFormat();
     bsaTest.testResize();
+    bsaTest.testPersistence();
 }

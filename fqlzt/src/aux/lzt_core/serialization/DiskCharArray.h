@@ -33,6 +33,7 @@ public:
     void freeMemory();
     
     bool persist(string f);
+    /** Load array from file or folder, old file will be deleted. */
     bool load(string f);
     /** Write object state and (in-file) chars to the stream.
      * Object's state remains unchanged. */
@@ -53,13 +54,17 @@ private:
     
     static const bool DEBUG = false;
     static const size_t BUFFER_SIZE = 1024; // if set to 0, no buffering is used
-    static const string PERSIST_FNAME;
+    static const string PERSIST_FIELDS_FNAME;
+    static const string PERSIST_CHARS_FNAME;
     
     // indicators of object's state
+    // TODO fully implement state handling: char read/write, open, close ...
     static const int STATE_CLOSED = 0; // file closed, object should not be used anymore
     static const int STATE_OPENED = 1; // file opened for read/write
     static const int STATE_OPENED_READONLY = 2; // file opened for reading
     static const int STATE_ERROR = 3; // file I/O error or other error
+    // object use is disabled, it should be explicitly re-opened for subsequent usage
+    static const int STATE_FINISHED = 4; 
     
     bool closeFile();
     bool openFile();
@@ -71,6 +76,9 @@ private:
     void writeCharacter(size_t index, char ch);
     char readCharacter(size_t index);
 
+    // for persistence, read/write object state-holding fields to/from stream
+    void writeFieldsToStream(ostream& stream);
+    void readFieldsFromStream(istream& stream);
 };
 
 /** char-like class that is returned by [] operator of DiskCharArray. */

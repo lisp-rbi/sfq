@@ -9,7 +9,7 @@ using namespace std;
 
 int main(int argc, char** argv) {
     runSerializationTests();
-    testSymbolArray();
+    //testSymbolArray();
     return 0;
 }
 

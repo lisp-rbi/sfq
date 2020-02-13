@@ -234,7 +234,7 @@ void BitSequenceArrayTest<TBitSequenceArray>::serializeArrayOfRandomSeqs(size_t 
         array.setSequence(i, bits);
     }
 
-    TempFile file(toFolder);    
+    TempFile file(toFolder); 
     array.persist(file.getName());
 
     TBitSequenceArray* arrayDeser = new TBitSequenceArray();

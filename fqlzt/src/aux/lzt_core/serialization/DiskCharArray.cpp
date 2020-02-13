@@ -2,7 +2,8 @@
 
 #include "DiskCharArray.h"
 
-const string DiskCharArray::PERSIST_FNAME = "DiskCharArray.bin";
+const string DiskCharArray::PERSIST_FIELDS_FNAME = "DiskCharArrayFields.bin";
+const string DiskCharArray::PERSIST_CHARS_FNAME = "DiskCharArrayChars.bin";
 
 /** Create file with the random name in . and bind to object.
  * Upon I/O fail, file == NULL, fname == "". */
@@ -34,7 +35,7 @@ void DiskCharArray::writeCharacter(size_t i, char ch) {
 
 /** Close the file pointed to by this.fname */
 bool DiskCharArray::closeFile() {  
-    if (state == STATE_CLOSED or state == STATE_ERROR) return;
+    if (state == STATE_CLOSED or state == STATE_ERROR) return false;
     bool res = fclose(file) == 0;
     if (iobuffer != NULL) {
         delete [] iobuffer;
@@ -65,6 +66,7 @@ bool DiskCharArray::openFile() {
         }
     } else iobuffer = NULL;
     if (DEBUG) cout<<"openFile()"<<" fname="<<fname<<" res="<<res<<endl;
+    if (res) state = STATE_OPENED;
     return res;
 }
 
@@ -169,13 +171,31 @@ bool DiskCharArray::persist(string f) {
             return output.good();
         }
         else if (file_is_directory(f)) {                
-//            string fname = accessible_filename(f, PERSIST_FNAME);
-//            if (fname == "") return false;
-//            ofstream output(fname.c_str());
-//            writeFieldsToStream(output);
-//            output.close();
-//            bool arrayWrite = charArray->persist(f);
-//            return output.good() and arrayWrite;
+            // write fields
+            string file = accessible_filename(f, PERSIST_FIELDS_FNAME);
+            if (file == "") return false;
+            ofstream output(file.c_str());
+            writeFieldsToStream(output);
+            output.close();
+            if (!output.good()) return false;
+            // transfer file
+            file = accessible_filename(f, PERSIST_CHARS_FNAME);                        
+            if (fname == file) { // file is already where it should be saved
+                // TODO file name normalization before check                
+                if (state == STATE_CLOSED or closeFile()) {                    
+                    state = STATE_FINISHED;
+                    return true;
+                }
+                else return false;
+            }
+            else {                
+                if (state == STATE_CLOSED or closeFile()) {
+                    bool res = copy_file(fname, file);                    
+                    openFile();    
+                    return res;      
+                }
+                else return false;                
+            }                       
         }
         else return false;
     }
@@ -192,17 +212,43 @@ bool DiskCharArray::load(string f) {
             return fstr.good();
         }
         else if (file_is_directory(f)) {                
-
+            // load fields
+            string file = accessible_filename(f, PERSIST_FIELDS_FNAME);
+            if (file == "") return false;
+            ifstream input(file.c_str());
+            size_t oldNb = numOfBlocks;
+            readFieldsFromStream(input);
+            input.close();
+            if (!input.good()) {
+                numOfBlocks = oldNb;
+                return false;
+            }
+            // load file
+            file = accessible_filename(f, PERSIST_CHARS_FNAME);
+            if (file == "") { 
+                numOfBlocks = oldNb;
+                return false;
+            }            
+            deleteFile();
+            fname = file;
+            return openFile();
         }
         else return false;
     }
     else return false;
 }
 
-void DiskCharArray::writeToStream(ostream& stream) {
-    if (DEBUG) cout<<"writeToStream, this.fname: "<<fname<<endl;
-    // write persistable fields to stream
+void DiskCharArray::writeFieldsToStream(ostream& stream) {
     SerializationUtils::integerToStream(numOfBlocks, stream);    
+}
+
+void DiskCharArray::readFieldsFromStream(istream& stream) {
+    numOfBlocks = SerializationUtils::integerFromStream<size_t>(stream);
+}
+
+void DiskCharArray::writeToStream(ostream& stream) {
+    if (DEBUG) cout<<"writeToStream, this.fname: "<<fname<<endl;    
+    writeFieldsToStream(stream);
     // write char-block file to stream
     closeFile();
     fstream fstr(fname.c_str(), ios_base::in | ios_base::binary);
@@ -219,7 +265,9 @@ void DiskCharArray::writeToStream(ostream& stream) {
 
 void DiskCharArray::readFromStream(istream& stream) {
     if (DEBUG) cout<<"readFromStream, this.fname: "<<fname<<endl;
-    int nb = SerializationUtils::integerFromStream<size_t>(stream);    
+    int nb = 0, oldNb = numOfBlocks;
+    readFieldsFromStream(stream);
+    nb = numOfBlocks;
     char* buff = new char[nb];
     stream.read(buff, nb);    
     if (stream.good()) {        
@@ -236,6 +284,9 @@ void DiskCharArray::readFromStream(istream& stream) {
             numOfBlocks = 0;
             if (DEBUG) cout<<"writing error!"<<endl;
         }
+    }
+    else { // reset field state
+        numOfBlocks = oldNb;
     }
     delete [] buff;
     if (DEBUG) cout<<"readFromStream ended"<<endl;
