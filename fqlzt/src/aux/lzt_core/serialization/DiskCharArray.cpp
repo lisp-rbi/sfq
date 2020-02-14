@@ -7,9 +7,17 @@ const string DiskCharArray::PERSIST_CHARS_FNAME = "DiskCharArrayChars.bin";
 
 /** Create file with the random name in . and bind to object.
  * Upon I/O fail, file == NULL, fname == "". */
-DiskCharArray::DiskCharArray() { 
+DiskCharArray::DiskCharArray() {
     numOfBlocks = 0;
     bindToRandomFile();
+}
+
+/** Create array that stores data in a specified filename. 
+ * Create or empty file if exists. */
+DiskCharArray::DiskCharArray(string fname) {
+    this->fname = fname; numOfBlocks = 0;
+    createEmptyFile();
+    openFile();   
 }
 
 DiskArrayChar DiskCharArray::operator[](size_t i) {    
@@ -35,7 +43,7 @@ void DiskCharArray::writeCharacter(size_t i, char ch) {
 
 /** Close the file pointed to by this.fname */
 bool DiskCharArray::closeFile() {  
-    if (state == STATE_CLOSED or state == STATE_ERROR) return false;
+    if (state == STATE_CLOSED or state == STATE_ERROR or state == STATE_PERSISTED) return false;
     bool res = fclose(file) == 0;
     if (iobuffer != NULL) {
         delete [] iobuffer;
@@ -98,6 +106,8 @@ bool DiskCharArray::flushFile() {
 }
 
 bool DiskCharArray::deleteFile() {    
+    if (state == STATE_PERSISTED) return false;
+    if (DEBUG) cout<<"deleteFile()"<<endl;
     closeFile();    
     bool res = remove(fname.c_str()) == 0;
     if (DEBUG) cout<<"deleteFile(), res="<<res<<endl;
@@ -181,9 +191,9 @@ bool DiskCharArray::persist(string f) {
             // transfer file
             file = accessible_filename(f, PERSIST_CHARS_FNAME);                        
             if (fname == file) { // file is already where it should be saved
-                // TODO file name normalization before check                
+                // TODO file name normalization before check                      
                 if (state == STATE_CLOSED or closeFile()) {                    
-                    state = STATE_FINISHED;
+                    state = STATE_PERSISTED;
                     return true;
                 }
                 else return false;
@@ -211,7 +221,9 @@ bool DiskCharArray::load(string f) {
             fstr.close();    
             return fstr.good();
         }
-        else if (file_is_directory(f)) {                
+        else if (file_is_directory(f)) {    
+            // check is this is a re-load of the same array
+            if (fname == accessible_filename(f, PERSIST_CHARS_FNAME)) return true;
             // load fields
             string file = accessible_filename(f, PERSIST_FIELDS_FNAME);
             if (file == "") return false;
@@ -228,7 +240,7 @@ bool DiskCharArray::load(string f) {
             if (file == "") { 
                 numOfBlocks = oldNb;
                 return false;
-            }            
+            }         
             deleteFile();
             fname = file;
             return openFile();

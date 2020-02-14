@@ -23,6 +23,7 @@ class DiskArrayChar;
 class DiskCharArray: public ICharArray<DiskArrayChar> {
 public:
     DiskCharArray();
+    DiskCharArray(string fname);
     ~DiskCharArray();
         
     DiskArrayChar operator[](size_t i);            
@@ -42,6 +43,8 @@ public:
      * Data is copied to the file currently used for storage and the old data is discarded. */
     void readFromStream(istream& stream);
     
+    static const string PERSIST_CHARS_FNAME;    
+    
     friend class DiskArrayChar;
         
 private:
@@ -54,8 +57,7 @@ private:
     
     static const bool DEBUG = false;
     static const size_t BUFFER_SIZE = 1024; // if set to 0, no buffering is used
-    static const string PERSIST_FIELDS_FNAME;
-    static const string PERSIST_CHARS_FNAME;
+    static const string PERSIST_FIELDS_FNAME;    
     
     // indicators of object's state
     // TODO fully implement state handling: char read/write, open, close ...
@@ -63,8 +65,10 @@ private:
     static const int STATE_OPENED = 1; // file opened for read/write
     static const int STATE_OPENED_READONLY = 2; // file opened for reading
     static const int STATE_ERROR = 3; // file I/O error or other error
-    // object use is disabled, it should be explicitly re-opened for subsequent usage
-    static const int STATE_FINISHED = 4; 
+    // object use is disabled, because it was persisted to the same location
+    // where the file resides - therefore, the file must not be changed
+    // it should be explicitly re-opened for subsequent usage
+    static const int STATE_PERSISTED = 4; 
     
     bool closeFile();
     bool openFile();
