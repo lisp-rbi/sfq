@@ -19,7 +19,7 @@ public:
     void testAccess();
     void testResize();
     void testChangeFormat();
-    void testPersistence();    
+    void testPersistence(bool toFolder);    
 
 private:
 
@@ -203,17 +203,15 @@ void BitSequenceArrayTest<TBitSequenceArray>::readWriteNumbers(TBitSequenceArray
 }
 
 template <typename TBitSequenceArray>
-void BitSequenceArrayTest<TBitSequenceArray>::testPersistence() {
+void BitSequenceArrayTest<TBitSequenceArray>::testPersistence(bool toFolder) {
     cout<<"BitSequenceArrayTest.testPersistence"<<endl; 
-    size_t numOfSeqs = 1000;
-    for (int toFolder = 0; toFolder < 2; ++toFolder) {
-        serializeArrayOfRandomSeqs(numOfSeqs, 1, toFolder);
-        serializeArrayOfRandomSeqs(numOfSeqs, BITS_PER_CHAR - 1, toFolder);
-        serializeArrayOfRandomSeqs(numOfSeqs, BITS_PER_CHAR, toFolder);
-        serializeArrayOfRandomSeqs(numOfSeqs, 13, toFolder);
-        serializeArrayOfRandomSeqs(numOfSeqs, 79, toFolder);
-        serializeArrayOfRandomSeqs(numOfSeqs, 113, toFolder);
-    }    
+    size_t numOfSeqs = 1000;    
+    serializeArrayOfRandomSeqs(numOfSeqs, 1, toFolder);
+    serializeArrayOfRandomSeqs(numOfSeqs, BITS_PER_CHAR - 1, toFolder);
+    serializeArrayOfRandomSeqs(numOfSeqs, BITS_PER_CHAR, toFolder);
+    serializeArrayOfRandomSeqs(numOfSeqs, 13, toFolder);
+    serializeArrayOfRandomSeqs(numOfSeqs, 79, toFolder);
+    serializeArrayOfRandomSeqs(numOfSeqs, 113, toFolder);
     cout<<"BitSequenceArrayTest.testPersistence PASSED"<<endl<<endl; 
 }
 
@@ -272,6 +270,86 @@ void BitSequenceArrayTest<TBitSequenceArray>::serializeArrayOfRandomSeqs(size_t 
     delete arrayDeser;
 }
 
+/** Generate BitSequenceArray of random sequences, serialze to file and check it is equal to the read array. 
+ * This is testing for scenario where client sets the location of the disk array file
+ * to the file exact file in which the array should be saved        
+ * in effect avoiding the need to copy the array file upon persistence
+ * the array must support this operations (ie DiskCharArray) */
+// TODO extract functionality duplicated from BitSequenceArrayTest<TBitSequenceArray>::serializeArrayOfRandomSeqs
+template <typename TBitSequenceArray>
+void serializeDiskArrayOfRandomSeqs(size_t numOfSequences, int bitsPerSeq) {
+    cout<<"BitSequenceArrayTest.serializeDiskArrayOfRandomSeqs("
+            <<numOfSequences<<","<<bitsPerSeq<<")"<<endl;    
+    TempFile tmpFolder(true); 
+    // create bit.seq.array in the persist folder     
+    typedef typename TBitSequenceArray::ArrayType TArray;
+    string fname(tmpFolder.getName());
+    fname += "/" + TArray::PERSIST_CHARS_FNAME;    
+    TArray* diskArray = new TArray(fname);    
+    TBitSequenceArray *arr = new TBitSequenceArray(diskArray);    
+    arr->changeFormat(numOfSequences, bitsPerSeq);        
+    // create array with same data as arr, used for comparison
+    // this is necessary, since arr is closed after persisting it
+    // to the file in which it already holds data
+    TBitSequenceArray array(numOfSequences, bitsPerSeq);
+    // write data to array
+    for (size_t i = 0; i < numOfSequences; ++i) {
+        BitSequence bits;
+        for (int j = 0; j < bitsPerSeq; ++j) {
+            int rand = getRandomNumber<int>(0, 100);
+            bits.setBit(j, rand % 2 == 0);
+        }
+        arr->setSequence(i, bits);
+        array.setSequence(i, bits);        
+    }
+    // save
+    arr->persist(tmpFolder.getName());
+    delete arr;    
+    // load
+    TBitSequenceArray* arrayDeser = new TBitSequenceArray();
+    arrayDeser->load(tmpFolder.getName());    
+    // compare saved and loaded, fields first
+    ostringstream ss;
+    ss << "numOfSeq: " << array.getNumOfSequences()
+       << " bitsPerSeq: " << array.getSequenceSize() << endl
+       << "ser numOfSeq: " << arrayDeser->getNumOfSequences()
+       << " ser bitsPerSeq: " << arrayDeser->getSequenceSize() << endl;    
+    TEST_ASSERT_MESSAGE(array.getNumOfSequences() == arrayDeser->getNumOfSequences(), ss.str());
+    TEST_ASSERT_MESSAGE(array.getSequenceSize() == arrayDeser->getSequenceSize(), ss.str());        
+    // compare array data
+    for (size_t i = 0; i < array.getNumOfSequences(); ++i) {
+        BitSequence bits = array[i];        
+        BitSequence bitsDeser = (*arrayDeser)[i];        
+        ostringstream ss;
+        ss << "numOfSeq: " << array.getNumOfSequences()
+           << " bitsPerSeq: " << array.getSequenceSize() << endl
+           << " i: " << i << endl << "bits: " << bits.toString() << endl
+           << "bits deser: " << bitsDeser.toString() << endl;
+
+        bool bitsEqual = true;
+        for (int j = 0; j < bitsPerSeq; ++j)
+            if (bits[j] != bitsDeser[j]) {
+                bitsEqual = false;
+                break;
+            }
+
+        TEST_ASSERT_MESSAGE(bitsEqual, ss.str());
+    }    
+    delete arrayDeser;    
+}
+
+template <typename TBitSequenceArray>
+void testDiskInPlacePersistence() {    
+    cout<<"BitSequenceArrayTest.testDiskInPlacePersistence"<<endl; 
+    size_t numOfSeqs = 1000;    
+    serializeDiskArrayOfRandomSeqs<TBitSequenceArray>(numOfSeqs, 1);
+    serializeDiskArrayOfRandomSeqs<TBitSequenceArray>(numOfSeqs, BITS_PER_CHAR - 1);
+    serializeDiskArrayOfRandomSeqs<TBitSequenceArray>(numOfSeqs, BITS_PER_CHAR);
+    serializeDiskArrayOfRandomSeqs<TBitSequenceArray>(numOfSeqs, 13);
+    serializeDiskArrayOfRandomSeqs<TBitSequenceArray>(numOfSeqs, 79);
+    serializeDiskArrayOfRandomSeqs<TBitSequenceArray>(numOfSeqs, 113);
+    cout<<"BitSequenceArrayTest.testDiskInPlacePersistence PASSED"<<endl<<endl; 
+}
 
 #endif	/* BITSEQUENCEARRAYTEST_H */
 

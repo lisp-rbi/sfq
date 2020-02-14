@@ -27,7 +27,8 @@ void bitSeqArrayMemTests() {
     bsaTest.testAccess();
     bsaTest.testChangeFormat();
     bsaTest.testResize();
-    bsaTest.testPersistence();
+    bsaTest.testPersistence(0);
+    bsaTest.testPersistence(1);
 }
 
 void bitSeqArrayDiskTests() {
@@ -37,5 +38,7 @@ void bitSeqArrayDiskTests() {
     bsaTest.testAccess();
     bsaTest.testChangeFormat();
     bsaTest.testResize();
-    bsaTest.testPersistence();
+    bsaTest.testPersistence(0);
+    bsaTest.testPersistence(1);   
+    testDiskInPlacePersistence<BitSequenceArray<DiskCharArray> >();
 }

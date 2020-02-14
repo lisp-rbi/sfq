@@ -20,6 +20,8 @@ template <typename TCharArray>
 class  BitSequenceArray : public ISerializable {
 public:
 
+    typedef TCharArray ArrayType;
+    
     BitSequenceArray();
     BitSequenceArray(TCharArray* charArray);
     BitSequenceArray(size_t size, int bitsPerSequence);
