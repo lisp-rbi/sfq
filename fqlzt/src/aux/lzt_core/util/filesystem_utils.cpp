@@ -63,3 +63,41 @@ bool copy_file(string fnameSource, string fnameDest) { //(const char* source, co
     close(output);
     return result == fileinfo.st_size;
 }
+
+// TODO debug, create_file seems not to create the file it should create
+string absolute_path(string fname) {
+    int maxLen;
+    #ifdef PATH_MAX
+    maxLen = PATH_MAX;
+    #else
+    maxLen = 4096;
+    #endif      
+    bool created = false;
+    if (accessible_filename(fname, "") == "") {
+        if (create_file(fname) == false) return "";
+        created = true;
+        cout<<"created"<<endl;
+    }
+    char* absch  = new char[maxLen];
+    char* res = realpath(fname.c_str(), absch);
+    string abspath = "";
+    if (res != NULL) abspath = absch;
+    delete [] absch;
+    if (created) delete_file(fname);
+    return abspath;
+}
+
+bool create_file(string fpath) {
+    FILE *tfile;            
+    tfile = fopen(fpath.c_str(), "r");
+    if (tfile != NULL) {        
+        fclose(tfile);            
+        return true;
+    }
+    else return false; 
+}
+
+bool delete_file(string fpath) {
+    bool res = remove(fpath.c_str()) == 0;
+    return res;
+}

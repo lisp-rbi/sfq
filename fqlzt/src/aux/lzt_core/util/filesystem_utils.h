@@ -2,7 +2,10 @@
 #define FILESYSTEM_UTILS_H
 
 #include <string>
+#include <iostream>
 #include <stdio.h>
+#include <stdlib.h>
+#include <limits.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -36,6 +39,14 @@ string accessible_filename(string f, string fname);
 bool remove_directory(string dname);
 /** Copy file source to location dest, return true upon success. */
 bool copy_file(string fpathSource, string fpathDest);
+/** Convert file path to absolute (full path from root) form, return "" on error. 
+ * File must exist in order for this implementation to work. 
+ * TODO - use an API method that works only with paths. */
+string absolute_path(string fname);
+/** Create empty file with the specified path. Return true on success */
+bool create_file(string fpath);
+/** Delete file with the specified path. Return true on success */
+bool delete_file(string fpath);
 
 #endif /* FILESYSTEM_UTILS_H */
 
