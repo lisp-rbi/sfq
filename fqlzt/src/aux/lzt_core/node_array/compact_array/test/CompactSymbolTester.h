@@ -11,7 +11,6 @@
 #include "util/TempFile.h"
 
 #include "../CompactSymbolArray.h"
-//#include "../CompactSymbolArraySer.h"
 
 /** Tester for CompactSymbolArray. */
 template <typename TSymbol, typename TBitSequenceArray>
@@ -21,7 +20,7 @@ public:
     CompactSymbolTester(TSymbol min, TSymbol max, size_t arrayLength, bool random);
 
     void testCreate();
-    //void testSerialize();
+    void testSerialize(bool toFolder);
 
     virtual ~CompactSymbolTester();
 
@@ -96,27 +95,23 @@ void CompactSymbolTester<TSymbol, TBitSequenceArray>::testCreate() {
 }
 
 /** Test (De)Serialization of CompactSymbolArray to a stream. */
-//template <typename TSymbol, typename TBitSequenceArray>
-//void CompactSymbolTester<TSymbol, TBitSequenceArray>::testSerialize() {
-//    CompactSymbolArrayL<TSymbol> carray(array, arrayLength);
-//    // serialize
-//    TempFile file;
-//    fstream stream(file.getName());
-//    CompactSymbolArraySerL<TSymbol>::arrayToStream(carray, stream);
-//    stream.close();
-//
-//    // deserialize
-//    CompactSymbolArrayL<TSymbol> deserArray;
-//    stream.open(file.getName());
-//    CompactSymbolArraySerL<TSymbol>::arrayFromStream(deserArray, stream);
-//    stream.close();
-//
-//    // check equality
-//    TEST_ASSERT(carray.size() == deserArray.size());
-//
-//    for (size_t i = 0; i < carray.size(); ++i)
-//        TEST_ASSERT(carray[i] == deserArray[i]);
-//}
+template <typename TSymbol, typename TBitSequenceArray>
+void CompactSymbolTester<TSymbol, TBitSequenceArray>::testSerialize(bool toFolder) {
+    cout<<"SYMBOL ARRAY testSerialize("<<(int)MIN<<","<<(int)MAX<<","<<arrayLength<<
+            ","<<random<<") "<<"toFolder: "<<toFolder<<endl;
+    CompactSymbolArray<TSymbol, TBitSequenceArray> carray(array, arrayLength);
+    // serialize
+    TempFile file(toFolder);    
+    carray.persist(file.getName());    
+    // deserialize
+    CompactSymbolArray<TSymbol, TBitSequenceArray> deserArray;
+    deserArray.load(file.getName());
+    // check equality
+    TEST_ASSERT(carray.size() == deserArray.size());
+    for (size_t i = 0; i < carray.size(); ++i)
+        TEST_ASSERT(carray[i] == deserArray[i]);
+    cout<<"SYMBOL ARRAY testSerialize PASSED"<<endl;    
+}
 
 
 #endif	/* COMPACTSYMBOLTESTER_H */
