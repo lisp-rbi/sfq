@@ -1,5 +1,5 @@
-#ifndef COMPACTARRAYCREATOR_H
-#define	COMPACTARRAYCREATOR_H
+#ifndef COMPACTARRAYCREATORLEGACY_H
+#define	COMPACTARRAYCREATORLEGACY_H
 
 #include <set>
 #include <algorithm>
@@ -223,5 +223,5 @@ void CompactArrayCreatorL<TNodeArray>::copyNodeIndexes() {
 }
 
 
-#endif	/* COMPACTARRAYCREATOR_H */
+#endif	/* COMPACTARRAYCREATORLEGACY_H */
 

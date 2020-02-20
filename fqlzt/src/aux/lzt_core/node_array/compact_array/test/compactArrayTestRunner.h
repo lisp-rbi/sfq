@@ -2,11 +2,15 @@
 #define COMPACTARRAYTESTRUNNER_H
 
 #include "CompactSymbolTester.h"
+#include "CompactArrayTester.h"
+#include "../CompactArray.h"
+#include "../CompactArrayBuilder.h"
 #include "serialization/MemCharArray.h"
 #include "serialization/DiskCharArray.h"
 #include "serialization/BitSequenceArray.h"
 
 void runSymbolArrayTests();
+void runCompactArrayTests();
 
 void memSymbArrayTests();
 void diskSymbArrayTests();
