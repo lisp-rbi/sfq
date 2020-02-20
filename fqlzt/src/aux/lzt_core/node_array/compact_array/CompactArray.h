@@ -5,7 +5,7 @@
 #include <cassert>
 #include <iostream>
 
-#include "utils.h"
+#include "node_array/compact_array_legacy/utils.h"
 #include "node_array/compact_array_legacy/CompactArrayNode.h"
 #include "serialization_legacy/BitSequenceArray.h"
 #include "serialization_legacy/serialization.h"
@@ -20,6 +20,7 @@ class CompactArray {
 
 public:
        
+    CompactArray(bool enumerated = false);
     virtual ~CompactArray();
 
     typedef TSymbol Symbol;
@@ -34,8 +35,7 @@ public:
     //template <typename TS, typename TI> friend class CompactArraySerializer;
 
 private:
-
-    CompactArray(bool enumerated = false);
+    
     CompactArray(size_t numOfDistinct, size_t numOfNodes, bool enumerated = false);
 
     static const int NUM_OFFSETS = 4;
