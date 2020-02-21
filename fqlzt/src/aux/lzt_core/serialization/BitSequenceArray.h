@@ -42,6 +42,8 @@ public:
     bool load(string f);
     void writeToStream(ostream& stream);
     void readFromStream(istream& stream);
+    
+    template <typename TS, typename TI, typename TBitSequenceArray> friend class CompactArrayBuilder;
 
 private:
 
@@ -169,6 +171,7 @@ BitSequenceArray<TCharArray>& BitSequenceArray<TCharArray>::operator=(const BitS
 
     charArray->freeMemory(); // freeBlocks();
     charArray->allocate(numOfBlocks); // allocateBlocks();
+    // TODO this does not work, BitSequences are not copied by reference
     for (size_t i = 0; i < numOfBlocks; ++i) 
         (*charArray)[i] = (*rhs.charArray)[i]; // blocks[i] = rhs.blocks[i];
 

@@ -32,6 +32,7 @@ public:
 
     // Friend so that it can serialzie/deserialze the array
     friend class BitSequenceArraySerL;
+    template <typename TS, typename TI, typename TBitSequenceArray> friend class CompactArrayBuilder;
 
 private:
 

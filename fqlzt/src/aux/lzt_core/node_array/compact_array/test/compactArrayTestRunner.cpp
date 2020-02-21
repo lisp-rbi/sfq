@@ -5,12 +5,21 @@ void runSymbolArrayTests() {
     diskSymbArrayTests();
 }
 
-void runCompactArrayTests() {
-    typedef BitSequenceArray<DiskCharArray> TBitSequenceArray;
+void runCompactArrayTests() {    
+    typedef BitSequenceArray<MemCharArray> TMemBsa;
+    typedef BitSequenceArray<DiskCharArray> TDiskBsa;
 //    CompactArray<char, int, TBitSequenceArray> arr();
 //    CompactArrayBuilder<char, int, TBitSequenceArray> builder;
-    CompactArrayTester<char, int, TBitSequenceArray> tester;
-    tester.testBuildSave("small-dicts");
+    cout<<"COMPACT ARRAY + MEMORY CHAR ARRAY TESTS..."<<endl;
+    CompactArrayTester<char, int, TMemBsa> testerM;    
+    testerM.testCreate("small-dicts");
+    testerM.testCreate("natural-lang");
+    cout<<endl;
+    cout<<"COMPACT ARRAY + DISK CHAR ARRAY TESTS..."<<endl;
+    CompactArrayTester<char, int, TDiskBsa> testerD;    
+    testerD.testCreate("small-dicts");
+    testerD.testCreate("natural-lang");
+    cout<<endl;    
 }
 
 void memSymbArrayTests() {

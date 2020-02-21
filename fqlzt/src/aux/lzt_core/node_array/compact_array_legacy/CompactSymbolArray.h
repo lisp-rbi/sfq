@@ -24,6 +24,7 @@ public:
     void createFromArray(TSymbol const * symbols, size_t numOfSymbols);
 
     template <typename TSymb> friend class CompactSymbolArraySerL;
+    template <typename TS, typename TI, typename TBsa> friend class CompactArrayBuilder;
 
 private:
 

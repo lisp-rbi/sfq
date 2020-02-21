@@ -13,7 +13,8 @@ class VectorArrayNode
 {
 
 public:
-
+    
+    VectorArrayNode() {};
     VectorArrayNode(TArrayPointer nodeArray, Tindex nodeIndex);
 
     virtual ~VectorArrayNode() {};
