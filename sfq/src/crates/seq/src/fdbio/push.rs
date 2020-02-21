@@ -16,10 +16,31 @@
  * <http://www.doctrine-project.org>.
  */
 
+use crate::{Push, Fdb};
 
-pub mod formats;
-pub mod get;
-pub mod set;
-pub mod load;
-pub mod save;
-pub mod push;
+impl Push for Fdb {
+
+    fn  push_head(&mut self,v: Vec<u8>)-> &mut Self {
+        if self.head.len() != 0 {
+        self.head.extend(b"\n");
+        }
+        self.head.extend(v);
+        self
+    }
+
+    fn push_seq(&mut self,v: Vec<u8>)-> &mut Self  {
+        if self.seq.len() != 0 {
+        self.seq.extend(b"\n");
+        }
+        self.seq.extend(v);
+        self
+    }
+
+    fn push_qual(&mut self,v: Vec<u8>)-> &mut Self  {
+        if self.qual.len() != 0 {
+        self.qual.extend(b"\n");
+        }
+        self.qual.extend(v);
+        self
+    }
+}
