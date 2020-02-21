@@ -136,4 +136,68 @@ impl Get for Fdb {
         }
         vec
     }
+
+    fn get_tsv(&self) -> Vec<u8> {
+
+
+        let qlt = self.qual.len();
+        let len = self.head.len()+self.seq.len()+qlt+2;
+        let mut vec : Vec<u8> = vec![0u8; len];
+        let (mut i, mut q, mut s, mut h, mut sw,  mut c) = (0,0,0,0,0,0u8);
+
+
+        loop {
+            match sw {
+                0 =>{
+                    println!(" 0");
+                    c = self.head[h];
+                    h+=1;
+                    if h == self.head.len() {
+                        vec[i] = c;
+                        i+=1;
+                        c = 10u8;
+                    }
+                },
+                1 => {
+                    println!(" 1");
+                    c= self.seq[s];
+                    s+=1;
+                    if s == self.seq.len() {
+                        vec[i] = c;
+                        i+=1;
+                        if qlt > 0 {
+                            c = 10u8;
+                        }else{
+                            break;
+                        }
+                    }
+                },
+                _ => {
+                    if qlt > 0 {
+                        c= self.qual[q];
+                        q+=1;
+                        if q == self.qual.len() {
+                            vec[i] = c;
+                            i+=1;
+                            break;
+                        }
+                    }
+                }
+            }
+            if  c  == 10u8  {
+                c= '\t' as u8;
+                sw+=1;
+                if (sw == 3 && qlt > 0) || (sw == 2 && qlt == 0) {
+                    sw = 0;
+                    c= 10u8;
+                };
+
+            }
+            vec[i] = c;
+            i+=1;
+        }
+        vec.resize(i,  0x00);
+        vec
+
+    }
 }
