@@ -16,7 +16,7 @@
  * <http://www.doctrine-project.org>.
  */
 
-use crate::{Fdb, Get, Set, IO, Load, Save};
+use crate::{Fdb, Get, Set, IO, Load, Save, Push};
 
 
 
@@ -146,7 +146,7 @@ fn get_set_tsv() {
 
 
     assert_eq!("@SSR0\tCGTGCC\tGEZ!Rj\n@SSR1\tATGCGT\tGFHGGU".to_string(),
-        String::from_utf8(fdb.get_tsv()).unwrap());
+        String::from_utf8(fdb.get_tsv("h+s+q")).unwrap());
     //assert_eq!("@SSR1\tATGCGT\n@SSR0\tCGTGCC".to_string(),
     //    String::from_utf8(fdb.get_tsv()).unwrap());
 
@@ -195,4 +195,37 @@ fn set_get_on_quality() {
     let mut fdb = Fdb::new("fastq");
     fdb.set_qual(qual.clone());
     assert_eq!(fdb.get_qual(), qual);
+}
+
+
+
+#[test]
+fn push_get_on_header() {
+    let head= b"@SSR34:55:45 2:N:0".to_vec();
+    let mut fdb = Fdb::new("fastq");
+    fdb.push_head(head.clone());
+    fdb.push_head(head.clone());
+    fdb.push_head(head.clone());
+    assert_eq!(fdb.get_head(), b"@SSR34:55:45 2:N:0\n@SSR34:55:45 2:N:0\n@SSR34:55:45 2:N:0".to_vec());
+}
+
+
+#[test]
+fn push_get_on_sequance() {
+    let seq= b"ATGTGCGTGCAACNTGTC".to_vec();
+    let mut fdb = Fdb::new("fastq");
+    fdb.push_seq(seq.clone());
+    fdb.push_seq(seq.clone());
+    fdb.push_seq(seq.clone());
+    assert_eq!(fdb.get_seq(), b"ATGTGCGTGCAACNTGTC\nATGTGCGTGCAACNTGTC\nATGTGCGTGCAACNTGTC".to_vec());
+}
+
+
+#[test]
+fn push_get_on_quality() {
+    let qual= b"!!!##$#%%&%655".to_vec();
+    let mut fdb = Fdb::new("fastq");
+    fdb.set_qual(qual.clone());
+    fdb.push_qual(qual.clone());
+    assert_eq!(fdb.get_qual(), b"!!!##$#%%&%655\n!!!##$#%%&%655".to_vec());
 }
