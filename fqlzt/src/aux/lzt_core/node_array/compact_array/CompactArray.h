@@ -30,9 +30,9 @@ public:
     //TODO promjeniti tip parametra u size_t
     NodeConst operator[](TIndex i) const;
     TIndex getSize() const;
+    bool isEnumerated() const { return enumerated; }
 
-    //template <typename TNodeArray> friend class CompactArrayCreatorL;
-    //template <typename TS, typename TI> friend class CompactArraySerializer;
+    template <typename TS, typename TI, typename TBSA> friend class CompactArrayBuilder;
 
 private:
     

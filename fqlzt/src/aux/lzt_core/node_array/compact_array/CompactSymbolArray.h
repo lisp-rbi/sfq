@@ -40,6 +40,8 @@ public:
     bool load(string f);
     void writeToStream(ostream& stream);
     void readFromStream(istream& stream);
+    
+    template <typename TS, typename TI, typename TBsa> friend class CompactArrayBuilder;
 
 private:
 

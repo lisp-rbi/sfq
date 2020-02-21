@@ -31,7 +31,8 @@ public:
     TIndex getSize() const;
 
     template <typename TNodeArray> friend class CompactArrayCreatorL;
-    template <typename TS, typename TI> friend class CompactArraySerializer;
+    template <typename TS, typename TI> friend class CompactArraySerializer;    
+    template <typename TS, typename TI, typename TBitSequenceArray> friend class CompactArrayBuilder;
 
 private:
 
