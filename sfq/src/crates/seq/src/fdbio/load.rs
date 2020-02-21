@@ -25,6 +25,16 @@ impl Load for Fdb {
 
         let reader = self.make_reader(path);
 
+        if self.head.len() > 0 {
+            self.head.extend(b"\n");
+        }
+        if self.seq.len() > 0 {
+            self.seq.extend(b"\n");
+        }
+        if self.qual.len() > 0 {
+            self.qual.extend(b"\n");
+        }
+
         match &self.format[..] {
             "fastq" => {
 
