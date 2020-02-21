@@ -127,6 +127,33 @@ fn resort_fastq_by_quality() {
 
 }
 
+
+
+//  sort_by does not work if quality is missing!!!
+#[test]
+fn get_set_tsv() {
+    let seq =  b"ATGCGT\nCGTGCC".to_vec();
+    let qual = b"GFHGGU\nGEZ!Rj".to_vec();
+    let head=  b"@SSR1\n@SSR0".to_vec();
+
+    let mut fdb = Fdb::new("fastq");
+
+    fdb.set_head(head);
+    fdb.set_qual(qual);
+    fdb.set_seq(seq);
+    fdb.sort("h");
+
+
+
+    assert_eq!("@SSR0\tCGTGCC\tGEZ!Rj\n@SSR1\tATGCGT\tGFHGGU".to_string(),
+        String::from_utf8(fdb.get_tsv()).unwrap());
+    //assert_eq!("@SSR1\tATGCGT\n@SSR0\tCGTGCC".to_string(),
+    //    String::from_utf8(fdb.get_tsv()).unwrap());
+
+
+}
+
+
 #[test]
 fn set_get_on_fastq() {
 
