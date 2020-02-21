@@ -59,6 +59,10 @@ impl Fdb{
         prim_vec: &mut Vec<u8>,
         sec_vec:  &mut Vec<u8>) -> bool {
 
+        if self.qual.len() == 0 {
+            panic!("sort only works when fastq file is loaded properly!");
+        }
+
         let count = self.head.iter().filter(|&n| *n == 10u8).count()+1;
         let wln = (count as f64).log(10.0).ceil() as usize;
 
