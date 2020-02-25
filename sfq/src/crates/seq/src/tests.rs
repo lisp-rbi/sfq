@@ -16,7 +16,7 @@
  * <http://www.doctrine-project.org>.
  */
 
-use crate::{Fdb, Get, Set, IO, Load, Save};
+use crate::{Fdb, Get, Set, IO, Load, Save, Push};
 
 
 
@@ -127,6 +127,33 @@ fn resort_fastq_by_quality() {
 
 }
 
+
+
+//  sort_by does not work if quality is missing!!!
+#[test]
+fn get_set_tsv() {
+    let seq =  b"ATGCGT\nCGTGCC".to_vec();
+    let qual = b"GFHGGU\nGEZ!Rj".to_vec();
+    let head=  b"@SSR1\n@SSR0".to_vec();
+
+    let mut fdb = Fdb::new("fastq");
+
+    fdb.set_head(head);
+    fdb.set_qual(qual);
+    fdb.set_seq(seq);
+    fdb.sort("h");
+
+
+
+    assert_eq!("@SSR0\tCGTGCC\tGEZ!Rj\n@SSR1\tATGCGT\tGFHGGU".to_string(),
+        String::from_utf8(fdb.get_tsv("h+s+q")).unwrap());
+    //assert_eq!("@SSR1\tATGCGT\n@SSR0\tCGTGCC".to_string(),
+    //    String::from_utf8(fdb.get_tsv()).unwrap());
+
+
+}
+
+
 #[test]
 fn set_get_on_fastq() {
 
@@ -168,4 +195,37 @@ fn set_get_on_quality() {
     let mut fdb = Fdb::new("fastq");
     fdb.set_qual(qual.clone());
     assert_eq!(fdb.get_qual(), qual);
+}
+
+
+
+#[test]
+fn push_get_on_header() {
+    let head= b"@SSR34:55:45 2:N:0".to_vec();
+    let mut fdb = Fdb::new("fastq");
+    fdb.push_head(head.clone());
+    fdb.push_head(head.clone());
+    fdb.push_head(head.clone());
+    assert_eq!(fdb.get_head(), b"@SSR34:55:45 2:N:0\n@SSR34:55:45 2:N:0\n@SSR34:55:45 2:N:0".to_vec());
+}
+
+
+#[test]
+fn push_get_on_sequance() {
+    let seq= b"ATGTGCGTGCAACNTGTC".to_vec();
+    let mut fdb = Fdb::new("fastq");
+    fdb.push_seq(seq.clone());
+    fdb.push_seq(seq.clone());
+    fdb.push_seq(seq.clone());
+    assert_eq!(fdb.get_seq(), b"ATGTGCGTGCAACNTGTC\nATGTGCGTGCAACNTGTC\nATGTGCGTGCAACNTGTC".to_vec());
+}
+
+
+#[test]
+fn push_get_on_quality() {
+    let qual= b"!!!##$#%%&%655".to_vec();
+    let mut fdb = Fdb::new("fastq");
+    fdb.set_qual(qual.clone());
+    fdb.push_qual(qual.clone());
+    assert_eq!(fdb.get_qual(), b"!!!##$#%%&%655\n!!!##$#%%&%655".to_vec());
 }

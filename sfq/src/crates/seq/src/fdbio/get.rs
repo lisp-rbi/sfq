@@ -136,4 +136,95 @@ impl Get for Fdb {
         }
         vec
     }
+
+    fn get_tsv(&self, model: &str) -> Vec<u8> {
+
+        let (mut hlt, mut slt, mut qlt) = (0,0,0);
+        let (mut i, mut q, mut s, mut h, mut sw,  mut c) = (0,0,0,0,0,0u8);
+
+
+
+        if model.contains("q"){
+            qlt=self.qual.len();
+            sw = 2;
+        }
+        if model.contains("s"){
+            slt=self.seq.len();
+            sw = 1;
+        }
+        if model.contains("h") {
+            hlt = self.head.len();
+            sw = 0;
+        }
+
+
+        let len = slt+hlt+qlt+2;
+        let mut vec : Vec<u8> = vec![0u8; len];
+
+
+        loop {
+            match sw {
+                0 =>{
+
+                        c = self.head[h];
+                        h+=1;
+                        if h == hlt {
+                            vec[i] = c;
+                            i+=1;
+                            if qlt > 0  || slt > 0{
+                                c = 10u8;
+                            }else{
+                                break;
+                            }
+                        }
+
+                },
+                1 => {
+
+                        c= self.seq[s];
+                        s+=1;
+                        if s == slt {
+                            vec[i] = c;
+                            i+=1;
+                            if qlt > 0 {
+                                c = 10u8;
+                            }else{
+                                break;
+                            }
+                        }
+
+                },
+                _ => {
+
+                        c= self.qual[q];
+                        q+=1;
+                        if q == qlt {
+                            vec[i] = c;
+                            i+=1;
+                            break;
+                        }
+
+                }
+            }
+            if  c  == 10u8  {
+
+                if slt == 0 {sw+=2} else{sw+=1};
+                //println!("{}  -  {} {} {} {} ",c as char, sw , qlt , slt , hlt );
+                if (sw >= 3 && qlt > 0 ) || (sw == 2 && qlt == 0) {
+                    if hlt == 0 {sw = 1} else{sw=0};
+                    c= 10u8;
+
+                }else{
+                    c= '\t' as u8;
+                };
+
+            }
+            //println!("{},{}.", i,c as char );
+            vec[i] = c;
+            i+=1;
+        }
+        vec.resize(i,  0x00);
+        vec
+
+    }
 }

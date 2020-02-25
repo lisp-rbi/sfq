@@ -28,11 +28,12 @@ pub trait IO: Get+Set+Load+Save {}
 
 pub trait Get {
 
-    fn get_head (self) -> Vec<u8>;
-    fn get_seq  (self) -> Vec<u8>;
-    fn get_qual (self) -> Vec<u8>;
+    fn get_head (self)  -> Vec<u8>;
+    fn get_seq  (self)  -> Vec<u8>;
+    fn get_qual (self)  -> Vec<u8>;
     fn get_fasta(&self) -> Vec<u8>;
     fn get_fastq(&self) -> Vec<u8>;
+    fn get_tsv  (&self, model: &str) -> Vec<u8>;
 
 }
 
@@ -41,6 +42,14 @@ pub trait Set {
     fn set_head (&mut self, data: Vec<u8>)-> &mut Self ;
     fn set_seq (&mut self, data: Vec<u8>)-> &mut Self ;
     fn set_qual (&mut self, data: Vec<u8>)-> &mut Self ;
+
+}
+
+pub trait Push {
+
+    fn push_head (&mut self, data: Vec<u8>)-> &mut Self ;
+    fn push_seq (&mut self, data: Vec<u8>)-> &mut Self ;
+    fn push_qual (&mut self, data: Vec<u8>)-> &mut Self ;
 
 }
 
@@ -88,7 +97,7 @@ impl Fdb {
 
 
 
-    fn sort (&mut self, key: &str) ->  &mut Self  {
+    pub fn sort (&mut self, key: &str) ->  &mut Self  {
 
         let (mut a, mut b, mut c) = (self.head.clone(), self.seq.clone(), self.qual.clone());
 

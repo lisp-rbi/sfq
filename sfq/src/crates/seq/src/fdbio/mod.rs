@@ -22,3 +22,4 @@ pub mod get;
 pub mod set;
 pub mod load;
 pub mod save;
+pub mod push;

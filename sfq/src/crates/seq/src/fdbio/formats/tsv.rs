@@ -16,45 +16,20 @@
  * <http://www.doctrine-project.org>.
  */
 
-use crate::{Load, Fdb};
 
 
-impl Load for Fdb {
+ use crate::{Fdb,Get};
+ use crate::util::error::Error;
+ use std::io::{self, prelude::*, stdout, Write, Read, BufReader, BufWriter};
 
-    fn load(&mut self, path: &str, direction: bool) -> &mut Self{
+ impl Fdb{
 
-        let reader = self.make_reader(path);
+     pub fn tsv_dw<W: Write> (&mut self, mut writer:  W)   -> Result<bool,Error>  {
 
-        if self.head.len() > 0 {
-            self.head.extend(b"\n");
-        }
-        if self.seq.len() > 0 {
-            self.seq.extend(b"\n");
-        }
-        if self.qual.len() > 0 {
-            self.qual.extend(b"\n");
-        }
+         writer.write_all(&self.get_tsv("s+q+h")).unwrap();
 
-        match &self.format[..] {
-            "fastq" => {
+         Ok(true)
 
-                if let Ok(false) = self.fastq_up(reader,direction) {
-                    panic!("{} file not uploaded !", self.format);
-                };
+     }
 
-
-            },
-            "fasta" => {
-
-                if let Ok(false) = self.fasta_up(reader,direction) {
-                    panic!("{} file not uploaded !", self.format);
-                };
-
-            },
-            _       => {
-                panic!("format not supported!");
-            }
-        }
-        self
-    }
-}
+ }

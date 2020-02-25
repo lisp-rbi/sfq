@@ -21,6 +21,15 @@ use crate::Fdb;
 
 impl Fdb{
 
+    pub fn clear(&mut self) -> &mut Self {
+        self.head.resize(0,0x00);
+        self.seq.resize(0,0x00);
+        self.qual.resize(0,0x00);
+        self.numrec = 0;
+
+        self
+    }
+
     pub fn revcomp(&self, s: String) -> String {
 
         s.chars()
@@ -58,6 +67,10 @@ impl Fdb{
         key_vec:  &mut Vec<u8>,
         prim_vec: &mut Vec<u8>,
         sec_vec:  &mut Vec<u8>) -> bool {
+
+        if self.qual.len() == 0 {
+            panic!("sort_by() only works when fastq file is loaded properly!");
+        }
 
         let count = self.head.iter().filter(|&n| *n == 10u8).count()+1;
         let wln = (count as f64).log(10.0).ceil() as usize;
