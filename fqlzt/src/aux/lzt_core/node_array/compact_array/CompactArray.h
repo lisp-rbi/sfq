@@ -5,18 +5,19 @@
 #include <cassert>
 #include <iostream>
 
+#include "CompactSymbolArray.h"
+#include "serialization/ISerializable.h"
 #include "node_array/compact_array_legacy/utils.h"
 #include "node_array/compact_array_legacy/CompactArrayNode.h"
 #include "serialization_legacy/BitSequenceArray.h"
 #include "serialization_legacy/serialization.h"
-#include "CompactSymbolArray.h"
 
 /** Implementation of const NodeArray concept.
  * It's a node array in wich only distinct nodes are stored and the array is a
  * sequence of indexes pointing to these nodes. Eow and Cow flags are not
  * stored, they are calculated from index position. */
 template <typename TSymbol, typename TIndex, typename TBitSequenceArray>
-class CompactArray {
+class CompactArray : ISerializable {
 
 public:
        
@@ -31,6 +32,16 @@ public:
     NodeConst operator[](TIndex i) const;
     TIndex getSize() const;
     bool isEnumerated() const { return enumerated; }
+    // serialization
+    bool persist(string f);
+    bool load(string f);
+    void writeToStream(ostream& stream);
+    void readFromStream(istream& stream);
+    // file and folder locations for serialized substructures
+    static const string ARRAY_FOLDER;
+    static const string SIBLINGS_FOLDER;
+    static const string NUMOFWORDS_FOLDER;        
+    static const string SYMBOLS_FOLDER;
 
     template <typename TS, typename TI, typename TBSA> friend class CompactArrayBuilder;
 
@@ -47,6 +58,15 @@ private:
     int flagsFromPosition(size_t p) const;
 
     void printIndexes() const;
+    
+    // serialization
+    void writeFieldsToStream(ostream& stream);
+    void readFieldsFromStream(istream& stream);
+    void writeSubstructsToStream(ostream& stream);
+    void readSubstructsFromStream(istream& stream);   
+    bool persistSubstructures(string directory);    
+    bool loadSubstructures(string directory);    
+    static const string PERSIST_FIELDS_FNAME;
 
     size_t numOfDistinct;
     size_t numOfNodes;
@@ -68,6 +88,21 @@ private:
     CompactSymbolArray<TSymbol, TBitSequenceArray> symbols;
     
 };
+
+template <typename TSymbol, typename TIndex, typename TBitSequenceArray>
+const string CompactArray<TSymbol, TIndex, TBitSequenceArray>::PERSIST_FIELDS_FNAME = "CompactArrayFields.bin";
+
+template <typename TSymbol, typename TIndex, typename TBitSequenceArray>
+const string CompactArray<TSymbol, TIndex, TBitSequenceArray>::ARRAY_FOLDER = "array";
+
+template <typename TSymbol, typename TIndex, typename TBitSequenceArray>
+const string CompactArray<TSymbol, TIndex, TBitSequenceArray>::SIBLINGS_FOLDER = "siblings";
+
+template <typename TSymbol, typename TIndex, typename TBitSequenceArray>
+const string CompactArray<TSymbol, TIndex, TBitSequenceArray>::NUMOFWORDS_FOLDER = "numofwords";
+
+template <typename TSymbol, typename TIndex, typename TBitSequenceArray>
+const string CompactArray<TSymbol, TIndex, TBitSequenceArray>::SYMBOLS_FOLDER = "symbols";
 
 int numberOfBits(size_t numberOfValues);
 
@@ -154,8 +189,140 @@ void CompactArray<TSymbol, TIndex, TBitSequenceArray>::setFlagOffsets(size_t off
     for (int i = 0; i < NUM_OFFSETS; ++i) flagOffsets[i] = offsets[i];
 }
 
-//template <typename T>
-//BitSequence toBitSequence(T t);
+
+template <typename TSymbol, typename TIndex, typename TBitSequenceArray>
+bool CompactArray<TSymbol, TIndex, TBitSequenceArray>::persist(string f) {
+    if (file_accessible(f)) {
+        if (file_is_regular(f)) {
+            ofstream output(f.c_str());
+            writeToStream(output);
+            output.close();    
+            return output.good();
+        }
+        else if (file_is_directory(f)) {                
+            // persist fields
+            string fname = accessible_filename(f, PERSIST_FIELDS_FNAME);
+            if (fname == "") return false;
+            ofstream fieldsstr(fname.c_str());
+            writeFieldsToStream(fieldsstr); fieldsstr.close();            
+            if (!fieldsstr.good()) return false;            
+            return persistSubstructures(f);
+        }
+        else return false;
+    }
+    else return false;
+}
+
+template <typename TSymbol, typename TIndex, typename TBitSequenceArray>
+bool CompactArray<TSymbol, TIndex, TBitSequenceArray>::load(string f) {
+    if (file_accessible(f)) {
+        if (file_is_regular(f)) {            
+            ifstream stream(f.c_str());
+            if (stream.good()) {  
+                readFromStream(stream);
+                stream.close();
+                return stream.good();
+            }
+            else return false;    
+        }
+        else if (file_is_directory(f)) {          
+            // load fields            
+            string fname = accessible_filename(f, PERSIST_FIELDS_FNAME);
+            if (fname == "") return false;
+            ifstream fieldsstr(fname.c_str());
+            readFieldsFromStream(fieldsstr); fieldsstr.close();
+            if (!fieldsstr.good()) return false;
+            return loadSubstructures(f);
+        }
+        else return false;
+    }
+    else return false;    
+}
+
+template <typename TSymbol, typename TIndex, typename TBitSequenceArray>
+void CompactArray<TSymbol, TIndex, TBitSequenceArray>::writeToStream(ostream& stream) {
+    writeFieldsToStream(stream);
+    writeSubstructsToStream(stream);    
+}
+
+template <typename TSymbol, typename TIndex, typename TBitSequenceArray>
+void CompactArray<TSymbol, TIndex, TBitSequenceArray>::readFromStream(istream& stream) {
+    readFieldsFromStream(stream);
+    readSubstructsFromStream(stream);
+}
+
+template <typename TSymbol, typename TIndex, typename TBitSequenceArray>
+void CompactArray<TSymbol, TIndex, TBitSequenceArray>::writeFieldsToStream(ostream& stream) {    
+    SerializationUtils::integerToStream(numOfDistinct, stream);    
+    SerializationUtils::integerToStream(numOfNodes, stream);    
+    SerializationUtils::integerToStream(bitsPerIndex, stream);        
+    SerializationUtils::integerToStream(enumerated, stream);        
+    SerializationUtils::integerToStream(NUM_OFFSETS, stream);   
+    for (int i = 0; i < NUM_OFFSETS; ++i)
+        SerializationUtils::integerToStream(flagOffsets[i], stream);    
+}
+
+template <typename TSymbol, typename TIndex, typename TBitSequenceArray>
+void CompactArray<TSymbol, TIndex, TBitSequenceArray>::readFieldsFromStream(istream& stream) {    
+    // numOfDistinct = SerializationUtils::integerFromStream<size_t>(stream); 
+    numOfDistinct = SerializationUtils::integerFromStream<size_t>(stream);
+    numOfNodes = SerializationUtils::integerFromStream<size_t>(stream);
+    bitsPerIndex = SerializationUtils::integerFromStream<size_t>(stream);
+    enumerated = SerializationUtils::integerFromStream<bool>(stream);
+    int numOff = SerializationUtils::integerFromStream<int>(stream);
+    assert(numOff == NUM_OFFSETS);
+    for (int i = 0; i < NUM_OFFSETS; ++i)
+        flagOffsets[i] = SerializationUtils::integerFromStream<size_t>(stream);
+}
+
+template <typename TSymbol, typename TIndex, typename TBitSequenceArray>
+void CompactArray<TSymbol, TIndex, TBitSequenceArray>::writeSubstructsToStream(ostream& stream) {
+    array.writeToStream(stream);
+    siblings.writeToStream(stream);
+    numOfWords.writeToStream(stream);
+    symbols.writeToStream(stream);
+}
+
+template <typename TSymbol, typename TIndex, typename TBitSequenceArray>
+void CompactArray<TSymbol, TIndex, TBitSequenceArray>::readSubstructsFromStream(istream& stream) {
+    array.readFromStream(stream);
+    siblings.readFromStream(stream);
+    numOfWords.readFromStream(stream);
+    symbols.readFromStream(stream);
+}
+
+template <typename TSymbol, typename TIndex, typename TBitSequenceArray>
+bool CompactArray<TSymbol, TIndex, TBitSequenceArray>::persistSubstructures(string directory) {
+    string sep = "/"; bool res;
+    string arrayFolder = directory+sep+ARRAY_FOLDER;
+    res = create_directory(arrayFolder) and array.persist(arrayFolder);
+    if (!res) return false;
+    string siblFolder = directory+sep+SIBLINGS_FOLDER;
+    res = create_directory(siblFolder) and siblings.persist(siblFolder); 
+    if (!res) return false;
+    string numofwFolder = directory+sep+NUMOFWORDS_FOLDER;
+    res = create_directory(numofwFolder) and numOfWords.persist(numofwFolder);   
+    if (!res) return false;
+    string symbFolder = directory+sep+SYMBOLS_FOLDER;
+    res = create_directory(symbFolder) and symbols.persist(symbFolder);               
+    if (!res) return false;
+    return true;
+}
+
+template <typename TSymbol, typename TIndex, typename TBitSequenceArray>
+bool CompactArray<TSymbol, TIndex, TBitSequenceArray>::loadSubstructures(string directory) {
+    string sep = "/"; bool res;
+    string arrayFolder = directory+sep+ARRAY_FOLDER;
+    res = array.load(arrayFolder); if (!res) return false;
+    string siblFolder = directory+sep+SIBLINGS_FOLDER;
+    res = siblings.load(siblFolder); if (!res) return false;
+    string numofwFolder = directory+sep+NUMOFWORDS_FOLDER;
+    res = numOfWords.load(numofwFolder);  if (!res) return false;
+    string symbFolder = directory+sep+SYMBOLS_FOLDER;
+    res = symbols.load(symbFolder); if (!res) return false;
+    return true;
+}
+
 
 #endif	/* COMPACTARRAY_H */
 

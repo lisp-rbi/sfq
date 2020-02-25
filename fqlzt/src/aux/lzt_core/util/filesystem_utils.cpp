@@ -42,6 +42,11 @@ int unlink(const char *path, const struct stat *sb, int tflag, struct FTW *buff)
     return res;
 }
 
+bool create_directory(string dpath) {
+    int res = mkdir(dpath.c_str(), 0777);
+    return res == 0;
+}
+
 bool remove_directory(string dname) {
     int res = nftw(dname.c_str(), unlink, 64, FTW_DEPTH | FTW_PHYS);
     return res == 0;

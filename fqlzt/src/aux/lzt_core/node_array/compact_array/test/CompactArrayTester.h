@@ -12,6 +12,7 @@
 
 #include "util/factory.h"
 #include "util/Timer.h"
+#include "util/TempFile.h"
 #include "dictionary/char_trie/Trie.h"
 #include "dictionary/lz_trie/LzTrie.h"
 #include "compress/lz_compressor/LzCompressor.h"
@@ -29,8 +30,10 @@ public:
     
     void testWithDictionaries();
     void simpleTests();
-    void testBuildSave(string dictset);
+    void testProductionBuildSave(string dictset);
     void testCreate(string dictset);
+    void testSerialize(string dictset, bool toFolder);
+    
 private:
  
     typedef VectorArray<TSymbol, TIndex> TMemNodeArray;
@@ -64,7 +67,7 @@ dictSet(string label) {
     }  
     else if (label == "natural-lang") {
         subfolder = "natural-lang"; int numd = 2;
-        char const * d[] = { "french.txt", "german.txt" }; //, "polmorph.txt" };
+        char const * d[] = { "french.txt", "german.txt"};
         for (int i = 0; i < numd; ++i) dicts.push_back(d[i]);
     }     
     vector<pair<string,string> > res;
@@ -95,7 +98,7 @@ freeDictMem(vector<WordList<TSymbol>*> dicts) {
 }
 
 template <typename TSymbol, typename TIndex, typename TBitSequenceArray>
-void CompactArrayTester<TSymbol, TIndex, TBitSequenceArray>::testBuildSave(string dictset) {
+void CompactArrayTester<TSymbol, TIndex, TBitSequenceArray>::testProductionBuildSave(string dictset) {
     cout<<"testBuildSave, dictset="<<dictset<<endl;
     vector<pair<string,string> > dlabels = dictSet(dictset);
     vector<WordList<TSymbol>*> dicts = loadDictionaries(dictset);
@@ -125,6 +128,33 @@ void CompactArrayTester<TSymbol, TIndex, TBitSequenceArray>::testCreate(string d
     freeDictMem(dicts);
     cout<<"testBuildSave, dictset="<<dictset<<" PASSED"<<endl;
 }
+
+template <typename TSymbol, typename TIndex, typename TBitSequenceArray>
+void CompactArrayTester<TSymbol, TIndex, TBitSequenceArray>::testSerialize(string dictset, bool toFolder) {
+    // TODO ? extract serialization testing in a separate module, for generic ISerializable objects        
+    cout<<"COMPACT ARRAY testSerialize(dictset="<<dictset<<") "<<"toFolder: "<<toFolder<<endl;    
+    vector<pair<string,string> > dlabels = dictSet(dictset);
+    vector<WordList<TSymbol>*> dicts = loadDictionaries(dictset);
+    for (int i = 0; i < dicts.size(); ++i) {
+        CompactArrayBuilder<TSymbol, TIndex, TBitSequenceArray> builder; 
+        CompactArray<TSymbol, TIndex, TBitSequenceArray>* carray;
+        carray = builder.createCompactArray(dicts[i], dlabels[i].first, false);            
+        // serialize
+        TempFile file(toFolder);    
+        carray->persist(file.getName());          
+        // deserialize
+        CompactArray<TSymbol, TIndex, TBitSequenceArray> deserArray;
+        deserArray.load(file.getName());        
+        nodeArraysNodeEquality(*carray, deserArray);
+        //nodeArraysTrieEquality(*carray, deserArray);
+        //delete deserArray;
+        delete carray;
+    }
+    freeDictMem(dicts);
+    cout<<"COMPACT ARRAY testSerialize PASSED"<<endl;       
+}
+
+
 
 template <typename TSymbol, typename TIndex, typename TBitSequenceArray>
 template<typename TNa1, typename TNa2> void CompactArrayTester<TSymbol, TIndex, TBitSequenceArray>::

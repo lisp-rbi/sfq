@@ -35,6 +35,8 @@ bool file_is_directory(string fname);
  */
 string accessible_filename(string f, string fname);
 
+/** Create the last directory in specifed path, other directories must exist. */
+bool create_directory(string dpath);
 /** Recursively remove all directory contents and the directory. */
 bool remove_directory(string dname);
 /** Copy file source to location dest, return true upon success. */

@@ -8,18 +8,24 @@ void runSymbolArrayTests() {
 void runCompactArrayTests() {    
     typedef BitSequenceArray<MemCharArray> TMemBsa;
     typedef BitSequenceArray<DiskCharArray> TDiskBsa;
-//    CompactArray<char, int, TBitSequenceArray> arr();
-//    CompactArrayBuilder<char, int, TBitSequenceArray> builder;
+    cout<<"COMPACT ARRAY + DISK CHAR ARRAY TESTS..."<<endl;
+    CompactArrayTester<char, int, TDiskBsa> testerD;        
+    testerD.testCreate("small-dicts");
+    //testerD.testCreate("natural-lang");
+    for (int toFolder = 0; toFolder < 2; ++toFolder) {
+        testerD.testSerialize("small-dicts", toFolder);
+        testerD.testSerialize("natural-lang", toFolder);
+    }
+    cout<<endl;          
     cout<<"COMPACT ARRAY + MEMORY CHAR ARRAY TESTS..."<<endl;
     CompactArrayTester<char, int, TMemBsa> testerM;    
     testerM.testCreate("small-dicts");
-    testerM.testCreate("natural-lang");
-    cout<<endl;
-    cout<<"COMPACT ARRAY + DISK CHAR ARRAY TESTS..."<<endl;
-    CompactArrayTester<char, int, TDiskBsa> testerD;    
-    testerD.testCreate("small-dicts");
-    testerD.testCreate("natural-lang");
-    cout<<endl;    
+    //testerM.testCreate("natural-lang");
+    for (int toFolder = 0; toFolder < 2; ++toFolder) {
+        testerM.testSerialize("small-dicts", toFolder);    
+        testerM.testSerialize("natural-lang", toFolder);    
+    }
+    cout<<endl;  
 }
 
 void memSymbArrayTests() {
