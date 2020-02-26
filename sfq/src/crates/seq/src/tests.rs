@@ -16,7 +16,15 @@
  * <http://www.doctrine-project.org>.
  */
 
-use crate::{Fdb, Get, Set, IO, Load, Save, Push};
+use crate::{
+    Fdb,   // main object
+    Get,
+    Set,
+    IO,
+    Load,
+    Save,
+    Push
+};
 
 
 
