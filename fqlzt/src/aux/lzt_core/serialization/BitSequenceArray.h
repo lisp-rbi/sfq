@@ -32,11 +32,12 @@ public:
     BitSequence operator[](size_t i) const;
     void changeFormat(size_t size, int bitsPerSequence);
     void resize(size_t newSize);
-    void setSequence(size_t i, BitSequence seq);
+    void setSequence(size_t i, BitSequence seq);    
 
     size_t getNumOfSequences() const;
     size_t getSequenceSize() const;
     TCharArray* exportCharArray();
+    void setCharArray(TCharArray* charArray);
 
     bool persist(string f);
     bool load(string f);
@@ -136,6 +137,13 @@ template <typename TCharArray>
 TCharArray* BitSequenceArray<TCharArray>::exportCharArray() {
     carrayExported = true;
     return charArray;
+}
+
+template <typename TCharArray>
+void BitSequenceArray<TCharArray>::setCharArray(TCharArray* carray) {
+    if (charArray != NULL) delete charArray;
+    charArray = carray;
+    carrayExported = true;
 }
 
 /** Resize the array so that it can store newSize sequences, keeping the
