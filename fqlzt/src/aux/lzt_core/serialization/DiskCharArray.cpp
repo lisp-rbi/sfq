@@ -191,7 +191,7 @@ bool DiskCharArray::persist(string f) {
             // transfer file
             file = accessible_filename(f, PERSIST_CHARS_FNAME);                        
             if (fname == file) { // file is already where it should be saved
-                // TODO file name normalization before check                      
+                // TODO file name normalization before check
                 if (state == STATE_CLOSED or closeFile()) {                    
                     state = STATE_PERSISTED;
                     return true;
