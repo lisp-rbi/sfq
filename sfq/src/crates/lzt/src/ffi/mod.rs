@@ -1,5 +1,4 @@
-
 #[repr(C)]
-pub(in super) struct LztObj {
-        _ffi: [*const u8; 0],
+pub struct LztObj {
+    _opaque: [*const u8; 0],
 }
