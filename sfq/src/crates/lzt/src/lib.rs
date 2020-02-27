@@ -1,61 +1,40 @@
 
-mod ffi;
+extern crate libc;
+mod util;
+pub mod ffi;
 
+use std::str;
+use std::fs;
 use ffi::LztObj;
+use util::common::{
+    make_lzt,
+    open_lzt,
+    delete_lzt,
+    query_lzt,
+    get_query_results
+};
+
+
+#[cfg(test)]
+mod tests;
+
+
 
 pub trait Drop{
     fn drop(&mut self);
 }
 
 
-
-// C function signatires -----------------//
-extern "C" {
-    fn open_lzt(
-        pth: *const libc::c_uchar,
-        len: libc::c_int
-    ) -> *mut LztObj;
-
-    fn make_lzt(
-        vst: *const libc::c_uchar,
-        vln: libc::c_ulong,
-        pst: *const libc::c_uchar,
-        pln: libc::c_int,
-    )-> bool;
-
-    fn delete_lzt (
-        obj: *mut LztObj
-    );
-
-    fn query_lzt (
-        obj: *mut LztObj,
-        vst: *const libc::c_uchar,
-        vln: libc::c_ulong,
-    )-> u64;
-
-    fn get_query_results (
-        obj: *mut LztObj,
-        results: *const libc::c_uchar
-    );
-}
-
-
-
-
-/// FFI object -----------------------------
 pub struct FFI {
-    raw: Vec<*mut LztObj>,  // reimplemet this as a vector of objects
+    raw: Vec<*mut LztObj>
 }
 
 impl FFI {
 
     pub fn new( path : &str, vec: &mut Vec<u8>, mem: usize) -> Self {
 
-        let lpm = mem*120;
-        let mut l = 0;
-        let mut s = 0;
-        let mut j = 0;
-
+        let lpm = mem*100; // number of lines per MB
+        let (mut l, mut s, mut j) = (0,0,0);
 
         // check for null termination
         if vec[vec.len()-1] != 0u8 {vec.push(0u8)};
@@ -65,12 +44,11 @@ impl FFI {
         for i in 0..vec.len() {
 
             if vec[i] == 0u8 || i == vec.len()-1 {
-                l = l + 1;
+                l+=1;
                 if l == lpm || i == vec.len()-1 {
-                    j=j+1;
+                    j+=1;
                     let pth = format!("{}.{}", path, j.to_string());
                     let v =  &vec[s..i+1].to_vec();
-
                     //println!("{:?} -- {} {}", vec[i], v.len(), v[v.len()-1]);
                     unsafe {
                         if make_lzt(
@@ -106,7 +84,7 @@ impl FFI {
         let mut lzt_vec : Vec<*mut LztObj> = Vec::new();
         let mut j=1;
         let mut pth = format!("{}.{}", path, j.to_string());
-        print!("\nDecompressing: {} ...", pth);
+
         while fs::metadata(pth.clone()).is_ok() == true {
             let p = unsafe {
                 open_lzt(
@@ -115,11 +93,9 @@ impl FFI {
                 )
             };
             lzt_vec.push(p);
-            j=j+1;
+            j+=1;
             pth = format!("{}.{}", path, j.to_string());
-            print!("ok!\nDecompressing: {} ...", pth);
         }
-        println!("ok!\n");
 
         FFI {
             raw: lzt_vec
