@@ -1,16 +1,16 @@
 #!/bin/bash
 
 buildfolder=build-folder
-cliexec=lzt-cli
+cliexec=lzt-cli-old
 
 dictfolder=$1
 dictfile=$2
 #testfile=lzt\_core/test\_files/smallDict.txt
 testfile=$dictfolder/$dictfile
 #testfile=test-dicts/german.txt
-outdict=$dictfile.lzt
-outfile=$dictfile.out.txt
-numSequentialTests=1
+outdict=$dictfile.old.lzt
+outfile=$dictfile.old.out.txt
+numSequentialTests=4
 
 rm $cliexec
 cp $buildfolder/$cliexec .
