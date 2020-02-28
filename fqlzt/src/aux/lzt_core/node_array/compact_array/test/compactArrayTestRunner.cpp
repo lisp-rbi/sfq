@@ -8,7 +8,8 @@ void runSymbolArrayTests() {
 void runCompactArrayTests() {    
     typedef BitSequenceArray<MemCharArray> TMemBsa;
     typedef BitSequenceArray<DiskCharArray> TDiskBsa;
-    char const * dictsets[] = { "small-dicts", "natural-lang" }; int numDsets = 2;
+    //char const * dictsets[] = { "small-dicts", "natural-lang" }; int numDsets = 2;
+    char const * dictsets[] = { "small-dicts", "fasta" }; int numDsets = 2;
     cout<<"COMPACT ARRAY + DISK CHAR ARRAY TESTS..."<<endl;
     CompactArrayTester<char, int, TDiskBsa> testerD;        
     for (int i = 0; i < numDsets; ++i) {

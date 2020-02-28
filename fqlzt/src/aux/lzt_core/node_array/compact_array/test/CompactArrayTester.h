@@ -69,7 +69,12 @@ dictSet(string label) {
         subfolder = "natural-lang"; int numd = 2;
         char const * d[] = { "french.txt", "german.txt"};
         for (int i = 0; i < numd; ++i) dicts.push_back(d[i]);
-    }     
+    }   
+    else if (label == "fasta") {
+        subfolder = "fasta"; int numd = 3;
+        char const * d[] = { "for_lzt.head", "for_lzt.qual", "for_lzt.seq"};
+        for (int i = 0; i < numd; ++i) dicts.push_back(d[i]);
+    }       
     vector<pair<string,string> > res;
     for (int i = 0; i < dicts.size(); ++i) {
         string fname = dicts[i];
