@@ -1,18 +1,18 @@
 #ifndef LZT_HPP
 #define LZT_HPP
 
-#include "lzt-interface.h"
+#include "lzt-interface-old.h"
 
 #include <iostream>
 #include <cstddef>
 extern "C"
 using namespace std;
 
-class Lzt {
+class LztOld {
 
     public:
-	Lzt();
-	~Lzt();
+	LztOld();
+	~LztOld();
 
         /**
          * Creates compressed trie from a sorted list of words
@@ -33,7 +33,7 @@ class Lzt {
         vector<vector<TSymbol> > * getFastqRecords(vector<TSymbol> prefix);
 
     private:
-        TLzTrieDisk *trie = NULL;
+        TLzTrieL *trie = NULL;
 };
 
 

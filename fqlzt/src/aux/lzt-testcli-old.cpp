@@ -3,8 +3,8 @@
  * Code in interface function is also an example of using the lzt-interface.
  */
 
-#include "lzt.hpp"
-#include "lzt-interface.h"
+#include "lzt-old.hpp"
+#include "lzt-interface-old.h"
 #include "lzt-utils.h"
 
 #include "lzt_core/util/regex.h"
@@ -26,7 +26,7 @@ static void testSequentialQueries();
 /**************************************************************/
 
 static void createParameterMap(int argc, char** argv);
-static void printWordList(string query, TLzTrie* lzTrie);
+static void printWordList(string query, TLzTrieL* lzTrie);
 
 int main(int argc, char** argv) {        
     string command = argv[1];        
@@ -58,14 +58,14 @@ void compressTrie() {
 }
 
 void loadAndListTrie() {        
-    TLzTrie* trie = loadLzTrie(params["-d"]);
+    TLzTrieL* trie = loadLzTrie(params["-d"]);
     string query = "*";
     printWordList(query, trie);
     freeTrieMemory(trie);
 }
 
 void queryTrie() {        
-    TLzTrie* trie = loadLzTrie(params["-d"]);
+    TLzTrieL* trie = loadLzTrie(params["-d"]);
     string query = params["-s"];
     vector<TSymbol> q = string2SymbolVec(query);
     vector<vector<TSymbol> >* result = queryLzTrie(trie, q);
@@ -80,7 +80,7 @@ void queryTrie() {
  * loading it, and listing all words to stdout. 
  */
 void testInterfaceClass() {
-    Lzt lzt;
+    LztOld lzt;
     // create and save    
     FlatWordList<TSymbol> fwords = readWordsFromFile(params["-i"]);    
     assert(lzt.make(fwords.words, fwords.length, params["-d"]));
@@ -103,7 +103,7 @@ void testInterfaceClass() {
  */
 void testSequentialQueries() {    
     // load trie and list all words
-    TLzTrie* trie = loadLzTrie(params["-d"]);    
+    TLzTrieL* trie = loadLzTrie(params["-d"]);    
     vector<TSymbol> emptyQuery;
     vector<vector<TSymbol> >* allwords = queryLzTrie(trie, emptyQuery);
     size_t numWords = allwords->size();
@@ -153,7 +153,7 @@ void testSequentialQueries() {
     freeTrieMemory(trie);
 }
 
-void printWordList(string query, TLzTrie* lzTrie) {
+void printWordList(string query, TLzTrieL* lzTrie) {
     // convery string of chars to string of TSymbols
     TSymbol *queryTS = stringToTSymbolString(query);
     //cout<<"start printing"<<endl;

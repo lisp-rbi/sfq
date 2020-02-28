@@ -1,7 +1,7 @@
 #ifndef LZT_UTILS_H
 #define LZT_UTILS_H
 
-#include "lzt-interface.h"
+#include "lzt-interface-old.h"
 #include <string>
 
 using namespace std;
