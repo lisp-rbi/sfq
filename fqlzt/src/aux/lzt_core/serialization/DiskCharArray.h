@@ -69,6 +69,8 @@ private:
     // where the file resides - therefore, the file must not be changed
     // it should be explicitly re-opened for subsequent usage
     static const int STATE_PERSISTED = 4; 
+    // loaded from and bound to previously persisted folder location, file must not be deleted
+    static const int STATE_LOADED = 5;
     
     bool closeFile();
     bool openFile();

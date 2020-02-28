@@ -105,10 +105,15 @@ bool DiskCharArray::flushFile() {
     return res == 0;
 }
 
-bool DiskCharArray::deleteFile() {    
-    if (state == STATE_PERSISTED) return false;
+bool DiskCharArray::deleteFile() {  
+    //cout<<"deleting file, file:"<<fname<<" state:"<<state<<endl;
+    //cout<<this<<endl;
+    if (state == STATE_PERSISTED || state == STATE_LOADED) {
+        // TODO this should not happen, raise an exception?
+        return false;
+    }
     if (DEBUG) cout<<"deleteFile()"<<endl;
-    closeFile();    
+    closeFile(); // TODO close in any case?    
     bool res = remove(fname.c_str()) == 0;
     if (DEBUG) cout<<"deleteFile(), res="<<res<<endl;
     return res;
@@ -167,6 +172,7 @@ bool DiskCharArray::resize(size_t size) {
 void DiskCharArray::freeMemory() {
     // TODO empty fname handling
     if (DEBUG) cout<<"freeMemory()"<<endl;
+    if (state == STATE_PERSISTED || state == STATE_LOADED) return;
     deleteFile();
     openFile();    
     numOfBlocks = 0;
@@ -243,7 +249,9 @@ bool DiskCharArray::load(string f) {
             }         
             deleteFile();
             fname = file;
-            return openFile();
+            bool res = openFile();
+            if (res) state = STATE_LOADED;
+            return res;
         }
         else return false;
     }
@@ -305,6 +313,7 @@ void DiskCharArray::readFromStream(istream& stream) {
 }
 
 DiskCharArray::~DiskCharArray() { 
+    if (state == STATE_PERSISTED || state == STATE_LOADED) return;
     deleteFile();
 }
 

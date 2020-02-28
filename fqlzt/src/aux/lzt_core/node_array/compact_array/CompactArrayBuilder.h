@@ -58,7 +58,7 @@ private:
 template <typename TSymbol, typename TIndex, typename TBitSequenceArray>
 bool CompactArrayBuilder<TSymbol, TIndex, TBitSequenceArray>::
 buildSaveCompactArray(WordList<TSymbol>* words, string folder, string dictLabel, bool enumerated) {    
-    cout<<"buildSaveCompactArray(dict="<<dictLabel<<",enum="<<enumerated<<")"<<endl;
+    //cout<<"buildSaveCompactArray(dict="<<dictLabel<<",enum="<<enumerated<<")"<<endl;
     TMemNodeArray* array = getLzArrayLCT<TMemNodeArray>(*words);
     CompactArrayCreatorL<TMemNodeArray> creator(*array);
     CompactArrayL<TSymbol, TIndex>* carrayLegacy = creator.createCompactArray();    

@@ -22,7 +22,7 @@ class CompactArray : ISerializable {
 public:
        
     CompactArray(bool enumerated = false);
-    virtual ~CompactArray();
+    //virtual ~CompactArray();
 
     typedef TSymbol Symbol;
     typedef TIndex Index;
@@ -117,8 +117,8 @@ CompactArray<TSymbol, TIndex, TBitSequenceArray>::CompactArray(size_t distinct, 
    bitsPerIndex(numberOfBits(distinct)), array(nodes, bitsPerIndex)
 { }
 
-template <typename TSymbol, typename TIndex, typename TBitSequenceArray>
-CompactArray<TSymbol, TIndex, TBitSequenceArray>::~CompactArray() { }
+//template <typename TSymbol, typename TIndex, typename TBitSequenceArray>
+//CompactArray<TSymbol, TIndex, TBitSequenceArray>::~CompactArray() { }
 
 template <typename TSymbol, typename TIndex, typename TBitSequenceArray>
 TIndex CompactArray<TSymbol, TIndex, TBitSequenceArray>::getSize() const {
