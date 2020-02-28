@@ -8,22 +8,24 @@ void runSymbolArrayTests() {
 void runCompactArrayTests() {    
     typedef BitSequenceArray<MemCharArray> TMemBsa;
     typedef BitSequenceArray<DiskCharArray> TDiskBsa;
+    char const * dictsets[] = { "small-dicts", "natural-lang" }; int numDsets = 2;
     cout<<"COMPACT ARRAY + DISK CHAR ARRAY TESTS..."<<endl;
     CompactArrayTester<char, int, TDiskBsa> testerD;        
-    testerD.testCreate("small-dicts");
-    //testerD.testCreate("natural-lang");
-    for (int toFolder = 0; toFolder < 2; ++toFolder) {
-        testerD.testSerialize("small-dicts", toFolder);
-        testerD.testSerialize("natural-lang", toFolder);
+    for (int i = 0; i < numDsets; ++i) {
+        string dictset = dictsets[i];
+        testerD.testCreate(dictset);        
+        for (int toFolder = 0; toFolder < 2; ++toFolder)
+            testerD.testSerialize(dictset, toFolder);            
+        testerD.testSerializeInPlace(dictset);        
     }
     cout<<endl;          
     cout<<"COMPACT ARRAY + MEMORY CHAR ARRAY TESTS..."<<endl;
     CompactArrayTester<char, int, TMemBsa> testerM;    
-    testerM.testCreate("small-dicts");
-    //testerM.testCreate("natural-lang");
-    for (int toFolder = 0; toFolder < 2; ++toFolder) {
-        testerM.testSerialize("small-dicts", toFolder);    
-        testerM.testSerialize("natural-lang", toFolder);    
+    for (int i = 0; i < numDsets; ++i) {
+        string dictset = dictsets[i];
+        testerM.testCreate(dictset);        
+        for (int toFolder = 0; toFolder < 2; ++toFolder)
+            testerM.testSerialize(dictset, toFolder);                
     }
     cout<<endl;  
 }

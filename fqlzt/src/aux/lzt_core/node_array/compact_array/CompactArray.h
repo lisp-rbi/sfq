@@ -293,19 +293,15 @@ void CompactArray<TSymbol, TIndex, TBitSequenceArray>::readSubstructsFromStream(
 
 template <typename TSymbol, typename TIndex, typename TBitSequenceArray>
 bool CompactArray<TSymbol, TIndex, TBitSequenceArray>::persistSubstructures(string directory) {
-    string sep = "/"; bool res;
-    string arrayFolder = directory+sep+ARRAY_FOLDER;
-    res = create_directory(arrayFolder) and array.persist(arrayFolder);
-    if (!res) return false;
-    string siblFolder = directory+sep+SIBLINGS_FOLDER;
-    res = create_directory(siblFolder) and siblings.persist(siblFolder); 
-    if (!res) return false;
-    string numofwFolder = directory+sep+NUMOFWORDS_FOLDER;
-    res = create_directory(numofwFolder) and numOfWords.persist(numofwFolder);   
-    if (!res) return false;
-    string symbFolder = directory+sep+SYMBOLS_FOLDER;
-    res = create_directory(symbFolder) and symbols.persist(symbFolder);               
-    if (!res) return false;
+    string sep = "/"; 
+    string arrayFolder = directory+sep+ARRAY_FOLDER; create_directory(arrayFolder);    
+    if (!array.persist(arrayFolder)) return false;
+    string siblFolder = directory+sep+SIBLINGS_FOLDER; create_directory(siblFolder);
+    if (!siblings.persist(siblFolder)) return false;
+    string numofwFolder = directory+sep+NUMOFWORDS_FOLDER; create_directory(numofwFolder);
+    if (!numOfWords.persist(numofwFolder)) return false;
+    string symbFolder = directory+sep+SYMBOLS_FOLDER; create_directory(symbFolder);
+    if (!symbols.persist(symbFolder)) return false;
     return true;
 }
 
