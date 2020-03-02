@@ -38,6 +38,7 @@ public:
     size_t getSequenceSize() const;
     TCharArray* exportCharArray();
     void setCharArray(TCharArray* charArray);
+    bool setCharArrayChars(char const* chars, size_t N);
 
     bool persist(string f);
     bool load(string f);
@@ -144,6 +145,11 @@ void BitSequenceArray<TCharArray>::setCharArray(TCharArray* carray) {
     if (charArray != NULL) delete charArray;
     charArray = carray;
     carrayExported = true;
+}
+
+template <typename TCharArray>
+bool BitSequenceArray<TCharArray>::setCharArrayChars(char const* chars, size_t N) {
+    return charArray->setChars(chars, N);
 }
 
 /** Resize the array so that it can store newSize sequences, keeping the

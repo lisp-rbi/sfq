@@ -176,6 +176,19 @@ void DiskCharArray::freeMemory() {
     deleteFile();
     openFile();    
     numOfBlocks = 0;
+} 
+
+bool DiskCharArray::setChars(char const* chars, size_t N) {
+    if (DEBUG) cout<<"setChars()"<<endl;    
+    if (state == STATE_PERSISTED || state == STATE_LOADED) return;
+    if (!deleteFile()) return false;
+    if (!openFile()) return false;
+    size_t written = fwrite((const void *)chars, sizeof(char), N, file);
+    if (written != N) return false;
+    if (!closeFile()) return false;
+    if (!openFile()) return false;
+    numOfBlocks = N;
+    return true;
 }
 
 bool DiskCharArray::persist(string f) {

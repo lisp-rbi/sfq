@@ -42,11 +42,15 @@ private:
     
     void copyFields(CompactArray<TSymbol, TIndex, TBitSequenceArray>& ca, CompactArrayL<TSymbol, TIndex>& cal);
     
+    // slower version, using high-level interface for copying
     template<typename TBsa1, typename TBsa2>
-    void copyBitSeqArray(TBsa1& bsa1, TBsa2& bsa2, bool fieldsOnly);
+    void copyBitSeqArrayHighlev(TBsa1& target, TBsa2& source, bool fieldsOnly);
+    // faster version, copies char-array directly   
+    template<typename TCharArray>
+    void copyBitSeqArrayBuffer(BitSequenceArray<TCharArray>& target, BitSequenceArrayL& source);    
     
     template<typename TBsa1, typename TBsa2>
-    void copyBitSeqArrayInPlace(TBsa1& bsa1, TBsa2& bsa2, string folder);    
+    void copyBitSeqArrayInPlace(TBsa1& target, TBsa2& source, string folder);    
     
     //template<typename TSa1, typename TSa2>
     //void copySymbolArray(TSa1& bsa1, TSa2& bsa2);
@@ -94,9 +98,12 @@ createCompactArray(WordList<TSymbol>* words, string dictLabel, bool enumerated=f
     CompactArray<TSymbol, TIndex, TBitSequenceArray> *carray = 
             new CompactArray<TSymbol, TIndex, TBitSequenceArray>();    
     copyFields(*carray, *carrayLegacy);
-    copyBitSeqArray(carray->array, carrayLegacy->array, false);
-    copyBitSeqArray(carray->siblings, carrayLegacy->siblings, false);
-    copyBitSeqArray(carray->numOfWords, carrayLegacy->numOfWords, false);
+    copyBitSeqArrayBuffer(carray->array, carrayLegacy->array);
+    //copyBitSeqArrayHighlev(carray->array, carrayLegacy->array, false);
+    copyBitSeqArrayBuffer(carray->siblings, carrayLegacy->siblings);
+    //copyBitSeqArrayHighlev(carray->siblings, carrayLegacy->siblings, false);
+    copyBitSeqArrayBuffer(carray->numOfWords, carrayLegacy->numOfWords);
+    //copyBitSeqArrayHighlev(carray->numOfWords, carrayLegacy->numOfWords, false);
     copySymbolArray(carray->symbols, carrayLegacy->symbols, false);
     delete carrayLegacy;    
     return carray;
@@ -116,7 +123,7 @@ copyFields(CompactArray<TSymbol, TIndex, TBitSequenceArray>& ca, CompactArrayL<T
 
 template <typename TSymbol, typename TIndex, typename TBitSequenceArray>
 template<typename TBsa1, typename TBsa2> void CompactArrayBuilder<TSymbol, TIndex, TBitSequenceArray>::    
-copyBitSeqArray(TBsa1& target, TBsa2& source, bool fieldsOnly) {
+copyBitSeqArrayHighlev(TBsa1& target, TBsa2& source, bool fieldsOnly) {
     if (fieldsOnly) {
         target.numOfBlocks = source.numOfBlocks;
         target.numOfSequences = source.numOfSequences;
@@ -130,6 +137,15 @@ copyBitSeqArray(TBsa1& target, TBsa2& source, bool fieldsOnly) {
 }
 
 template <typename TSymbol, typename TIndex, typename TBitSequenceArray>
+template<typename TCharArray> void CompactArrayBuilder<TSymbol, TIndex, TBitSequenceArray>::    
+copyBitSeqArrayBuffer(BitSequenceArray<TCharArray>& target, BitSequenceArrayL& source) {    
+    target.numOfBlocks = source.numOfBlocks;
+    target.numOfSequences = source.numOfSequences;
+    target.bitsPerSequence = source.bitsPerSequence;        
+    target.setCharArrayChars(source.blocks, source.numOfBlocks);
+}
+
+template <typename TSymbol, typename TIndex, typename TBitSequenceArray>
 template<typename TBsa1, typename TBsa2> void CompactArrayBuilder<TSymbol, TIndex, TBitSequenceArray>::    
 copyBitSeqArrayInPlace(TBsa1& target, TBsa2& source, string folder) {
     if (accessible_filename(folder, "") == "") create_directory(folder);
@@ -137,7 +153,8 @@ copyBitSeqArrayInPlace(TBsa1& target, TBsa2& source, string folder) {
     string fname = folder + "/" + TArray::PERSIST_CHARS_FNAME;        
     TArray* diskArray = new TArray(fname);        
     target.setCharArray(diskArray);    
-    copyBitSeqArray(target, source, false);    
+    copyBitSeqArrayBuffer(target, source);    
+    //copyBitSeqArrayHighlev(target, source, false);    
 }
 
 template <typename TSymbol, typename TIndex, typename TBitSequenceArray>  
@@ -153,7 +170,10 @@ copySymbolArray(CompactSymbolArray<TSymbol, TBitSequenceArray> &sa1, CompactSymb
         sa1.symbolTable[i] = sa2.symbolTable[i];
     // copy indexes    
     sa1.bitsPerIndex = sa2.bitsPerIndex;
-    if (!fieldsOnly) copyBitSeqArray(sa1.indexes, sa2.indexes, false);
+    if (!fieldsOnly) {
+        copyBitSeqArrayBuffer(sa1.indexes, sa2.indexes);
+        // copyBitSeqArrayHighlev(sa1.indexes, sa2.indexes, false);
+    }
 }
 
 #endif	/* COMPACTARRAYBUILDER_H */

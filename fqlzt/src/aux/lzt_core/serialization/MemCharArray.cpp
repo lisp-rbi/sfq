@@ -31,6 +31,13 @@ void MemCharArray::freeMemory() {
     }
 }
 
+bool MemCharArray::setChars(char const* chars, size_t N) {
+    freeMemory();
+    if (!allocate(N)) return false;
+    for (size_t i = 0; i < N; ++i) blocks[i] = chars[i];
+    return true;
+}
+
 void MemCharArray::writeToStream(ostream& stream) {
     SerializationUtils::integerToStream(numOfBlocks, stream);    
     stream.write(blocks, numOfBlocks);

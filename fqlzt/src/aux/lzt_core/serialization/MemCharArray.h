@@ -25,6 +25,7 @@ public:
     bool allocate(size_t size);    
     bool resize(size_t size); 
     void freeMemory();
+    bool setChars(char const* chars, size_t N);
     
     bool persist(string f);
     bool load(string f);

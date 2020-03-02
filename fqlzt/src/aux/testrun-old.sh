@@ -18,9 +18,9 @@ echo "testing $cliexec on $testfile"
 #chmod +x $cliexec
 # test core interface
 echo "compression ..."
-./$cliexec c -i $testfile -d $outdict
+time ./$cliexec c -i $testfile -d $outdict
 echo "list all words ..."
-./$cliexec l -d $outdict > $outfile
+time ./$cliexec l -d $outdict > $outfile
 cmp $testfile $outfile
 # test class interface
 #echo "class interface ..."

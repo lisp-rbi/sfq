@@ -32,6 +32,7 @@ public:
     /** Effectively, reset the object by deleting the file, setting array 
      * size to 0, and creating new empty file for reading/writing. */
     void freeMemory();
+    bool setChars(char const* chars, size_t N);
     
     bool persist(string f);
     /** Load array from file or folder, old file will be deleted. */
