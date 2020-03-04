@@ -65,7 +65,8 @@ OBJECT_FILES =  \
 	$(BUILD_FOLDER)/DiskCharArray.o \
 	$(BUILD_FOLDER)/serializationTestRunner.o \
 	$(BUILD_FOLDER)/compactArrayTestRunner.o \
-	$(BUILD_FOLDER)/filesystem_utils.o
+	$(BUILD_FOLDER)/filesystem_utils.o \
+	$(BUILD_FOLDER)/cacheTestRunner.o
 	
 # COMPILER AND LOADER PARAMS
 # TODO: better separate compile and link options (remove unnecessary for each)
@@ -133,6 +134,9 @@ $(BUILD_FOLDER)/serializationTestRunner.o: $(BUILD_FOLDER) lzt_core/serializatio
 
 $(BUILD_FOLDER)/compactArrayTestRunner.o: $(BUILD_FOLDER) lzt_core/node_array/compact_array/test/compactArrayTestRunner.cpp
 	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/node_array/compact_array/test/compactArrayTestRunner.cpp
+
+$(BUILD_FOLDER)/cacheTestRunner.o: $(BUILD_FOLDER) lzt_core/util/caching/cacheTestRunner.cpp
+	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt_core/util/caching/cacheTestRunner.cpp
 
 $(BUILD_FOLDER)/lzt.o: $(BUILD_FOLDER) lzt.cpp
 	$(COMPILE.cc) $(COMPILER_FLAGS) -o $@ lzt.cpp
