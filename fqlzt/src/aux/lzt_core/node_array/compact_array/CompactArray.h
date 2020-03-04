@@ -11,6 +11,7 @@
 #include "node_array/compact_array_legacy/CompactArrayNode.h"
 #include "serialization_legacy/BitSequenceArray.h"
 #include "serialization_legacy/serialization.h"
+#include "util/caching/MapFunctionCache.h"
 
 /** Implementation of const NodeArray concept.
  * It's a node array in wich only distinct nodes are stored and the array is a
@@ -32,6 +33,7 @@ public:
     NodeConst operator[](TIndex i) const;
     TIndex getSize() const;
     bool isEnumerated() const { return enumerated; }
+    
     // serialization
     bool persist(string f);
     bool load(string f);
@@ -42,8 +44,11 @@ public:
     static const string SIBLINGS_FOLDER;
     static const string NUMOFWORDS_FOLDER;        
     static const string SYMBOLS_FOLDER;
-
+    
     template <typename TS, typename TI, typename TBSA> friend class CompactArrayBuilder;
+    
+    // caching
+    void setCache(size_t cacheSize);
 
 private:
     
@@ -86,6 +91,10 @@ private:
     // number of words a node contains
     TBitSequenceArray numOfWords;
     CompactSymbolArray<TSymbol, TBitSequenceArray> symbols;
+    
+    // caching
+    MapFunctionCache<TIndex, NodeConst> cache;
+    bool isCached = false;
     
 };
 
@@ -136,6 +145,8 @@ void CompactArray<TSymbol, TIndex, TBitSequenceArray>::printIndexes() const {
 template <typename TSymbol, typename TIndex, typename TBitSequenceArray>
 inline CompactArrayNode<TSymbol, TIndex>
 CompactArray<TSymbol, TIndex, TBitSequenceArray>::operator[](TIndex i) const {
+    if (isCached and cache.contains(i)) return cache.fetch(i);    
+    
     CompactArrayNode<TSymbol, TIndex> node;
     // decode node-table index of a node
     BitSequence indexBits = array[i];
@@ -158,6 +169,7 @@ CompactArray<TSymbol, TIndex, TBitSequenceArray>::operator[](TIndex i) const {
     }
     else node.enumerated = false;
 
+    if (isCached) cache.add(i, node);
     return node;
 }
 
@@ -319,6 +331,17 @@ bool CompactArray<TSymbol, TIndex, TBitSequenceArray>::loadSubstructures(string 
     return true;
 }
 
+template <typename TSymbol, typename TIndex, typename TBitSequenceArray>
+void CompactArray<TSymbol, TIndex, TBitSequenceArray>::setCache(size_t cacheSize) {
+    if (cacheSize == 0) { // disable caching
+        isCached = false;
+        cache.clear();
+    }
+    else {
+        isCached = true;
+        cache.setSize(cacheSize);
+    }
+}
 
 #endif	/* COMPACTARRAY_H */
 

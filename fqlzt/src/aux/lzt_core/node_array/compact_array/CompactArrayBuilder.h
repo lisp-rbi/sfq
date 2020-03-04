@@ -80,8 +80,6 @@ buildSaveCompactArray(WordList<TSymbol>* words, string folder, string dictLabel,
     copySymbolArray(carray->symbols, carrayLegacy->symbols, true);        
     copyBitSeqArrayInPlace(carray->symbols.indexes, carrayLegacy->symbols.indexes, symbarrFolder);    
     delete carrayLegacy;   
-    // !!! PODFOLDERI SA STRUKTURAMA SU PRAZNI!
-    // !!! OSTAJU FAJLOVI OD TMP CHAR ARRAY-a - POČISTITI
     bool res = carray->persist(folder);      
     delete carray;
     return res;

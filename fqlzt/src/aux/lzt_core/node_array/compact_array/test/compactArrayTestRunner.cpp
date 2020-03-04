@@ -14,7 +14,13 @@ void runCompactArrayTests() {
     CompactArrayTester<char, int, TDiskBsa> testerD;        
     for (int i = 0; i < numDsets; ++i) {
         string dictset = dictsets[i];
-        testerD.testCreate(dictset);        
+        testerD.testCreate(dictset);    
+        { // test caching
+            int cacheSize;
+            if (dictset == "fasta" or dictset == "natural-lang") cacheSize = 200;
+            else cacheSize = 5;
+            testerD.testCaching(dictset, cacheSize);
+        }
         for (int toFolder = 0; toFolder < 2; ++toFolder)
             testerD.testSerialize(dictset, toFolder);            
         testerD.testSerializeInPlace(dictset);        
@@ -24,7 +30,13 @@ void runCompactArrayTests() {
     CompactArrayTester<char, int, TMemBsa> testerM;    
     for (int i = 0; i < numDsets; ++i) {
         string dictset = dictsets[i];
-        testerM.testCreate(dictset);        
+        testerM.testCreate(dictset);  
+        { // test caching
+            int cacheSize;
+            if (dictset == "fasta" or dictset == "natural-lang") cacheSize = 200;
+            else cacheSize = 5;
+            testerM.testCaching(dictset, cacheSize);
+        }        
         for (int toFolder = 0; toFolder < 2; ++toFolder)
             testerM.testSerialize(dictset, toFolder);                
     }

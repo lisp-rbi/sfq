@@ -32,6 +32,7 @@ TLzTrieDisk* loadTrie(string trieFolder) {
     TCompactArrayDisk* nodeArray = new TCompactArrayDisk();
     //cout<<"Trie folder:"<<trieFolder<<endl;
     nodeArray->load(trieFolder); 
+    nodeArray->setCache(10000);
     TLzTrieDisk* trie = new TLzTrieDisk(*nodeArray);
     return trie;
 }

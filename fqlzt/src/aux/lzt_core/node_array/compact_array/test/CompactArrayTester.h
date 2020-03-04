@@ -31,6 +31,7 @@ public:
     void testWithDictionaries();
     void simpleTests();    
     void testCreate(string dictset);
+    void testCaching(string dictset, size_t cacheSize);
     void testSerialize(string dictset, bool toFolder);
     void testSerializeInPlace(string dictset);
  
@@ -111,6 +112,26 @@ void CompactArrayTester<TSymbol, TIndex, TBitSequenceArray>::testCreate(string d
         CompactArrayBuilder<TSymbol, TIndex, TBitSequenceArray> builder; 
         CompactArray<TSymbol, TIndex, TBitSequenceArray>* carray;
         carray = builder.createCompactArray(dicts[i], dlabels[i].first, false);
+        TMemNodeArray* array = getLzArrayLCT<TMemNodeArray>(*dicts[i]);
+        nodeArraysNodeEquality(*carray, *array);
+        nodeArraysTrieEquality(*carray, *array);
+        delete array;
+        delete carray;
+    }
+    freeDictMem(dicts);
+    cout<<"testBuildSave, dictset="<<dictset<<" PASSED"<<endl;
+}
+
+template <typename TSymbol, typename TIndex, typename TBitSequenceArray>
+void CompactArrayTester<TSymbol, TIndex, TBitSequenceArray>::testCaching(string dictset, size_t cacheSize) {
+    cout<<"testCaching, dictset="<<dictset<<endl;
+    vector<pair<string,string> > dlabels = dictSet(dictset);
+    vector<WordList<TSymbol>*> dicts = loadDictionaries(dictset);
+    for (int i = 0; i < dicts.size(); ++i) {
+        CompactArrayBuilder<TSymbol, TIndex, TBitSequenceArray> builder; 
+        CompactArray<TSymbol, TIndex, TBitSequenceArray>* carray;
+        carray = builder.createCompactArray(dicts[i], dlabels[i].first, false);
+        carray->setCache(cacheSize);
         TMemNodeArray* array = getLzArrayLCT<TMemNodeArray>(*dicts[i]);
         nodeArraysNodeEquality(*carray, *array);
         nodeArraysTrieEquality(*carray, *array);
