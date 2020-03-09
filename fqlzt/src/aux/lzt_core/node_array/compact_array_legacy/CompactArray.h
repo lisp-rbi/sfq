@@ -24,10 +24,10 @@ public:
 
     typedef TSymbol Symbol;
     typedef TIndex Index;
-    typedef CompactArrayNode<TSymbol, TIndex> NodeConst;
+    typedef CompactArrayNode<TSymbol, TIndex> Node;
 
     //TODO promjeniti tip parametra u size_t
-    NodeConst operator[](TIndex i) const;
+    Node operator[](TIndex i);
     TIndex getSize() const;
 
     template <typename TNodeArray> friend class CompactArrayCreatorL;
@@ -101,7 +101,7 @@ void CompactArrayL<TSymbol, TIndex>::printIndexes() const {
 
 template <typename TSymbol, typename TIndex>
 inline CompactArrayNode<TSymbol, TIndex>
-CompactArrayL<TSymbol, TIndex>::operator[](TIndex i) const {
+CompactArrayL<TSymbol, TIndex>::operator[](TIndex i) {
     CompactArrayNode<TSymbol, TIndex> node;
     // decode node-table index of a node
     BitSequence indexBits = array[i];

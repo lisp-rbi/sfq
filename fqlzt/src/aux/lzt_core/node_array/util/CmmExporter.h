@@ -13,7 +13,7 @@ class CmmExporter {
 private:
     typedef typename TNodeArray::Index TIndex;
     typedef typename TNodeArray::Symbol TSymbol;
-    typedef typename TNodeArray::NodeConst TNodeConst;
+    typedef typename TNodeArray::Node TNodeConst;
 
     typedef int TCmmOffset;
 
@@ -26,7 +26,7 @@ private:
 
 public:
     
-    static void writeToFile(const TNodeArray& nodes, string file);
+    static void writeToFile(TNodeArray& nodes, string file);
     static void writeNode(CmmNode n, FILE* file);
 
 private:
@@ -36,7 +36,7 @@ private:
 };
 
 template <typename TNodeArray>
-void CmmExporter<TNodeArray>::writeToFile(const TNodeArray& nodes, string fileName) {
+void CmmExporter<TNodeArray>::writeToFile(TNodeArray& nodes, string fileName) {
     FILE* file = fopen(fileName.c_str(), "w+b");
 
     for (TIndex i = 0; i < nodes.getSize(); ++i) {

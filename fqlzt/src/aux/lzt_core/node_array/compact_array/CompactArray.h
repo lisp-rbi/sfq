@@ -27,10 +27,10 @@ public:
 
     typedef TSymbol Symbol;
     typedef TIndex Index;
-    typedef CompactArrayNode<TSymbol, TIndex> NodeConst;
+    typedef CompactArrayNode<TSymbol, TIndex> Node;
 
     //TODO promjeniti tip parametra u size_t
-    NodeConst operator[](TIndex i) const;
+    Node operator[](TIndex i);
     TIndex getSize() const;
     bool isEnumerated() const { return enumerated; }
     
@@ -93,7 +93,7 @@ private:
     CompactSymbolArray<TSymbol, TBitSequenceArray> symbols;
     
     // caching
-    MapFunctionCache<TIndex, NodeConst> cache;
+    MapFunctionCache<TIndex, Node> cache;
     bool isCached = false;
     
 };
@@ -144,7 +144,7 @@ void CompactArray<TSymbol, TIndex, TBitSequenceArray>::printIndexes() const {
 
 template <typename TSymbol, typename TIndex, typename TBitSequenceArray>
 inline CompactArrayNode<TSymbol, TIndex>
-CompactArray<TSymbol, TIndex, TBitSequenceArray>::operator[](TIndex i) const {
+CompactArray<TSymbol, TIndex, TBitSequenceArray>::operator[](TIndex i) {
     if (isCached and cache.contains(i)) return cache.fetch(i);    
     
     CompactArrayNode<TSymbol, TIndex> node;

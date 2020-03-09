@@ -88,7 +88,7 @@ private:
 
 public:
 
-    static void testCompression(string algoDesc, const TNodeArray* trie,
+    static void testCompression(string algoDesc, TNodeArray* trie,
                          const WordList<TSymbol>* words, string fname, bool errThrow);
 
 };
@@ -101,7 +101,7 @@ StatCreator<TNodeArray>::StatCreator(bool s, bool t, bool ethrow, bool cmm = fal
  * If errorStop == true, error throws TEST_EXCEPTION. */
 template <typename TNodeArray>
 void StatCreator<TNodeArray>::
-testCompression(string algoDesc, const TNodeArray* trie,
+testCompression(string algoDesc, TNodeArray* trie,
                 const WordList<TSymbol>* words, string fname, bool errThrow) {
 
     string message;

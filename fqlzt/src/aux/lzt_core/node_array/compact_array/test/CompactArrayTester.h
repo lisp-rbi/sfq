@@ -49,10 +49,10 @@ private:
     
     // test equality by directly comparing nodes stored in two node arrays
     template<typename TNa1, typename TNa2>
-    void nodeArraysNodeEquality(const TNa1& na1, const TNa2& na2);
+    void nodeArraysNodeEquality(TNa1& na1, TNa2& na2);
     // test equality by listing and comparing the words in array-based tries
     template<typename TNa1, typename TNa2>
-    void nodeArraysTrieEquality(const TNa1& na1, const TNa2& na2);
+    void nodeArraysTrieEquality(TNa1& na1, TNa2& na2);
 
 };
 
@@ -192,14 +192,14 @@ void CompactArrayTester<TSymbol, TIndex, TBitSequenceArray>::testSerializeInPlac
 
 template <typename TSymbol, typename TIndex, typename TBitSequenceArray>
 template<typename TNa1, typename TNa2> void CompactArrayTester<TSymbol, TIndex, TBitSequenceArray>::
-nodeArraysNodeEquality(const TNa1& na1, const TNa2& na2) {
+nodeArraysNodeEquality(TNa1& na1, TNa2& na2) {
     cout<<"testing nodeArraysNodeEquality: ";
     TEST_ASSERT(na1.getSize() == na2.getSize());
     TEST_ASSERT(na1.isEnumerated() == na2.isEnumerated());
     Timer timer; timer.start();
     for (size_t i = 0; i < na1.getSize(); ++i) {
-        typename TNa1::NodeConst n1 = na1[i];
-        typename TNa2::NodeConst n2 = na2[i];
+        typename TNa1::Node n1 = na1[i];
+        typename TNa2::Node n2 = na2[i];
         TEST_ASSERT(n1.getSymbol() == n2.getSymbol());
         TEST_ASSERT(n1.getSibling() == n2.getSibling());
         if (na1.isEnumerated())
@@ -213,7 +213,7 @@ nodeArraysNodeEquality(const TNa1& na1, const TNa2& na2) {
 
 template <typename TSymbol, typename TIndex, typename TBitSequenceArray>
 template<typename TNa1, typename TNa2> void CompactArrayTester<TSymbol, TIndex, TBitSequenceArray>::
-nodeArraysTrieEquality(const TNa1& na1, const TNa2& na2) {
+nodeArraysTrieEquality(TNa1& na1, TNa2& na2) {
     cout<<"testing nodeArraysTrieEquality: ";
     // create tries, no destructors will be called to avoid deleting node arrays
     LzTrie<TNa1>* trie1 = new LzTrie<TNa1>(na1);

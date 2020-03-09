@@ -40,7 +40,7 @@ private:
 
     string intToStr(int);
 
-    const TNodeArray* array;
+    TNodeArray* array;
     fstream file;
     long nodeCounter;
     map<TIndex, string> posToNode;

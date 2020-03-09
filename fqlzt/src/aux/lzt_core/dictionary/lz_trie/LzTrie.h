@@ -19,9 +19,9 @@ private:
     
 public:
 
-    typedef typename TNodeArray::NodeConst TNodeConst;
+    typedef typename TNodeArray::Node TNodeConst;
 
-    LzTrie(const TNodeArray& nodes);
+    LzTrie(TNodeArray& nodes);
     virtual ~LzTrie();
 
     bool containsWord(TSymbol const * word);
@@ -55,7 +55,7 @@ private:
     long maxWords; // max words to extract 
     bool stopSearch; // flag to stop search by prefix
     
-    const TNodeArray& nodes;
+    TNodeArray& nodes;
     // size of the array
     TIndex N;
     // results of the searchWord
@@ -102,7 +102,7 @@ private:
 };
 
 template <typename TNodeArray>
-LzTrie<TNodeArray>::LzTrie(const TNodeArray& n)
+LzTrie<TNodeArray>::LzTrie(TNodeArray& n)
 : nodes(n), N(n.getSize()) { }
 
 template <typename TNodeArray>
