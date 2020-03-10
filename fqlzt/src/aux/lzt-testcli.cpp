@@ -26,7 +26,7 @@ static void testSequentialQueries();
 /**************************************************************/
 
 static void createParameterMap(int argc, char** argv);
-static void printWordList(string query, TLzTrieDisk* lzTrie);
+static void printWordList(string query, TLzTrie* lzTrie);
 
 int main(int argc, char** argv) {        
     string command = argv[1];        
@@ -58,14 +58,14 @@ void compressTrie() {
 }
 
 void loadAndListTrie() {        
-    TLzTrieDisk* trie = loadTrie(params["-d"]);
+    TLzTrie* trie = loadTrie(params["-d"]);
     string query = "*";
     printWordList(query, trie);
     freeTrieMem(trie);
 }
 
-void queryTrie() {        
-    TLzTrieDisk* trie = loadTrie(params["-d"]);
+void queryTrie() {       
+    TLzTrie* trie = loadTrie(params["-d"]);
     string query = params["-s"];
     vector<TSymbol> q = string2SymbolVec(query);
     vector<vector<TSymbol> >* result = queryTrie(trie, q);
@@ -103,7 +103,7 @@ void testInterfaceClass() {
  */
 void testSequentialQueries() {    
     // load trie and list all words
-    TLzTrieDisk* trie = loadTrie(params["-d"]);    
+    TLzTrie* trie = loadTrie(params["-d"]);    
     vector<TSymbol> emptyQuery;
     vector<vector<TSymbol> >* allwords = queryTrie(trie, emptyQuery);
     size_t numWords = allwords->size();
@@ -111,7 +111,7 @@ void testSequentialQueries() {
     int numRuns = 1;
     // how often to perform list-all and list-prefix queries
     // decision is random, expected to happen once in this many words
-    int listallFreq = 5000, listPrefix = 500;
+    long listallFreq = -1, listPrefix = 2000;
     if (params.count("-n") > 0) numRuns = atoi(params["-n"].c_str());
     srand(time(0));
     for (int i = 0; i < numRuns; ++i) {
@@ -120,12 +120,12 @@ void testSequentialQueries() {
             vector<TSymbol> wrd = allwords->at(j); // get j-th words
             // perform random list all and list by prefix tests
             int r =rand();
-            if (r % listallFreq == 0) {
+            if (listallFreq != -1 and r % listallFreq == 0) {
                 //cout<<"listall"<<endl;
                 vector<vector<TSymbol> >* words = queryTrie(trie, emptyQuery);
                 delete words;
             }            
-            if (wrd.size() > 1 and r % listPrefix == 0) {
+            if (listPrefix != -1 and wrd.size() > 1 and r % listPrefix == 0) {
                 // prefix size should be between 1 and wrd.size-1
                 int prefixLen = (rand()%(wrd.size()-1))+1;               
 //                vector<TSymbol>::iterator first = 
@@ -153,7 +153,7 @@ void testSequentialQueries() {
     freeTrieMem(trie);
 }
 
-void printWordList(string query, TLzTrieDisk* lzTrie) {
+void printWordList(string query, TLzTrie* lzTrie) {
     // convery string of chars to string of TSymbols
     TSymbol *queryTS = stringToTSymbolString(query);
     //cout<<"start printing"<<endl;

@@ -33,7 +33,7 @@ class Lzt {
         vector<vector<TSymbol> > * getFastqRecords(vector<TSymbol> prefix);
 
     private:
-        TLzTrieDisk *trie = NULL;
+        TLzTrie *trie = NULL;
 };
 
 
