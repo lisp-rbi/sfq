@@ -24,7 +24,7 @@ pub trait Drop{
     fn drop(&mut self);
 }
 
-
+#[derive(Debug, Clone)]
 pub struct FFI {
     raw: Vec<*mut LztObj>
 }
@@ -48,6 +48,15 @@ impl FFI {
                 if l == lpm || i == vec.len()-1 {
                     j+=1;
                     let pth = format!("{}.{}", path, j.to_string());
+
+                    if fs::metadata(&pth).is_ok() == true {
+                        if fs::metadata(&pth).unwrap().is_file() == true {
+                            fs::remove_file(&pth).unwrap();
+                        }else {
+                            fs::remove_dir_all(&pth).unwrap();
+                        }
+                    }
+
                     let v =  &vec[s..i+1].to_vec();
                     //println!("{:?} -- {} {}", vec[i], v.len(), v[v.len()-1]);
                     unsafe {
@@ -102,13 +111,15 @@ impl FFI {
         }
     }
 
-    pub fn query(&self, pattern: &str)-> Vec<u8> {
+
+    pub fn get_records(&self, pattern: &str)-> Vec<u8> {
 
         // remember that here you can use ranges to limit
         // the rearch to a specified
         // set of files  : FXME : this is a stupid approach
 
         let mut qres : Vec<u8> = Vec::new();
+
 
         for i in 0..self.raw.len() {
             unsafe{
@@ -120,6 +131,7 @@ impl FFI {
 
                let mut tq = vec![0u8;size];
 
+
                get_query_results(
                    self.raw[i],
                    tq.as_mut_ptr()
@@ -128,6 +140,10 @@ impl FFI {
                qres.extend(tq);
            }
         }
+        if qres[qres.len()-1] == '\n' as u8{
+            qres.resize(qres.len()-1, 0x00);
+        }
+
         qres
     }
 
