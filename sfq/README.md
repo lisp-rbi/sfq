@@ -85,11 +85,11 @@ OPTIONS:
 
                                                	fq   	  :fastq,
                                                	fa  	  :fasta,
-                                               	s       :sequence,
-                                               	q       :quality,
-                                               	h  	    :head,
-                                               	s+q   	:sequence quality,
-                                               	h+q   	:head quality,
+                                               	s         :sequence,
+                                               	q         :quality,
+                                               	h  	      :head,
+                                               	s+q   	   :sequence quality,
+                                               	h+q   	 :head quality,
                                                	h+s  	  :head sequence,
                                                	h+s+q  	:head sequence quality,
                                                	s+h+q  	:sequence head quality,
@@ -139,6 +139,6 @@ InputSize X Time
 InputSize X memory
 
 
-### Disk USAGE
+### Disk usage
 
  InputSize X CompressedSize
