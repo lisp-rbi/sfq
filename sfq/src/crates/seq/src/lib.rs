@@ -18,22 +18,26 @@
 
 #[cfg(test)]
 mod tests;
-
+mod core;
 mod util;
 mod fdbio;
-
+mod fdbfilt;
+mod fdbidx;
 
 
 pub trait IO: Get+Set+Load+Save {}
 
 pub trait Get {
 
-    fn get_head (self)  -> Vec<u8>;
-    fn get_seq  (self)  -> Vec<u8>;
-    fn get_qual (self)  -> Vec<u8>;
-    fn get_fasta(&self) -> Vec<u8>;
-    fn get_fastq(&self) -> Vec<u8>;
-    fn get_tsv  (&self, model: &str) -> Vec<u8>;
+    fn get_head  (&self)  -> Vec<u8>;
+    fn get_seq   (&self)  -> Vec<u8>;
+    fn get_qual  (&self)  -> Vec<u8>;
+    fn get_fasta (&self) -> Vec<u8>;
+    fn get_fastq (&self) -> Vec<u8>;
+    fn get_tsv   (&self, model: &str) -> Vec<u8>;
+    fn get_cpcnt (&self) -> Vec<usize>;
+    fn get_numrec(&self) -> usize;
+    fn get_model (&self) -> bool;
 
 }
 
@@ -42,6 +46,8 @@ pub trait Set {
     fn set_head (&mut self, data: Vec<u8>)-> &mut Self ;
     fn set_seq (&mut self, data: Vec<u8>)-> &mut Self ;
     fn set_qual (&mut self, data: Vec<u8>)-> &mut Self ;
+    fn set_cpcnt(&mut self, data: Vec<usize>) -> &mut Self ;
+    fn set_model(&mut self, paired: bool) ->  &mut Self ;
 
 }
 
@@ -50,6 +56,7 @@ pub trait Push {
     fn push_head (&mut self, data: Vec<u8>)-> &mut Self ;
     fn push_seq (&mut self, data: Vec<u8>)-> &mut Self ;
     fn push_qual (&mut self, data: Vec<u8>)-> &mut Self ;
+    fn push_cpcnt(&mut self, data: Vec<usize>) -> &mut Self ;
 
 }
 
@@ -61,9 +68,12 @@ pub trait Load {
 
 pub trait Save {
 
-    fn save(&mut self, path: &str) -> bool;
+    fn save(&mut self, path: &str, model: &str) -> bool;
+    fn save_append(&mut self, path: &str, model: &str)-> bool;
 
 }
+
+
 
 
 /// File database object
@@ -72,9 +82,12 @@ pub trait Save {
 pub struct Fdb {
     format: String,
     numrec: usize,
+    paired: bool,
     head: Vec<u8>,
     seq: Vec<u8>,
-    qual: Vec<u8>
+    qual: Vec<u8>,
+    cpcnt: Vec<usize>
+
 }
 
 
@@ -89,9 +102,11 @@ impl Fdb {
         Fdb{
             format: ftype,
             numrec:  0,
+            paired: false,
             head: Vec::new(),
             seq: Vec::new(),
             qual: Vec::new(),
+            cpcnt: Vec::new()
         }
     }
 
