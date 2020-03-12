@@ -1,5 +1,5 @@
-#ifndef COMPACTSYMBOLTESTER_H
-#define	COMPACTSYMBOLTESTER_H
+#ifndef COMPACTSYMBOLTESTERLEGACY_H
+#define	COMPACTSYMBOLTESTERLEGACY_H
 
 #include <cstddef>
 #include <string>
@@ -118,5 +118,5 @@ void CompactSymbolTester<TSymbol>::testSerialize() {
 }
 
 
-#endif	/* COMPACTSYMBOLTESTER_H */
+#endif	/* COMPACTSYMBOLTESTERLEGACY_H */
 

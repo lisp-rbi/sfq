@@ -8,20 +8,20 @@ Lzt::Lzt(string Path){
 }
 
 Lzt::~Lzt(){
-    if (trie != NULL) freeTrieMemory(trie);
+    //if (trie != NULL) freeTrieMem(trie);
 }
 
 bool Lzt::make(TSymbol* words, long length, string savePath, bool sortWords) {
-    return createLzTrie(words, length, savePath, sortWords);
+    return createTrie(words, length, savePath, sortWords);
 }
 
 bool Lzt::read(string triePath) {
-    trie = loadLzTrie(triePath);
+    trie = loadTrie(triePath);
     return trie != NULL;
 }
 
-vector<vector<TSymbol> >* Lzt::getFastqRecords(vector<TSymbol> prefix) {
-    return queryLzTrie(trie, prefix);
+vector<vector<TSymbol> >* Lzt::getRecords(vector<TSymbol> prefix) {
+    return queryTrie(trie, prefix);
 }
 
 
@@ -33,6 +33,7 @@ extern "C" {
 
 // ABI -> create an lzt object but do not keep it ...
     bool make_lzt( uchar* words, unsigned long wln, uchar* path, int pln) {
+
 // Debug
 /*
       cout <<  wln << " Start" << endl;
@@ -64,6 +65,8 @@ extern "C" {
 // ABI -> create an lzt object and keep it ...
     Lzt* open_lzt( uchar* path, int pln){
       std::string inPath(reinterpret_cast<char*>(path),pln);
+
+      //cout << inPath << end;
       return new Lzt(inPath);
     }
 
@@ -76,7 +79,7 @@ extern "C" {
 		unsigned long query_lzt (Lzt *obj, uchar* pattern, unsigned long pln){
 
       vector<uchar> ptt(pattern, pattern + pln);
-      vector<vector<uchar>>* out = obj->getFastqRecords(ptt);
+      vector<vector<uchar>>* out = obj->getRecords(ptt);
 
       obj->objvec = std::accumulate(
         out->begin(), out->end(), vector<uchar>(), [](vector<uchar> (a), vector<uchar> (b)) {

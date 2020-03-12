@@ -17,7 +17,7 @@ class WordIndexer {
 private:
     typedef typename TNodeArray::Index TIndex;
     typedef typename TNodeArray::Symbol TSymbol;
-    typedef typename TNodeArray::NodeConst TNodeConst;
+    typedef typename TNodeArray::Node TNodeConst;
 
 public:
     WordIndexer(TNodeArray& nodes);
@@ -89,8 +89,7 @@ typename TNodeArray::Index WordIndexer<TNodeArray, TIterator>::recursiveEnum(TIn
  * than the number of words in the trie, return 0. */
 template <typename TNodeArray, typename TIterator> typename TNodeArray::Symbol*
 WordIndexer<TNodeArray, TIterator>::getWord(typename TNodeArray::Index wi) const {
-    // we work with const node array to allow only const operations
-    const TNodeArray& nodes = this->nodes;
+    TNodeArray& nodes = this->nodes;
     vector<TSymbol> buff;
     // node index
     TIterator ni = IterInit<TIterator, TNodeArray>::get(nodes);
@@ -137,7 +136,7 @@ template <typename TNodeArray, typename TIterator>
 typename WordIndexer<TNodeArray, TIterator>::WordSearchResult
 WordIndexer<TNodeArray, TIterator>::getIndex(const typename TNodeArray::Symbol* word) const {
     // we work with const node array to allow only const operations
-    const TNodeArray& nodes = this->nodes;
+    TNodeArray& nodes = this->nodes;
 
     WordSearchResult fail; fail.exists = false;
     WordSearchResult success; success.exists = true;

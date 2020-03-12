@@ -1,18 +1,19 @@
 #include "TempFile.h"
-#include "utils.h"
-#include <cstdio>
 
-TempFile::TempFile(): name("file_") {
+TempFile::TempFile(bool folder): isFolder(folder) {
+    if (isFolder) name = "tmpfolder_";
+    else name = "tmpfile_";
     name += getRandomString();
-    name += ".tmp";
-    file = fopen(name.c_str(), "w+");
-    fclose(file);
-    //printf("%s\n", name.c_str());
+    if (isFolder) mkdir(name.c_str(), 0777);    
+    else {
+        file = fopen(name.c_str(), "w+");
+        fclose(file);
+    }    
 }
 
-TempFile::~TempFile() {
-    //fclose(file);
-    remove(name.c_str());
+TempFile::~TempFile() {   
+    if (isFolder) remove_directory(name);            
+    else remove(name.c_str());    
 }
 
 const char * TempFile::getName() {

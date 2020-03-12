@@ -1,5 +1,5 @@
-#ifndef BITSEQUENCEARRAY_H
-#define	BITSEQUENCEARRAY_H
+#ifndef BITSEQUENCEARRAYLEGACY_H
+#define	BITSEQUENCEARRAYLEGACY_H
 
 #include <cstddef>
 
@@ -18,7 +18,7 @@ public:
     BitSequenceArrayL(size_t size, int bitsPerSequence);
     BitSequenceArrayL(const BitSequenceArrayL& orig);
     BitSequenceArrayL& operator=(const BitSequenceArrayL& rhs);
-    virtual ~BitSequenceArrayL();   
+    virtual ~BitSequenceArrayL();
 
     BitSequence operator[](size_t i) const;
     void changeFormat(size_t size, int bitsPerSequence);
@@ -32,6 +32,7 @@ public:
 
     // Friend so that it can serialzie/deserialze the array
     friend class BitSequenceArraySerL;
+    template <typename TS, typename TI, typename TBitSequenceArray> friend class CompactArrayBuilder;
 
 private:
 
@@ -93,5 +94,4 @@ private:
     int bits;
 };
 
-#endif	/* BITSEQUENCEARRAY_H */
-
+#endif	/* BITSEQUENCEARRAYLEGACY_H */

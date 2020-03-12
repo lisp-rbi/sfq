@@ -22,11 +22,11 @@ class LzTrieIterator {
 private:
     typedef typename TNodeArray::Symbol TSymbol;
     typedef typename TNodeArray::Index TIndex;
-    typedef typename TNodeArray::NodeConst TNodeConst;
+    typedef typename TNodeArray::Node TNodeConst;
 
 public:
     //TODO implement assignment operator
-    LzTrieIterator(const TNodeArray& nodes, bool verbose=false);
+    LzTrieIterator(TNodeArray& nodes, bool verbose=false);
     LzTrieIterator(const LzTrieIterator& src);
     virtual ~LzTrieIterator();
 
@@ -53,7 +53,7 @@ private:
         inline void set(TIndex p, TIndex e) { pos = p; end = e; }
     };
 
-    const TNodeArray& nodes;
+    TNodeArray& nodes;
 
     // initial stack capacity
     static const int STACK_INIT_CAP = 25;
@@ -76,7 +76,7 @@ LzTrieIterator<TNodeArray>::~LzTrieIterator() {
 }
 
 template <typename TNodeArray>
-LzTrieIterator<TNodeArray>::LzTrieIterator(const TNodeArray& n, bool v): nodes(n), verbose(v) {
+LzTrieIterator<TNodeArray>::LzTrieIterator(TNodeArray& n, bool v): nodes(n), verbose(v) {
     stack = (ArraySegment *)malloc(STACK_INIT_CAP * sizeof(ArraySegment));
     stackCapacity = STACK_INIT_CAP;
     start();

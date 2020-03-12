@@ -1,5 +1,5 @@
-#ifndef COMPACTSYMBOLARRAY_H
-#define	COMPACTSYMBOLARRAY_H
+#ifndef COMPACTSYMBOLARRAYLEGACY_H
+#define	COMPACTSYMBOLARRAYLEGACY_H
 
 #include <cstddef>
 #include <map>
@@ -24,6 +24,7 @@ public:
     void createFromArray(TSymbol const * symbols, size_t numOfSymbols);
 
     template <typename TSymb> friend class CompactSymbolArraySerL;
+    template <typename TS, typename TI, typename TBsa> friend class CompactArrayBuilder;
 
 private:
 
@@ -115,5 +116,5 @@ void CompactSymbolArrayL<TSymbol>::createFromArray(TSymbol const * symbols, size
     
 }
 
-#endif	/* COMPACTSYMBOLARRAY_H */
+#endif	/* COMPACTSYMBOLARRAYLEGACY_H */
 

@@ -1,5 +1,5 @@
-#ifndef COMPACTARRAYCREATOR_H
-#define	COMPACTARRAYCREATOR_H
+#ifndef COMPACTARRAYCREATORLEGACY_H
+#define	COMPACTARRAYCREATORLEGACY_H
 
 #include <set>
 #include <algorithm>
@@ -25,14 +25,14 @@ public:
     typedef typename TNodeArray::Symbol TSymbol;
     typedef typename TNodeArray::Index TIndex;
 
-    CompactArrayCreatorL(TNodeArray const & nodeArray);
+    CompactArrayCreatorL(TNodeArray& nodeArray);
     virtual ~CompactArrayCreatorL();
 
     CompactArrayL<TSymbol, TIndex>* createCompactArray();
 
 private:
 
-    TNodeArray const & nodeArray;
+    TNodeArray& nodeArray;
     CompactArrayL<TSymbol, TIndex>* compactArray;
 
     static const int NUM_OFFSETS = 4;
@@ -52,24 +52,24 @@ private:
 
     class NodeIndexCompare {
     public:
-        NodeIndexCompare(TNodeArray const & na): nodes(na) {}
+        NodeIndexCompare(TNodeArray& na): nodes(na) {}
 
         inline bool operator()(TIndex i1, TIndex i2) const {
             return nodes[i1] < nodes[i2];
         }
 
     private:
-        TNodeArray const & nodes;
+        TNodeArray& nodes;
     };
 
     /** Strict weak ordering, compares two node indexes,
      * first by flags and than by other node data members. */
     class IndexOrdering {
     public:
-        IndexOrdering(TNodeArray const & na): nodes(na) {}
+        IndexOrdering(TNodeArray& na): nodes(na) {}
 
-        bool operator()(TIndex i1, TIndex i2) const {
-            typename TNodeArray::NodeConst n1 = nodes[i1], n2 = nodes[i2];
+        bool operator()(TIndex i1, TIndex i2) {
+            typename TNodeArray::Node n1 = nodes[i1], n2 = nodes[i2];
             int flags1 = nodeFlagsToInt(n1.getEow(), n1.getCow()),
                 flags2 = nodeFlagsToInt(n2.getEow(), n2.getCow());
 
@@ -80,13 +80,13 @@ private:
         }
 
     private:
-        TNodeArray const & nodes;
+        TNodeArray& nodes;
     };
 
 };
 
 template <typename TNodeArray>
-CompactArrayCreatorL<TNodeArray>::CompactArrayCreatorL(TNodeArray const & na)
+CompactArrayCreatorL<TNodeArray>::CompactArrayCreatorL(TNodeArray& na)
 : nodeArray(na) { }
 
 template <typename TNodeArray>
@@ -150,7 +150,7 @@ template <typename TNodeArray>
 void CompactArrayCreatorL<TNodeArray>::calculateFlagOffsets() {
     int oldFlags = 0; flagOffsets[0] = 0;
     for (size_t i = 0; i < numOfDistinct; ++i) {
-        typename TNodeArray::NodeConst n = nodeArray[distinctInd[i]];
+        typename TNodeArray::Node n = nodeArray[distinctInd[i]];
         int flags = nodeFlagsToInt(n.getEow(), n.getCow());
         if (flags != oldFlags) {
             flagOffsets[flags] = i;
@@ -171,7 +171,7 @@ void CompactArrayCreatorL<TNodeArray>::copySymbols() {
     // fill an array with distinct symbols
     TSymbol* distinctSymbols = new TSymbol[numOfDistinct];
     for (size_t i = 0; i < numOfDistinct; ++i) {
-        typename TNodeArray::NodeConst n = nodeArray[distinctInd[i]];
+        typename TNodeArray::Node n = nodeArray[distinctInd[i]];
         distinctSymbols[i] = n.getSymbol();
     }
     // create compact array
@@ -223,4 +223,4 @@ void CompactArrayCreatorL<TNodeArray>::copyNodeIndexes() {
 }
 
 
-#endif	/* COMPACTARRAYCREATOR_H */
+#endif	/* COMPACTARRAYCREATORLEGACY_H */

@@ -106,17 +106,17 @@ void flagsFromString(TNode n, string str) {
 
 //TODO Change return type to TNodeArray *
 template <typename TNodeArray>
-string nodeArrayToString(const TNodeArray& na) {
+string nodeArrayToString(TNodeArray& na) {
     return subNodeArrayToString(na, (typename TNodeArray::Index)0, na.getSize());
 }
 
 template <typename TNodeArray>
-string nodeArraySuffixToString(const TNodeArray& na, typename TNodeArray::Index si) {
+string nodeArraySuffixToString(TNodeArray& na, typename TNodeArray::Index si) {
     return subNodeArrayToString(na, si, na.getSize());
 }
 
 template <typename TNodeArray>
-string nodeArraySuffShortToString(const TNodeArray& na, typename TNodeArray::Index si) {
+string nodeArraySuffShortToString(TNodeArray& na, typename TNodeArray::Index si) {
     typename TNodeArray::Index end = si + maxSymbol<typename TNodeArray::Symbol>();
     if (end >= na.getSize()) end = na.getSize();
     return subNodeArrayToString(na, si, end);
@@ -124,7 +124,7 @@ string nodeArraySuffShortToString(const TNodeArray& na, typename TNodeArray::Ind
 
 /** Return string representation of a [b,e> segement of NodeArray */
 template <typename TIndex, typename TNodeArray>
-string subNodeArrayToString(const TNodeArray& na, TIndex b, TIndex e) {
+string subNodeArrayToString(TNodeArray& na, TIndex b, TIndex e) {
     ostringstream ss;
     char nodeBorder = '|';
     ss << nodeBorder;
@@ -137,7 +137,7 @@ string subNodeArrayToString(const TNodeArray& na, TIndex b, TIndex e) {
 
 /** Return string of symbols from [b,e> segement of NodeArray */
 template <typename TIndex, typename TNodeArray>
-string nodeArraySymbolsToString(const TNodeArray& na, TIndex b, TIndex e) {
+string nodeArraySymbolsToString(TNodeArray& na, TIndex b, TIndex e) {
     ostringstream ss;
     char symbolBorder = '.';
 
@@ -179,7 +179,7 @@ public:
     /** Initialize and return an iterator for the given node array.
      * Default functionality that works for integer iterators is just returning
      * 0 wich points to first node of the array. */
-    static TIterator get(const TNodeArray &array) { return 0; }
+    static TIterator get(TNodeArray &array) { return 0; }
 };
 
 /** Specialization of IterInit for LzTrieIterator. */
@@ -187,7 +187,7 @@ template <typename TNodeArray>
 class IterInit<LzTrieIterator<TNodeArray>, TNodeArray> {
 public:
     /** Return LzTrieIterator bound to array. */
-    static LzTrieIterator<TNodeArray> get(const TNodeArray &array) {
+    static LzTrieIterator<TNodeArray> get(TNodeArray &array) {
         LzTrieIterator<TNodeArray> iter(array);
         return iter;
     }

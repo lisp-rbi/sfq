@@ -22,7 +22,7 @@ private:
 
 public:
 
-    NodeArrayVisualizer(const TNodeArray& arr);
+    NodeArrayVisualizer(TNodeArray& arr);
     ~NodeArrayVisualizer();
 
     void printArray(ostream& s);
@@ -38,7 +38,7 @@ private:
 
 private:
 
-    const TNodeArray& array;
+    TNodeArray& array;
     TSymbol **grid;
     int gridW, gridH;
     // number of decimal digits in the largest array index
@@ -52,7 +52,7 @@ private:
 };
 
 template <typename TNodeArray>
-NodeArrayVisualizer<TNodeArray>::NodeArrayVisualizer(const TNodeArray& arr): array(arr) {
+NodeArrayVisualizer<TNodeArray>::NodeArrayVisualizer(TNodeArray& arr): array(arr) {
       createGrid();
 }
 

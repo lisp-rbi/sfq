@@ -19,7 +19,7 @@ class VectorArray
 public:
 
     typedef VectorArrayNodeVar<TSymbol, TIndex, VectorArray<TSymbol, TIndex>* > Node;
-    typedef VectorArrayNode<TSymbol, TIndex, const VectorArray<TSymbol, TIndex>* > NodeConst;
+    //typedef VectorArrayNode<TSymbol, TIndex, const VectorArray<TSymbol, TIndex>* > NodeConst;
 
     typedef TSymbol Symbol;
     typedef TIndex Index;
@@ -29,7 +29,7 @@ public:
     virtual ~VectorArray();
 
     Node operator[](TIndex i);
-    NodeConst operator[](TIndex i) const;
+    //NodeConst operator[](TIndex i) const;
 
     void createNodesAtEnd(TIndex num);
 
@@ -108,13 +108,13 @@ VectorArray<Tsymbol, Tindex>::operator[](Tindex i) {
     return n;
 }
 
-template <class Tsymbol, class Tindex>
-inline typename VectorArray<Tsymbol, Tindex>::NodeConst
-VectorArray<Tsymbol, Tindex>::operator[](Tindex i) const {
-    //TODO dali se ovo moze pretvoriti u const?
-    NodeConst n(this, i);
-    return n;
-}
+//template <class Tsymbol, class Tindex>
+//inline typename VectorArray<Tsymbol, Tindex>::NodeConst
+//VectorArray<Tsymbol, Tindex>::operator[](Tindex i) const {
+//    //TODO dali se ovo moze pretvoriti u const?
+//    NodeConst n(this, i);
+//    return n;
+//}
 
 //TODO maknuti i prijeci na resizeArray;
 template <class Tsymbol, class Tindex>

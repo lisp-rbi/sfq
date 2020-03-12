@@ -9,8 +9,7 @@ using namespace std;
 template <typename TCharArray>
 class CharArrayTests {
 public:
-    CharArrayTests();
-    void test1();
+    CharArrayTests();    
     void basicInterfaceTest();
     virtual ~CharArrayTests();
 private:
@@ -22,19 +21,14 @@ CharArrayTests<TCharArray>::CharArrayTests() {
 }
 
 template <typename TCharArray>
-void CharArrayTests<TCharArray>::test1() { 
-    cout<<"char array test1"<<endl;
-}
-
-template <typename TCharArray>
 void CharArrayTests<TCharArray>::basicInterfaceTest() { 
     TCharArray carray; // default constructor must exist
     cout<<"created object"<<endl;
-    carray.allocate(100); cout<<"allocate"<<endl;
-    carray[50] = 'a'; cout<<"assign"<<endl;
-    carray.resize(200); cout<<"resize"<<endl;
-    assert(carray[50] == 'a');
-    carray.freeMemory(); cout<<"free"<<endl;
+    //carray.allocate(100); cout<<"allocate"<<endl;
+    //carray[50] = 'a'; cout<<"assign"<<endl;
+    //carray.resize(200); cout<<"resize"<<endl;
+    //assert(carray[50] == 'a');
+    //carray.freeMemory(); cout<<"free"<<endl;
 }
 
 template <typename TCharArray>

@@ -1,4 +1,4 @@
-/* 
+/*
  * Character array implemented with in-memory char array
  */
 
@@ -7,24 +7,40 @@
 
 #include <cstddef>
 #include <cstdlib>
+#include <iostream>
+#include <fstream>
 
 #include "ICharArray.h"
+#include "../util/filesystem_utils.h"
+#include "../serialization_legacy/SerializationUtils.h"
 
-class MemCharArray : public ICharArray {
+using namespace std;
+
+class MemCharArray : public ICharArray<char&> {
 public:
     MemCharArray();
     ~MemCharArray();
-        
-    char& operator[](size_t i);            
-    bool allocate(size_t size);    
-    bool resize(size_t size); 
+
+    char& operator[](size_t i);
+    bool allocate(size_t size);
+    bool resize(size_t size);
     void freeMemory();
-        
+    bool setChars(char const* chars, size_t N);
+
+    bool persist(string f);
+    bool load(string f);
+    void writeToStream(ostream& stream);
+    void readFromStream(istream& stream);
+
 private:
     size_t numOfBlocks;
     char *blocks;
 
+    static const string PERSIST_FNAME;
 };
 
-#endif /* MEMCHARARRAY_H */
+inline char& MemCharArray::operator[](size_t i) {
+    return blocks[i];
+}
 
+#endif /* MEMCHARARRAY_H */

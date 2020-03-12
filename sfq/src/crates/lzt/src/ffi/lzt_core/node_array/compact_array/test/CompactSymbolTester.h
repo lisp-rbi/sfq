@@ -11,17 +11,16 @@
 #include "util/TempFile.h"
 
 #include "../CompactSymbolArray.h"
-#include "../CompactSymbolArraySer.h"
 
 /** Tester for CompactSymbolArray. */
-template <typename TSymbol>
+template <typename TSymbol, typename TBitSequenceArray>
 class CompactSymbolTester {
 public:
 
     CompactSymbolTester(TSymbol min, TSymbol max, size_t arrayLength, bool random);
 
     void testCreate();
-    void testSerialize();
+    void testSerialize(bool toFolder);
 
     virtual ~CompactSymbolTester();
 
@@ -35,15 +34,15 @@ private:
 
 };
 
-template <typename TSymbol>
-CompactSymbolTester<TSymbol>::CompactSymbolTester(TSymbol min, TSymbol max, size_t len, bool rand)
+template <typename TSymbol, typename TBitSequenceArray>
+CompactSymbolTester<TSymbol, TBitSequenceArray>::CompactSymbolTester(TSymbol min, TSymbol max, size_t len, bool rand)
 : MIN(min), MAX(max), arrayLength(len), random(rand) {
     array = new TSymbol[arrayLength];
     fillArray();
 }
 
-template <typename TSymbol>
-CompactSymbolTester<TSymbol>::~CompactSymbolTester() {
+template <typename TSymbol, typename TBitSequenceArray>
+CompactSymbolTester<TSymbol, TBitSequenceArray>::~CompactSymbolTester() {
     delete [] array;
 }
 
@@ -51,8 +50,8 @@ CompactSymbolTester<TSymbol>::~CompactSymbolTester() {
  * random symbols from range [MIN, MAX]. Else fill with symbols starting
  * from MIN and increased by one for each array element. When MAX is reached
  * this way, go back to MIN. */
-template <typename TSymbol>
-void CompactSymbolTester<TSymbol>::fillArray() {
+template <typename TSymbol, typename TBitSequenceArray>
+void CompactSymbolTester<TSymbol, TBitSequenceArray>::fillArray() {
     if (random) randomSeed();
     TSymbol s = MIN;
     for (size_t i = 0; i < arrayLength; i++) {
@@ -67,10 +66,10 @@ void CompactSymbolTester<TSymbol>::fillArray() {
     }
 }
 
-template <typename TSymbol>
-void CompactSymbolTester<TSymbol>::testCreate() {
-    CompactSymbolArray<TSymbol> carray(array, arrayLength);
-    
+template <typename TSymbol, typename TBitSequenceArray>
+void CompactSymbolTester<TSymbol, TBitSequenceArray>::testCreate() {
+    CompactSymbolArray<TSymbol, TBitSequenceArray> carray(array, arrayLength);
+    cout<<"SYMBOL ARRAY testCreate("<<(int)MIN<<","<<(int)MAX<<","<<arrayLength<<","<<random<<")"<<endl;
     ostringstream bm;
     bm << "min: " << MIN << " max: " << MAX << " arrayLength: "
         << arrayLength << " random: " << random << endl;
@@ -92,29 +91,26 @@ void CompactSymbolTester<TSymbol>::testCreate() {
             TEST_ASSERT_MESSAGE(symbol == expected, m.str());
         }
     }
+    cout<<"SYMBOL ARRAY testCreate PASSED"<<endl;    
 }
 
 /** Test (De)Serialization of CompactSymbolArray to a stream. */
-template <typename TSymbol>
-void CompactSymbolTester<TSymbol>::testSerialize() {
-    CompactSymbolArray<TSymbol> carray(array, arrayLength);
+template <typename TSymbol, typename TBitSequenceArray>
+void CompactSymbolTester<TSymbol, TBitSequenceArray>::testSerialize(bool toFolder) {
+    cout<<"SYMBOL ARRAY testSerialize("<<(int)MIN<<","<<(int)MAX<<","<<arrayLength<<
+            ","<<random<<") "<<"toFolder: "<<toFolder<<endl;
+    CompactSymbolArray<TSymbol, TBitSequenceArray> carray(array, arrayLength);
     // serialize
-    TempFile file;
-    fstream stream(file.getName());
-    CompactSymbolArraySer<TSymbol>::arrayToStream(carray, stream);
-    stream.close();
-
+    TempFile file(toFolder);    
+    carray.persist(file.getName());    
     // deserialize
-    CompactSymbolArray<TSymbol> deserArray;
-    stream.open(file.getName());
-    CompactSymbolArraySer<TSymbol>::arrayFromStream(deserArray, stream);
-    stream.close();
-
+    CompactSymbolArray<TSymbol, TBitSequenceArray> deserArray;
+    deserArray.load(file.getName());
     // check equality
     TEST_ASSERT(carray.size() == deserArray.size());
-
     for (size_t i = 0; i < carray.size(); ++i)
         TEST_ASSERT(carray[i] == deserArray[i]);
+    cout<<"SYMBOL ARRAY testSerialize PASSED"<<endl;    
 }
 
 
