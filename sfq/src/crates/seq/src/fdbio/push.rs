@@ -18,11 +18,14 @@
 
 use crate::{Push, Fdb};
 
+
+// FX me this is slow if unziping the entire file   prealocate memory !!!
+
 impl Push for Fdb {
 
     fn  push_head(&mut self,v: Vec<u8>)-> &mut Self {
         if self.head.len() != 0 {
-        self.head.extend(b"\n");
+            self.head.extend(b"\n");
         }
         self.head.extend(v);
         self
@@ -30,7 +33,7 @@ impl Push for Fdb {
 
     fn push_seq(&mut self,v: Vec<u8>)-> &mut Self  {
         if self.seq.len() != 0 {
-        self.seq.extend(b"\n");
+            self.seq.extend(b"\n");
         }
         self.seq.extend(v);
         self
@@ -38,9 +41,14 @@ impl Push for Fdb {
 
     fn push_qual(&mut self,v: Vec<u8>)-> &mut Self  {
         if self.qual.len() != 0 {
-        self.qual.extend(b"\n");
+            self.qual.extend(b"\n");
         }
         self.qual.extend(v);
+        self
+    }
+
+    fn push_cpcnt(&mut self,v: Vec<usize>)-> &mut Self  {
+        self.cpcnt.extend(v);
         self
     }
 }

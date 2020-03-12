@@ -21,34 +21,63 @@ use crate::{Save, Fdb};
 
 impl Save for Fdb {
 
-    fn save(&mut self, path: &str) -> bool{
+    fn save(&mut self, path: &str, model: &str) -> bool{
 
         let writer = self.make_writer(path);
 
-        match &self.format[..] {
-            "fastq" => {
-
-                println!("Does not print in two files seperatly and does not clean");
+        match model {
+            "fq" => {
 
                 if let Ok(false) = self.fastq_dw(writer) {
-                    panic!("{} file not uploaded !", self.format);
+                    panic!("Model {} was not saved !", model);
                 };
 
 
             },
-            "fasta" => {
-
-                println!("Does not print in two files seperatly");
+            "fa" => {
 
                 if let Ok(false) = self.fasta_dw(writer) {
-                    panic!("{} file not uploaded !", self.format);
+                    panic!("Model {} was not saved !", model);
                 };
 
             },
             _       => {
-                panic!("format not supported!");
+                if let Ok(false) = self.tsv_dw(writer, model) {
+                    panic!("Model {} was not saved !", model);
+                };
             }
         }
+        true
+    }
+
+    fn save_append(&mut self, path: &str,  model: &str) -> bool {
+
+        let writer = self.make_append_writer(path);
+
+        match model {
+            "fq" => {
+
+                if let Ok(false) = self.fastq_dw(writer) {
+                    panic!("Model {} was not saved !", model);
+                };
+
+
+            },
+            "fa" => {
+
+                if let Ok(false) = self.fasta_dw(writer) {
+                    panic!("Model {} was not saved !", model);
+                };
+
+            },
+            _       => {
+                if let Ok(false) = self.tsv_dw(writer, model) {
+                    panic!("Model {} was not saved !", model);
+                };
+            }
+        }
+
+
         true
     }
 

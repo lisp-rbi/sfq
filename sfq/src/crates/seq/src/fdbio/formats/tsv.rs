@@ -20,13 +20,14 @@
 
  use crate::{Fdb,Get};
  use crate::util::error::Error;
- use std::io::{self, prelude::*, stdout, Write, Read, BufReader, BufWriter};
+ use std::io::{Write};
 
  impl Fdb{
 
-     pub fn tsv_dw<W: Write> (&mut self, mut writer:  W)   -> Result<bool,Error>  {
+     pub fn tsv_dw<W: Write> (&mut self, mut writer:  W,  model: &str)   -> Result<bool,Error>  {
 
-         writer.write_all(&self.get_tsv("s+q+h")).unwrap();
+         writer.write_all(&self.get_tsv(model)).unwrap();
+         write!(writer, "{}", 10u8 as char).unwrap();
 
          Ok(true)
 

@@ -34,4 +34,16 @@ impl Set for Fdb {
         self.qual = v;
         self
     }
+
+    fn set_cpcnt(&mut self,v: Vec<usize>)-> &mut Self  {
+        self.cpcnt = v;
+        self
+    }
+
+    fn set_model(&mut self, paired: bool ) -> &mut Self {
+        self.paired = paired;
+        self
+    }
+
+
 }

@@ -19,13 +19,18 @@
 
  use crate::{Fdb,Get};
  use crate::util::error::Error;
- use std::io::{self, prelude::*, stdout, Write, Read, BufReader, BufWriter};
+ use std::io::{ prelude::*,  Write};
 
  impl Fdb{
      pub fn fastq_up<R: BufRead>(&mut self,  reader:  R, direction: bool) -> Result<bool,Error> {
 
          let mut cnt=0;
          let mut r = 0;
+
+         if direction == false {
+             self.paired=true;
+         }
+
          for line in reader.lines() {
              let  str = line.unwrap();
              if  cnt == 0 {
@@ -69,9 +74,49 @@
      }
 
 
-     pub fn fastq_dw<W: Write> (&mut self, mut writer:  W)   -> Result<bool,Error>  {
+     pub fn fastq_dw<W: Write> (&mut self, mut writer:  W) -> Result<bool,Error>  {
+         let (mut sw , mut ssw, mut x, y, mut bw)= (0u8, true, 0, 1000, 0);
+         let mut buff = vec![0u8; y];
 
-         writer.write_all(&self.get_fastq()).unwrap();
+         //writer.write_all(&self.get_fastq());
+
+
+         for ch in self.get_fastq().iter() {
+
+
+             match *ch {
+
+                 10u8 => {
+                     if bw == 1 && ssw == true {
+                         buff.resize(x,0x00);
+                         writer.write_all(&self.revcomp(String::from_utf8(buff.clone()).unwrap()).as_bytes()).unwrap();
+                         x=0;
+                     }
+                     write!(writer, "{}", *ch as char).unwrap();
+                     bw+=1;
+                     if sw == 82u8 {
+                         ssw = true;
+                     }else{
+                         ssw = false;
+                     }
+                     if bw == 4{bw = 0}
+                 },
+                 _   => {
+                     if bw == 1 && ssw == true{
+                         if x == y{
+                             buff.extend(vec![0u8;y]);
+                         }
+                         buff[x] = *ch;
+                         x+=1;
+
+                     }else {
+                         write!(writer, "{}", *ch as char).unwrap();
+                     }
+                 }
+             }
+             sw = *ch;
+         }
+         write!(writer, "{}", 10u8 as char).unwrap();
 
          Ok(true)
 
