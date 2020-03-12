@@ -85,8 +85,8 @@ OPTIONS:
 
                                                	fq   	  :fastq,
                                                	fa  	  :fasta,
-                                               	s  	    :sequence,
-                                               	q  	    :quality,
+                                               	s       :sequence,
+                                               	q       :quality,
                                                	h  	    :head,
                                                	s+q   	:sequence quality,
                                                	h+q   	:head quality,
