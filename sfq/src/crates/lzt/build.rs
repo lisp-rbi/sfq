@@ -32,6 +32,9 @@ fn main() {
             .file("src/ffi/lzt_core/debug/DebugException.cpp")
             .file("src/ffi/lzt_core/debug/StackTrace.cpp")
             .file("src/ffi/lzt_core/suffix_array/CharStringSA.cpp")
+            .file("src/ffi/lzt_core/serialization/MemCharArray.cpp")
+            .file("src/ffi/lzt_core/serialization/DiskCharArray.cpp")
+            .file("src/ffi/lzt_core/util/filesystem_utils.cpp")
             .cpp(true)
             .cpp_link_stdlib("stdc++")
             .compile("liblzt.a");
