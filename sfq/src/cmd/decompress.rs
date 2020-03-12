@@ -40,18 +40,18 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
                 },
                 "fastq" => {
 
-                    let mut head = String::new();
+                    let mut head = String::new(); //// escape header
                     let mut qual = String::new();
                     let mut seq = String::new();
 
                     if let Some(x) = cli.value_of("input") {
-                        head = format!("{}.{}",x,"head.sfq");
+                        head = format!("{}.{}",x,"head.sfq");    //// escape header
                         seq  = format!("{}.{}",x,"seq.sfq");
                         qual = format!("{}.{}",x,"qual.sfq");
                     }
 
 
-                    let mut head_lzt = FFI::open(&head);
+                    let mut head_lzt = FFI::open(&head); //// escape header
                     let mut seq_lzt  = FFI::open(&seq);
                     let mut qual_lzt = FFI::open(&qual);
 
@@ -61,59 +61,58 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
                     // get info :alloc
                     {
 
-                        let head_stats  = get_stats(&head_lzt.get_records("~~~~~X"));
+                        let head_stats  = get_stats(&head_lzt.get_records("~~~~~X")); //// escape header
                         let seq_stats   = get_stats( &seq_lzt.get_records("~~~~~X"));
                         let qaual_stats = get_stats(&qual_lzt.get_records("~~~~~X"));
 
                         assert_eq!(seq_stats,qaual_stats);
-                        assert_eq!(seq_stats,head_stats);
 
                         count = seq_stats.0;
                         alpha = seq_stats.1;
                         wlen  = seq_stats.2;
+
                         fdb.set_model(seq_stats.3);
 
                     }
+                    let exp = (count as f64).log(alpha.len() as f64) as u32;
+                    let inc = alpha.len().pow(exp-1);
 
-                    let (mut i, mut j) = (0,3);
+
+                    let (mut i, mut j) = (0,inc-1);
 
                     while i < count {
 
                         let enc_start = encode(i, wlen, &alpha);
                         let enc_stop  = encode(j, wlen, &alpha);
 
-                        j+=alpha.len();
-                        i+=alpha.len();
+                        j+=inc;
+                        i+=inc;
 
                         if j> count {j=count;}
-
                         let e = enc_start.iter().zip(enc_stop.iter()).filter(|&(a, b)| a == b).count();
 
                         let prefix = enc_start[..e].to_vec();
                         let enc = str::from_utf8(&prefix).unwrap();
-
                         {
                             let mut seq_out: Vec<u8> = seq_lzt.get_records(&enc);
                             let dis = deindex(&mut seq_out);
                             fdb.set_seq(seq_out);
                             fdb.set_cpcnt(dis);
                         }
-                        //println!("S{:?}", fdb.get_seq());
                         {
                             let mut head_out = head_lzt.get_records(&enc);
                             let dis = deindex(&mut head_out);
                             fdb.set_head(head_out);
                         }
-                        //println!("H{:?}", fdb.get_head());
                         {
                             let mut qual_out = qual_lzt.get_records(&enc);
                             let dis = deindex(&mut qual_out);
                             fdb.set_qual(qual_out);
                         }
                         //println!("Q{:?}", fdb.get_qual());
-                        if let Some(x) = cli.value_of("cmode") {
-
-                            if x == "lossy"{
+                        if let Some(y) = cli.value_of("cmode") {
+                            if y == "lossy"{
+                                eprintln!("jsdjdfj");
                                 fdb.expand();
                             }
                         }else{
