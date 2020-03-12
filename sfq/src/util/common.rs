@@ -1,3 +1,6 @@
+use std::io::{self, prelude::*, stdout, Write, Read, BufReader, BufWriter};
+use std::fs::File;
+
 
 pub fn make_key(pos: usize, alpha: usize, word: usize) -> String{
 
@@ -16,6 +19,27 @@ pub fn make_key(pos: usize, alpha: usize, word: usize) -> String{
 
 }
 
+
+/**
+    Simple file reader for '\n' seperated list of keys
+*/
+pub fn get_keys (file:&str) -> Vec<Vec<u8>>{
+
+    let fh = File::open(file).expect(&(format!("Error opening {} file",file)));
+    let mut keys : Vec<Vec<u8>> = Vec::new();
+    for line in BufReader::new(fh).lines() {
+        keys.push(line.unwrap().as_bytes().to_vec());
+    }
+    keys
+
+}
+
+
+pub fn comp_wlen(v: &Vec<u8>, a: String) -> (usize,usize) {
+    let alpha = a.len();
+    let cnt = v.iter().filter(|&r| *r == '\n' as u8).count() +1;
+    (cnt ,(((cnt+1)/2) as f64).log(alpha as f64).ceil() as usize)
+}
 
 
 
@@ -49,56 +73,119 @@ pub fn comp_wlen_alpha(v: &Vec<u8>) -> (Vec<u8>,usize) {
     in: bbbbb\nbbbbb\nbbbbb\nbbbbb\n
     out: AAAbbbbb\nACAbbbbb\nAGAbbbbb\nATAbbbbb
 
-    or in case of pair-end (fwd:A rev:G)
+    or in case of pair-end (fwd:G rev:A)
 
     in: bbbbb\nbbbbb\nbbbbb\nbbbbb\n
     out: AAAbbbbb\nAAGbbbbb\nACAbbbbb\nACGbbbbb
 */
-pub fn index(v: Vec<u8>, p: bool) -> Vec<u8> {
 
-    let (alpha,wlen)= comp_wlen_alpha(&v);
-    let cnt = v.iter().position(|&r| r == '\n' as u8).unwrap();
+// FXME join index and hindex inot one function
 
-    let mut vec = vec![0u8;v.len()+ (cnt*wlen)+cnt];
-    let (mut x, mut e, mut c, mut d) = (0,0,0,'A' as u8);
-    let q = if p == true {1}else{2};
+pub fn index(v: &Vec<u8>, cp: &Vec<usize>) -> (Vec<u8>, usize, usize,String) {
 
+    let alpha ="ACGT".to_string(); // this should be dynamyc
 
+    let (cnt,wlen)= comp_wlen(&v, alpha.clone());
+        eprintln!("Bug in common l:89");
+    let mut vec = vec![0u8;v.len()+ ((cnt+1)*wlen*3)+(2*cnt)+2];
 
-    let mut code = encode(x,wlen,&alpha);
-    for j in code.iter(){
-        vec[e] = *j;
-        e+=1;
-    }
-    vec[e] = d;
-    e+=1;
+    let (mut x, mut y, r, f, t ) = (0,0,'A' as u8, 'G' as u8, 'X' as u8);
 
+    let nvec :Vec<_> = v.split(|i| *i=='\n' as u8).collect();
 
-    for (p,i) in v.iter().enumerate() {
-        vec[e]= *i;
-        e+=1;
-        println!("{}", p);
-        if *i == '\n' as u8 && p < v.len()-1 {
-            c+=q;
-            if c%2 == 0 {
-                x+=1;
-                code = encode(x,wlen,&alpha);
-                d = 'A' as u8; // fwd
-            }else{
-                d = 'G' as u8; // rev
-            }
+    let mut code = encode(x,wlen,&alpha.as_bytes().to_vec());
+
+    for (e,i) in nvec.iter().enumerate() {
+        let split :Vec<_> = i.split(|i| *i=='\t' as u8).collect();
+
+        if split[0][split[0].len()-1] == 'R' as u8 {
             for j in code.iter(){
-                vec[e] = *j;
-                e+=1;
+                vec[y] = *j;y+=1;
             }
-            vec[e] = d;
-            e+=1;
+            vec[y] = r;y+=1;
+            vec[y] = t;y+=1;
+        }else{
+            for j in code.iter(){
+                vec[y] = *j;y+=1;
+            }
+            vec[y] = f; y+=1;
+            vec[y] = t; y+=1;
+            x+=1;
+            code = encode(x,wlen,&alpha.as_bytes().to_vec());
         }
+
+        for j in split[1].iter(){
+            vec[y] = *j;y+=1
+        }
+        if cp[e] > 1 {
+            let cdcp = encode(cp[e],wlen,&alpha.as_bytes().to_vec());
+            vec[y] = 'X' as u8;y+=1;
+
+            for j in cdcp.iter(){
+                vec[y] = *j;y+=1
+            }
+        }
+        vec[y] = '\n' as u8;y+=1
     }
 
-    vec
+    vec.resize(y-1,0x00);
+    (vec,x,wlen, alpha)
 
 }
+
+
+pub fn hindex(v: &Vec<u8>, cp: &Vec<usize>) ->  (Vec<u8>, usize, usize,String)  {
+
+    let alpha ="ACGT".to_string(); // this should be dynamyc
+    let (cnt,wlen)= comp_wlen(&v, alpha.clone());
+
+    eprintln!("Bug in common l:140");
+    let mut vec = vec![0u8;v.len()+ ((cnt+1)*3*wlen)+2*(cnt+2)];
+
+    let (mut x, mut y, r, f, t ) = (0,0,'A' as u8, 'G' as u8, 'X' as u8);
+
+    let nvec :Vec<_> = v.split(|i| *i=='\n' as u8).collect();
+
+    let mut code = encode(x,wlen,&alpha.as_bytes().to_vec());
+
+    for (e,i) in nvec.iter().enumerate() {
+        if i[i.len()-1] == 'R' as u8 {
+            for j in code.iter(){
+                vec[y] = *j;y+=1;
+            }
+            vec[y] = r;y+=1;
+            vec[y] = t;y+=1;
+        }else{
+            for j in code.iter(){
+                vec[y] = *j;y+=1;
+            }
+            vec[y] = f; y+=1;
+            vec[y] = t; y+=1;
+            x+=1;
+            code = encode(x,wlen,&alpha.as_bytes().to_vec());
+        }
+
+        for j in i.iter(){
+            vec[y] = *j;y+=1
+        }
+        if cp[e] > 1 {
+            let cdcp = encode(cp[e],wlen,&alpha.as_bytes().to_vec());
+            vec[y] = 'X' as u8;y+=1;
+
+            for j in cdcp.iter(){
+                vec[y] = *j;y+=1
+            }
+        }
+
+        vec[y] = '\n' as u8;y+=1
+    }
+
+    vec.resize(y-1,0x00);
+
+    (vec,x,wlen, alpha)
+
+}
+
 
 /** Function takes `Vec<u8>` and an indicator whether it is Pair-end compression or not
     and adds an encoded intex
@@ -113,12 +200,14 @@ pub fn index(v: Vec<u8>, p: bool) -> Vec<u8> {
 
     NOte: importan is to have '\n' at the end.
 */
-pub fn tsv_encode(v: Vec<u8>, p: bool) -> Vec<u8> {
+pub fn tsv_encode(v: &Vec<u8>, p: bool) -> Vec<u8> {
+
+        //panic!("does not work on shrinked files!!!! \n change it");
 
     let (alpha,wlen)= comp_wlen_alpha(&v);
-    let cnt = v.iter().position(|&r| r == '\n' as u8).unwrap();
+    let cnt = v.iter().filter(|&r| *r == '\n' as u8).count();
 
-    let mut vec = vec![0u8;v.len()+ (cnt*wlen)+(cnt*2)];
+    let mut vec = vec![0u8;v.len()+ (cnt*wlen)+(cnt*2)];  // BUG
     let (mut x, mut e, mut c, mut d) = (0,0,1,'A' as u8);
     let q = if p == true {1}else{2};
     let mut code : Vec<u8>= Vec::new();
@@ -147,6 +236,7 @@ pub fn tsv_encode(v: Vec<u8>, p: bool) -> Vec<u8> {
         vec[e]= *i;
         e+=1;
     }
+    vec.resize(e,0x00);
 
     vec
 
@@ -161,24 +251,48 @@ pub fn tsv_encode(v: Vec<u8>, p: bool) -> Vec<u8> {
     in: AAAbbbbb\nACAbbbbb\nAGAbbbbb\nATAbbbbb
     out: bbbbb\nbbbbb\nbbbbb\nbbbbb\n
 */
-pub fn deindex(v: &mut Vec<u8>, l:usize)  {
+pub fn deindex(v: &mut Vec<u8>) -> Vec<usize>  {
 
-    let (mut j, mut x) = (0,l);
-    for i in v.clone().iter(){
+    let (mut j, mut x, mut print, mut b) = (0,0, false,0);
 
-        if x == 0 {
-            v[j] = *i;
-            j+=1;
+    let mut vec = vec![0;v.iter().filter(|&r|*r == '\n' as u8).count()+1];
+
+    for (e,i) in v.clone().iter().enumerate(){
+
+        if *i == 10u8 {
+            if print == true{
+                vec[x] = 1;
+            }else{
+                vec[x] = decode(&v[b..e].to_vec(), &b"ACGT".to_vec());
+            }
+            x+=1;
+            v[j] = *i;j+=1;
+            print = false;
+
+        }else if  *i == 88u8 {
+            if print == false{
+                print = true;
+            }else{
+                print = false;
+                b= e+1;
+            }
+            continue;
         }
 
-        if x>0 {x-=1;}
-
-        if *i == '\n' as u8 {
-            x=l;
-
+        if print == true {
+            v[j] = *i;j+=1;
         }
     }
+
+    if print == true{
+        vec[x] = 1;
+    }else{
+        vec[x] = decode(&v[b..v.len()].to_vec(), &b"ACGT".to_vec());
+        //j+=1;
+    }
+
     v.resize(j,0x00);
+    vec
 
 }
 
@@ -281,7 +395,47 @@ pub fn parse_body(v: Vec<u8>) -> Vec<u8> {
     vec
 }
 
-pub fn filter_copies(v: Vec<u8>, copytab: FxHashMap<Vec<u8>, usize>) -> Vec<u8> {
+
+pub fn parse_codex (codex: &str) -> (usize,String) {
+    let vec : Vec<_> = codex.split('|').collect();
+    (vec[1].parse::<usize>().unwrap(),vec[0].to_string())
+
+}
+
+
+pub fn get_stats(st: &Vec<u8>) -> (usize,Vec<u8>,usize, bool) {
+
+    let mut stats_vec: Vec<_> = st.split(|i| *i == 88u8).collect();
+
+    let num_of_rec = std::str::from_utf8(stats_vec[1]).unwrap().parse::<usize>().unwrap();
+    let alpha      = stats_vec[2].to_owned();
+    let padding    = std::str::from_utf8(stats_vec[3]).unwrap().parse::<usize>().unwrap();
+    let model = if stats_vec[4][0] == 48u8 {false} else  {true};
+
+    (num_of_rec,alpha,padding, model)
+
+}
+
+pub fn make_stats(num_of_rec: usize, alpha: String, padding: usize, model: bool) -> Vec<u8> {
+
+    let mut vec : Vec<u8> = Vec::new();
+
+    vec.extend(b"~~~~~X".to_vec());
+    vec.extend(num_of_rec.to_string().as_bytes().to_vec());
+    vec.push(88u8);
+    vec.extend(alpha.as_bytes().to_vec());
+    vec.push(88u8);
+    vec.extend(padding.to_string().as_bytes().to_vec());
+    vec.push(88u8);
+    if model ==true {
+        vec.push(49u8);
+    }else{
+        vec.push(48u8);
+    }
+
+
+    vec
+
 
 
 }

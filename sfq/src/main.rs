@@ -1,56 +1,83 @@
+/*
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * This software consists of voluntary contributions made by many individuals
+ * and is licensed under the MIT license. For more information, see
+ * <http://www.doctrine-project.org>.
+ */
+
+
+#[cfg(test)]
+mod tests;
 
 // modules
 mod cli;
 mod util;
+mod cmd;
 
 
 // calls
 use cli::parse_cli;
-use seq::{Fdb};
-use std::time::Instant;
-use std::str::FromStr;
-
+use cmd::compress::{
+    compress
+};
+use cmd::decompress::{
+    extract
+};
+use cmd::grep::{
+    export
+};
 
 
 fn main() {
 
     let cli = parse_cli();
 
-    match cli.value_of("action").unwrap() {
-        "c" => {
-            print!("Compressing...");
-            let before = Instant::now();
 
+    match cli.value_of("action") {
 
+        Some(x) => {
 
-            // construct Fdb (pass a model) -> reads headers if fast(a/q) -> sort and index in temp memory
+            match x {
+                "c" => {
 
-            // get seq -> readin the seq into temp vec in a preset order  and Return
+                    if compress(cli) == false {
+                        panic!("Compression failed!!");
+                    };
 
-            // get qual ->  readin the seq into temp vec in a preset order  and Return
+                },
+                "d" => {
 
-            // get head -> dump head from the temp memory
+                    if extract(cli) == false {
+                        panic!("Decompression failed!!");
+                    };
 
-            // execute compression my passing each element into ffi
+                },
+                "g" => {
+                    if export(cli) == false {
+                        panic!("Record Id not recognized!");
+                    };
 
-
-            println!(" {:.2?}", before.elapsed());
+                },
+                _   => {
+                    panic!("Unrecognized action: -a {}", cli.value_of("action").unwrap());
+                }
+            }
         },
-        "d" => {
-            println!("Decompressing...");
-            let before = Instant::now();
-
-            println!(" {:.2?}", before.elapsed());
-        },
-        "g" => {
-            println!("Extracting...");
-            let before = Instant::now();
-
-            println!(" {:.2?}", before.elapsed());
-        },
-        _   => {
-            panic!("Unrecognized action: -a {}", cli.value_of("action").unwrap());
+        None => {
+            println!("Please specify the action: -a option!");
         }
+
     }
 
 
