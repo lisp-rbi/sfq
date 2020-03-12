@@ -23,7 +23,8 @@ void runCompactArrayTests() {
         }
         for (int toFolder = 0; toFolder < 2; ++toFolder)
             testerD.testSerialize(dictset, toFolder);            
-        testerD.testSerializeInPlace(dictset);        
+        testerD.testSerializeInPlace(dictset);
+        testerD.testLoadDiskToMem(dictset);
     }
     cout<<endl;          
     cout<<"COMPACT ARRAY + MEMORY CHAR ARRAY TESTS..."<<endl;

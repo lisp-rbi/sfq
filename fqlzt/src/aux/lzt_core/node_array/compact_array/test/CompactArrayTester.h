@@ -34,6 +34,7 @@ public:
     void testCaching(string dictset, size_t cacheSize);
     void testSerialize(string dictset, bool toFolder);
     void testSerializeInPlace(string dictset);
+    void testLoadDiskToMem(string dictset);    
  
     typedef VectorArray<TSymbol, TIndex> TMemNodeArray;
     
@@ -188,6 +189,34 @@ void CompactArrayTester<TSymbol, TIndex, TBitSequenceArray>::testSerializeInPlac
     }
     freeDictMem(dicts);
     cout<<"COMPACT ARRAY testSerialize PASSED"<<endl;             
+}
+
+template <typename TSymbol, typename TIndex, typename TBitSequenceArray>
+void CompactArrayTester<TSymbol, TIndex, TBitSequenceArray>::testLoadDiskToMem(string dictset) {
+    cout<<"COMPACT ARRAY testLoadDiskToMem(dictset="<<dictset<<")"<<endl;    
+    vector<pair<string,string> > dlabels = dictSet(dictset);
+    vector<WordList<TSymbol>*> dicts = loadDictionaries(dictset);
+    for (int i = 0; i < dicts.size(); ++i) {        
+        // create uncompressed array
+        TMemNodeArray* array = getLzArrayLCT<TMemNodeArray>(*dicts[i]);                
+        // build and persist in-place
+        CompactArrayBuilder<TSymbol, TIndex, TBitSequenceArray> builder;         
+        TempFile file(true);    
+        builder.buildSaveCompactArray(dicts[i], file.getName(), dlabels[i].first, false);        
+        // load, copy to memory and compare   
+        CompactArray<TSymbol, TIndex, TBitSequenceArray> *diskArray = 
+                new CompactArray<TSymbol, TIndex, TBitSequenceArray>();
+        diskArray->load(file.getName());     
+        CompactArray<TSymbol, TIndex, BitSequenceArray<MemCharArray> > *
+                memArray = builder.copyDiskArrayToMemArray(diskArray);
+        delete diskArray;
+        nodeArraysNodeEquality(*array, *memArray);
+        //nodeArraysTrieEquality(*array, *memArray);        
+        delete array;
+        delete memArray;
+    }
+    freeDictMem(dicts);
+    cout<<"COMPACT ARRAY testLoadDiskToMem PASSED"<<endl;             
 }
 
 template <typename TSymbol, typename TIndex, typename TBitSequenceArray>
