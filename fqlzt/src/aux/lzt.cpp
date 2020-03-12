@@ -13,8 +13,8 @@ bool Lzt::make(TSymbol* words, long length, string savePath, bool sortWords) {
     return createTrie(words, length, savePath, sortWords);
 }
 
-bool Lzt::read(string triePath) {
-    trie = loadTrie(triePath);
+bool Lzt::read(string triePath, bool inMem) {
+    trie = loadTrie(triePath, inMem);
     return trie != NULL;
 }
 

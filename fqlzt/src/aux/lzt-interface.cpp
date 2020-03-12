@@ -28,12 +28,23 @@ bool createTrie(TSymbol* words, long length, string fname, bool sortWords) {
  * Load lz-compressed and compactified trie from a file.
  * @return pointer to lz-trie or NULL if loading failed
  */
-TLzTrie* loadTrie(string trieFolder) {
+TLzTrie* loadTrie(string trieFolder, bool mem) {
     TCompactArrayDisk* nodeArrayDisk = new TCompactArrayDisk();
+    TCompactArrayMem* nodeArrayMem = NULL;
+    TCompactArray* nodeArray = NULL;
     //cout<<"Trie folder:"<<trieFolder<<endl;
     nodeArrayDisk->load(trieFolder); 
-    nodeArrayDisk->setCache(10000);
-    TCompactArray* nodeArray = nodeArrayDisk;
+    if (mem) {
+        CompactArrayBuilder<TSymbol, TIndex, TCompactArrayDisk> builder;
+        nodeArrayMem = builder.copyDiskArrayToMemArray(nodeArrayDisk);
+        delete nodeArrayDisk;
+        nodeArrayMem->setCache(10000);
+        nodeArray = nodeArrayMem;
+    }
+    else {
+        nodeArrayDisk->setCache(10000);
+        nodeArray = nodeArrayDisk;
+    }    
     TLzTrie* trie = new TLzTrie(*nodeArray);
     return trie;
 }

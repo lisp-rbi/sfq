@@ -46,7 +46,7 @@ typedef LzTrie<TCompactArray> TLzTrie; // final compressed trie
 
 /**************** INTERFACE FUNCTIONS ****************/
 bool createTrie(TSymbol* words, long length, string fname, bool sortWords = false);
-TLzTrie* loadTrie(string trieFolder);
+TLzTrie* loadTrie(string trieFolder, bool mem=false);
 vector<vector<TSymbol> >* queryTrie(TLzTrie* trie, vector<TSymbol> query);
 void freeTrieMem(TLzTrie* trie);
 /**************************************************************/

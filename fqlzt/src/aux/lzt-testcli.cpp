@@ -16,6 +16,7 @@
 using namespace std;
 
 map<string, string> params;
+bool inMem;
 
 /**************** INTERFACE FUNCTIONS ****************/
 static void compressTrie();
@@ -57,15 +58,15 @@ void compressTrie() {
     delete [] fwords.words;
 }
 
-void loadAndListTrie() {        
-    TLzTrie* trie = loadTrie(params["-d"]);
+void loadAndListTrie() {            
+    TLzTrie* trie = loadTrie(params["-d"], inMem);
     string query = "*";
     printWordList(query, trie);
     freeTrieMem(trie);
 }
 
 void queryTrie() {       
-    TLzTrie* trie = loadTrie(params["-d"]);
+    TLzTrie* trie = loadTrie(params["-d"], inMem);
     string query = params["-s"];
     vector<TSymbol> q = string2SymbolVec(query);
     vector<vector<TSymbol> >* result = queryTrie(trie, q);
@@ -86,7 +87,7 @@ void testInterfaceClass() {
     assert(lzt.make(fwords.words, fwords.length, params["-d"]));
     delete [] fwords.words;
     // load
-    assert(lzt.read(params["-d"]));
+    assert(lzt.read(params["-d"], inMem));
     // list all words
     vector<TSymbol> prefix; // empty prefix
     vector<vector<TSymbol> >* result = lzt.getFastqRecords(prefix);   
@@ -103,7 +104,7 @@ void testInterfaceClass() {
  */
 void testSequentialQueries() {    
     // load trie and list all words
-    TLzTrie* trie = loadTrie(params["-d"]);    
+    TLzTrie* trie = loadTrie(params["-d"], inMem);    
     vector<TSymbol> emptyQuery;
     vector<vector<TSymbol> >* allwords = queryTrie(trie, emptyQuery);
     size_t numWords = allwords->size();
@@ -111,7 +112,7 @@ void testSequentialQueries() {
     int numRuns = 1;
     // how often to perform list-all and list-prefix queries
     // decision is random, expected to happen once in this many words
-    long listallFreq = -1, listPrefix = 2000;
+    long listallFreq = -1, listPrefix = -1;
     if (params.count("-n") > 0) numRuns = atoi(params["-n"].c_str());
     srand(time(0));
     for (int i = 0; i < numRuns; ++i) {
@@ -202,8 +203,10 @@ void createParameterMap(int argc, char** argv) {
             else if (arg == "-l") params[arg] = "true";
             else if (arg == "-c") params[arg] = "true";
             else if (arg == "-z") params[arg] = "true";
+            else if (arg == "-m") params[arg] = "true";
         }
     }
+    inMem = params.count("-m") > 0;
 }
 
 
