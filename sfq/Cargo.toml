@@ -11,3 +11,4 @@ edition = "2018"
 clap ="*"
 seq = { path = "src/crates/seq" }
 lzt = { path = "src/crates/lzt" }
+sys-info = "*"
