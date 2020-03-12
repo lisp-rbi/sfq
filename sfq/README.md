@@ -1,4 +1,4 @@
-#SFQ
+# SFQ
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/RobertBakaric/susq-rust/blob/master/LICENSE)
 
@@ -124,4 +124,21 @@ Example No.9 - Extract a particular set of records listed in list.file as sequen
 Example No.10 - Compress pairend fasta file by limiting memory to 8GB (experimental)
 
 
-#BBenchmarks
+## Benchmarks
+
+Adversary tool: SPRING
+
+
+### Runtime measurements
+
+
+InputSize X Time
+
+### Memory requirements  
+
+InputSize X memory
+
+
+### Disk USAGE
+
+ InputSize X CompressedSize
