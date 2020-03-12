@@ -88,7 +88,7 @@ pub(crate) fn parse_cli ()->  clap::ArgMatches<'static> {
                .default_value("fa")
                .required(true)
                .value_name("fq|fa|s|q|h|...")
-               .help("Output format ( \n\tfq   \t:fastq, \n\tfa  \t:fasta, \n\ts  \t:sequence, \n\tq  \t:quality, \n\th  \t:head, \n\ts+q  \t:sequence quality, \n\th+q  \t:head quality, \n\th+s  \t:head sequence, \n\th+s+q  :head sequence quality, \n\ts+h+q  \t:sequence head quality, ...)")
+               .help("Output format: \n \n\tfq   \t:fastq, \n\tfa  \t:fasta, \n\ts  \t:sequence, \n\tq  \t:quality, \n\th  \t:head, \n\ts+q  \t:sequence quality, \n\th+q  \t:head quality, \n\th+s  \t:head sequence, \n\th+s+q  \t:head sequence quality, \n\ts+h+q  \t:sequence head quality, \n\t...\n")
                .takes_value(true))
 
           .arg(Arg::with_name("infmt")
