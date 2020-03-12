@@ -31,7 +31,7 @@ class LzTrieIterTester {
 private:
     typedef typename TNodeArray::Symbol TSymbol;
     typedef typename TNodeArray::Index TIndex;
-    typedef typename TNodeArray::Node TNodeConst;
+    typedef typename TNodeArray::Node TNode;
 
     typedef LzTrieIterator<TNodeArray> TIter;
     // separator of array node string representations, when building string from array
@@ -45,7 +45,7 @@ private:
 
     void testDfs(string fname);
 
-    string nodeToString(TNodeConst node);
+    string nodeToString(TNode node);
 
     template <typename TIterator>
     string getDfsString(TNodeArray& array);
@@ -95,7 +95,7 @@ void LzTrieIterTester<TNodeArray>::testDfs(string fname) {
 /** Return string representation of an node that is equal for corresponding
  * nodes in lz-compressed and uncompressed arrays. */
 template <typename TNodeArray>
-string LzTrieIterTester<TNodeArray>::nodeToString(TNodeConst node) {
+string LzTrieIterTester<TNodeArray>::nodeToString(TNode node) {
     ostringstream ss;
     ss << node.getSymbol() << node.getEow() << node.getCow();
     return ss.str();

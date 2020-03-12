@@ -17,7 +17,7 @@ class WordIndexer {
 private:
     typedef typename TNodeArray::Index TIndex;
     typedef typename TNodeArray::Symbol TSymbol;
-    typedef typename TNodeArray::Node TNodeConst;
+    typedef typename TNodeArray::Node TNode;
 
 public:
     WordIndexer(TNodeArray& nodes);
@@ -96,7 +96,7 @@ WordIndexer<TNodeArray, TIterator>::getWord(typename TNodeArray::Index wi) const
     /* In every iteration, wi is 0-based word index among words in a subtree
      * containing current node and all its children and siblings visited by dfs. */
     while(true) {
-        TNodeConst node = nodes[ni];
+        TNode node = nodes[ni];
         while (node.getSibling() != 0 && node.getNumWords() <= wi) {
             wi -= node.getNumWords();
             ni += node.getSibling();
@@ -151,7 +151,7 @@ WordIndexer<TNodeArray, TIterator>::getIndex(const typename TNodeArray::Symbol* 
     TIndex si = 0;
 
     while(true) {
-        TNodeConst node = nodes[ni];
+        TNode node = nodes[ni];
         // pick a right sibling branch, modifying word index
         while (node.getSibling() != 0 && node.getSymbol() != word[si]) {
             wi = wi + node.getNumWords();

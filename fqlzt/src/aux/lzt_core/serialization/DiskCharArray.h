@@ -32,7 +32,9 @@ public:
     /** Effectively, reset the object by deleting the file, setting array 
      * size to 0, and creating new empty file for reading/writing. */
     void freeMemory();
-    bool setChars(char const* chars, size_t N);
+    bool setChars(char const* chars, size_t N, bool copy=false);
+    char* getChars();
+    size_t getNumChars();
     
     bool persist(string f);
     /** Load array from file or folder, old file will be deleted. */
@@ -82,6 +84,7 @@ private:
     void bindToRandomFile();        
     void writeCharacter(size_t index, char ch);
     char readCharacter(size_t index);
+    char *loadCharsToMem();
 
     // for persistence, read/write object state-holding fields to/from stream
     void writeFieldsToStream(ostream& stream);

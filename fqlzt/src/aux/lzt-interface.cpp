@@ -28,12 +28,24 @@ bool createTrie(TSymbol* words, long length, string fname, bool sortWords) {
  * Load lz-compressed and compactified trie from a file.
  * @return pointer to lz-trie or NULL if loading failed
  */
-TLzTrieDisk* loadTrie(string trieFolder) {
-    TCompactArrayDisk* nodeArray = new TCompactArrayDisk();
+TLzTrie* loadTrie(string trieFolder, bool mem) {
+    TCompactArrayDisk* nodeArrayDisk = new TCompactArrayDisk();
+    TCompactArrayMem* nodeArrayMem = NULL;
+    TCompactArray* nodeArray = NULL;
     //cout<<"Trie folder:"<<trieFolder<<endl;
-    nodeArray->load(trieFolder); 
-    nodeArray->setCache(10000);
-    TLzTrieDisk* trie = new TLzTrieDisk(*nodeArray);
+    nodeArrayDisk->load(trieFolder); 
+    if (mem) {
+        CompactArrayBuilder<TSymbol, TIndex, TCompactArrayDisk> builder;
+        nodeArrayMem = builder.copyDiskArrayToMemArray(nodeArrayDisk);
+        delete nodeArrayDisk;
+        nodeArrayMem->setCache(10000);
+        nodeArray = nodeArrayMem;
+    }
+    else {
+        nodeArrayDisk->setCache(10000);
+        nodeArray = nodeArrayDisk;
+    }    
+    TLzTrie* trie = new TLzTrie(*nodeArray);
     return trie;
 }
 
@@ -41,7 +53,7 @@ TLzTrieDisk* loadTrie(string trieFolder) {
  * Return a list of words in the trie with query as prefix. 
  * Single word retrieval is a special case. Empty prefix lists all words.
  */
-vector<vector<TSymbol> >* queryTrie(TLzTrieDisk* trie, vector<TSymbol> query) {
+vector<vector<TSymbol> >* queryTrie(TLzTrie* trie, vector<TSymbol> query) {
     TSymbol* nativeQuery = symbolVec2array(query);
     WordList<TSymbol>* words = trie->getWordsByPrefix(nativeQuery);
     vector<vector<TSymbol> >* result = wordList2VecOfVec(words);
@@ -53,6 +65,6 @@ vector<vector<TSymbol> >* queryTrie(TLzTrieDisk* trie, vector<TSymbol> query) {
 /**
  * Deallocates all memory used by the trie structure.
  */
-void freeTrieMem(TLzTrieDisk* trie) {
+void freeTrieMem(TLzTrie* trie) {
     delete trie;
 }

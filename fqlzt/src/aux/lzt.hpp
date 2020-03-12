@@ -24,7 +24,7 @@ class Lzt {
          *  If trie exists, load the data structure into self
          *  Return true if loading is successful, else false.
          */
-        bool read(string triePath);
+        bool read(string triePath, bool inMem=false);
 
         /**
          * Query (loaded) trie by prefix, return a list of all words sharing the prefix.
@@ -33,7 +33,7 @@ class Lzt {
         vector<vector<TSymbol> > * getFastqRecords(vector<TSymbol> prefix);
 
     private:
-        TLzTrieDisk *trie = NULL;
+        TLzTrie *trie = NULL;
 };
 
 
