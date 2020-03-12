@@ -18,7 +18,8 @@
 
 use crate::Fdb;
 use std::io::{self, prelude::*, stdout, Write, Read, BufReader, BufWriter};
-use std::fs::File;
+use std::fs::{File,OpenOptions};
+use std::fs;
 
 impl Fdb{
 
@@ -49,6 +50,32 @@ impl Fdb{
             }
         };
         BufWriter::new(tmp)
+    }
+
+    pub fn make_append_writer (&mut self, file: &str)-> BufWriter<Box<dyn Write>> {
+
+        let tmp : Box<dyn Write> = match file {
+            "stdout" => {
+                Box::new(io::stdout())
+            },
+            _       => {
+                if fs::metadata(file).is_ok() == false {
+                    File::create(file).expect(&(format!("Error opening {} file",file)));
+                }
+                Box::new(OpenOptions::new().write(true).append(true).open(file).unwrap())
+            }
+        };
+        BufWriter::new(tmp)
+    }
+
+    pub fn rm_file (&mut self, file: &str)-> bool {
+
+        if fs::metadata(file).is_ok() == true {
+                fs::remove_file(file).unwrap();
+
+        }
+
+        true
     }
 
 }
