@@ -31,7 +31,7 @@ pub struct FFI {
 
 impl FFI {
 
-    pub fn new( path : &str, vec: &mut Vec<u8>, mem: usize) -> Self {
+    pub fn new( path : &str, vec: &mut Vec<u8>, mem: usize, mmode: bool) -> Self {
 
         let lpm = mem*100; // number of lines per MB
         let (mut l, mut s, mut j) = (0,0,0);
@@ -73,6 +73,7 @@ impl FFI {
                             open_lzt(
                                 pth.as_ptr(),
                                 pth.len() as libc::c_int,
+                                mmode
                             )
                         );
                     }
@@ -88,7 +89,7 @@ impl FFI {
     }
 
 
-    pub fn open( path: &str) -> Self {
+    pub fn open( path: &str, memmod: bool) -> Self {
 
         let mut lzt_vec : Vec<*mut LztObj> = Vec::new();
         let mut j=1;
@@ -99,6 +100,7 @@ impl FFI {
                 open_lzt(
                     pth.as_ptr(),
                     pth.len() as libc::c_int,
+                    memmod
                 )
             };
             lzt_vec.push(p);
