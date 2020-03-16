@@ -180,20 +180,131 @@ Prepare data:
 ```
 mkdir In
 mkdir Out
-perl -lnw '$x = 400; $in_1="./data/nova_R1.fq"; $in_2="./data/nova_R2.fq";for(1..5){ $x = $x*10; system("head -n $x $in_1 > In/$_\_$in_1; head -n $x $in_2 > In/$_\_$in_2;")}'
-perl -lnw '$x = 400; $in_1="./data/HiSeq_R1.fq"; $in_2="./data/HiSeq_R2.fq";for(1..5){ $x = $x*10; system("head -n $x $in_1 > In/$_\_$in_1; head -n $x $in_2 > In/$_\_$in_2;")}'
+
+perl -lne '$x = 400; $in_1="./data/nova_R1.fq"; $in_2="./data/nova_R2.fq";for(1..5){ $x = $x*10; system("head -n $x $in_1 > In/$_\_$in_1; head -n $x $in_2 > In/$_\_$in_2;")}'
+
+perl -lne '$x = 4000; $in_1="./data/L2_R1.fq"; $in_2="./data/L2_R2.fq";for(1..5){ $x = $x*10; system("head -n $x $in_1 > In/$_\_$in_1; head -n $x $in_2 > In/$_\_$in_2;")}'
+
+perl -lne '$x = 4000; $in_1="./data/H2_R1.fq"; $in_2="./data/H2_R2.fq";for(1..5){ $x = $x*10; system("head -n $x $in_1 > In/$_\_$in_1; head -n $x $in_2 > In/$_\_$in_2;")}'
 ```
+
 Benchmark:
 
+
 ```
-# [sfq] measuring runtime, memory and filesize
-./target/release/sfq -i ./In/1_nova_R1.fq -j ./In/1_nova_R2.fq -a c -t fastq -o Out/1_Nova -M 100000
-./target/release/sfq -i ./In/2_nova_R1.fq -j ./In/2_nova_R2.fq -a c -t fastq -o Out/2_Nova -M 100000
-./target/release/sfq -i ./In/3_nova_R1.fq -j ./In/3_nova_R2.fq -a c -t fastq -o Out/3_Nova -M 100000
-./target/release/sfq -i ./In/4_nova_R1.fq -j ./In/4_nova_R2.fq -a c -t fastq -o Out/4_Nova -M 100000
-./target/release/sfq -i ./In/5_nova_R1.fq -j ./In/5_nova_R2.fq -a c -t fastq -o Out/5_Nova -M 100000
-# [SPRING] measuring runtime, memory and filesize
-spring ....
+##  NovaSeq cov =
+#
+#  [SPRING] measuring runtime, memory and filesize
+#
+# Compressing
+#
+spring -c -i ./In/1_nova_R1.fq ./In/1_nova_R2.fq -o ./Out/1_nova.spring -t 1
+spring -c -i ./In/2_nova_R1.fq ./In/2_nova_R2.fq -o ./Out/2_nova.spring -t 1
+spring -c -i ./In/3_nova_R1.fq ./In/3_nova_R2.fq -o ./Out/3_nova.spring -t 1
+spring -c -i ./In/4_nova_R1.fq ./In/4_nova_R2.fq -o ./Out/4_nova.spring -t 1
+spring -c -i ./In/5_nova_R1.fq ./In/5_nova_R2.fq -o ./Out/5_nova.spring -t 1
+#
+# Decompressing
+#
+spring -d -i ./Out/1_nova.spring -o ./Out/1_nova.fastq
+spring -d -i ./Out/2_nova.spring -o ./Out/2_nova.fastq
+spring -d -i ./Out/3_nova.spring -o ./Out/3_nova.fastq
+spring -d -i ./Out/4_nova.spring -o ./Out/4_nova.fastq
+spring -d -i ./Out/5_nova.spring -o ./Out/5_nova.fastq
+#
+#  [sfq] measuring runtime, memory and filesize
+#
+# Compressing
+#
+sfq -i ./In/1_nova_R1.fq -j ./In/1_nova_R2.fq -a c -t fastq -o ./Out/1_nova.sfq
+sfq -i ./In/2_nova_R1.fq -j ./In/2_nova_R2.fq -a c -t fastq -o ./Out/2_nova.sfq
+sfq -i ./In/3_nova_R1.fq -j ./In/3_nova_R2.fq -a c -t fastq -o ./Out/3_nova.sfq
+sfq -i ./In/4_nova_R1.fq -j ./In/4_nova_R2.fq -a c -t fastq -o ./Out/4_nova.sfq
+sfq -i ./In/5_nova_R1.fq -j ./In/5_nova_R2.fq -a c -t fastq -o ./Out/5_nova.sfq
+#
+# Decompressing
+#
+sfq -i ./Out/1_nova.sfq -a d -t fastq -f fq -o ./Out/1_nova_R1R2.fq
+sfq -i ./Out/2_nova.sfq -a d -t fastq -f fq -o ./Out/2_nova_R1R2.fq
+sfq -i ./Out/3_nova.sfq -a d -t fastq -f fq -o ./Out/3_nova_R1R2.fq
+sfq -i ./Out/4_nova.sfq -a d -t fastq -f fq -o ./Out/4_nova_R1R2.fq
+sfq -i ./Out/5_nova.sfq -a d -t fastq -f fq -o ./Out/5_nova_R1R2.fq
+#
+##  NovaSeq cov =
+#
+#  [SPRING] measuring runtime, memory and filesize
+#
+# Compressing
+#
+spring -c -i ./In/1_L2_R1.fq ./In/1_L2_R2.fq -o ./Out/1_L2.spring -t 1
+spring -c -i ./In/2_L2_R1.fq ./In/2_L2_R2.fq -o ./Out/2_L2.spring -t 1
+spring -c -i ./In/3_L2_R1.fq ./In/3_L2_R2.fq -o ./Out/3_L2.spring -t 1
+spring -c -i ./In/4_L2_R1.fq ./In/4_L2_R2.fq -o ./Out/4_L2.spring -t 1
+spring -c -i ./In/5_L2_R1.fq ./In/5_L2_R2.fq -o ./Out/5_L2.spring -t 1
+#
+# Decompressing
+#
+spring -d -i ./Out/1_L2.spring -o ./Out/1_L2.fastq
+spring -d -i ./Out/2_L2.spring -o ./Out/2_L2.fastq
+spring -d -i ./Out/3_L2.spring -o ./Out/3_L2.fastq
+spring -d -i ./Out/4_L2.spring -o ./Out/4_L2.fastq
+spring -d -i ./Out/5_L2.spring -o ./Out/5_L2.fastq
+#
+#  [sfq] measuring runtime, memory and filesize
+#
+# Compressing
+#
+sfq -i ./In/1_L2_R1.fq -j ./In/1_L2_R2.fq -a c -t fastq -o ./Out/1_L2.sfq
+sfq -i ./In/2_L2_R1.fq -j ./In/2_L2_R2.fq -a c -t fastq -o ./Out/2_L2.sfq
+sfq -i ./In/3_L2_R1.fq -j ./In/3_L2_R2.fq -a c -t fastq -o ./Out/3_L2.sfq
+sfq -i ./In/4_L2_R1.fq -j ./In/4_L2_R2.fq -a c -t fastq -o ./Out/4_L2.sfq
+sfq -i ./In/5_L2_R1.fq -j ./In/5_L2_R2.fq -a c -t fastq -o ./Out/5_L2.sfq
+#
+# Decompressing
+#
+sfq -i ./Out/1_L2.sfq -a d -t fastq -f fq -o ./Out/1_L2_R1R2.fq
+sfq -i ./Out/2_L2.sfq -a d -t fastq -f fq -o ./Out/2_L2_R1R2.fq
+sfq -i ./Out/3_L2.sfq -a d -t fastq -f fq -o ./Out/3_L2_R1R2.fq
+sfq -i ./Out/4_L2.sfq -a d -t fastq -f fq -o ./Out/4_L2_R1R2.fq
+sfq -i ./Out/5_L2.sfq -a d -t fastq -f fq -o ./Out/5_L2_R1R2.fq
+#
+#  HiSeq 2500 cov =
+#
+#  [SPRING] measuring runtime, memory and filesize
+#
+# Compressing
+#
+spring -c -i ./In/1_H2_R1.fq ./In/1_H2_R2.fq -o ./Out/1_H2.spring -t 1
+spring -c -i ./In/2_H2_R1.fq ./In/2_H2_R2.fq -o ./Out/2_H2.spring -t 1
+spring -c -i ./In/3_H2_R1.fq ./In/3_H2_R2.fq -o ./Out/3_H2.spring -t 1
+spring -c -i ./In/4_H2_R1.fq ./In/4_H2_R2.fq -o ./Out/4_H2.spring -t 1
+spring -c -i ./In/5_H2_R1.fq ./In/5_H2_R2.fq -o ./Out/5_H2.spring -t 1
+#
+# Decompressing
+#
+spring -d -i ./Out/1_H2.spring -o ./Out/1_H2.fastq
+spring -d -i ./Out/2_H2.spring -o ./Out/2_H2.fastq
+spring -d -i ./Out/3_H2.spring -o ./Out/3_H2.fastq
+spring -d -i ./Out/4_H2.spring -o ./Out/4_H2.fastq
+spring -d -i ./Out/5_H2.spring -o ./Out/5_H2.fastq
+#
+#  [sfq] measuring runtime, memory and filesize
+#
+# Compressing
+#
+sfq -i ./In/1_H2_R1.fq -j ./In/1_H2_R2.fq -a c -t fastq -o ./Out/1_H2.sfq
+sfq -i ./In/2_H2_R1.fq -j ./In/2_H2_R2.fq -a c -t fastq -o ./Out/2_H2.sfq
+sfq -i ./In/3_H2_R1.fq -j ./In/3_H2_R2.fq -a c -t fastq -o ./Out/3_H2.sfq
+sfq -i ./In/4_H2_R1.fq -j ./In/4_H2_R2.fq -a c -t fastq -o ./Out/4_H2.sfq
+sfq -i ./In/5_H2_R1.fq -j ./In/5_H2_R2.fq -a c -t fastq -o ./Out/5_H2.sfq
+#
+# Decompressing
+#
+sfq -i ./Out/1_H2.sfq -a d -t fastq -f fq -o ./Out/1_H2_R1R2.fq
+sfq -i ./Out/2_H2.sfq -a d -t fastq -f fq -o ./Out/2_H2_R1R2.fq
+sfq -i ./Out/3_H2.sfq -a d -t fastq -f fq -o ./Out/3_H2_R1R2.fq
+sfq -i ./Out/4_H2.sfq -a d -t fastq -f fq -o ./Out/4_H2_R1R2.fq
+sfq -i ./Out/5_H2.sfq -a d -t fastq -f fq -o ./Out/5_H2_R1R2.fq
 ```
 
 
