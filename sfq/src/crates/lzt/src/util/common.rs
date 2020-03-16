@@ -7,7 +7,8 @@ use crate::ffi::LztObj;
 extern "C" {
     pub fn open_lzt(
         pth: *const libc::c_uchar,
-        len: libc::c_int
+        len: libc::c_int,
+        mmode: bool
     ) -> *mut LztObj;
 
     pub fn make_lzt(
