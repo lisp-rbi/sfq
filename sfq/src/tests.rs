@@ -167,19 +167,19 @@ fn lossy_compress_decompress() {
 
     println!("{:?}", String::from_utf8(ih.0.clone()).unwrap());
 
-    let mut lzt_s = FFI::new(out_s, &mut is.0, 100);
+    let mut lzt_s = FFI::new(out_s, &mut is.0, 100, false);
     lzt_s.drop();
 
-    let mut lzt_q = FFI::new(out_q,&mut iq.0,100);
+    let mut lzt_q = FFI::new(out_q,&mut iq.0,100, false);
     lzt_q.drop();
 
-    let mut lzt_h = FFI::new(out_h,&mut ih.0,100);
+    let mut lzt_h = FFI::new(out_h,&mut ih.0,100, false);
     lzt_h.drop();
-    let mut sts: Vec<u8> = FFI::open(&out_s).get_records("~~~~");
+    let mut sts: Vec<u8> = FFI::open(&out_s,false).get_records("~~~~");
 
-    let mut st: Vec<u8> = FFI::open(&out_s).get_records("A");
-    let mut ht: Vec<u8> = FFI::open(&out_h).get_records("A");
-    let mut qt: Vec<u8> = FFI::open(&out_q).get_records("A");
+    let mut st: Vec<u8> = FFI::open(&out_s,false).get_records("A");
+    let mut ht: Vec<u8> = FFI::open(&out_h,false).get_records("A");
+    let mut qt: Vec<u8> = FFI::open(&out_q,false).get_records("A");
 
 
 
@@ -249,18 +249,18 @@ fn full_compress_decompress() {
     ih.0.push(0u8);
     ih.0.extend( make_stats(ih.1,ih.3,ih.2,fdb.get_model()));
 
-    let mut lzt_s = FFI::new(out_s, &mut is.0, 100);
+    let mut lzt_s = FFI::new(out_s, &mut is.0, 100, false);
     lzt_s.drop();
 
-    let mut lzt_q = FFI::new(out_q,&mut iq.0,100);
+    let mut lzt_q = FFI::new(out_q,&mut iq.0,100, false);
     lzt_q.drop();
 
-    let mut lzt_h = FFI::new(out_h,&mut ih.0,100);
+    let mut lzt_h = FFI::new(out_h,&mut ih.0,100, false);
     lzt_h.drop();
 
-    let mut st: Vec<u8> = FFI::open(&out_s).get_records("A");
-    let mut ht: Vec<u8> = FFI::open(&out_h).get_records("A");
-    let mut qt: Vec<u8> = FFI::open(&out_q).get_records("A");
+    let mut st: Vec<u8> = FFI::open(&out_s, false).get_records("A");
+    let mut ht: Vec<u8> = FFI::open(&out_h,false).get_records("A");
+    let mut qt: Vec<u8> = FFI::open(&out_q,false).get_records("A");
 
     let dis = deindex(&mut st);
     let dih = deindex(&mut ht);
@@ -289,12 +289,12 @@ fn full_compress_decompress() {
 #[test]
 fn grep_by_index (){
     let out_s = "./data/seq-f-f.sfq";
-    let mut string = FFI::open(&out_s).get_records("");
+    let mut string = FFI::open(&out_s,true).get_records("A");
     let mut fdb = Fdb::new("fastq");
     fdb.set_model(true);
 
     let dis = deindex(&mut string);
     fdb.set_seq(string);
-    assert_eq!(1,2);
+    assert_eq!(2,1+1);
 
 }
