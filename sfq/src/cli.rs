@@ -112,7 +112,7 @@ pub(crate) fn parse_cli ()->  clap::ArgMatches<'static> {
           .arg(Arg::with_name("mem-mod")
                .short("m")
                .long("memory-mode")
-               .default_value("R")
+               .default_value("D")
                .required(true)
                .value_name("D|R")
                .help("Memory mode: defines memory type  (D - disc, R - RAM)")
