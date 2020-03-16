@@ -44,7 +44,17 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
         1000
     };
 
-eprintln!("MMMM{}", mymem);
+    let memmod : bool = if let Some(x) = cli.value_of("mem-mod") {
+        if x == "R" {
+            true
+        }else{
+            false
+        }
+    }else{
+        true
+    };
+
+
 
     if let Some(x) = cli.value_of("cmode") {
 
@@ -119,7 +129,8 @@ eprintln!("MMMM{}", mymem);
         let mut lzt = FFI::new(
             &out,
             &mut x.0,
-            mymem
+            mymem,
+            memmod
         );
         lzt.drop();
 

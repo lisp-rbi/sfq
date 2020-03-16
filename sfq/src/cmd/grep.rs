@@ -23,6 +23,16 @@ pub fn export (cli: ArgMatches<'static>) -> bool {
 
     let before = Instant::now();
 
+    let memmod : bool = if let Some(x) = cli.value_of("mem-mod") {
+        if x == "R" {
+            true
+        }else{
+            false
+        }
+    }else{
+        true
+    };
+
     let mut fdb = Fdb::new(cli.value_of("infmt").unwrap());
 
     if fdb.rm_file(cli.value_of("output").unwrap()) == false {
@@ -34,6 +44,7 @@ pub fn export (cli: ArgMatches<'static>) -> bool {
             match x {
                 "fasta" => {
                     //let mut seq_lzt = FFI::open(/*seq.sfq*/);
+                    panic!("Not working at the moment!");
 
                 },
                 "fastq" => {
@@ -48,9 +59,9 @@ pub fn export (cli: ArgMatches<'static>) -> bool {
                         qual = format!("{}.{}",x,"qual.sfq");
                     }
 
-                    let mut head_lzt = FFI::open(&head);
-                    let mut seq_lzt  = FFI::open(&seq);
-                    let mut qual_lzt = FFI::open(&qual);
+                    let mut head_lzt = FFI::open(&head,memmod);
+                    let mut seq_lzt  = FFI::open(&seq,memmod);
+                    let mut qual_lzt = FFI::open(&qual,memmod);
 
                     let ( mut count, mut alpha, mut wlen, mut model) = (0,Vec::new(),0, false);
 

@@ -25,6 +25,16 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
 
     let mut fdb = Fdb::new(cli.value_of("infmt").unwrap());
 
+    let memmod : bool = if let Some(x) = cli.value_of("mem-mod") {
+        if x == "R" {
+            true
+        }else{
+            false
+        }
+    }else{
+        true
+    };
+
     //let (wlen,alpha) = parse_codex(cli.value_of("codex").unwrap());
 
     if fdb.rm_file(cli.value_of("output").unwrap()) == false {
@@ -36,6 +46,8 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
         Some(x) => {
             match x {
                 "fasta" => {
+
+                    panic!("Not working at the moment!");
                     //let mut seq_lzt = FFI::open(/*seq.sfq*/);
                 },
                 "fastq" => {
@@ -51,9 +63,9 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
                     }
 
 
-                    let mut head_lzt = FFI::open(&head); //// escape header
-                    let mut seq_lzt  = FFI::open(&seq);
-                    let mut qual_lzt = FFI::open(&qual);
+                    let mut head_lzt = FFI::open(&head,memmod); //// escape header
+                    let mut seq_lzt  = FFI::open(&seq,memmod);
+                    let mut qual_lzt = FFI::open(&qual,memmod);
 
                     let ( mut count, mut alpha, mut wlen, mut model) = (0,Vec::new(),0, false);
 
