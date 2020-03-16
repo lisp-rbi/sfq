@@ -21,6 +21,9 @@
 #include "../../serialization_legacy/BitSequence.h"
 #include "../../serialization_legacy/serialization.h"
 #include "../../serialization_legacy/SerializationUtils.h"
+#include "../../serialization/BitSequenceArray.h"
+#include "../../serialization/DiskCharArray.h"
+#include "../../serialization/MemCharArray.h"
 #include "../../util/utils.h"
 
 using namespace std;
@@ -38,9 +41,15 @@ public:
     CompactArray<TSymbol, TIndex, TBitSequenceArray> *
     createCompactArray(WordList<TSymbol>* words, string dictLabel, bool enumerated=false);
 
+    CompactArray<TSymbol, TIndex, BitSequenceArray<MemCharArray> > *
+    copyDiskArrayToMemArray(CompactArray<TSymbol, TIndex, BitSequenceArray<DiskCharArray> >* diskArray);
+
 private:
 
     void copyFields(CompactArray<TSymbol, TIndex, TBitSequenceArray>& ca, CompactArrayL<TSymbol, TIndex>& cal);
+
+    template<typename TCa1, typename TCa2>
+    void copyFieldsGeneric(TCa1& ca, TCa2& cal);
 
     // slower version, using high-level interface for copying
     template<typename TBsa1, typename TBsa2>
@@ -49,6 +58,9 @@ private:
     template<typename TCharArray>
     void copyBitSeqArrayBuffer(BitSequenceArray<TCharArray>& target, BitSequenceArrayL& source);
 
+    template<typename TBSA1, typename TBSA2>
+    void copyBitSeqArrayBufferGeneric(TBSA1& target, TBSA2& source, bool copyChars);
+
     template<typename TBsa1, typename TBsa2>
     void copyBitSeqArrayInPlace(TBsa1& target, TBsa2& source, string folder);
 
@@ -56,6 +68,9 @@ private:
     //void copySymbolArray(TSa1& bsa1, TSa2& bsa2);
     void copySymbolArray(CompactSymbolArray<TSymbol, TBitSequenceArray> &sa1,
                          CompactSymbolArrayL<TSymbol> &sa2, bool fieldsOnly);
+
+    template<typename TSa1, typename TSa2>
+    void copySymbolArrayGeneric(TSa1& target, TSa2& source, bool copyChars);
 
 };
 
@@ -109,6 +124,19 @@ createCompactArray(WordList<TSymbol>* words, string dictLabel, bool enumerated) 
 }
 
 template <typename TSymbol, typename TIndex, typename TBitSequenceArray>
+CompactArray<TSymbol, TIndex, BitSequenceArray<MemCharArray> > *  CompactArrayBuilder<TSymbol, TIndex, TBitSequenceArray>::
+copyDiskArrayToMemArray(CompactArray<TSymbol, TIndex, BitSequenceArray<DiskCharArray> >* diskArray) {
+    CompactArray<TSymbol, TIndex, BitSequenceArray<MemCharArray> > *memArray =
+            new CompactArray<TSymbol, TIndex, BitSequenceArray<MemCharArray> >();
+    copyFieldsGeneric(*memArray, *diskArray);
+    copyBitSeqArrayBufferGeneric(memArray->array, diskArray->array, false);
+    copyBitSeqArrayBufferGeneric(memArray->siblings, diskArray->siblings, false);
+    copyBitSeqArrayBufferGeneric(memArray->numOfWords, diskArray->numOfWords, false);
+    copySymbolArrayGeneric(memArray->symbols, diskArray->symbols, false);
+    return memArray;
+}
+
+template <typename TSymbol, typename TIndex, typename TBitSequenceArray>
 void CompactArrayBuilder<TSymbol, TIndex, TBitSequenceArray>::
 copyFields(CompactArray<TSymbol, TIndex, TBitSequenceArray>& ca, CompactArrayL<TSymbol, TIndex>& cal) {
     ca.numOfDistinct = cal.numOfDistinct;
@@ -118,6 +146,42 @@ copyFields(CompactArray<TSymbol, TIndex, TBitSequenceArray>& ca, CompactArrayL<T
     assert(ca.NUM_OFFSETS == cal.NUM_OFFSETS);
     for (int i = 0; i < ca.NUM_OFFSETS; ++i)
         ca.flagOffsets[i] = cal.flagOffsets[i];
+}
+
+template <typename TSymbol, typename TIndex, typename TBitSequenceArray>
+template<typename TCa1, typename TCa2> void CompactArrayBuilder<TSymbol, TIndex, TBitSequenceArray>::
+copyFieldsGeneric(TCa1& targetCa, TCa2& sourceCa) {
+    targetCa.numOfDistinct = sourceCa.numOfDistinct;
+    targetCa.numOfNodes = sourceCa.numOfNodes;
+    targetCa.bitsPerIndex = sourceCa.bitsPerIndex;
+    targetCa.enumerated = sourceCa.enumerated;
+    assert(targetCa.NUM_OFFSETS == sourceCa.NUM_OFFSETS);
+    for (int i = 0; i < targetCa.NUM_OFFSETS; ++i)
+        targetCa.flagOffsets[i] = sourceCa.flagOffsets[i];
+}
+
+template <typename TSymbol, typename TIndex, typename TBitSequenceArray>
+template<typename TBSA1, typename TBSA2> void CompactArrayBuilder<TSymbol, TIndex, TBitSequenceArray>::
+copyBitSeqArrayBufferGeneric(TBSA1& target, TBSA2& source, bool copyChars) {
+    target.numOfBlocks = source.numOfBlocks;
+    target.numOfSequences = source.numOfSequences;
+    target.bitsPerSequence = source.bitsPerSequence;
+    target.charArray->setChars(source.charArray->getChars(), source.charArray->getNumChars(), copyChars);
+}
+
+template <typename TSymbol, typename TIndex, typename TBitSequenceArray>
+template<typename TSa1, typename TSa2> void CompactArrayBuilder<TSymbol, TIndex, TBitSequenceArray>::
+copySymbolArrayGeneric(TSa1& target, TSa2& source, bool copyChars) {
+    target.numOfSymbols = source.numOfSymbols;
+    target.numOfDistinct = source.numOfDistinct;
+    // copy symbol table
+    target.freeTable();
+    target.symbolTable = new TSymbol[target.numOfDistinct];
+    for (int i = 0; i < target.numOfDistinct; ++i)
+        target.symbolTable[i] = source.symbolTable[i];
+    // copy indexes
+    target.bitsPerIndex = source.bitsPerIndex;
+    copyBitSeqArrayBufferGeneric(target.indexes, source.indexes, copyChars);
 }
 
 template <typename TSymbol, typename TIndex, typename TBitSequenceArray>
@@ -141,7 +205,8 @@ copyBitSeqArrayBuffer(BitSequenceArray<TCharArray>& target, BitSequenceArrayL& s
     target.numOfBlocks = source.numOfBlocks;
     target.numOfSequences = source.numOfSequences;
     target.bitsPerSequence = source.bitsPerSequence;
-    target.setCharArrayChars(source.blocks, source.numOfBlocks);
+    //target.setCharArrayChars(source.blocks, source.numOfBlocks);
+    target.charArray->setChars(source.blocks, source.numOfBlocks, true);
 }
 
 template <typename TSymbol, typename TIndex, typename TBitSequenceArray>

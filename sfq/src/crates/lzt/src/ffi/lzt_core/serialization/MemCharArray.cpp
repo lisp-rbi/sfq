@@ -31,11 +31,17 @@ void MemCharArray::freeMemory() {
     }
 }
 
-bool MemCharArray::setChars(char const* chars, size_t N) {
+bool MemCharArray::setChars(char* chars, size_t N, bool copy) {    
     freeMemory();
-    if (!allocate(N)) return false;
-    for (size_t i = 0; i < N; ++i) blocks[i] = chars[i];
-    return true;
+    if (copy) {
+        if (!allocate(N)) return false;
+        for (size_t i = 0; i < N; ++i) blocks[i] = chars[i];
+        return true;
+    }
+    else {
+        numOfBlocks = N;
+        blocks = chars;
+    }
 }
 
 void MemCharArray::writeToStream(ostream& stream) {

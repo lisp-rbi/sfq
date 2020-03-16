@@ -19,7 +19,7 @@ private:
 
 public:
 
-    typedef typename TNodeArray::Node TNodeConst;
+    typedef typename TNodeArray::Node TNode;
 
     LzTrie(TNodeArray& nodes);
     virtual ~LzTrie();
@@ -85,8 +85,8 @@ private:
 
     void searchWord(TSymbol const * word);
     void depthFirstSearch(TIndex offset);
-    void beforeVisit(TNodeConst node);
-    void afterVisit(TNodeConst node);
+    void beforeVisit(TNode node);
+    void afterVisit(TNode node);
     void reverseStackChange(LzStackChange c);
 
     template<typename TIterator>
@@ -134,7 +134,7 @@ LzTrie<TNodeArray>::getWordsByPrefix(TSymbol const * word, long maxWords, bool d
 
         /* Check if there are any suffixes. After the trie search with the word,
          * stack will describe a position of the last symbol symbol matched. */
-        TNodeConst n = nodes[lzStack.top().pos];
+        TNode n = nodes[lzStack.top().pos];
         if (n.getCow() == false) {
             if (wordFound) {
                 // no continuation, word found -> result is only the word
@@ -182,7 +182,7 @@ void LzTrie<TNodeArray>::depthFirstSearch(TIndex offset) {
     if (diag) cout<<"DFS;";
     if (offset != 0) moveToNode(offset);
 
-    TNodeConst n = nodes[lzStack.top().pos];
+    TNode n = nodes[lzStack.top().pos];
     //cout<<n.getSymbol()<<endl;
     assert(n.isPointer() == false);
     beforeVisit(n);
@@ -203,7 +203,7 @@ void LzTrie<TNodeArray>::depthFirstSearch(TIndex offset) {
 }
 
 template <typename TNodeArray>
-inline void LzTrie<TNodeArray>::beforeVisit(TNodeConst node) {
+inline void LzTrie<TNodeArray>::beforeVisit(TNode node) {
     if (diag) cout<<"BV;";
     wordBuffer.push_back(node.getSymbol());
     if (node.getEow() == false) return;
@@ -221,7 +221,7 @@ inline void LzTrie<TNodeArray>::beforeVisit(TNodeConst node) {
 }
 
 template <typename TNodeArray>
-inline void LzTrie<TNodeArray>::afterVisit(TNodeConst node) {
+inline void LzTrie<TNodeArray>::afterVisit(TNode node) {
     if (diag) cout<<"AV;";
     wordBuffer.pop_back();
 }
@@ -242,7 +242,7 @@ inline void LzTrie<TNodeArray>::moveToNode(TIndex offset) {
 
     if (top.pos <= top.end) { // we're still in the same segment
         change.numRemoved = 0;
-        TNodeConst n = nodes[top.pos];
+        TNode n = nodes[top.pos];
         if (n.isPointer()) change.numAdded = followPointers();
         else change.numAdded = 0;
     }
@@ -250,7 +250,7 @@ inline void LzTrie<TNodeArray>::moveToNode(TIndex offset) {
         assert(top.pos == top.end + 1);
         change.numRemoved = removeUsedSegments();
         top = lzStack.top();
-        TNodeConst n = nodes[top.pos];
+        TNode n = nodes[top.pos];
         if (n.isPointer()) change.numAdded = followPointers();
         else change.numAdded = 0;
     }
@@ -306,7 +306,7 @@ inline int LzTrie<TNodeArray>::followPointers() {
     int pushed = 0;
     if (diag) cout<<"FLW;";
     while (true) {
-        TNodeConst n = nodes[lzStack.top().pos];
+        TNode n = nodes[lzStack.top().pos];
         if (n.isPointer() == false) break;
         ArraySegment s;
         // closed pointer
@@ -383,7 +383,7 @@ void LzTrie<TNodeArray>::searchWord(typename TNodeArray::Symbol const * word) {
     // traverse the trie until end of the word is reached
     while(*word != zeroSymbol<TSymbol>()) {
         t = lzStack.top();
-        TNodeConst n = nodes[t.pos];
+        TNode n = nodes[t.pos];
         assert(n.isPointer() == false);
 
         if (*word == n.getSymbol()) {
@@ -425,7 +425,7 @@ bool LzTrie<TNodeArray>::compressedContains(Titerator symbols) const {
 
     TIndex pos = stack[ssize-1].pos;
     while (*symbols != zeroSymbol<TSymbol>()) {
-        TNodeConst n = this->nodes[pos];
+        TNode n = this->nodes[pos];
         if (n.isPointer()) {
             // resize stack if needed
             if (ssize == scapacity) {

@@ -18,7 +18,7 @@ public:
     BitSequenceArrayL(size_t size, int bitsPerSequence);
     BitSequenceArrayL(const BitSequenceArrayL& orig);
     BitSequenceArrayL& operator=(const BitSequenceArrayL& rhs);
-    virtual ~BitSequenceArrayL();
+    virtual ~BitSequenceArrayL();   
 
     BitSequence operator[](size_t i) const;
     void changeFormat(size_t size, int bitsPerSequence);
@@ -95,3 +95,4 @@ private:
 };
 
 #endif	/* BITSEQUENCEARRAYLEGACY_H */
+

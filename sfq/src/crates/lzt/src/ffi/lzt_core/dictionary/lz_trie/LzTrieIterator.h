@@ -22,7 +22,7 @@ class LzTrieIterator {
 private:
     typedef typename TNodeArray::Symbol TSymbol;
     typedef typename TNodeArray::Index TIndex;
-    typedef typename TNodeArray::Node TNodeConst;
+    typedef typename TNodeArray::Node TNode;
 
 public:
     //TODO implement assignment operator
@@ -177,7 +177,7 @@ void LzTrieIterator<TNodeArray>::followPointers() {
 
     while (true) {
         // current node in the topmost segment
-        TNodeConst topNode = nodes[stack[stackSize-1].pos];
+        TNode topNode = nodes[stack[stackSize-1].pos];
         if (topNode.isPointer() == false) break;
         
         // increase stack capacity if needed

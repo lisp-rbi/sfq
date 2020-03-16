@@ -118,7 +118,7 @@ private:
 
 template <typename TNodeArray>
 Trie<TNodeArray>::Trie(TIndex capacity, bool enumerated) :
-nodes( *(new TNodeArray( (capacity)?(capacity):(0), enumerated)) ), nodesExported(false) {
+    nodes( *(new TNodeArray((capacity)?(capacity):(0), enumerated)) ), nodesExported(false) {
     //TODO init nodes-a
 }
 

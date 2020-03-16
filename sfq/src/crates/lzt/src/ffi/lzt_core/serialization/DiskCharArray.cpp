@@ -44,6 +44,7 @@ void DiskCharArray::writeCharacter(size_t i, char ch) {
 /** Close the file pointed to by this.fname */
 bool DiskCharArray::closeFile() {
     if (state == STATE_CLOSED or state == STATE_ERROR or state == STATE_PERSISTED) return false;
+    //if (state == STATE_CLOSED or state == STATE_ERROR) return false;
     bool res = fclose(file) == 0;
     if (iobuffer != NULL) {
         delete [] iobuffer;
@@ -52,6 +53,11 @@ bool DiskCharArray::closeFile() {
     if (DEBUG) cout<<"closeFile()"<<" fname="<<fname<<" res="<<res<<endl;
     if (res) state = STATE_CLOSED;
     else state = STATE_ERROR;
+//    if (res) {
+//        // TODO separate state_closed (file-level state) and persisted/loaded (object-level state)
+//        if (state != STATE_PERSISTED and state != STATE_LOADED)
+//            state = STATE_CLOSED;
+//    }
     return res;
 }
 
@@ -75,6 +81,12 @@ bool DiskCharArray::openFile() {
     } else iobuffer = NULL;
     if (DEBUG) cout<<"openFile()"<<" fname="<<fname<<" res="<<res<<endl;
     if (res) state = STATE_OPENED;
+//    if (res) {
+//        // TODO separate state_opened (file-level state) and persisted/loaded (object-level state)
+//        if (state != STATE_PERSISTED and state != STATE_LOADED)
+//            state = STATE_OPENED;
+//    }
+//    // TODO ? else state = STATE_ERROR;
     return res;
 }
 
@@ -109,7 +121,7 @@ bool DiskCharArray::deleteFile() {
     //cout<<"deleting file, file:"<<fname<<" state:"<<state<<endl;
     //cout<<this<<endl;
     if (state == STATE_PERSISTED || state == STATE_LOADED) {
-        // TODO this should not happen, raise an exception?
+        // TODO this should not happen? raise an exception?
         return false;
     }
     if (DEBUG) cout<<"deleteFile()"<<endl;
@@ -178,7 +190,9 @@ void DiskCharArray::freeMemory() {
     numOfBlocks = 0;
 }
 
-bool DiskCharArray::setChars(char const* chars, size_t N) {
+// copy argument is ignored (always copy, ie store to disk)
+// it is here for compatibility with the CharArray interface
+bool DiskCharArray::setChars(char const* chars, size_t N, bool copy) {
     if (DEBUG) cout<<"setChars()"<<endl;
     if (state == STATE_PERSISTED || state == STATE_LOADED) return false;
     if (!deleteFile()) return false;
@@ -189,6 +203,29 @@ bool DiskCharArray::setChars(char const* chars, size_t N) {
     if (!openFile()) return false;
     numOfBlocks = N;
     return true;
+}
+
+size_t DiskCharArray::getNumChars() {
+    return numOfBlocks;
+}
+
+char* DiskCharArray::getChars() {
+    return loadCharsToMem();
+}
+
+char* DiskCharArray::loadCharsToMem() {
+    //closeFile();
+    char* buff = new char[numOfBlocks];
+    fstream fstr(fname.c_str(), ios_base::in | ios_base::binary);
+    fstr.read(buff, numOfBlocks);
+    if (!fstr.good()) {
+        fstr.close();
+        delete [] buff;
+        return NULL;
+    }
+    fstr.close();
+    //openFile();
+    return buff;
 }
 
 bool DiskCharArray::persist(string f) {
@@ -291,8 +328,7 @@ void DiskCharArray::writeToStream(ostream& stream) {
     stream.write(buff, numOfBlocks);
     fstr.close();
     delete [] buff;
-    if (openFile()) state = STATE_OPENED;
-    else state = STATE_ERROR;
+    if (!openFile()) state = STATE_ERROR;
     if (DEBUG) cout<<"writeToStream ended"<<endl;
 }
 

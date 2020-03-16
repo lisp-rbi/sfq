@@ -20,7 +20,7 @@ WordList<TSymbol>* vecOfVec2WordList(vector<vector<TSymbol> >* words);
 vector<vector<TSymbol> >* wordList2VecOfVec(WordList<TSymbol>* words);
 
 
-template <typename TSymbol> struct FlatWordList {
+template <typename TSymbol> struct FlatWordList {   
     FlatWordList(TSymbol* w, long l): words(w), length(l) {}
     TSymbol *words;
     long length;
@@ -35,3 +35,4 @@ vector<vector<TSymbol> >* readWordsFromFileVecVec(string file);
 /**************************************************************/
 
 #endif /* LZT_UTILS_H */
+

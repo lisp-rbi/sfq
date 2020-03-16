@@ -13,7 +13,7 @@ class CmmExporter {
 private:
     typedef typename TNodeArray::Index TIndex;
     typedef typename TNodeArray::Symbol TSymbol;
-    typedef typename TNodeArray::Node TNodeConst;
+    typedef typename TNodeArray::Node TNode;
 
     typedef int TCmmOffset;
 
@@ -31,7 +31,7 @@ public:
 
 private:
     
-    static CmmNode nodeToCmm(TNodeConst n);
+    static CmmNode nodeToCmm(TNode n);
 
 };
 
@@ -48,7 +48,7 @@ void CmmExporter<TNodeArray>::writeToFile(TNodeArray& nodes, string fileName) {
 }
 
 template <typename TNodeArray> typename CmmExporter<TNodeArray>::CmmNode
-CmmExporter<TNodeArray>::nodeToCmm(typename CmmExporter<TNodeArray>::TNodeConst n) {
+CmmExporter<TNodeArray>::nodeToCmm(typename CmmExporter<TNodeArray>::TNode n) {
     CmmNode cn;
 
     if (n.isPointer()) {

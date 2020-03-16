@@ -5,6 +5,7 @@
 #include <cassert>
 #include <iostream>
 
+#include "ICompactArray.h"
 #include "CompactSymbolArray.h"
 #include "../../serialization/ISerializable.h"
 #include "../compact_array_legacy/utils.h"
@@ -18,7 +19,7 @@
  * sequence of indexes pointing to these nodes. Eow and Cow flags are not
  * stored, they are calculated from index position. */
 template <typename TSymbol, typename TIndex, typename TBitSequenceArray>
-class CompactArray : ISerializable {
+class CompactArray : public ISerializable, public ICompactArray<TSymbol, TIndex, CompactArrayNode<TSymbol, TIndex> > {
 
 public:
 

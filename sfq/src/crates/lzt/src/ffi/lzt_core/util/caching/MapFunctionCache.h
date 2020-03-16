@@ -11,31 +11,31 @@ using namespace std;
 
 template <typename TDomain, typename TCodomain>
 class MapFunctionCache : public IFunctionCache<TDomain, TCodomain> {
-public:
+public:    
     typedef TDomain TDom;
     typedef TCodomain TCod;
-
+    
     MapFunctionCache();
     MapFunctionCache(size_t size);
-
+    
     void add(TDomain k, TCodomain v);
     bool contains(TDomain k);
-    TCodomain fetch(TDomain k);
+    TCodomain fetch(TDomain k);    
     void setSize(size_t size);
     void clear();
-
+    
 private:
     // add key->value mapping to cache
     void addEntry(TDomain k, TCodomain v);
-    // remove key->value mapping from cache
+    // remove key->value mapping from cache 
     void popEntry();
 
-    map<TDomain, TCodomain> cacheMap;
+    map<TDomain, TCodomain> cacheMap;        
     list<TDomain> keyLifo;
     size_t maxSize, size;
-
+    
     static const size_t DEFAULT_SIZE = 10;
-
+    
 };
 
 template <typename TDomain, typename TCodomain>
@@ -55,28 +55,28 @@ bool MapFunctionCache<TDomain, TCodomain>::contains(TDomain k) {
 }
 
 template <typename TDomain, typename TCodomain>
-void MapFunctionCache<TDomain, TCodomain>::add(TDomain k, TCodomain v) {
+void MapFunctionCache<TDomain, TCodomain>::add(TDomain k, TCodomain v) {    
     if (contains(k)) {
         // TODO: ?check value before update
-        // TODO: re-prioritize element (cache refresh strategy)
-        cacheMap[k] = v;
+        // TODO: re-prioritize element (cache refresh strategy)       
+        cacheMap[k] = v; 
         return;
     }
-    if (size == maxSize) popEntry();
+    if (size == maxSize) popEntry();    
     addEntry(k, v);
 }
 
 template <typename TDomain, typename TCodomain>
 void MapFunctionCache<TDomain, TCodomain>::addEntry(TDomain k, TCodomain v) {
-    cacheMap[k] = v;
-    keyLifo.push_back(k);
+    cacheMap[k] = v;    
+    keyLifo.push_back(k);        
     size++;
 }
 
 template <typename TDomain, typename TCodomain>
 void MapFunctionCache<TDomain, TCodomain>::popEntry() {
-    TDomain rk = keyLifo.front();
-    keyLifo.pop_front();
+    TDomain rk = keyLifo.front(); 
+    keyLifo.pop_front();    
     cacheMap.erase(rk);
     size--;
 }
@@ -96,3 +96,4 @@ void MapFunctionCache<TDomain, TCodomain>::setSize(size_t size) {
 }
 
 #endif /* MAPFUNCTIONCACHE_H */
+

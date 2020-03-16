@@ -31,7 +31,7 @@ class LzTrieIterTester {
 private:
     typedef typename TNodeArray::Symbol TSymbol;
     typedef typename TNodeArray::Index TIndex;
-    typedef typename TNodeArray::NodeConst TNodeConst;
+    typedef typename TNodeArray::Node TNode;
 
     typedef LzTrieIterator<TNodeArray> TIter;
     // separator of array node string representations, when building string from array
@@ -45,13 +45,13 @@ private:
 
     void testDfs(string fname);
 
-    string nodeToString(TNodeConst node);
+    string nodeToString(TNode node);
 
     template <typename TIterator>
-    string getDfsString(const TNodeArray& array);
+    string getDfsString(TNodeArray& array);
 
     template <typename TIterator>
-    string dfs(TIterator node, const TNodeArray& array);
+    string dfs(TIterator node, TNodeArray& array);
 
 };
 
@@ -95,7 +95,7 @@ void LzTrieIterTester<TNodeArray>::testDfs(string fname) {
 /** Return string representation of an node that is equal for corresponding
  * nodes in lz-compressed and uncompressed arrays. */
 template <typename TNodeArray>
-string LzTrieIterTester<TNodeArray>::nodeToString(TNodeConst node) {
+string LzTrieIterTester<TNodeArray>::nodeToString(TNode node) {
     ostringstream ss;
     ss << node.getSymbol() << node.getEow() << node.getCow();
     return ss.str();
@@ -104,7 +104,7 @@ string LzTrieIterTester<TNodeArray>::nodeToString(TNodeConst node) {
 /** Create string representation of a trie that contains string representations
  * of nodes from dfs traversal that is done using node iterators. */
 template <typename TNodeArray> template <typename TIterator>
-string LzTrieIterTester<TNodeArray>::getDfsString(const TNodeArray& array) {
+string LzTrieIterTester<TNodeArray>::getDfsString(TNodeArray& array) {
     string result; result += separator;
     TIterator node = IterInit<TIterator, TNodeArray>::get(array);
     // do dfs on all first level nodes
@@ -119,7 +119,7 @@ string LzTrieIterTester<TNodeArray>::getDfsString(const TNodeArray& array) {
 
 /** Do dfs on a trie creating a string from traversed nodes. */
 template <typename TNodeArray> template <typename TIterator>
-string LzTrieIterTester<TNodeArray>::dfs(TIterator node, const TNodeArray& array) {
+string LzTrieIterTester<TNodeArray>::dfs(TIterator node, TNodeArray& array) {
     string result = nodeToString(array[node]) + separator;
     // visit children, if any
     if (array[node].getCow()) {

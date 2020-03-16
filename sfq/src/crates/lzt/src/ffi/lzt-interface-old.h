@@ -1,6 +1,6 @@
 
-#ifndef LZT_INTERFACE_H
-#define LZT_INTERFACE_H
+#ifndef LZT_INTERFACE_OLD_H
+#define LZT_INTERFACE_OLD_H
 
 #include <cstdlib>
 #include <cstddef>
@@ -10,7 +10,7 @@
 
 using namespace std;
 
-#include "lzt_core/util/WordFileReader.h" 
+#include "lzt_core/util/WordFileReader.h"
 #include "lzt_core/util/factory.h"
 #include "lzt_core/dictionary/util/WordList.h"
 #include "lzt_core/node_array/vector_array/VectorArray.h"
@@ -25,15 +25,16 @@ typedef unsigned char TSymbol;
 //typedef int TSymbol;
 
 typedef VectorArray<TSymbol, TIndex> TNodeArray; // used in compression
-typedef CompactArrayL<TSymbol, TIndex> TCompactArray; // final smaller representation
-typedef LzTrie<CompactArrayL<TSymbol, TIndex> > TLzTrie; // final compressed trie
+typedef CompactArrayL<TSymbol, TIndex> TCompactArrayL; // final smaller representation
+typedef LzTrie<CompactArrayL<TSymbol, TIndex> > TLzTrieL; // final compressed trie
 /**************************************************************/
 
 /**************** INTERFACE FUNCTIONS ****************/
 bool createLzTrie(TSymbol* words, long length, string fname, bool sortWords = false);
-TLzTrie* loadLzTrie(string trieFile);
-vector<vector<TSymbol> >* queryLzTrie(TLzTrie* trie, vector<TSymbol> query);
-void freeTrieMemory(TLzTrie* trie);
+TLzTrieL* loadLzTrie(string trieFile);
+vector<vector<TSymbol> >* queryLzTrie(TLzTrieL* trie, vector<TSymbol> query);
+void freeTrieMemory(TLzTrieL* trie);
 /**************************************************************/
 
-#endif /* LZT_INTERFACE_H */
+#endif /* LZT_INTERFACE_OLD_H */
+

@@ -33,6 +33,8 @@ public:
 //   /** Load array data from a file or folder. */
 //    virtual bool load(string f) = 0;
     
+// TODO add get/set chars methods to interface?
+    
     virtual ~ICharArray() {}; // just in case    
     
 };

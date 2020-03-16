@@ -2,21 +2,21 @@
 
 
 
-Lzt::Lzt(string Path){
+Lzt::Lzt(string Path, bool inMem){
   // FXME: overload -> makie and read constructor in one!!
-  read(Path);
+  read(Path, inMem);
 }
 
 Lzt::~Lzt(){
-    //if (trie != NULL) freeTrieMem(trie);
+   if (trie != NULL) freeTrieMem(trie);
 }
 
 bool Lzt::make(TSymbol* words, long length, string savePath, bool sortWords) {
     return createTrie(words, length, savePath, sortWords);
 }
 
-bool Lzt::read(string triePath) {
-    trie = loadTrie(triePath);
+bool Lzt::read(string triePath, bool inMem) {
+    trie = loadTrie(triePath, inMem);
     return trie != NULL;
 }
 
@@ -67,7 +67,7 @@ extern "C" {
       std::string inPath(reinterpret_cast<char*>(path),pln);
 
       //cout << inPath << end;
-      return new Lzt(inPath);
+      return new Lzt(inPath, false);
     }
 
 // ABI -> manually delete an lzt object -> destruct
