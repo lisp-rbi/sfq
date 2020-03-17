@@ -90,9 +90,9 @@ OPTIONS:
                                                	h  	      :head,
                                                	s+q   	  :sequence quality,
                                                	h+q   	  :head quality,
-                                               	h+s  	  :head sequence,
-                                               	h+s+q  	:head sequence quality,
-                                               	s+h+q  	:sequence head quality,
+                                               	h+s  	    :head sequence,
+                                               	h+s+q  	  :head sequence quality,
+                                               	s+h+q  	  :sequence head quality,
                                                	...
                                                 [default: fa]
     -o, --output <FILE>                        Output file: interleved if paired fastq, dict.lzt if compressed [default:
@@ -109,7 +109,7 @@ Example No.1 - Compress single stranded fastq file
 ./target/release/sfq -i ./data/fwd.fq -a c -t fastq -o FwdIdx
 ```
 
-Example No.2 - Compress pairend fastq file
+Example No.2 - Compress pair-end fastq file
 
 ```
 ./target/release/sfq -i ./data/fwd.fq -j ./data/rev.fq -a c -t fastq -o FwdRevIdx
@@ -121,7 +121,7 @@ Example No.3 - Decompress single stranded fastq files by printing full records
 ./target/release/sfq -i FwdIdx -a d -f fq -t fastq -o fw.fq
 ```
 
-Example No.4 - Decompress paird-end fastq files by printing full records
+Example No.4 - Decompress pair-end fastq files by printing full records
 
 ```
 ./target/release/sfq -i FwdRevIdx -a d -f fq -t fastq -o fw_rv.fq
@@ -133,7 +133,7 @@ Example No.5 - Decompress single stranded fastq files by printing fasta records
 ./target/release/sfq -i FwdIdx -a d -f fa -t fastq -o fw.fa
 ```
 
-Example No.6 - Decompress pairend fastq files by printing fasta records
+Example No.6 - Decompress pair-end fastq files by printing fasta records
 
 ```
 ./target/release/sfq -i FwdRevIdx -a d -f fa -t fastq -o fw-re.fa
@@ -145,7 +145,7 @@ Example No.7 - Decompress single stranded fastq files by printing tsv formatted:
 ./target/release/sfq -i FwdIdx -a d -f "h+s" -t fastq -o fw_hs.tsv
 ```
 
-Example No.8 - Decompress pairend fastq files by printing tsv formatted: quality \\tab head
+Example No.8 - Decompress pair-end fastq files by printing tsv formatted: quality \\tab head
 
 ```
 ./target/release/sfq -i FwdRevIdx -a d -f "q+h" -t fastq -o fw_qh.tsv
@@ -157,23 +157,49 @@ Example No.9 - Extract a particular set of records listed in list.file as sequen
 ./target/release/sfq -i FwdRevIdx -a g -f "s" -t fastq -o s.out -l list.file
 ```
 
-Example No.10 - Compress pairend fasta file by limiting memory to 8GB (experimental)
+Example No.10 - Compress pair-end fasta file by limiting memory to 8GB (experimental)
 
 ```
 ./target/release/sfq -i ./data.in/fa.fa -a c -t fasta -o fa.out -M 8000
 ```
 
+Example No.11 - Extract a random set of 4 records in sequence + head  format
+
+```
+./target/release/sfq -i ./FwdRevIdx -a g -t fastq -o fa.out -l "rand(4)" -f "s+h"
+```
+
+Example No.12 - Extract longest 2  records in sequence + head format
+
+```
+```
+
+Example No.13 - Extract shortest 6  records in sequence + quality format
+
+```
+```
 
 ## Benchmarks
 
 Tools:
-SPRING
+SPRING \n
 sfq
 
 Input files (./data/):
-nova_R1.fq (1.7GB)
-nova_R2.fq (1.7GB)
 
+nova.R1.fq (1.7GB)
+nova.R2.fq (1.7GB)
+cvrg = ~15x
+
+
+L2_R1.fq (14.1GB)
+L2_R2.fq (14.1GB)
+cvrg = ~117x
+
+
+nova.R1.fq (14.7GB)
+nova.R2.fq (14.7GB)
+cvrg = ~136x
 
 Prepare data:
 
@@ -181,18 +207,18 @@ Prepare data:
 mkdir In
 mkdir Out
 
-perl -lne '$x = 400; $in_1="./data/nova_R1.fq"; $in_2="./data/nova_R2.fq";for(1..5){ $x = $x*10; system("head -n $x $in_1 > In/$_\_$in_1; head -n $x $in_2 > In/$_\_$in_2;")}'
+perl -e '$x = 400; $in_1="./data/nova_R1.fq"; $in_2="./data/nova_R2.fq";for(1..5){ $x = $x*10; system("head -n $x $in_1 > In/$_\_$in_1; head -n $x $in_2 > In/$_\_$in_2;")}'
 
-perl -lne '$x = 4000; $in_1="./data/L2_R1.fq"; $in_2="./data/L2_R2.fq";for(1..5){ $x = $x*10; system("head -n $x $in_1 > In/$_\_$in_1; head -n $x $in_2 > In/$_\_$in_2;")}'
+perl -e '$x = 4000; $in_1="./data/L2_R1.fq"; $in_2="./data/L2_R2.fq";for(1..5){ $x = $x*10; system("head -n $x $in_1 > In/$_\_$in_1; head -n $x $in_2 > In/$_\_$in_2;")}'
 
-perl -lne '$x = 4000; $in_1="./data/H2_R1.fq"; $in_2="./data/H2_R2.fq";for(1..5){ $x = $x*10; system("head -n $x $in_1 > In/$_\_$in_1; head -n $x $in_2 > In/$_\_$in_2;")}'
+perl -e '$x = 4000; $in_1="./data/H2_R1.fq"; $in_2="./data/H2_R2.fq";for(1..5){ $x = $x*10; system("head -n $x $in_1 > In/$_\_$in_1; head -n $x $in_2 > In/$_\_$in_2;")}'
 ```
 
 Benchmark:
 
 
 ```
-##  NovaSeq cov =
+##  NovaSeq cov = 15x (12.71x per base)
 #
 #  [SPRING] measuring runtime, memory and filesize
 #
@@ -230,7 +256,7 @@ sfq -i ./Out/3_nova.sfq -a d -t fastq -f fq -o ./Out/3_nova_R1R2.fq
 sfq -i ./Out/4_nova.sfq -a d -t fastq -f fq -o ./Out/4_nova_R1R2.fq
 sfq -i ./Out/5_nova.sfq -a d -t fastq -f fq -o ./Out/5_nova_R1R2.fq
 #
-##  NovaSeq cov =
+##  NovaSeq cov = 116.65x (12.67x per base)
 #
 #  [SPRING] measuring runtime, memory and filesize
 #
@@ -268,7 +294,7 @@ sfq -i ./Out/3_L2.sfq -a d -t fastq -f fq -o ./Out/3_L2_R1R2.fq
 sfq -i ./Out/4_L2.sfq -a d -t fastq -f fq -o ./Out/4_L2_R1R2.fq
 sfq -i ./Out/5_L2.sfq -a d -t fastq -f fq -o ./Out/5_L2_R1R2.fq
 #
-#  HiSeq 2500 cov =
+#  HiSeq 2500 cov = 136.15x (variable string length)
 #
 #  [SPRING] measuring runtime, memory and filesize
 #
