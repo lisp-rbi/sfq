@@ -88,6 +88,14 @@ impl FFI {
         }
     }
 
+    
+    pub fn empty() -> Self {
+
+        FFI {
+            raw: Vec::new()
+        }
+    }
+
 
     pub fn open( path: &str, memmod: bool) -> Self {
 

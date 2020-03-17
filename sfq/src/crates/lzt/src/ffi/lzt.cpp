@@ -63,11 +63,11 @@ extern "C" {
 
 
 // ABI -> create an lzt object and keep it ...
-    Lzt* open_lzt( uchar* path, int pln){
+    Lzt* open_lzt( uchar* path, int pln, bool mmode){
       std::string inPath(reinterpret_cast<char*>(path),pln);
 
       //cout << inPath << end;
-      return new Lzt(inPath, false);
+      return new Lzt(inPath, mmode);
     }
 
 // ABI -> manually delete an lzt object -> destruct
