@@ -1,6 +1,8 @@
 use std::io::{self, prelude::*, stdout, Write, Read, BufReader, BufWriter};
 use std::fs::File;
-
+use regex::Regex;
+use rand::prelude::*;
+use fxhash::FxHashSet;
 
 pub fn make_key(pos: usize, alpha: usize, word: usize) -> String{
 
@@ -438,4 +440,33 @@ pub fn make_stats(num_of_rec: usize, alpha: String, padding: usize, model: bool)
 
 
 
+}
+
+pub fn parse_conditional(text: &str) -> (String,String){
+
+    let re = Regex::new(r"(\w+)\((.*?)\)").unwrap();
+    let cap = re.captures(text).unwrap();
+
+    (cap[1].to_string(),cap[2].to_string())
+
+}
+
+pub fn make_rand_uvec(num: usize, max: usize) -> Vec<usize>{
+
+
+    let mut  uvec = vec![0;num];
+    let mut fx : FxHashSet<usize> = FxHashSet::default();
+    let (mut rng, mut i) = (rand::thread_rng(), 0);
+
+    while i < num {
+        let r = rng.gen_range(1, max);
+        if fx.contains(&r) {
+            continue;
+        }
+        fx.insert(r);
+        i+=1;
+        uvec.push(r);
+    }
+
+    uvec
 }
