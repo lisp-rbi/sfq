@@ -45,19 +45,16 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
 
         Some(x) => {
             match x {
-                "fasta" => {
+                "fasta" | "fastq" => {
 
-                    panic!("Not working at the moment!");
-                    //let mut seq_lzt = FFI::open(/*seq.sfq*/);
-                },
-                "fastq" => {
+                    let q = if x == "fastq" {true} else{false};
 
-                    let mut head = String::new(); //// escape header
-                    let mut qual = String::new();
+                    let mut head = String::new();
                     let mut seq = String::new();
+                    let mut qual = String::new();
 
                     if let Some(x) = cli.value_of("input") {
-                        head = format!("{}.{}",x,"head.sfq");    //// escape header
+                        head = format!("{}.{}",x,"head.sfq");
                         seq  = format!("{}.{}",x,"seq.sfq");
                         qual = format!("{}.{}",x,"qual.sfq");
                     }
@@ -65,7 +62,7 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
 
                     let mut head_lzt = FFI::open(&head,memmod); //// escape header
                     let mut seq_lzt  = FFI::open(&seq,memmod);
-                    let mut qual_lzt = FFI::open(&qual,memmod);
+                    let mut qual_lzt = if q {FFI::open(&qual,memmod)}else{FFI::empty()};
 
                     let ( mut count, mut alpha, mut wlen, mut model) = (0,Vec::new(),0, false);
 
@@ -75,9 +72,8 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
 
                         let head_stats  = get_stats(&head_lzt.get_records("~~~~~X")); //// escape header
                         let seq_stats   = get_stats( &seq_lzt.get_records("~~~~~X"));
-                        let qaual_stats = get_stats(&qual_lzt.get_records("~~~~~X"));
 
-                        assert_eq!(seq_stats,qaual_stats);
+                        assert_eq!(seq_stats,head_stats);
 
                         count = seq_stats.0;
                         alpha = seq_stats.1;
@@ -116,19 +112,18 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
                             let dis = deindex(&mut head_out);
                             fdb.set_head(head_out);
                         }
-                        {
+                        if q {
                             let mut qual_out = qual_lzt.get_records(&enc);
                             let dis = deindex(&mut qual_out);
                             fdb.set_qual(qual_out);
-                        }
-                        //println!("Q{:?}", fdb.get_qual());
-                        if let Some(y) = cli.value_of("cmode") {
-                            if y == "lossy"{
-                                eprintln!("jsdjdfj");
-                                fdb.expand();
+
+                            if let Some(y) = cli.value_of("cmode") {
+                                if y == "lossy"{
+                                    fdb.expand();
+                                }
+                            }else{
+                                panic!("Decompression compromised!");
                             }
-                        }else{
-                            panic!("Decompression compromised!");
                         }
 
                         fdb.save_append(cli.value_of("output").unwrap(), cli.value_of("outfmt").unwrap());
@@ -139,11 +134,13 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
                     qual_lzt.drop();
                     seq_lzt.drop();
                 },
-                _=> {}
+                _=> {
+                    panic!("File format {} not recognized",x)
+                }
             }
         }
         None    => {
-            panic!("Type not set");
+            panic!("File format not set");
         }
     }
 

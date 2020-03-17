@@ -15,9 +15,8 @@ use lzt::{
     Drop
 };
 
-use std::str::FromStr;
 
-use std::io::{self, prelude::*, stdout, Write, Read, BufReader, BufWriter};
+use std::io::{prelude::*};
 
 pub fn export (cli: ArgMatches<'static>) -> bool {
 
@@ -42,12 +41,10 @@ pub fn export (cli: ArgMatches<'static>) -> bool {
     match cli.value_of("infmt") {
         Some(x) => {
             match x {
-                "fasta" => {
-                    //let mut seq_lzt = FFI::open(/*seq.sfq*/);
-                    panic!("Not working at the moment!");
 
-                },
-                "fastq" => {
+                "fastq" | "fasta" => {
+
+                    let q = if x == "fastq" {true} else{false};
 
                     let mut head = String::new();
                     let mut qual = String::new();
@@ -61,7 +58,7 @@ pub fn export (cli: ArgMatches<'static>) -> bool {
 
                     let mut head_lzt = FFI::open(&head,memmod);
                     let mut seq_lzt  = FFI::open(&seq,memmod);
-                    let mut qual_lzt = FFI::open(&qual,memmod);
+                    let mut qual_lzt = if q {FFI::open(&qual,memmod)}else{FFI::empty()};
 
                     let ( mut count, mut alpha, mut wlen, mut model) = (0,Vec::new(),0, false);
 
@@ -69,20 +66,18 @@ pub fn export (cli: ArgMatches<'static>) -> bool {
 
                         let head_stats  = get_stats(&head_lzt.get_records("~~~~~X"));
                         let seq_stats   = get_stats( &seq_lzt.get_records("~~~~~X"));
-                        let qaual_stats = get_stats(&qual_lzt.get_records("~~~~~X"));
 
-                        assert_eq!(seq_stats,qaual_stats);
                         assert_eq!(seq_stats,head_stats);
 
                         count = seq_stats.0;
                         alpha = seq_stats.1;
                         wlen  = seq_stats.2;
+
                         fdb.set_model(seq_stats.3);
 
                     }
 
-
-
+                    let mut grep : Vec <usize> = Vec::new();
 
                     if let Some(y) = cli.value_of("list") {
                         if fs::metadata(y).is_ok() == true{
@@ -92,48 +87,67 @@ pub fn export (cli: ArgMatches<'static>) -> bool {
                             for line in reader.lines() {
 
                                 let id = line.unwrap().parse::<usize>().unwrap();
+
                                 if id > count {
                                     continue;
                                 }
-
-                                let prefix = encode(id, wlen, &alpha);
-                                let enc = str::from_utf8(&prefix).unwrap();
-
-
-                                {
-                                    let mut seq_out = seq_lzt.get_records(&enc);
-                                    let dis = deindex(&mut seq_out);
-                                    fdb.set_seq(seq_out);
-                                    fdb.set_cpcnt(dis);
-                                }
-                                {
-                                    let mut head_out = head_lzt.get_records(&enc);
-                                    let dis = deindex(&mut head_out);
-                                    fdb.set_head(head_out);
-                                }
-                                {
-                                    let mut qual_out = qual_lzt.get_records(&enc);
-                                    let dis = deindex(&mut qual_out);
-                                    fdb.set_qual(qual_out);
-                                }
-
-                                if let Some(x) = cli.value_of("cmode") {
-
-                                    if x == "lossy"{
-                                        fdb.expand();
-                                    }
-                                }else{
-                                    panic!("Decompression compromised!");
-                                }
-
-                                fdb.save_append(cli.value_of("output").unwrap(),cli.value_of("outfmt").unwrap());
-
-                                fdb.clear();
+                                grep.push(id);
 
                             }
+                        }else{
+                            let (f, v) = parse_conditional(y);
+
+                            match &f[..] {
+                                "rand" => {
+                                    grep = make_rand_uvec(v.parse::<usize>().unwrap(), count);
+                                },
+                                _  => {
+                                    panic!("{}() : Not recognized!", f);
+                                }
+                            }
                         }
+
                     }else{
                         panic!("Record list not provided")
+                    }
+
+
+
+                    for id in grep.iter(){
+
+                        let prefix = encode(*id, wlen, &alpha);
+                        let enc = str::from_utf8(&prefix).unwrap();
+
+
+                        {
+                            let mut seq_out = seq_lzt.get_records(&enc);
+                            let dis = deindex(&mut seq_out);
+                            fdb.set_seq(seq_out);
+                            fdb.set_cpcnt(dis);
+                        }
+                        {
+                            let mut head_out = head_lzt.get_records(&enc);
+                            let dis = deindex(&mut head_out);
+                            fdb.set_head(head_out);
+                        }
+                        if q {
+                            let mut qual_out = qual_lzt.get_records(&enc);
+                            let dis = deindex(&mut qual_out);
+                            fdb.set_qual(qual_out);
+
+                            if let Some(x) = cli.value_of("cmode") {
+
+                                if x == "lossy"{
+                                    fdb.expand();
+                                }
+                            }else{
+                                panic!("Decompression compromised!");
+                            }
+                        }
+
+                        fdb.save_append(cli.value_of("output").unwrap(),cli.value_of("outfmt").unwrap());
+
+                        fdb.clear();
                     }
                     head_lzt.drop();
                     qual_lzt.drop();
@@ -141,11 +155,13 @@ pub fn export (cli: ArgMatches<'static>) -> bool {
 
 
                 },
-                _=> {}
+                _=> {
+                    panic!("File format {} not recognized",x)
+                }
             }
         }
         None    => {
-            panic!("Type not set");
+            panic!("File format not set");
         }
     }
 
