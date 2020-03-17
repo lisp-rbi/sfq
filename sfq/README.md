@@ -2,7 +2,17 @@
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)]( )
 
-Short description
+With the advent of next generation sequencing, challenges associate with storage, transmission, and analysis of the generated HTS data have became a major stepping stone, preventing the fast pace research within the field.  Terabytes of uncompressed data per individual per experiment have deprecated transmission protocols down to shipping WGS data via cheap HDD through regular mail. This holds even in cases when files are being compressed with state of the art compression algorithms.
+
+Though compressing the data alleviates storage associated difficulties and downscale the cost of transmission, it does nothing when it comes to analyses. Especially in situations when only a fraction of data is required for executing an analysis. In such cases, each compression strategy requires for an entire dataset to be, at least temporarily, extracted. This introduces two new challenges:
+
+  a) a lower limit on computational resources required when conducting a given analysis   
+  b) a breach of regulatory requirements as set by GDPR
+
+SFQ is a succinct data structure for fast(a/q) flat file formatted data sets. In size it rivals even the most advanced compression data models while at the same time supports random access to individual records. Random access is a main prerequisite for achieving strict GDPR compliance and thus SFQ presents the only tool on the market able to support GDPR complaint queries over personal gnomic information. Moreover, the same feature allows for downstream analysis to be executed without "a priori" data assembly as done by most of the compression solutions currently available.
+
+As such SFQ represents a novel solution and a leap in data storage, transmission and analysis, of HTS information.
+
 
 ## Installation protocol
 
@@ -349,3 +359,160 @@ InputSize X memory
 ### Disk usage
 
  InputSize X CompressedSize
+
+
+## CLI Testing
+
+testing was done utilizing all possible combination of options (limited in -f [i figured it it works for bordering cases it should work for all])
+
+
+
+```
+#Testing was done utilizing :
+perl sfq_bash_test.pl
+
+Testing: sfq -i  in_r1.fq -o  my_out.fa -a  c -M  1000 -t  fasta -m  D   
+Testing: sfq -i  in_r1.fq -o  my_out.fa -j  in_r2.fq -a  c -M  1000 -t  fasta -m  D   
+Testing: sfq -i  in_r1.fq -o  my_out.fa -a  c -M  1000 -t  fasta -m  R   
+Testing: sfq -i  in_r1.fq -o  my_out.fa -j  in_r2.fq -a  c -M  1000 -t  fasta -m  R   
+Testing: sfq -i  in_r1.fq -o  my_out.fq -a  c -M  1000 -t  fastq -m  D   
+Testing: sfq -i  in_r1.fq -o  my_out.fq -j  in_r2.fq -a  c -M  1000 -t  fastq -m  D   
+Testing: sfq -i  in_r1.fq -o  my_out.fq -a  c -M  1000 -t  fastq -m  R   
+Testing: sfq -i  in_r1.fq -o  my_out.fq -j  in_r2.fq -a  c -M  1000 -t  fastq -m  R   
+Testing: sfq -i  in_r1.fq -o  my_out.fa -a  c -M  10000 -t  fasta -m  D   
+Testing: sfq -i  in_r1.fq -o  my_out.fa -j  in_r2.fq -a  c -M  10000 -t  fasta -m  D   
+Testing: sfq -i  in_r1.fq -o  my_out.fa -a  c -M  10000 -t  fasta -m  R   
+Testing: sfq -i  in_r1.fq -o  my_out.fa -j  in_r2.fq -a  c -M  10000 -t  fasta -m  R   
+Testing: sfq -i  in_r1.fq -o  my_out.fq -a  c -M  10000 -t  fastq -m  D   
+Testing: sfq -i  in_r1.fq -o  my_out.fq -j  in_r2.fq -a  c -M  10000 -t  fastq -m  D   
+Testing: sfq -i  in_r1.fq -o  my_out.fq -a  c -M  10000 -t  fastq -m  R   
+Testing: sfq -i  in_r1.fq -o  my_out.fq -j  in_r2.fq -a  c -M  10000 -t  fastq -m  R   
+Testing: sfq -i  in_r1.fq -o  my_out.fa -a  c -M  Max -t  fasta -m  D   
+Testing: sfq -i  in_r1.fq -o  my_out.fa -j  in_r2.fq -a  c -M  Max -t  fasta -m  D   
+Testing: sfq -i  in_r1.fq -o  my_out.fa -a  c -M  Max -t  fasta -m  R   
+Testing: sfq -i  in_r1.fq -o  my_out.fa -j  in_r2.fq -a  c -M  Max -t  fasta -m  R   
+Testing: sfq -i  in_r1.fq -o  my_out.fq -a  c -M  Max -t  fastq -m  D   
+Testing: sfq -i  in_r1.fq -o  my_out.fq -j  in_r2.fq -a  c -M  Max -t  fastq -m  D   
+Testing: sfq -i  in_r1.fq -o  my_out.fq -a  c -M  Max -t  fastq -m  R   
+Testing: sfq -i  in_r1.fq -o  my_out.fq -j  in_r2.fq -a  c -M  Max -t  fastq -m  R   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  d -t  fasta -f  Fa -m  D   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  g -t  fasta -f  Fa -m  D -l  "rand(3)"   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  g -t  fasta -f  Fa -m  D -l  list.list   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  d -t  fasta -f  Fq -m  D   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  g -t  fasta -f  Fq -m  D -l  "rand(12)"   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  g -t  fasta -f  Fq -m  D -l  list.list   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  d -t  fasta -f  "h" -m  D   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  g -t  fasta -f  "h" -m  D -l  "rand(17)"   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  g -t  fasta -f  "h" -m  D -l  list.list   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  d -t  fasta -f  "s" -m  D   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  g -t  fasta -f  "s" -m  D -l  "rand(19)"   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  g -t  fasta -f  "s" -m  D -l  list.list   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  d -t  fasta -f  "q" -m  D   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  g -t  fasta -f  "q" -m  D -l  "rand(22)"   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  g -t  fasta -f  "q" -m  D -l  list.list   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  d -t  fasta -f  "h+s" -m  D   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  g -t  fasta -f  "h+s" -m  D -l  "rand(31)"   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  g -t  fasta -f  "h+s" -m  D -l  list.list   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  d -t  fasta -f  "s+h" -m  D   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  g -t  fasta -f  "s+h" -m  D -l  "rand(15)"   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  g -t  fasta -f  "s+h" -m  D -l  list.list   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  d -t  fasta -f  "h+s+q" -m  D   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  g -t  fasta -f  "h+s+q" -m  D -l  "rand(32)"   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  g -t  fasta -f  "h+s+q" -m  D -l  list.list   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  d -t  fasta -f  "q+s+h" -m  D   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  g -t  fasta -f  "q+s+h" -m  D -l  "rand(29)"   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  g -t  fasta -f  "q+s+h" -m  D -l  list.list   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  d -t  fasta -f  "s+s" -m  D   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  g -t  fasta -f  "s+s" -m  D -l  "rand(6)"   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  g -t  fasta -f  "s+s" -m  D -l  list.list   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  d -t  fastq -f  Fa -m  D   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  g -t  fastq -f  Fa -m  D -l  "rand(4)"   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  g -t  fastq -f  Fa -m  D -l  list.list   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  d -t  fastq -f  Fq -m  D   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  g -t  fastq -f  Fq -m  D -l  "rand(7)"   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  g -t  fastq -f  Fq -m  D -l  list.list   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  d -t  fastq -f  "h" -m  D   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  g -t  fastq -f  "h" -m  D -l  "rand(34)"   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  g -t  fastq -f  "h" -m  D -l  list.list   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  d -t  fastq -f  "s" -m  D   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  g -t  fastq -f  "s" -m  D -l  "rand(10)"   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  g -t  fastq -f  "s" -m  D -l  list.list   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  d -t  fastq -f  "q" -m  D   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  g -t  fastq -f  "q" -m  D -l  "rand(14)"   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  g -t  fastq -f  "q" -m  D -l  list.list   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  d -t  fastq -f  "h+s" -m  D   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  g -t  fastq -f  "h+s" -m  D -l  "rand(33)"   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  g -t  fastq -f  "h+s" -m  D -l  list.list   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  d -t  fastq -f  "s+h" -m  D   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  g -t  fastq -f  "s+h" -m  D -l  "rand(23)"   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  g -t  fastq -f  "s+h" -m  D -l  list.list   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  d -t  fastq -f  "h+s+q" -m  D   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  g -t  fastq -f  "h+s+q" -m  D -l  "rand(3)"   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  g -t  fastq -f  "h+s+q" -m  D -l  list.list   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  d -t  fastq -f  "q+s+h" -m  D   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  g -t  fastq -f  "q+s+h" -m  D -l  "rand(7)"   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  g -t  fastq -f  "q+s+h" -m  D -l  list.list   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  d -t  fastq -f  "s+s" -m  D   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  g -t  fastq -f  "s+s" -m  D -l  "rand(2)"   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  g -t  fastq -f  "s+s" -m  D -l  list.list   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  d -t  fasta -f  Fa -m  R   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  g -t  fasta -f  Fa -m  R -l  "rand(9)"   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  g -t  fasta -f  Fa -m  R -l  list.list   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  d -t  fasta -f  Fq -m  R   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  g -t  fasta -f  Fq -m  R -l  "rand(24)"   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  g -t  fasta -f  Fq -m  R -l  list.list   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  d -t  fasta -f  "h" -m  R   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  g -t  fasta -f  "h" -m  R -l  "rand(11)"   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  g -t  fasta -f  "h" -m  R -l  list.list   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  d -t  fasta -f  "s" -m  R   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  g -t  fasta -f  "s" -m  R -l  "rand(26)"   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  g -t  fasta -f  "s" -m  R -l  list.list   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  d -t  fasta -f  "q" -m  R   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  g -t  fasta -f  "q" -m  R -l  "rand(37)"   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  g -t  fasta -f  "q" -m  R -l  list.list   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  d -t  fasta -f  "h+s" -m  R   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  g -t  fasta -f  "h+s" -m  R -l  "rand(15)"   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  g -t  fasta -f  "h+s" -m  R -l  list.list   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  d -t  fasta -f  "s+h" -m  R   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  g -t  fasta -f  "s+h" -m  R -l  "rand(3)"   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  g -t  fasta -f  "s+h" -m  R -l  list.list   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  d -t  fasta -f  "h+s+q" -m  R   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  g -t  fasta -f  "h+s+q" -m  R -l  "rand(21)"   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  g -t  fasta -f  "h+s+q" -m  R -l  list.list   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  d -t  fasta -f  "q+s+h" -m  R   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  g -t  fasta -f  "q+s+h" -m  R -l  "rand(23)"   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  g -t  fasta -f  "q+s+h" -m  R -l  list.list   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  d -t  fasta -f  "s+s" -m  R   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  g -t  fasta -f  "s+s" -m  R -l  "rand(34)"   
+Testing: sfq -i  my_out.fa -o  my_out.fa -a  g -t  fasta -f  "s+s" -m  R -l  list.list   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  d -t  fastq -f  Fa -m  R   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  g -t  fastq -f  Fa -m  R -l  "rand(8)"   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  g -t  fastq -f  Fa -m  R -l  list.list   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  d -t  fastq -f  Fq -m  R   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  g -t  fastq -f  Fq -m  R -l  "rand(27)"   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  g -t  fastq -f  Fq -m  R -l  list.list   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  d -t  fastq -f  "h" -m  R   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  g -t  fastq -f  "h" -m  R -l  "rand(1)"   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  g -t  fastq -f  "h" -m  R -l  list.list   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  d -t  fastq -f  "s" -m  R   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  g -t  fastq -f  "s" -m  R -l  "rand(8)"   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  g -t  fastq -f  "s" -m  R -l  list.list   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  d -t  fastq -f  "q" -m  R   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  g -t  fastq -f  "q" -m  R -l  "rand(6)"   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  g -t  fastq -f  "q" -m  R -l  list.list   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  d -t  fastq -f  "h+s" -m  R   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  g -t  fastq -f  "h+s" -m  R -l  "rand(3)"   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  g -t  fastq -f  "h+s" -m  R -l  list.list   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  d -t  fastq -f  "s+h" -m  R   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  g -t  fastq -f  "s+h" -m  R -l  "rand(4)"   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  g -t  fastq -f  "s+h" -m  R -l  list.list   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  d -t  fastq -f  "h+s+q" -m  R   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  g -t  fastq -f  "h+s+q" -m  R -l  "rand(2)"   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  g -t  fastq -f  "h+s+q" -m  R -l  list.list   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  d -t  fastq -f  "q+s+h" -m  R   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  g -t  fastq -f  "q+s+h" -m  R -l  "rand(17)"   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  g -t  fastq -f  "q+s+h" -m  R -l  list.list   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  d -t  fastq -f  "s+s" -m  R   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  g -t  fastq -f  "s+s" -m  R -l  "rand(7)"   
+Testing: sfq -i  my_out.fq -o  my_out.fq -a  g -t  fastq -f  "s+s" -m  R -l  list.list   
+```
