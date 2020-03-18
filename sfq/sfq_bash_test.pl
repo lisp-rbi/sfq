@@ -33,11 +33,11 @@ my @options =(
 
 my @optionSet = (
 # -i
-[$fwd],
+["$fwd.fa","$fwd.fq"],
 # -o
 ["$out.fa","$out.fq"],
 # -j
-[$rev],
+["$rev.fa", "$rev.fq"],
 # -a
 ["c","d","g"],
 # -t
@@ -54,18 +54,18 @@ my @optionSet = (
 
 
 # FWD/REV Compress
-# -i -o [-j] -t [2] -a c -M [3]
+# -i [] -o [-j] -t [2] -a c -M [3]
 
-for (my $i = 0; $i < @{$optionSet[7]}; $i++ ){
-  for (my $j = 0; $j< @{$optionSet[4]}; $j++ ){
-    for (my $l = 0; $l < @{$optionSet[8]}; $l++){
-      my $exe_1 =  "$cmd $options[0][0] $optionSet[0][0] $options[1][0] $optionSet[1][$j] $options[3][0] $optionSet[3][0] $options[7][0] $optionSet[7][$i] $options[4][0] $optionSet[4][$j] $options[8][0] $optionSet[8][$l]";
-      my $exe_2  = "$cmd $options[0][0] $optionSet[0][0] $options[1][0] $optionSet[1][$j] $options[2][0] $optionSet[2][0] $options[3][0] $optionSet[3][0] $options[7][0] $optionSet[7][$i] $options[4][0] $optionSet[4][$j] $options[8][0] $optionSet[8][$l]";
-      &execute($exe_1,$print);
-      &execute($exe_2,$print);
+  for (my $i = 0; $i < @{$optionSet[7]}; $i++ ){
+    for (my $j = 0; $j< @{$optionSet[4]}; $j++ ){
+      for (my $l = 0; $l < @{$optionSet[8]}; $l++){
+        my $exe_1 =  "$cmd $options[0][0] $optionSet[0][$j] $options[1][0] $optionSet[1][$j] $options[3][0] $optionSet[3][0] $options[7][0] $optionSet[7][$i] $options[4][0] $optionSet[4][$j] $options[8][0] $optionSet[8][$l]";
+        my $exe_2  = "$cmd $options[0][0] $optionSet[0][$j] $options[1][0] $optionSet[1][$j] $options[2][0] $optionSet[2][$j] $options[3][0] $optionSet[3][0] $options[7][0] $optionSet[7][$i] $options[4][0] $optionSet[4][$j] $options[8][0] $optionSet[8][$l]";
+        &execute($exe_1,$print);
+        &execute($exe_2,$print);
+      }
     }
   }
-}
 
 # Decompress
 # -i -o -t [2] -a d  -f [11] -m [2]
@@ -75,10 +75,10 @@ for (my $i = 0; $i < @{$optionSet[7]}; $i++ ){
 for (my $i = 0; $i < @{$optionSet[8]}; $i++ ){
   for (my $j = 0; $j< @{$optionSet[4]}; $j++ ){
     for (my $l = 0; $l < @{$optionSet[5]}; $l++){
-      my $exe_1 =  "$cmd $options[0][0] $optionSet[1][$j] $options[1][0] $optionSet[1][$j] $options[3][0] $optionSet[3][1] $options[4][0] $optionSet[4][$j] $options[5][0] $optionSet[5][$l] $options[8][0] $optionSet[8][$i]";
+      my $exe_1 =  "$cmd $options[0][0] $optionSet[1][$j] $options[1][0] $optionSet[1][$j].interl $options[3][0] $optionSet[3][1] $options[4][0] $optionSet[4][$j] $options[5][0] $optionSet[5][$l] $options[8][0] $optionSet[8][$i]";
       &execute($exe_1,$print);
       for (my $k = 0; $k < @{$optionSet[8]}; $k++){
-        my $exe_2  = "$cmd $options[0][0] $optionSet[1][$j] $options[1][0] $optionSet[1][$j] $options[3][0] $optionSet[3][2] $options[4][0] $optionSet[4][$j] $options[5][0] $optionSet[5][$l] $options[8][0] $optionSet[8][$i] $options[6][0] $optionSet[6][$k]";
+        my $exe_2  = "$cmd $options[0][0] $optionSet[1][$j] $options[1][0] $optionSet[1][$j].interl $options[3][0] $optionSet[3][2] $options[4][0] $optionSet[4][$j] $options[5][0] $optionSet[5][$l] $options[8][0] $optionSet[8][$i] $options[6][0] $optionSet[6][$k]";
         &execute($exe_2, $print);
       }
     }
