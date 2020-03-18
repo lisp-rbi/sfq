@@ -48,6 +48,7 @@ pub trait Set {
     fn set_qual (&mut self, data: Vec<u8>)-> &mut Self ;
     fn set_cpcnt(&mut self, data: Vec<usize>) -> &mut Self ;
     fn set_model(&mut self, paired: bool) ->  &mut Self ;
+    fn set_numrec(&mut self, n: usize) ->  &mut Self ;
 
 }
 

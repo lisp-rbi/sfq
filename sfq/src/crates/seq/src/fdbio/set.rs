@@ -40,6 +40,11 @@ impl Set for Fdb {
         self
     }
 
+    fn set_numrec(&mut self,n:usize)-> &mut Self  {
+        self.numrec = n;
+        self
+    }
+
     fn set_model(&mut self, paired: bool ) -> &mut Self {
         self.paired = paired;
         self
