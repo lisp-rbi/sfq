@@ -298,3 +298,11 @@ fn grep_by_index (){
     assert_eq!(2,1+1);
 
 }
+
+
+#[test]
+fn random_queries (){
+
+    assert_eq!(2,1);
+
+}
