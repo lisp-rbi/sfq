@@ -371,148 +371,1067 @@ Testing was done by utilizing all possible combination of options (limited in -f
 #Testing was done utilizing :
 perl sfq_bash_test.pl
 
-Testing: sfq -i  in_r1.fq.fa -o  my_out.fa -a  c -M  1000 -t  fasta -m  D   
-Testing: sfq -i  in_r1.fq.fa -o  my_out.fa -j  in_r2.fq.fa -a  c -M  1000 -t  fasta -m  D   
-Testing: sfq -i  in_r1.fq.fa -o  my_out.fa -a  c -M  1000 -t  fasta -m  R   
-Testing: sfq -i  in_r1.fq.fa -o  my_out.fa -j  in_r2.fq.fa -a  c -M  1000 -t  fasta -m  R   
-Testing: sfq -i  in_r1.fq.fq -o  my_out.fq -a  c -M  1000 -t  fastq -m  D   
-Testing: sfq -i  in_r1.fq.fq -o  my_out.fq -j  in_r2.fq.fq -a  c -M  1000 -t  fastq -m  D   
-Testing: sfq -i  in_r1.fq.fq -o  my_out.fq -a  c -M  1000 -t  fastq -m  R   
-Testing: sfq -i  in_r1.fq.fq -o  my_out.fq -j  in_r2.fq.fq -a  c -M  1000 -t  fastq -m  R   
-Testing: sfq -i  in_r1.fq.fa -o  my_out.fa -a  c -M  10000 -t  fasta -m  D   
-Testing: sfq -i  in_r1.fq.fa -o  my_out.fa -j  in_r2.fq.fa -a  c -M  10000 -t  fasta -m  D   
-Testing: sfq -i  in_r1.fq.fa -o  my_out.fa -a  c -M  10000 -t  fasta -m  R   
-Testing: sfq -i  in_r1.fq.fa -o  my_out.fa -j  in_r2.fq.fa -a  c -M  10000 -t  fasta -m  R   
-Testing: sfq -i  in_r1.fq.fq -o  my_out.fq -a  c -M  10000 -t  fastq -m  D   
-Testing: sfq -i  in_r1.fq.fq -o  my_out.fq -j  in_r2.fq.fq -a  c -M  10000 -t  fastq -m  D   
-Testing: sfq -i  in_r1.fq.fq -o  my_out.fq -a  c -M  10000 -t  fastq -m  R   
-Testing: sfq -i  in_r1.fq.fq -o  my_out.fq -j  in_r2.fq.fq -a  c -M  10000 -t  fastq -m  R   
-Testing: sfq -i  in_r1.fq.fa -o  my_out.fa -a  c -M  Max -t  fasta -m  D   
-Testing: sfq -i  in_r1.fq.fa -o  my_out.fa -j  in_r2.fq.fa -a  c -M  Max -t  fasta -m  D   
-Testing: sfq -i  in_r1.fq.fa -o  my_out.fa -a  c -M  Max -t  fasta -m  R   
-Testing: sfq -i  in_r1.fq.fa -o  my_out.fa -j  in_r2.fq.fa -a  c -M  Max -t  fasta -m  R   
-Testing: sfq -i  in_r1.fq.fq -o  my_out.fq -a  c -M  Max -t  fastq -m  D   
-Testing: sfq -i  in_r1.fq.fq -o  my_out.fq -j  in_r2.fq.fq -a  c -M  Max -t  fastq -m  D   
-Testing: sfq -i  in_r1.fq.fq -o  my_out.fq -a  c -M  Max -t  fastq -m  R   
-Testing: sfq -i  in_r1.fq.fq -o  my_out.fq -j  in_r2.fq.fq -a  c -M  Max -t  fastq -m  R   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  d -t  fasta -f  Fa -m  D   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  Fa -m  D -l  "rand(7)"   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  Fa -m  D -l  list.list   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  d -t  fasta -f  Fq -m  D   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  Fq -m  D -l  "rand(7)"   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  Fq -m  D -l  list.list   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  d -t  fasta -f  "h" -m  D   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "h" -m  D -l  "rand(7)"   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "h" -m  D -l  list.list   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  d -t  fasta -f  "s" -m  D   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "s" -m  D -l  "rand(7)"   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "s" -m  D -l  list.list   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  d -t  fasta -f  "q" -m  D   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "q" -m  D -l  "rand(7)"   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "q" -m  D -l  list.list   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  d -t  fasta -f  "h+s" -m  D   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "h+s" -m  D -l  "rand(7)"   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "h+s" -m  D -l  list.list   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  d -t  fasta -f  "s+h" -m  D   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "s+h" -m  D -l  "rand(7)"   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "s+h" -m  D -l  list.list   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  d -t  fasta -f  "h+s+q" -m  D   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "h+s+q" -m  D -l  "rand(7)"   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "h+s+q" -m  D -l  list.list   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  d -t  fasta -f  "q+s+h" -m  D   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "q+s+h" -m  D -l  "rand(7)"   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "q+s+h" -m  D -l  list.list   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  d -t  fasta -f  "s+s" -m  D   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "s+s" -m  D -l  "rand(7)"   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "s+s" -m  D -l  list.list   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  d -t  fastq -f  Fa -m  D   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  Fa -m  D -l  "rand(7)"   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  Fa -m  D -l  list.list   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  d -t  fastq -f  Fq -m  D   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  Fq -m  D -l  "rand(7)"   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  Fq -m  D -l  list.list   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  d -t  fastq -f  "h" -m  D   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "h" -m  D -l  "rand(7)"   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "h" -m  D -l  list.list   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  d -t  fastq -f  "s" -m  D   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "s" -m  D -l  "rand(7)"   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "s" -m  D -l  list.list   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  d -t  fastq -f  "q" -m  D   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "q" -m  D -l  "rand(7)"   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "q" -m  D -l  list.list   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  d -t  fastq -f  "h+s" -m  D   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "h+s" -m  D -l  "rand(7)"   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "h+s" -m  D -l  list.list   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  d -t  fastq -f  "s+h" -m  D   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "s+h" -m  D -l  "rand(7)"   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "s+h" -m  D -l  list.list   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  d -t  fastq -f  "h+s+q" -m  D   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "h+s+q" -m  D -l  "rand(7)"   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "h+s+q" -m  D -l  list.list   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  d -t  fastq -f  "q+s+h" -m  D   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "q+s+h" -m  D -l  "rand(7)"   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "q+s+h" -m  D -l  list.list   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  d -t  fastq -f  "s+s" -m  D   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "s+s" -m  D -l  "rand(7)"   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "s+s" -m  D -l  list.list   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  d -t  fasta -f  Fa -m  R   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  Fa -m  R -l  "rand(7)"   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  Fa -m  R -l  list.list   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  d -t  fasta -f  Fq -m  R   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  Fq -m  R -l  "rand(7)"   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  Fq -m  R -l  list.list   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  d -t  fasta -f  "h" -m  R   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "h" -m  R -l  "rand(7)"   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "h" -m  R -l  list.list   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  d -t  fasta -f  "s" -m  R   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "s" -m  R -l  "rand(7)"   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "s" -m  R -l  list.list   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  d -t  fasta -f  "q" -m  R   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "q" -m  R -l  "rand(7)"   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "q" -m  R -l  list.list   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  d -t  fasta -f  "h+s" -m  R   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "h+s" -m  R -l  "rand(7)"   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "h+s" -m  R -l  list.list   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  d -t  fasta -f  "s+h" -m  R   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "s+h" -m  R -l  "rand(7)"   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "s+h" -m  R -l  list.list   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  d -t  fasta -f  "h+s+q" -m  R   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "h+s+q" -m  R -l  "rand(7)"   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "h+s+q" -m  R -l  list.list   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  d -t  fasta -f  "q+s+h" -m  R   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "q+s+h" -m  R -l  "rand(7)"   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "q+s+h" -m  R -l  list.list   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  d -t  fasta -f  "s+s" -m  R   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "s+s" -m  R -l  "rand(7)"   
-Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "s+s" -m  R -l  list.list   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  d -t  fastq -f  Fa -m  R   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  Fa -m  R -l  "rand(7)"   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  Fa -m  R -l  list.list   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  d -t  fastq -f  Fq -m  R   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  Fq -m  R -l  "rand(7)"   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  Fq -m  R -l  list.list   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  d -t  fastq -f  "h" -m  R   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "h" -m  R -l  "rand(7)"   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "h" -m  R -l  list.list   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  d -t  fastq -f  "s" -m  R   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "s" -m  R -l  "rand(7)"   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "s" -m  R -l  list.list   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  d -t  fastq -f  "q" -m  R   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "q" -m  R -l  "rand(7)"   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "q" -m  R -l  list.list   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  d -t  fastq -f  "h+s" -m  R   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "h+s" -m  R -l  "rand(7)"   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "h+s" -m  R -l  list.list   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  d -t  fastq -f  "s+h" -m  R   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "s+h" -m  R -l  "rand(7)"   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "s+h" -m  R -l  list.list   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  d -t  fastq -f  "h+s+q" -m  R   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "h+s+q" -m  R -l  "rand(7)"   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "h+s+q" -m  R -l  list.list   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  d -t  fastq -f  "q+s+h" -m  R   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "q+s+h" -m  R -l  "rand(7)"   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "q+s+h" -m  R -l  list.list   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  d -t  fastq -f  "s+s" -m  R   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "s+s" -m  R -l  "rand(7)"   
-Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "s+s" -m  R -l  list.list   
+Testing: sfq -i  In/n.R1.fa -o  my_out.fa -a  c -M  1000 -t  fasta -m  D -s  complete  ... FAILED!!
+ Error:
+
+ Reading data ... thread 'main' panicked at 'sort_by() only works when fastq file is loaded properly!', src/crates/seq/src/core/sort.rs:14:17
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  In/n.R1.fa -o  my_out.fa -j  In/n.R2.fa -a  c -M  1000 -t  fasta -m  D -s  complete  ... FAILED!!
+ Error:
+
+ Reading data ... thread 'main' panicked at 'sort_by() only works when fastq file is loaded properly!', src/crates/seq/src/core/sort.rs:14:17
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  In/n.R1.fa -o  my_out.fa -a  c -M  1000 -t  fasta -m  R -s  complete  ... FAILED!!
+ Error:
+
+ Reading data ... thread 'main' panicked at 'sort_by() only works when fastq file is loaded properly!', src/crates/seq/src/core/sort.rs:14:17
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  In/n.R1.fa -o  my_out.fa -j  In/n.R2.fa -a  c -M  1000 -t  fasta -m  R -s  complete  ... FAILED!!
+ Error:
+
+ Reading data ... thread 'main' panicked at 'sort_by() only works when fastq file is loaded properly!', src/crates/seq/src/core/sort.rs:14:17
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  In/n.R1.fq -o  my_out.fq -a  c -M  1000 -t  fastq -m  D -s  complete  ... ok!
+Testing: sfq -i  In/n.R1.fq -o  my_out.fq -j  In/n.R2.fq -a  c -M  1000 -t  fastq -m  D -s  complete  ... ok!
+Testing: sfq -i  In/n.R1.fq -o  my_out.fq -a  c -M  1000 -t  fastq -m  R -s  complete  ... ok!
+Testing: sfq -i  In/n.R1.fq -o  my_out.fq -j  In/n.R2.fq -a  c -M  1000 -t  fastq -m  R -s  complete  ... ok!
+Testing: sfq -i  In/n.R1.fa -o  my_out.fa -a  c -M  10000 -t  fasta -m  D -s  complete  ... FAILED!!
+ Error:
+
+ Reading data ... thread 'main' panicked at 'sort_by() only works when fastq file is loaded properly!', src/crates/seq/src/core/sort.rs:14:17
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  In/n.R1.fa -o  my_out.fa -j  In/n.R2.fa -a  c -M  10000 -t  fasta -m  D -s  complete  ... FAILED!!
+ Error:
+
+ Reading data ... thread 'main' panicked at 'sort_by() only works when fastq file is loaded properly!', src/crates/seq/src/core/sort.rs:14:17
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  In/n.R1.fa -o  my_out.fa -a  c -M  10000 -t  fasta -m  R -s  complete  ... FAILED!!
+ Error:
+
+ Reading data ... thread 'main' panicked at 'sort_by() only works when fastq file is loaded properly!', src/crates/seq/src/core/sort.rs:14:17
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  In/n.R1.fa -o  my_out.fa -j  In/n.R2.fa -a  c -M  10000 -t  fasta -m  R -s  complete  ... FAILED!!
+ Error:
+
+ Reading data ... thread 'main' panicked at 'sort_by() only works when fastq file is loaded properly!', src/crates/seq/src/core/sort.rs:14:17
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  In/n.R1.fq -o  my_out.fq -a  c -M  10000 -t  fastq -m  D -s  complete  ... ok!
+Testing: sfq -i  In/n.R1.fq -o  my_out.fq -j  In/n.R2.fq -a  c -M  10000 -t  fastq -m  D -s  complete  ... ok!
+Testing: sfq -i  In/n.R1.fq -o  my_out.fq -a  c -M  10000 -t  fastq -m  R -s  complete  ... ok!
+Testing: sfq -i  In/n.R1.fq -o  my_out.fq -j  In/n.R2.fq -a  c -M  10000 -t  fastq -m  R -s  complete  ... ok!
+Testing: sfq -i  In/n.R1.fa -o  my_out.fa -a  c -M  Max -t  fasta -m  D -s  complete  ... FAILED!!
+ Error:
+
+ Reading data ... thread 'main' panicked at 'sort_by() only works when fastq file is loaded properly!', src/crates/seq/src/core/sort.rs:14:17
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  In/n.R1.fa -o  my_out.fa -j  In/n.R2.fa -a  c -M  Max -t  fasta -m  D -s  complete  ... FAILED!!
+ Error:
+
+ Reading data ... thread 'main' panicked at 'sort_by() only works when fastq file is loaded properly!', src/crates/seq/src/core/sort.rs:14:17
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  In/n.R1.fa -o  my_out.fa -a  c -M  Max -t  fasta -m  R -s  complete  ... FAILED!!
+ Error:
+
+ Reading data ... thread 'main' panicked at 'sort_by() only works when fastq file is loaded properly!', src/crates/seq/src/core/sort.rs:14:17
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  In/n.R1.fa -o  my_out.fa -j  In/n.R2.fa -a  c -M  Max -t  fasta -m  R -s  complete  ... FAILED!!
+ Error:
+
+ Reading data ... thread 'main' panicked at 'sort_by() only works when fastq file is loaded properly!', src/crates/seq/src/core/sort.rs:14:17
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  In/n.R1.fq -o  my_out.fq -a  c -M  Max -t  fastq -m  D -s  complete  ... ok!
+Testing: sfq -i  In/n.R1.fq -o  my_out.fq -j  In/n.R2.fq -a  c -M  Max -t  fastq -m  D -s  complete  ... ok!
+Testing: sfq -i  In/n.R1.fq -o  my_out.fq -a  c -M  Max -t  fastq -m  R -s  complete  ... ok!
+Testing: sfq -i  In/n.R1.fq -o  my_out.fq -j  In/n.R2.fq -a  c -M  Max -t  fastq -m  R -s  complete  ... ok!
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  d -t  fasta -f  "fa" -m  D -s  complete  ... FAILED!!
+ Error:
+
+ Decompressing...thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "fa" -m  D -l  "rand(7)" -s  complete  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "fa" -m  D -l  list.list -s  complete  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  d -t  fasta -f  "fq" -m  D -s  complete  ... FAILED!!
+ Error:
+
+ Decompressing...thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "fq" -m  D -l  "rand(7)" -s  complete  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "fq" -m  D -l  list.list -s  complete  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  d -t  fasta -f  "h" -m  D -s  complete  ... FAILED!!
+ Error:
+
+ Decompressing...thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "h" -m  D -l  "rand(7)" -s  complete  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "h" -m  D -l  list.list -s  complete  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  d -t  fasta -f  "s" -m  D -s  complete  ... FAILED!!
+ Error:
+
+ Decompressing...thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "s" -m  D -l  "rand(7)" -s  complete  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "s" -m  D -l  list.list -s  complete  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  d -t  fasta -f  "q" -m  D -s  complete  ... FAILED!!
+ Error:
+
+ Decompressing...thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "q" -m  D -l  "rand(7)" -s  complete  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "q" -m  D -l  list.list -s  complete  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  d -t  fasta -f  "h+s" -m  D -s  complete  ... FAILED!!
+ Error:
+
+ Decompressing...thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "h+s" -m  D -l  "rand(7)" -s  complete  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "h+s" -m  D -l  list.list -s  complete  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  d -t  fasta -f  "s+h" -m  D -s  complete  ... FAILED!!
+ Error:
+
+ Decompressing...thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "s+h" -m  D -l  "rand(7)" -s  complete  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "s+h" -m  D -l  list.list -s  complete  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  d -t  fasta -f  "h+s+q" -m  D -s  complete  ... FAILED!!
+ Error:
+
+ Decompressing...thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "h+s+q" -m  D -l  "rand(7)" -s  complete  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "h+s+q" -m  D -l  list.list -s  complete  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  d -t  fasta -f  "q+s+h" -m  D -s  complete  ... FAILED!!
+ Error:
+
+ Decompressing...thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "q+s+h" -m  D -l  "rand(7)" -s  complete  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "q+s+h" -m  D -l  list.list -s  complete  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  d -t  fasta -f  "s+s" -m  D -s  complete  ... FAILED!!
+ Error:
+
+ Decompressing...thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "s+s" -m  D -l  "rand(7)" -s  complete  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "s+s" -m  D -l  list.list -s  complete  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  d -t  fastq -f  "fa" -m  D -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "fa" -m  D -l  "rand(7)" -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "fa" -m  D -l  list.list -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  d -t  fastq -f  "fq" -m  D -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "fq" -m  D -l  "rand(7)" -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "fq" -m  D -l  list.list -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  d -t  fastq -f  "h" -m  D -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "h" -m  D -l  "rand(7)" -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "h" -m  D -l  list.list -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  d -t  fastq -f  "s" -m  D -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "s" -m  D -l  "rand(7)" -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "s" -m  D -l  list.list -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  d -t  fastq -f  "q" -m  D -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "q" -m  D -l  "rand(7)" -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "q" -m  D -l  list.list -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  d -t  fastq -f  "h+s" -m  D -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "h+s" -m  D -l  "rand(7)" -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "h+s" -m  D -l  list.list -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  d -t  fastq -f  "s+h" -m  D -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "s+h" -m  D -l  "rand(7)" -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "s+h" -m  D -l  list.list -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  d -t  fastq -f  "h+s+q" -m  D -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "h+s+q" -m  D -l  "rand(7)" -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "h+s+q" -m  D -l  list.list -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  d -t  fastq -f  "q+s+h" -m  D -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "q+s+h" -m  D -l  "rand(7)" -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "q+s+h" -m  D -l  list.list -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  d -t  fastq -f  "s+s" -m  D -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "s+s" -m  D -l  "rand(7)" -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "s+s" -m  D -l  list.list -s  complete  ... ok!
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  d -t  fasta -f  "fa" -m  R -s  complete  ... FAILED!!
+ Error:
+
+ Decompressing...thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "fa" -m  R -l  "rand(7)" -s  complete  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "fa" -m  R -l  list.list -s  complete  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  d -t  fasta -f  "fq" -m  R -s  complete  ... FAILED!!
+ Error:
+
+ Decompressing...thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "fq" -m  R -l  "rand(7)" -s  complete  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "fq" -m  R -l  list.list -s  complete  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  d -t  fasta -f  "h" -m  R -s  complete  ... FAILED!!
+ Error:
+
+ Decompressing...thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "h" -m  R -l  "rand(7)" -s  complete  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "h" -m  R -l  list.list -s  complete  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  d -t  fasta -f  "s" -m  R -s  complete  ... FAILED!!
+ Error:
+
+ Decompressing...thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "s" -m  R -l  "rand(7)" -s  complete  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "s" -m  R -l  list.list -s  complete  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  d -t  fasta -f  "q" -m  R -s  complete  ... FAILED!!
+ Error:
+
+ Decompressing...thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "q" -m  R -l  "rand(7)" -s  complete  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "q" -m  R -l  list.list -s  complete  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  d -t  fasta -f  "h+s" -m  R -s  complete  ... FAILED!!
+ Error:
+
+ Decompressing...thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "h+s" -m  R -l  "rand(7)" -s  complete  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "h+s" -m  R -l  list.list -s  complete  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  d -t  fasta -f  "s+h" -m  R -s  complete  ... FAILED!!
+ Error:
+
+ Decompressing...thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "s+h" -m  R -l  "rand(7)" -s  complete  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "s+h" -m  R -l  list.list -s  complete  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  d -t  fasta -f  "h+s+q" -m  R -s  complete  ... FAILED!!
+ Error:
+
+ Decompressing...thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "h+s+q" -m  R -l  "rand(7)" -s  complete  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "h+s+q" -m  R -l  list.list -s  complete  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  d -t  fasta -f  "q+s+h" -m  R -s  complete  ... FAILED!!
+ Error:
+
+ Decompressing...thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "q+s+h" -m  R -l  "rand(7)" -s  complete  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "q+s+h" -m  R -l  list.list -s  complete  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  d -t  fasta -f  "s+s" -m  R -s  complete  ... FAILED!!
+ Error:
+
+ Decompressing...thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "s+s" -m  R -l  "rand(7)" -s  complete  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fa -o  my_out.fa.interl -a  g -t  fasta -f  "s+s" -m  R -l  list.list -s  complete  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  d -t  fastq -f  "fa" -m  R -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "fa" -m  R -l  "rand(7)" -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "fa" -m  R -l  list.list -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  d -t  fastq -f  "fq" -m  R -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "fq" -m  R -l  "rand(7)" -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "fq" -m  R -l  list.list -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  d -t  fastq -f  "h" -m  R -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "h" -m  R -l  "rand(7)" -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "h" -m  R -l  list.list -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  d -t  fastq -f  "s" -m  R -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "s" -m  R -l  "rand(7)" -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "s" -m  R -l  list.list -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  d -t  fastq -f  "q" -m  R -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "q" -m  R -l  "rand(7)" -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "q" -m  R -l  list.list -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  d -t  fastq -f  "h+s" -m  R -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "h+s" -m  R -l  "rand(7)" -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "h+s" -m  R -l  list.list -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  d -t  fastq -f  "s+h" -m  R -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "s+h" -m  R -l  "rand(7)" -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "s+h" -m  R -l  list.list -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  d -t  fastq -f  "h+s+q" -m  R -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "h+s+q" -m  R -l  "rand(7)" -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "h+s+q" -m  R -l  list.list -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  d -t  fastq -f  "q+s+h" -m  R -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "q+s+h" -m  R -l  "rand(7)" -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "q+s+h" -m  R -l  list.list -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  d -t  fastq -f  "s+s" -m  R -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "s+s" -m  R -l  "rand(7)" -s  complete  ... ok!
+Testing: sfq -i  my_out.fq -o  my_out.fq.interl -a  g -t  fastq -f  "s+s" -m  R -l  list.list -s  complete  ... ok!
+Testing: sfq -i  In/n.R1.fa -o  my_out.lossy.fa -a  c -M  1000 -t  fasta -m  D -s  lossy  ... FAILED!!
+ Error:
+
+ Reading data ... thread 'main' panicked at 'sort_by() only works when fastq file is loaded properly!', src/crates/seq/src/core/sort.rs:14:17
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  In/n.R1.fa -o  my_out.lossy.fa -j  In/n.R2.fa -a  c -M  1000 -t  fasta -m  D -s  lossy  ... FAILED!!
+ Error:
+
+ Reading data ... thread 'main' panicked at 'sort_by() only works when fastq file is loaded properly!', src/crates/seq/src/core/sort.rs:14:17
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  In/n.R1.fa -o  my_out.lossy.fa -a  c -M  1000 -t  fasta -m  R -s  lossy  ... FAILED!!
+ Error:
+
+ Reading data ... thread 'main' panicked at 'sort_by() only works when fastq file is loaded properly!', src/crates/seq/src/core/sort.rs:14:17
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  In/n.R1.fa -o  my_out.lossy.fa -j  In/n.R2.fa -a  c -M  1000 -t  fasta -m  R -s  lossy  ... FAILED!!
+ Error:
+
+ Reading data ... thread 'main' panicked at 'sort_by() only works when fastq file is loaded properly!', src/crates/seq/src/core/sort.rs:14:17
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  In/n.R1.fq -o  my_out.lossy.fq -a  c -M  1000 -t  fastq -m  D -s  lossy  ... FAILED!!
+ Error:
+
+ Reading data ... get.rs: 179-FXME: 356684
+ 8.70ms
+Compressing ... Bug in common l:140
+thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 0', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  In/n.R1.fq -o  my_out.lossy.fq -j  In/n.R2.fq -a  c -M  1000 -t  fastq -m  D -s  lossy  ... ok!
+Testing: sfq -i  In/n.R1.fq -o  my_out.lossy.fq -a  c -M  1000 -t  fastq -m  R -s  lossy  ... FAILED!!
+ Error:
+
+ Reading data ... get.rs: 179-FXME: 356684
+ 3.63ms
+Compressing ... Bug in common l:140
+thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 0', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  In/n.R1.fq -o  my_out.lossy.fq -j  In/n.R2.fq -a  c -M  1000 -t  fastq -m  R -s  lossy  ... ok!
+Testing: sfq -i  In/n.R1.fa -o  my_out.lossy.fa -a  c -M  10000 -t  fasta -m  D -s  lossy  ... FAILED!!
+ Error:
+
+ Reading data ... thread 'main' panicked at 'sort_by() only works when fastq file is loaded properly!', src/crates/seq/src/core/sort.rs:14:17
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  In/n.R1.fa -o  my_out.lossy.fa -j  In/n.R2.fa -a  c -M  10000 -t  fasta -m  D -s  lossy  ... FAILED!!
+ Error:
+
+ Reading data ... thread 'main' panicked at 'sort_by() only works when fastq file is loaded properly!', src/crates/seq/src/core/sort.rs:14:17
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  In/n.R1.fa -o  my_out.lossy.fa -a  c -M  10000 -t  fasta -m  R -s  lossy  ... FAILED!!
+ Error:
+
+ Reading data ... thread 'main' panicked at 'sort_by() only works when fastq file is loaded properly!', src/crates/seq/src/core/sort.rs:14:17
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  In/n.R1.fa -o  my_out.lossy.fa -j  In/n.R2.fa -a  c -M  10000 -t  fasta -m  R -s  lossy  ... FAILED!!
+ Error:
+
+ Reading data ... thread 'main' panicked at 'sort_by() only works when fastq file is loaded properly!', src/crates/seq/src/core/sort.rs:14:17
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  In/n.R1.fq -o  my_out.lossy.fq -a  c -M  10000 -t  fastq -m  D -s  lossy  ... FAILED!!
+ Error:
+
+ Reading data ... get.rs: 179-FXME: 356684
+ 4.32ms
+Compressing ... Bug in common l:140
+thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 0', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  In/n.R1.fq -o  my_out.lossy.fq -j  In/n.R2.fq -a  c -M  10000 -t  fastq -m  D -s  lossy  ... ok!
+Testing: sfq -i  In/n.R1.fq -o  my_out.lossy.fq -a  c -M  10000 -t  fastq -m  R -s  lossy  ... FAILED!!
+ Error:
+
+ Reading data ... get.rs: 179-FXME: 356684
+ 3.57ms
+Compressing ... Bug in common l:140
+thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 0', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  In/n.R1.fq -o  my_out.lossy.fq -j  In/n.R2.fq -a  c -M  10000 -t  fastq -m  R -s  lossy  ... ok!
+Testing: sfq -i  In/n.R1.fa -o  my_out.lossy.fa -a  c -M  Max -t  fasta -m  D -s  lossy  ... FAILED!!
+ Error:
+
+ Reading data ... thread 'main' panicked at 'sort_by() only works when fastq file is loaded properly!', src/crates/seq/src/core/sort.rs:14:17
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  In/n.R1.fa -o  my_out.lossy.fa -j  In/n.R2.fa -a  c -M  Max -t  fasta -m  D -s  lossy  ... FAILED!!
+ Error:
+
+ Reading data ... thread 'main' panicked at 'sort_by() only works when fastq file is loaded properly!', src/crates/seq/src/core/sort.rs:14:17
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  In/n.R1.fa -o  my_out.lossy.fa -a  c -M  Max -t  fasta -m  R -s  lossy  ... FAILED!!
+ Error:
+
+ Reading data ... thread 'main' panicked at 'sort_by() only works when fastq file is loaded properly!', src/crates/seq/src/core/sort.rs:14:17
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  In/n.R1.fa -o  my_out.lossy.fa -j  In/n.R2.fa -a  c -M  Max -t  fasta -m  R -s  lossy  ... FAILED!!
+ Error:
+
+ Reading data ... thread 'main' panicked at 'sort_by() only works when fastq file is loaded properly!', src/crates/seq/src/core/sort.rs:14:17
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  In/n.R1.fq -o  my_out.lossy.fq -a  c -M  Max -t  fastq -m  D -s  lossy  ... FAILED!!
+ Error:
+
+ Reading data ... get.rs: 179-FXME: 356684
+ 4.66ms
+Compressing ... Bug in common l:140
+thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 0', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  In/n.R1.fq -o  my_out.lossy.fq -j  In/n.R2.fq -a  c -M  Max -t  fastq -m  D -s  lossy  ... ok!
+Testing: sfq -i  In/n.R1.fq -o  my_out.lossy.fq -a  c -M  Max -t  fastq -m  R -s  lossy  ... FAILED!!
+ Error:
+
+ Reading data ... get.rs: 179-FXME: 356684
+ 3.60ms
+Compressing ... Bug in common l:140
+thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 0', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  In/n.R1.fq -o  my_out.lossy.fq -j  In/n.R2.fq -a  c -M  Max -t  fastq -m  R -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  d -t  fasta -f  "fa" -m  D -s  lossy  ... FAILED!!
+ Error:
+
+ Decompressing...thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  g -t  fasta -f  "fa" -m  D -l  "rand(7)" -s  lossy  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  g -t  fasta -f  "fa" -m  D -l  list.list -s  lossy  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  d -t  fasta -f  "fq" -m  D -s  lossy  ... FAILED!!
+ Error:
+
+ Decompressing...thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  g -t  fasta -f  "fq" -m  D -l  "rand(7)" -s  lossy  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  g -t  fasta -f  "fq" -m  D -l  list.list -s  lossy  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  d -t  fasta -f  "h" -m  D -s  lossy  ... FAILED!!
+ Error:
+
+ Decompressing...thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  g -t  fasta -f  "h" -m  D -l  "rand(7)" -s  lossy  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  g -t  fasta -f  "h" -m  D -l  list.list -s  lossy  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  d -t  fasta -f  "s" -m  D -s  lossy  ... FAILED!!
+ Error:
+
+ Decompressing...thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  g -t  fasta -f  "s" -m  D -l  "rand(7)" -s  lossy  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  g -t  fasta -f  "s" -m  D -l  list.list -s  lossy  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  d -t  fasta -f  "q" -m  D -s  lossy  ... FAILED!!
+ Error:
+
+ Decompressing...thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  g -t  fasta -f  "q" -m  D -l  "rand(7)" -s  lossy  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  g -t  fasta -f  "q" -m  D -l  list.list -s  lossy  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  d -t  fasta -f  "h+s" -m  D -s  lossy  ... FAILED!!
+ Error:
+
+ Decompressing...thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  g -t  fasta -f  "h+s" -m  D -l  "rand(7)" -s  lossy  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  g -t  fasta -f  "h+s" -m  D -l  list.list -s  lossy  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  d -t  fasta -f  "s+h" -m  D -s  lossy  ... FAILED!!
+ Error:
+
+ Decompressing...thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  g -t  fasta -f  "s+h" -m  D -l  "rand(7)" -s  lossy  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  g -t  fasta -f  "s+h" -m  D -l  list.list -s  lossy  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  d -t  fasta -f  "h+s+q" -m  D -s  lossy  ... FAILED!!
+ Error:
+
+ Decompressing...thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  g -t  fasta -f  "h+s+q" -m  D -l  "rand(7)" -s  lossy  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  g -t  fasta -f  "h+s+q" -m  D -l  list.list -s  lossy  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  d -t  fasta -f  "q+s+h" -m  D -s  lossy  ... FAILED!!
+ Error:
+
+ Decompressing...thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  g -t  fasta -f  "q+s+h" -m  D -l  "rand(7)" -s  lossy  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  g -t  fasta -f  "q+s+h" -m  D -l  list.list -s  lossy  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  d -t  fasta -f  "s+s" -m  D -s  lossy  ... FAILED!!
+ Error:
+
+ Decompressing...thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  g -t  fasta -f  "s+s" -m  D -l  "rand(7)" -s  lossy  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  g -t  fasta -f  "s+s" -m  D -l  list.list -s  lossy  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  d -t  fastq -f  "fa" -m  D -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  g -t  fastq -f  "fa" -m  D -l  "rand(7)" -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  g -t  fastq -f  "fa" -m  D -l  list.list -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  d -t  fastq -f  "fq" -m  D -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  g -t  fastq -f  "fq" -m  D -l  "rand(7)" -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  g -t  fastq -f  "fq" -m  D -l  list.list -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  d -t  fastq -f  "h" -m  D -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  g -t  fastq -f  "h" -m  D -l  "rand(7)" -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  g -t  fastq -f  "h" -m  D -l  list.list -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  d -t  fastq -f  "s" -m  D -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  g -t  fastq -f  "s" -m  D -l  "rand(7)" -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  g -t  fastq -f  "s" -m  D -l  list.list -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  d -t  fastq -f  "q" -m  D -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  g -t  fastq -f  "q" -m  D -l  "rand(7)" -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  g -t  fastq -f  "q" -m  D -l  list.list -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  d -t  fastq -f  "h+s" -m  D -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  g -t  fastq -f  "h+s" -m  D -l  "rand(7)" -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  g -t  fastq -f  "h+s" -m  D -l  list.list -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  d -t  fastq -f  "s+h" -m  D -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  g -t  fastq -f  "s+h" -m  D -l  "rand(7)" -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  g -t  fastq -f  "s+h" -m  D -l  list.list -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  d -t  fastq -f  "h+s+q" -m  D -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  g -t  fastq -f  "h+s+q" -m  D -l  "rand(7)" -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  g -t  fastq -f  "h+s+q" -m  D -l  list.list -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  d -t  fastq -f  "q+s+h" -m  D -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  g -t  fastq -f  "q+s+h" -m  D -l  "rand(7)" -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  g -t  fastq -f  "q+s+h" -m  D -l  list.list -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  d -t  fastq -f  "s+s" -m  D -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  g -t  fastq -f  "s+s" -m  D -l  "rand(7)" -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  g -t  fastq -f  "s+s" -m  D -l  list.list -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  d -t  fasta -f  "fa" -m  R -s  lossy  ... FAILED!!
+ Error:
+
+ Decompressing...thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  g -t  fasta -f  "fa" -m  R -l  "rand(7)" -s  lossy  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  g -t  fasta -f  "fa" -m  R -l  list.list -s  lossy  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  d -t  fasta -f  "fq" -m  R -s  lossy  ... FAILED!!
+ Error:
+
+ Decompressing...thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  g -t  fasta -f  "fq" -m  R -l  "rand(7)" -s  lossy  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  g -t  fasta -f  "fq" -m  R -l  list.list -s  lossy  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  d -t  fasta -f  "h" -m  R -s  lossy  ... FAILED!!
+ Error:
+
+ Decompressing...thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  g -t  fasta -f  "h" -m  R -l  "rand(7)" -s  lossy  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  g -t  fasta -f  "h" -m  R -l  list.list -s  lossy  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  d -t  fasta -f  "s" -m  R -s  lossy  ... FAILED!!
+ Error:
+
+ Decompressing...thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  g -t  fasta -f  "s" -m  R -l  "rand(7)" -s  lossy  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  g -t  fasta -f  "s" -m  R -l  list.list -s  lossy  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  d -t  fasta -f  "q" -m  R -s  lossy  ... FAILED!!
+ Error:
+
+ Decompressing...thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  g -t  fasta -f  "q" -m  R -l  "rand(7)" -s  lossy  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  g -t  fasta -f  "q" -m  R -l  list.list -s  lossy  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  d -t  fasta -f  "h+s" -m  R -s  lossy  ... FAILED!!
+ Error:
+
+ Decompressing...thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  g -t  fasta -f  "h+s" -m  R -l  "rand(7)" -s  lossy  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  g -t  fasta -f  "h+s" -m  R -l  list.list -s  lossy  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  d -t  fasta -f  "s+h" -m  R -s  lossy  ... FAILED!!
+ Error:
+
+ Decompressing...thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  g -t  fasta -f  "s+h" -m  R -l  "rand(7)" -s  lossy  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  g -t  fasta -f  "s+h" -m  R -l  list.list -s  lossy  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  d -t  fasta -f  "h+s+q" -m  R -s  lossy  ... FAILED!!
+ Error:
+
+ Decompressing...thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  g -t  fasta -f  "h+s+q" -m  R -l  "rand(7)" -s  lossy  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  g -t  fasta -f  "h+s+q" -m  R -l  list.list -s  lossy  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  d -t  fasta -f  "q+s+h" -m  R -s  lossy  ... FAILED!!
+ Error:
+
+ Decompressing...thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  g -t  fasta -f  "q+s+h" -m  R -l  "rand(7)" -s  lossy  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  g -t  fasta -f  "q+s+h" -m  R -l  list.list -s  lossy  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  d -t  fasta -f  "s+s" -m  R -s  lossy  ... FAILED!!
+ Error:
+
+ Decompressing...thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  g -t  fasta -f  "s+s" -m  R -l  "rand(7)" -s  lossy  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fa -o  my_out.lossy.fa.interl -a  g -t  fasta -f  "s+s" -m  R -l  list.list -s  lossy  ... FAILED!!
+ Error:
+
+ thread 'main' panicked at 'index out of bounds: the len is 0 but the index is 18446744073709551615', /rustc/73528e339aae0f17a15ffa49a8ac608f50c6cf14/src/libcore/slice/mod.rs:2796:10
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  d -t  fastq -f  "fa" -m  R -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  g -t  fastq -f  "fa" -m  R -l  "rand(7)" -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  g -t  fastq -f  "fa" -m  R -l  list.list -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  d -t  fastq -f  "fq" -m  R -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  g -t  fastq -f  "fq" -m  R -l  "rand(7)" -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  g -t  fastq -f  "fq" -m  R -l  list.list -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  d -t  fastq -f  "h" -m  R -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  g -t  fastq -f  "h" -m  R -l  "rand(7)" -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  g -t  fastq -f  "h" -m  R -l  list.list -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  d -t  fastq -f  "s" -m  R -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  g -t  fastq -f  "s" -m  R -l  "rand(7)" -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  g -t  fastq -f  "s" -m  R -l  list.list -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  d -t  fastq -f  "q" -m  R -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  g -t  fastq -f  "q" -m  R -l  "rand(7)" -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  g -t  fastq -f  "q" -m  R -l  list.list -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  d -t  fastq -f  "h+s" -m  R -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  g -t  fastq -f  "h+s" -m  R -l  "rand(7)" -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  g -t  fastq -f  "h+s" -m  R -l  list.list -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  d -t  fastq -f  "s+h" -m  R -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  g -t  fastq -f  "s+h" -m  R -l  "rand(7)" -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  g -t  fastq -f  "s+h" -m  R -l  list.list -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  d -t  fastq -f  "h+s+q" -m  R -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  g -t  fastq -f  "h+s+q" -m  R -l  "rand(7)" -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  g -t  fastq -f  "h+s+q" -m  R -l  list.list -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  d -t  fastq -f  "q+s+h" -m  R -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  g -t  fastq -f  "q+s+h" -m  R -l  "rand(7)" -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  g -t  fastq -f  "q+s+h" -m  R -l  list.list -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  d -t  fastq -f  "s+s" -m  R -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  g -t  fastq -f  "s+s" -m  R -l  "rand(7)" -s  lossy  ... ok!
+Testing: sfq -i  my_out.lossy.fq -o  my_out.lossy.fq.interl -a  g -t  fastq -f  "s+s" -m  R -l  list.list -s  lossy  ... ok!
+In summary:
+PASS: 138
+FAIL: 150
+TOTAL: 288
+
+
+
 ```
