@@ -123,6 +123,13 @@ pub fn export (cli: ArgMatches<'static>) -> bool {
                         {
                             let mut seq_out = seq_lzt.get_records(&enc);
                             let dis = deindex(&mut seq_out);
+                            let mut numcnt  = 0;
+                            for p in seq_out.iter(){
+                                if *p == 10u8 {
+                                    numcnt+=1;
+                                }
+                            }
+                            fdb.set_numrec(numcnt);
                             fdb.set_seq(seq_out);
                             fdb.set_cpcnt(dis);
                         }

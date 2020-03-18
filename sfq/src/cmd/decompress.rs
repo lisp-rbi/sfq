@@ -104,6 +104,13 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
                         {
                             let mut seq_out: Vec<u8> = seq_lzt.get_records(&enc);
                             let dis = deindex(&mut seq_out);
+                            let mut numcnt  = 0;
+                            for p in seq_out.iter(){
+                                if *p == 10u8 {
+                                    numcnt+=1;
+                                }
+                            }
+                            fdb.set_numrec(numcnt);
                             fdb.set_seq(seq_out);
                             fdb.set_cpcnt(dis);
                         }
@@ -126,6 +133,7 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
                             }
                         }else{
                             let qvec = vec!['\n' as u8; fdb.get_numrec()];
+                            eprintln!("-----------------------{}", fdb.get_numrec());
                             fdb.set_qual(qvec);
                         }
 
