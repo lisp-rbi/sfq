@@ -50,12 +50,14 @@
                   };
 
                   self.seq.extend(s.as_bytes());
+                  self.qual.extend(b"\n")
               }
           }
           self.numrec = r;
 
           self.head.resize(self.head.len()-1,  0x00);
           self.seq.resize(self.seq.len(),  0x00);
+          self.qual.resize(self.qual.len(),  0x00);
 
 
           if self.numrec > 0 {
