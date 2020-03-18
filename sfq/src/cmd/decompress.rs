@@ -124,6 +124,9 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
                             }else{
                                 panic!("Decompression compromised!");
                             }
+                        }else{
+                            let qvec = vec!['\n' as u8; fdb.get_numrec()];
+                            fdb.set_qual(qvec);
                         }
 
                         fdb.save_append(cli.value_of("output").unwrap(), cli.value_of("outfmt").unwrap());
