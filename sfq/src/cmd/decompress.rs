@@ -84,9 +84,10 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
                     }
                     let exp = (count as f64).log(alpha.len() as f64) as u32;
                     let inc = alpha.len().pow(exp-1);
+                    eprintln!("Batch size {}", inc);
 
 
-                    let (mut i, mut j) = (0,inc-1);
+                    let (mut i, mut j, mut pp) = (0,inc-1, 0);
 
                     while i < count {
 
@@ -102,7 +103,10 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
                         let prefix = enc_start[..e].to_vec();
                         let enc = str::from_utf8(&prefix).unwrap();
                         {
+                            eprint!("Seq ... ");
+                            let st = Instant::now();
                             let mut seq_out: Vec<u8> = seq_lzt.get_records(&enc);
+                            let ms = st.elapsed().as_millis() as u64;
                             let dis = deindex(&mut seq_out);
                             let mut numcnt  = 0;
                             for p in seq_out.iter(){
@@ -110,17 +114,27 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
                                     numcnt+=1;
                                 }
                             }
+                            pp=numcnt.clone();
+                            eprintln!("Rec/sec: {:.2?}", (((pp) as u64)/ms) * 1000);
                             fdb.set_numrec(numcnt);
                             fdb.set_seq(seq_out);
                             fdb.set_cpcnt(dis);
                         }
                         {
+                            eprint!("Head ... ");
+                            let st = Instant::now();
+
                             let mut head_out = head_lzt.get_records(&enc);
+                            eprintln!("Rec/sec: {:.2?}", (((pp) as u64)/(st.elapsed().as_millis() as u64 ))*1000);
+
                             let dis = deindex(&mut head_out);
                             fdb.set_head(head_out);
                         }
                         if q {
+                            eprint!("Qual ... ");
+                            let st = Instant::now();
                             let mut qual_out = qual_lzt.get_records(&enc);
+                            eprintln!("Rec/sec: {:.2?}", (((pp) as u64)/(st.elapsed().as_millis() as u64 ))*1000 );
                             let dis = deindex(&mut qual_out);
                             fdb.set_qual(qual_out);
 
@@ -133,7 +147,6 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
                             }
                         }else{
                             let qvec = vec!['\n' as u8; fdb.get_numrec()];
-                            eprintln!("-----------------------{}", fdb.get_numrec());
                             fdb.set_qual(qvec);
                         }
 

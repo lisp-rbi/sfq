@@ -35,6 +35,7 @@ impl FFI {
 
         let lpm = mem*100; // number of lines per MB
         let (mut l, mut s, mut j) = (0,0,0);
+        let cashsize = 20000;
 
         // check for null termination
         if vec[vec.len()-1] != 0u8 {vec.push(0u8)};
@@ -73,6 +74,7 @@ impl FFI {
                             open_lzt(
                                 pth.as_ptr(),
                                 pth.len() as libc::c_int,
+                                cashsize as libc::c_int,
                                 mmode
                             )
                         );
@@ -88,7 +90,7 @@ impl FFI {
         }
     }
 
-    
+
     pub fn empty() -> Self {
 
         FFI {
@@ -102,12 +104,14 @@ impl FFI {
         let mut lzt_vec : Vec<*mut LztObj> = Vec::new();
         let mut j=1;
         let mut pth = format!("{}.{}", path, j.to_string());
+        let cashsize = 20000;
 
         while fs::metadata(pth.clone()).is_ok() == true {
             let p = unsafe {
                 open_lzt(
                     pth.as_ptr(),
                     pth.len() as libc::c_int,
+                    cashsize as libc::c_int,
                     memmod
                 )
             };

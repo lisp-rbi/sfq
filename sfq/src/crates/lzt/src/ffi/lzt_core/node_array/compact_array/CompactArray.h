@@ -95,6 +95,7 @@ private:
 
     // caching
     MapFunctionCache<TIndex, Node> cache;
+    MapFunctionCache<TIndex, Node> symbolCache;
     bool isCached = false;
 
 };
@@ -153,6 +154,11 @@ CompactArray<TSymbol, TIndex, TBitSequenceArray>::operator[](TIndex i) {
     BitSequence indexBits = array[i];
     size_t index = fromBitSequence<size_t>(indexBits, bitsPerIndex);
 
+    if (isCached and symbolCache.contains(index)) {
+        node = symbolCache.fetch(index);
+        cache.add(i, node);
+        return node;
+    }
     // get silbing and symbol data from the table
     node.sibling = numberFromBits<TIndex>(siblings[index], siblings.getSequenceSize());
     // TODO TIndex type operation (conversion to size_t)
@@ -170,7 +176,10 @@ CompactArray<TSymbol, TIndex, TBitSequenceArray>::operator[](TIndex i) {
     }
     else node.enumerated = false;
 
-    if (isCached) cache.add(i, node);
+    if (isCached) {
+        symbolCache.add(index, node);
+        cache.add(i, node);
+    }
     return node;
 }
 
@@ -337,10 +346,12 @@ void CompactArray<TSymbol, TIndex, TBitSequenceArray>::setCache(size_t cacheSize
     if (cacheSize == 0) { // disable caching
         isCached = false;
         cache.clear();
+        symbolCache.clear();
     }
     else {
         isCached = true;
         cache.setSize(cacheSize);
+        symbolCache.setSize(2*cacheSize);
     }
 }
 

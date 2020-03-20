@@ -1,0 +1,943 @@
+cargo:rustc-link-lib=lzt
+TARGET = Some("x86_64-unknown-linux-gnu")
+OPT_LEVEL = Some("0")
+HOST = Some("x86_64-unknown-linux-gnu")
+CXX_x86_64-unknown-linux-gnu = None
+CXX_x86_64_unknown_linux_gnu = None
+HOST_CXX = None
+CXX = None
+CXXFLAGS_x86_64-unknown-linux-gnu = None
+CXXFLAGS_x86_64_unknown_linux_gnu = None
+HOST_CXXFLAGS = None
+CXXFLAGS = None
+CRATE_CC_NO_DEFAULTS = None
+DEBUG = Some("true")
+CARGO_CFG_TARGET_FEATURE = Some("fxsr,sse,sse2")
+running: "c++" "-O0" "-ffunction-sections" "-fdata-sections" "-fPIC" "-g" "-fno-omit-frame-pointer" "-m64" "-Wall" "-Wextra" "-o" "/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out/src/ffi/lzt.o" "-c" "src/ffi/lzt.cpp"
+cargo:warning=In file included from src/ffi/lzt_core/util/../node_array/compact_array_legacy/../../serialization_legacy/BitSequence.h:8:0,
+cargo:warning=                 from src/ffi/lzt_core/util/../node_array/compact_array_legacy/../../serialization_legacy/BitSequenceArray.h:6,
+cargo:warning=                 from src/ffi/lzt_core/util/../node_array/compact_array_legacy/CompactArray.h:10,
+cargo:warning=                 from src/ffi/lzt_core/util/factory.h:12,
+cargo:warning=                 from src/ffi/lzt-interface.h:14,
+cargo:warning=                 from src/ffi/lzt.hpp:4,
+cargo:warning=                 from src/ffi/lzt.cpp:1:
+cargo:warning=src/ffi/lzt_core/util/../node_array/compact_array_legacy/../../serialization_legacy/../debug/lzt_test.h:26:1: warning: multi-line comment [-Wcomment]
+cargo:warning= //        #define TEST_ASSERT(assert) \
+cargo:warning= ^
+cargo:warning=src/ffi/lzt_core/util/../node_array/compact_array_legacy/../../serialization_legacy/../debug/lzt_test.h:31:1: warning: multi-line comment [-Wcomment]
+cargo:warning= //        #define TEST_ASSERT_MESSAGE(assert, message) \
+cargo:warning= ^
+cargo:warning=In file included from src/ffi/lzt_core/util/../dictionary/util/WordList.h:10:0,
+cargo:warning=                 from src/ffi/lzt_core/util/WordFileReader.h:11,
+cargo:warning=                 from src/ffi/lzt-interface.h:13,
+cargo:warning=                 from src/ffi/lzt.hpp:4,
+cargo:warning=                 from src/ffi/lzt.cpp:1:
+cargo:warning=src/ffi/lzt_core/util/../dictionary/util/../../util/utils.h: In function ‘size_t hashCombine(size_t, size_t)’:
+cargo:warning=src/ffi/lzt_core/util/../dictionary/util/../../util/utils.h:117:40: warning: suggest parentheses around ‘+’ inside ‘<<’ [-Wparentheses]
+cargo:warning=     hash_cum ^= hash_part + 0x9e3779b9 + hash_cum << 6 + hash_cum >> 2;
+cargo:warning=                 ~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~
+cargo:warning=In file included from src/ffi/lzt_core/util/../node_array/compact_array_legacy/../../serialization_legacy/BitSequenceArray.h:6:0,
+cargo:warning=                 from src/ffi/lzt_core/util/../node_array/compact_array_legacy/CompactArray.h:10,
+cargo:warning=                 from src/ffi/lzt_core/util/factory.h:12,
+cargo:warning=                 from src/ffi/lzt-interface.h:14,
+cargo:warning=                 from src/ffi/lzt.hpp:4,
+cargo:warning=                 from src/ffi/lzt.cpp:1:
+cargo:warning=src/ffi/lzt_core/util/../node_array/compact_array_legacy/../../serialization_legacy/BitSequence.h: In member function ‘int BitSequence::maxNonzeroBit() const’:
+cargo:warning=src/ffi/lzt_core/util/../node_array/compact_array_legacy/../../serialization_legacy/BitSequence.h:83:9: warning: unused variable ‘h’ [-Wunused-variable]
+cargo:warning=     int h = 0;
+cargo:warning=         ^
+cargo:warning=In file included from src/ffi/lzt_core/util/../node_array/compact_array_legacy/CompactArray.h:10:0,
+cargo:warning=                 from src/ffi/lzt_core/util/factory.h:12,
+cargo:warning=                 from src/ffi/lzt-interface.h:14,
+cargo:warning=                 from src/ffi/lzt.hpp:4,
+cargo:warning=                 from src/ffi/lzt.cpp:1:
+cargo:warning=src/ffi/lzt_core/util/../node_array/compact_array_legacy/../../serialization_legacy/BitSequenceArray.h: In member function ‘BitSequence BitSequenceArrayL::operator[](size_t) const’:
+cargo:warning=src/ffi/lzt_core/util/../node_array/compact_array_legacy/../../serialization_legacy/BitSequenceArray.h:64:23: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+cargo:warning=     for (int i = 0; i < bitsPerSequence; ++i) {
+cargo:warning=                     ~~^~~~~~~~~~~~~~~~~
+cargo:warning=In file included from src/ffi/lzt_core/util/../compress/sa_compressor/LCPTreeCompressor.hpp:11:0,
+cargo:warning=                 from src/ffi/lzt_core/util/factory.h:15,
+cargo:warning=                 from src/ffi/lzt-interface.h:14,
+cargo:warning=                 from src/ffi/lzt.hpp:4,
+cargo:warning=                 from src/ffi/lzt.cpp:1:
+cargo:warning=src/ffi/lzt_core/util/../compress/sa_compressor/SaCompressor.hpp: In constructor ‘SaCompressorConfig::SaCompressorConfig()’:
+cargo:warning=src/ffi/lzt_core/util/../compress/sa_compressor/SaCompressor.hpp:85:12: warning: ‘SaCompressorConfig::grShuffles’ will be initialized after [-Wreorder]
+cargo:warning=     size_t grShuffles;
+cargo:warning=            ^~~~~~~~~~
+cargo:warning=src/ffi/lzt_core/util/../compress/sa_compressor/SaCompressor.hpp:77:10: warning:   ‘bool SaCompressorConfig::visualize’ [-Wreorder]
+cargo:warning=     bool visualize;
+cargo:warning=          ^~~~~~~~~
+cargo:warning=src/ffi/lzt_core/util/../compress/sa_compressor/SaCompressor.hpp:34:5: warning:   when initialized here [-Wreorder]
+cargo:warning=     SaCompressorConfig():
+cargo:warning=     ^~~~~~~~~~~~~~~~~~
+cargo:warning=src/ffi/lzt_core/util/../compress/sa_compressor/SaCompressor.hpp: In member function ‘void SaCompressor<TNodeArray>::replaceSequencesLcp(SaCompressor<TNodeArray>::TIndex, SaCompressor<TNodeArray>::TIndex, SaCompressor<TNodeArray>::TIndex)’:
+cargo:warning=src/ffi/lzt_core/util/../compress/sa_compressor/SaCompressor.hpp:1620:5: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+cargo:warning=     if (b >= r) return; if (len < 2) return;
+cargo:warning=     ^~
+cargo:warning=src/ffi/lzt_core/util/../compress/sa_compressor/SaCompressor.hpp:1620:25: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+cargo:warning=     if (b >= r) return; if (len < 2) return;
+cargo:warning=                         ^~
+cargo:warning=In file included from src/ffi/lzt-interface.h:20:0,
+cargo:warning=                 from src/ffi/lzt.hpp:4,
+cargo:warning=                 from src/ffi/lzt.cpp:1:
+cargo:warning=src/ffi/lzt_core/serialization/DiskCharArray.h: In constructor ‘DiskArrayChar::DiskArrayChar(DiskCharArray*, size_t, char)’:
+cargo:warning=src/ffi/lzt_core/serialization/DiskCharArray.h:104:10: warning: ‘DiskArrayChar::ch’ will be initialized after [-Wreorder]
+cargo:warning=     char ch;
+cargo:warning=          ^~
+cargo:warning=src/ffi/lzt_core/serialization/DiskCharArray.h:103:12: warning:   ‘size_t DiskArrayChar::index’ [-Wreorder]
+cargo:warning=     size_t index;
+cargo:warning=            ^~~~~
+cargo:warning=src/ffi/lzt_core/serialization/DiskCharArray.h:94:5: warning:   when initialized here [-Wreorder]
+cargo:warning=     DiskArrayChar(DiskCharArray* arr, size_t idx, char c): ch(c), index(idx), array(arr) {};
+cargo:warning=     ^~~~~~~~~~~~~
+cargo:warning=src/ffi/lzt_core/serialization/DiskCharArray.h:103:12: warning: ‘DiskArrayChar::index’ will be initialized after [-Wreorder]
+cargo:warning=     size_t index;
+cargo:warning=            ^~~~~
+cargo:warning=src/ffi/lzt_core/serialization/DiskCharArray.h:102:20: warning:   ‘DiskCharArray* DiskArrayChar::array’ [-Wreorder]
+cargo:warning=     DiskCharArray* array;
+cargo:warning=                    ^~~~~
+cargo:warning=src/ffi/lzt_core/serialization/DiskCharArray.h:94:5: warning:   when initialized here [-Wreorder]
+cargo:warning=     DiskArrayChar(DiskCharArray* arr, size_t idx, char c): ch(c), index(idx), array(arr) {};
+cargo:warning=     ^~~~~~~~~~~~~
+cargo:warning=In file included from src/ffi/lzt_core/node_array/compact_array/../../serialization/BitSequenceArray.h:13:0,
+cargo:warning=                 from src/ffi/lzt_core/node_array/compact_array/CompactSymbolArray.h:11,
+cargo:warning=                 from src/ffi/lzt_core/node_array/compact_array/CompactArray.h:8,
+cargo:warning=                 from src/ffi/lzt-interface.h:17,
+cargo:warning=                 from src/ffi/lzt.hpp:4,
+cargo:warning=                 from src/ffi/lzt.cpp:1:
+cargo:warning=src/ffi/lzt_core/node_array/compact_array/../../serialization/../util/filesystem_utils.h: At global scope:
+cargo:warning=src/ffi/lzt_core/node_array/compact_array/../../serialization/../util/filesystem_utils.h:25:22: warning: ‘InfoAndResult file_info(std::__cxx11::string)’ declared ‘static’ but never defined [-Wunused-function]
+cargo:warning= static InfoAndResult file_info(string fname);
+cargo:warning=                      ^~~~~~~~~
+exit code: 0
+running: "c++" "-O0" "-ffunction-sections" "-fdata-sections" "-fPIC" "-g" "-fno-omit-frame-pointer" "-m64" "-Wall" "-Wextra" "-o" "/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out/src/ffi/lzt-interface.o" "-c" "src/ffi/lzt-interface.cpp"
+cargo:warning=In file included from src/ffi/lzt_core/util/../node_array/compact_array_legacy/../../serialization_legacy/BitSequence.h:8:0,
+cargo:warning=                 from src/ffi/lzt_core/util/../node_array/compact_array_legacy/../../serialization_legacy/BitSequenceArray.h:6,
+cargo:warning=                 from src/ffi/lzt_core/util/../node_array/compact_array_legacy/CompactArray.h:10,
+cargo:warning=                 from src/ffi/lzt_core/util/factory.h:12,
+cargo:warning=                 from src/ffi/lzt-interface.h:14,
+cargo:warning=                 from src/ffi/lzt-interface.cpp:1:
+cargo:warning=src/ffi/lzt_core/util/../node_array/compact_array_legacy/../../serialization_legacy/../debug/lzt_test.h:26:1: warning: multi-line comment [-Wcomment]
+cargo:warning= //        #define TEST_ASSERT(assert) \
+cargo:warning= ^
+cargo:warning=src/ffi/lzt_core/util/../node_array/compact_array_legacy/../../serialization_legacy/../debug/lzt_test.h:31:1: warning: multi-line comment [-Wcomment]
+cargo:warning= //        #define TEST_ASSERT_MESSAGE(assert, message) \
+cargo:warning= ^
+cargo:warning=In file included from src/ffi/lzt_core/util/../dictionary/util/WordList.h:10:0,
+cargo:warning=                 from src/ffi/lzt_core/util/WordFileReader.h:11,
+cargo:warning=                 from src/ffi/lzt-interface.h:13,
+cargo:warning=                 from src/ffi/lzt-interface.cpp:1:
+cargo:warning=src/ffi/lzt_core/util/../dictionary/util/../../util/utils.h: In function ‘size_t hashCombine(size_t, size_t)’:
+cargo:warning=src/ffi/lzt_core/util/../dictionary/util/../../util/utils.h:117:40: warning: suggest parentheses around ‘+’ inside ‘<<’ [-Wparentheses]
+cargo:warning=     hash_cum ^= hash_part + 0x9e3779b9 + hash_cum << 6 + hash_cum >> 2;
+cargo:warning=                 ~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~
+cargo:warning=In file included from src/ffi/lzt_core/util/../node_array/compact_array_legacy/../../serialization_legacy/BitSequenceArray.h:6:0,
+cargo:warning=                 from src/ffi/lzt_core/util/../node_array/compact_array_legacy/CompactArray.h:10,
+cargo:warning=                 from src/ffi/lzt_core/util/factory.h:12,
+cargo:warning=                 from src/ffi/lzt-interface.h:14,
+cargo:warning=                 from src/ffi/lzt-interface.cpp:1:
+cargo:warning=src/ffi/lzt_core/util/../node_array/compact_array_legacy/../../serialization_legacy/BitSequence.h: In member function ‘int BitSequence::maxNonzeroBit() const’:
+cargo:warning=src/ffi/lzt_core/util/../node_array/compact_array_legacy/../../serialization_legacy/BitSequence.h:83:9: warning: unused variable ‘h’ [-Wunused-variable]
+cargo:warning=     int h = 0;
+cargo:warning=         ^
+cargo:warning=In file included from src/ffi/lzt_core/util/../node_array/compact_array_legacy/CompactArray.h:10:0,
+cargo:warning=                 from src/ffi/lzt_core/util/factory.h:12,
+cargo:warning=                 from src/ffi/lzt-interface.h:14,
+cargo:warning=                 from src/ffi/lzt-interface.cpp:1:
+cargo:warning=src/ffi/lzt_core/util/../node_array/compact_array_legacy/../../serialization_legacy/BitSequenceArray.h: In member function ‘BitSequence BitSequenceArrayL::operator[](size_t) const’:
+cargo:warning=src/ffi/lzt_core/util/../node_array/compact_array_legacy/../../serialization_legacy/BitSequenceArray.h:64:23: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+cargo:warning=     for (int i = 0; i < bitsPerSequence; ++i) {
+cargo:warning=                     ~~^~~~~~~~~~~~~~~~~
+cargo:warning=In file included from src/ffi/lzt_core/util/../compress/sa_compressor/LCPTreeCompressor.hpp:11:0,
+cargo:warning=                 from src/ffi/lzt_core/util/factory.h:15,
+cargo:warning=                 from src/ffi/lzt-interface.h:14,
+cargo:warning=                 from src/ffi/lzt-interface.cpp:1:
+cargo:warning=src/ffi/lzt_core/util/../compress/sa_compressor/SaCompressor.hpp: In constructor ‘SaCompressorConfig::SaCompressorConfig()’:
+cargo:warning=src/ffi/lzt_core/util/../compress/sa_compressor/SaCompressor.hpp:85:12: warning: ‘SaCompressorConfig::grShuffles’ will be initialized after [-Wreorder]
+cargo:warning=     size_t grShuffles;
+cargo:warning=            ^~~~~~~~~~
+cargo:warning=src/ffi/lzt_core/util/../compress/sa_compressor/SaCompressor.hpp:77:10: warning:   ‘bool SaCompressorConfig::visualize’ [-Wreorder]
+cargo:warning=     bool visualize;
+cargo:warning=          ^~~~~~~~~
+cargo:warning=src/ffi/lzt_core/util/../compress/sa_compressor/SaCompressor.hpp:34:5: warning:   when initialized here [-Wreorder]
+cargo:warning=     SaCompressorConfig():
+cargo:warning=     ^~~~~~~~~~~~~~~~~~
+cargo:warning=src/ffi/lzt_core/util/../compress/sa_compressor/SaCompressor.hpp: In member function ‘void SaCompressor<TNodeArray>::replaceSequencesLcp(SaCompressor<TNodeArray>::TIndex, SaCompressor<TNodeArray>::TIndex, SaCompressor<TNodeArray>::TIndex)’:
+cargo:warning=src/ffi/lzt_core/util/../compress/sa_compressor/SaCompressor.hpp:1620:5: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+cargo:warning=     if (b >= r) return; if (len < 2) return;
+cargo:warning=     ^~
+cargo:warning=src/ffi/lzt_core/util/../compress/sa_compressor/SaCompressor.hpp:1620:25: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+cargo:warning=     if (b >= r) return; if (len < 2) return;
+cargo:warning=                         ^~
+cargo:warning=In file included from src/ffi/lzt-interface.h:20:0,
+cargo:warning=                 from src/ffi/lzt-interface.cpp:1:
+cargo:warning=src/ffi/lzt_core/serialization/DiskCharArray.h: In constructor ‘DiskArrayChar::DiskArrayChar(DiskCharArray*, size_t, char)’:
+cargo:warning=src/ffi/lzt_core/serialization/DiskCharArray.h:104:10: warning: ‘DiskArrayChar::ch’ will be initialized after [-Wreorder]
+cargo:warning=     char ch;
+cargo:warning=          ^~
+cargo:warning=src/ffi/lzt_core/serialization/DiskCharArray.h:103:12: warning:   ‘size_t DiskArrayChar::index’ [-Wreorder]
+cargo:warning=     size_t index;
+cargo:warning=            ^~~~~
+cargo:warning=src/ffi/lzt_core/serialization/DiskCharArray.h:94:5: warning:   when initialized here [-Wreorder]
+cargo:warning=     DiskArrayChar(DiskCharArray* arr, size_t idx, char c): ch(c), index(idx), array(arr) {};
+cargo:warning=     ^~~~~~~~~~~~~
+cargo:warning=src/ffi/lzt_core/serialization/DiskCharArray.h:103:12: warning: ‘DiskArrayChar::index’ will be initialized after [-Wreorder]
+cargo:warning=     size_t index;
+cargo:warning=            ^~~~~
+cargo:warning=src/ffi/lzt_core/serialization/DiskCharArray.h:102:20: warning:   ‘DiskCharArray* DiskArrayChar::array’ [-Wreorder]
+cargo:warning=     DiskCharArray* array;
+cargo:warning=                    ^~~~~
+cargo:warning=src/ffi/lzt_core/serialization/DiskCharArray.h:94:5: warning:   when initialized here [-Wreorder]
+cargo:warning=     DiskArrayChar(DiskCharArray* arr, size_t idx, char c): ch(c), index(idx), array(arr) {};
+cargo:warning=     ^~~~~~~~~~~~~
+cargo:warning=src/ffi/lzt-interface.cpp: In function ‘std::vector<std::vector<unsigned char> >* queryTrie(TLzTrieDisk*, std::vector<unsigned char>)’:
+cargo:warning=src/ffi/lzt-interface.cpp:50:19: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+cargo:warning=   for (int i =0; i< query.size(); i++){
+cargo:warning=                  ~^~~~~~~~~~~~~~
+cargo:warning=In file included from src/ffi/lzt_core/util/WordFileReader.h:11:0,
+cargo:warning=                 from src/ffi/lzt-interface.h:13,
+cargo:warning=                 from src/ffi/lzt-interface.cpp:1:
+cargo:warning=src/ffi/lzt_core/util/../dictionary/util/WordList.h: In instantiation of ‘void WordList<TSymbol>::sort() [with TSymbol = unsigned char]’:
+cargo:warning=src/ffi/lzt-interface.cpp:16:32:   required from here
+cargo:warning=src/ffi/lzt_core/util/../dictionary/util/WordList.h:77:10: warning: variable ‘sorted’ set but not used [-Wunused-but-set-variable]
+cargo:warning=     bool sorted = true;
+cargo:warning=          ^~~~~~
+cargo:warning=In file included from src/ffi/lzt-interface.h:18:0,
+cargo:warning=                 from src/ffi/lzt-interface.cpp:1:
+cargo:warning=src/ffi/lzt_core/node_array/compact_array/CompactArrayBuilder.h: In instantiation of ‘bool CompactArrayBuilder<TS, TI, TBitSequenceArray>::buildSaveCompactArray(WordList<TSymbol>*, std::__cxx11::string, std::__cxx11::string, bool) [with TSymbol = unsigned char; TIndex = long int; TBitSequenceArray = BitSequenceArray<DiskCharArray>; std::__cxx11::string = std::__cxx11::basic_string<char>]’:
+cargo:warning=src/ffi/lzt-interface.cpp:23:62:   required from here
+cargo:warning=src/ffi/lzt_core/node_array/compact_array/CompactArrayBuilder.h:64:71: warning: unused parameter ‘dictLabel’ [-Wunused-parameter]
+cargo:warning= buildSaveCompactArray(WordList<TSymbol>* words, string folder, string dictLabel, bool enumerated) {
+cargo:warning=                                                                       ^~~~~~~~~
+cargo:warning=src/ffi/lzt_core/node_array/compact_array/CompactArrayBuilder.h:64:87: warning: unused parameter ‘enumerated’ [-Wunused-parameter]
+cargo:warning= buildSaveCompactArray(WordList<TSymbol>* words, string folder, string dictLabel, bool enumerated) {
+cargo:warning=                                                                                       ^~~~~~~~~~
+cargo:warning=src/ffi/lzt_core/node_array/compact_array/CompactArrayBuilder.h: In instantiation of ‘void CompactArrayBuilder<TS, TI, TBitSequenceArray>::copySymbolArray(CompactSymbolArray<TSymbol, TBitSequenceArray>&, CompactSymbolArrayL<TSymbol>&, bool) [with TSymbol = unsigned char; TIndex = long int; TBitSequenceArray = BitSequenceArray<DiskCharArray>]’:
+cargo:warning=src/ffi/lzt_core/node_array/compact_array/CompactArrayBuilder.h:80:20:   required from ‘bool CompactArrayBuilder<TS, TI, TBitSequenceArray>::buildSaveCompactArray(WordList<TSymbol>*, std::__cxx11::string, std::__cxx11::string, bool) [with TSymbol = unsigned char; TIndex = long int; TBitSequenceArray = BitSequenceArray<DiskCharArray>; std::__cxx11::string = std::__cxx11::basic_string<char>]’
+cargo:warning=src/ffi/lzt-interface.cpp:23:62:   required from here
+cargo:warning=src/ffi/lzt_core/node_array/compact_array/CompactArrayBuilder.h:168:23: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+cargo:warning=     for (int i = 0; i < sa1.numOfDistinct; ++i)
+cargo:warning=                     ~~^~~~~~~~~~~~~~~~~~~
+cargo:warning=In file included from src/ffi/lzt_core/node_array/compact_array/CompactArray.h:8:0,
+cargo:warning=                 from src/ffi/lzt-interface.h:17,
+cargo:warning=                 from src/ffi/lzt-interface.cpp:1:
+cargo:warning=src/ffi/lzt_core/node_array/compact_array/CompactSymbolArray.h: In instantiation of ‘CompactSymbolArray<TSymbol, TBitSequenceArray>::CompactSymbolArray() [with TSymbol = unsigned char; TBitSequenceArray = BitSequenceArray<DiskCharArray>]’:
+cargo:warning=src/ffi/lzt_core/node_array/compact_array/CompactArray.h:121:65:   required from ‘CompactArray<TSymbol, TIndex, TBitSequenceArray>::CompactArray(bool) [with TSymbol = unsigned char; TIndex = long int; TBitSequenceArray = BitSequenceArray<DiskCharArray>]’
+cargo:warning=src/ffi/lzt-interface.cpp:33:58:   required from here
+cargo:warning=src/ffi/lzt_core/node_array/compact_array/CompactSymbolArray.h:51:12: warning: ‘CompactSymbolArray<unsigned char, BitSequenceArray<DiskCharArray> >::numOfDistinct’ will be initialized after [-Wreorder]
+cargo:warning=     size_t numOfDistinct;
+cargo:warning=            ^~~~~~~~~~~~~
+cargo:warning=src/ffi/lzt_core/node_array/compact_array/CompactSymbolArray.h:49:12: warning:   ‘size_t CompactSymbolArray<unsigned char, BitSequenceArray<DiskCharArray> >::numOfSymbols’ [-Wreorder]
+cargo:warning=     size_t numOfSymbols;
+cargo:warning=            ^~~~~~~~~~~~
+cargo:warning=src/ffi/lzt_core/node_array/compact_array/CompactSymbolArray.h:83:1: warning:   when initialized here [-Wreorder]
+cargo:warning= CompactSymbolArray<TSymbol, TBitSequenceArray>::CompactSymbolArray()
+cargo:warning= ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+cargo:warning=In file included from src/ffi/lzt_core/util/factory.h:12:0,
+cargo:warning=                 from src/ffi/lzt-interface.h:14,
+cargo:warning=                 from src/ffi/lzt-interface.cpp:1:
+cargo:warning=src/ffi/lzt_core/util/../node_array/compact_array_legacy/CompactArray.h: In instantiation of ‘CompactArrayL<TSymbol, TIndex>::CompactArrayL(size_t, size_t, bool) [with TSymbol = unsigned char; TIndex = long int; size_t = long unsigned int]’:
+cargo:warning=src/ffi/lzt_core/util/../node_array/compact_array_legacy/CompactArrayCreator.h:105:6:   required from ‘CompactArrayL<typename TNodeArray::Symbol, typename TNodeArray::Index>* CompactArrayCreatorL<TNodeArray>::createCompactArray() [with TNodeArray = VectorArray<unsigned char, long int>; typename TNodeArray::Index = long int; typename TNodeArray::Symbol = unsigned char]’
+cargo:warning=src/ffi/lzt_core/node_array/compact_array/CompactArrayBuilder.h:68:37:   required from ‘bool CompactArrayBuilder<TS, TI, TBitSequenceArray>::buildSaveCompactArray(WordList<TSymbol>*, std::__cxx11::string, std::__cxx11::string, bool) [with TSymbol = unsigned char; TIndex = long int; TBitSequenceArray = BitSequenceArray<DiskCharArray>; std::__cxx11::string = std::__cxx11::basic_string<char>]’
+cargo:warning=src/ffi/lzt-interface.cpp:23:62:   required from here
+cargo:warning=src/ffi/lzt_core/util/../node_array/compact_array_legacy/CompactArray.h:57:10: warning: ‘CompactArrayL<unsigned char, long int>::enumerated’ will be initialized after [-Wreorder]
+cargo:warning=     bool enumerated;
+cargo:warning=          ^~~~~~~~~~
+cargo:warning=src/ffi/lzt_core/util/../node_array/compact_array_legacy/CompactArray.h:54:12: warning:   ‘size_t CompactArrayL<unsigned char, long int>::bitsPerIndex’ [-Wreorder]
+cargo:warning=     size_t bitsPerIndex;
+cargo:warning=            ^~~~~~~~~~~~
+cargo:warning=src/ffi/lzt_core/util/../node_array/compact_array_legacy/CompactArray.h:81:1: warning:   when initialized here [-Wreorder]
+cargo:warning= CompactArrayL<TSymbol, TIndex>::CompactArrayL(size_t distinct, size_t nodes, bool e)
+cargo:warning= ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+cargo:warning=In file included from src/ffi/lzt_core/util/factory.h:13:0,
+cargo:warning=                 from src/ffi/lzt-interface.h:14,
+cargo:warning=                 from src/ffi/lzt-interface.cpp:1:
+cargo:warning=src/ffi/lzt_core/util/../node_array/compact_array_legacy/CompactArrayCreator.h: In instantiation of ‘void CompactArrayCreatorL<TNodeArray>::calculateFlagOffsets() [with TNodeArray = VectorArray<unsigned char, long int>]’:
+cargo:warning=src/ffi/lzt_core/util/../node_array/compact_array_legacy/CompactArrayCreator.h:109:25:   required from ‘CompactArrayL<typename TNodeArray::Symbol, typename TNodeArray::Index>* CompactArrayCreatorL<TNodeArray>::createCompactArray() [with TNodeArray = VectorArray<unsigned char, long int>; typename TNodeArray::Index = long int; typename TNodeArray::Symbol = unsigned char]’
+cargo:warning=src/ffi/lzt_core/node_array/compact_array/CompactArrayBuilder.h:68:37:   required from ‘bool CompactArrayBuilder<TS, TI, TBitSequenceArray>::buildSaveCompactArray(WordList<TSymbol>*, std::__cxx11::string, std::__cxx11::string, bool) [with TSymbol = unsigned char; TIndex = long int; TBitSequenceArray = BitSequenceArray<DiskCharArray>; std::__cxx11::string = std::__cxx11::basic_string<char>]’
+cargo:warning=src/ffi/lzt-interface.cpp:23:62:   required from here
+cargo:warning=src/ffi/lzt_core/util/../node_array/compact_array_legacy/CompactArrayCreator.h:157:43: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+cargo:warning=             for (size_t j = oldFlags+1; j < flags; ++j) flagOffsets[j] = i;
+cargo:warning=                                         ~~^~~~~~~
+cargo:warning=In file included from src/ffi/lzt_core/node_array/compact_array/CompactSymbolArray.h:11:0,
+cargo:warning=                 from src/ffi/lzt_core/node_array/compact_array/CompactArray.h:8,
+cargo:warning=                 from src/ffi/lzt-interface.h:17,
+cargo:warning=                 from src/ffi/lzt-interface.cpp:1:
+cargo:warning=src/ffi/lzt_core/node_array/compact_array/../../serialization/BitSequenceArray.h: In instantiation of ‘BitSequence BitSequenceArray<TCharArray>::operator[](size_t) const [with TCharArray = DiskCharArray; size_t = long unsigned int]’:
+cargo:warning=src/ffi/lzt_core/node_array/compact_array/CompactArray.h:152:34:   required from ‘CompactArrayNode<TSymbol, TIndex> CompactArray<TSymbol, TIndex, TBitSequenceArray>::operator[](TIndex) [with TSymbol = unsigned char; TIndex = long int; TBitSequenceArray = BitSequenceArray<DiskCharArray>]’
+cargo:warning=src/ffi/lzt_core/util/../dictionary/lz_trie/LzTrie.h:137:29:   required from ‘WordList<typename TNodeArray::Symbol>* LzTrie<TNodeArray>::getWordsByPrefix(const TSymbol*, long int, bool) [with TNodeArray = CompactArray<unsigned char, long int, BitSequenceArray<DiskCharArray> >; typename TNodeArray::Symbol = unsigned char; LzTrie<TNodeArray>::TSymbol = unsigned char]’
+cargo:warning=src/ffi/lzt-interface.cpp:55:66:   required from here
+cargo:warning=src/ffi/lzt_core/node_array/compact_array/../../serialization/BitSequenceArray.h:82:23: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+cargo:warning=     for (int i = 0; i < bitsPerSequence; ++i) {
+cargo:warning=                     ~~^~~~~~~~~~~~~~~~~
+cargo:warning=In file included from src/ffi/lzt_core/util/factory.h:9:0,
+cargo:warning=                 from src/ffi/lzt-interface.h:14,
+cargo:warning=                 from src/ffi/lzt-interface.cpp:1:
+cargo:warning=src/ffi/lzt_core/util/../dictionary/lz_trie/LzTrie.h: In instantiation of ‘void LzTrie<TNodeArray>::beforeVisit(LzTrie<TNodeArray>::TNodeConst) [with TNodeArray = CompactArray<unsigned char, long int, BitSequenceArray<DiskCharArray> >; LzTrie<TNodeArray>::TNodeConst = CompactArrayNode<unsigned char, long int>]’:
+cargo:warning=src/ffi/lzt_core/util/../dictionary/lz_trie/LzTrie.h:188:16:   required from ‘void LzTrie<TNodeArray>::depthFirstSearch(LzTrie<TNodeArray>::TIndex) [with TNodeArray = CompactArray<unsigned char, long int, BitSequenceArray<DiskCharArray> >; LzTrie<TNodeArray>::TIndex = long int]’
+cargo:warning=src/ffi/lzt_core/util/../dictionary/lz_trie/LzTrie.h:167:21:   required from ‘WordList<typename TNodeArray::Symbol>* LzTrie<TNodeArray>::getWordsByPrefix(const TSymbol*, long int, bool) [with TNodeArray = CompactArray<unsigned char, long int, BitSequenceArray<DiskCharArray> >; typename TNodeArray::Symbol = unsigned char; LzTrie<TNodeArray>::TSymbol = unsigned char]’
+cargo:warning=src/ffi/lzt-interface.cpp:55:66:   required from here
+cargo:warning=src/ffi/lzt_core/util/../dictionary/lz_trie/LzTrie.h:220:51: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+cargo:warning=     if (maxWords > 0 && wordList->numberOfWords() >= maxWords) stopSearch=true;
+cargo:warning=src/ffi/lzt_core/util/../dictionary/lz_trie/LzTrie.h: In instantiation of ‘void LzTrie<TNodeArray>::afterVisit(LzTrie<TNodeArray>::TNodeConst) [with TNodeArray = CompactArray<unsigned char, long int, BitSequenceArray<DiskCharArray> >; LzTrie<TNodeArray>::TNodeConst = CompactArrayNode<unsigned char, long int>]’:
+cargo:warning=src/ffi/lzt_core/util/../dictionary/lz_trie/LzTrie.h:193:15:   required from ‘void LzTrie<TNodeArray>::depthFirstSearch(LzTrie<TNodeArray>::TIndex) [with TNodeArray = CompactArray<unsigned char, long int, BitSequenceArray<DiskCharArray> >; LzTrie<TNodeArray>::TIndex = long int]’
+cargo:warning=src/ffi/lzt_core/util/../dictionary/lz_trie/LzTrie.h:167:21:   required from ‘WordList<typename TNodeArray::Symbol>* LzTrie<TNodeArray>::getWordsByPrefix(const TSymbol*, long int, bool) [with TNodeArray = CompactArray<unsigned char, long int, BitSequenceArray<DiskCharArray> >; typename TNodeArray::Symbol = unsigned char; LzTrie<TNodeArray>::TSymbol = unsigned char]’
+cargo:warning=src/ffi/lzt-interface.cpp:55:66:   required from here
+cargo:warning=src/ffi/lzt_core/util/../dictionary/lz_trie/LzTrie.h:224:55: warning: unused parameter ‘node’ [-Wunused-parameter]
+cargo:warning= inline void LzTrie<TNodeArray>::afterVisit(TNodeConst node) {
+cargo:warning=                                                       ^~~~
+cargo:warning=In file included from src/ffi/lzt_core/util/../node_array/compact_array_legacy/CompactArray.h:12:0,
+cargo:warning=                 from src/ffi/lzt_core/util/factory.h:12,
+cargo:warning=                 from src/ffi/lzt-interface.h:14,
+cargo:warning=                 from src/ffi/lzt-interface.cpp:1:
+cargo:warning=src/ffi/lzt_core/util/../node_array/compact_array_legacy/CompactSymbolArray.h: In instantiation of ‘CompactSymbolArrayL<TSymbol>::CompactSymbolArrayL() [with TSymbol = unsigned char]’:
+cargo:warning=src/ffi/lzt_core/util/../node_array/compact_array_legacy/CompactArray.h:83:67:   required from ‘CompactArrayL<TSymbol, TIndex>::CompactArrayL(size_t, size_t, bool) [with TSymbol = unsigned char; TIndex = long int; size_t = long unsigned int]’
+cargo:warning=src/ffi/lzt_core/util/../node_array/compact_array_legacy/CompactArrayCreator.h:105:6:   required from ‘CompactArrayL<typename TNodeArray::Symbol, typename TNodeArray::Index>* CompactArrayCreatorL<TNodeArray>::createCompactArray() [with TNodeArray = VectorArray<unsigned char, long int>; typename TNodeArray::Index = long int; typename TNodeArray::Symbol = unsigned char]’
+cargo:warning=src/ffi/lzt_core/node_array/compact_array/CompactArrayBuilder.h:68:37:   required from ‘bool CompactArrayBuilder<TS, TI, TBitSequenceArray>::buildSaveCompactArray(WordList<TSymbol>*, std::__cxx11::string, std::__cxx11::string, bool) [with TSymbol = unsigned char; TIndex = long int; TBitSequenceArray = BitSequenceArray<DiskCharArray>; std::__cxx11::string = std::__cxx11::basic_string<char>]’
+cargo:warning=src/ffi/lzt-interface.cpp:23:62:   required from here
+cargo:warning=src/ffi/lzt_core/util/../node_array/compact_array_legacy/CompactSymbolArray.h:34:12: warning: ‘CompactSymbolArrayL<unsigned char>::numOfDistinct’ will be initialized after [-Wreorder]
+cargo:warning=     size_t numOfDistinct;
+cargo:warning=            ^~~~~~~~~~~~~
+cargo:warning=src/ffi/lzt_core/util/../node_array/compact_array_legacy/CompactSymbolArray.h:32:12: warning:   ‘size_t CompactSymbolArrayL<unsigned char>::numOfSymbols’ [-Wreorder]
+cargo:warning=     size_t numOfSymbols;
+cargo:warning=            ^~~~~~~~~~~~
+cargo:warning=src/ffi/lzt_core/util/../node_array/compact_array_legacy/CompactSymbolArray.h:47:1: warning:   when initialized here [-Wreorder]
+cargo:warning= CompactSymbolArrayL<TSymbol>::CompactSymbolArrayL()
+cargo:warning= ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+cargo:warning=In file included from src/ffi/lzt_core/node_array/compact_array/CompactSymbolArray.h:11:0,
+cargo:warning=                 from src/ffi/lzt_core/node_array/compact_array/CompactArray.h:8,
+cargo:warning=                 from src/ffi/lzt-interface.h:17,
+cargo:warning=                 from src/ffi/lzt-interface.cpp:1:
+cargo:warning=src/ffi/lzt_core/node_array/compact_array/../../serialization/BitSequenceArray.h: In instantiation of ‘BitSequence BitSequenceArray<TCharArray>::operator[](size_t) const [with TCharArray = MemCharArray; size_t = long unsigned int]’:
+cargo:warning=src/ffi/lzt_core/node_array/compact_array/CompactSymbolArray.h:262:21:   required from ‘void CompactSymbolArray<TSymbol, TBitSequenceArray>::readSymbolsFromStream(std::istream&) [with TSymbol = unsigned char; TBitSequenceArray = BitSequenceArray<DiskCharArray>; std::istream = std::basic_istream<char>]’
+cargo:warning=src/ffi/lzt_core/node_array/compact_array/CompactSymbolArray.h:208:34:   required from ‘bool CompactSymbolArray<TSymbol, TBitSequenceArray>::load(std::__cxx11::string) [with TSymbol = unsigned char; TBitSequenceArray = BitSequenceArray<DiskCharArray>; std::__cxx11::string = std::__cxx11::basic_string<char>]’
+cargo:warning=src/ffi/lzt_core/node_array/compact_array/CompactArray.h:330:9:   required from ‘bool CompactArray<TSymbol, TIndex, TBitSequenceArray>::loadSubstructures(std::__cxx11::string) [with TSymbol = unsigned char; TIndex = long int; TBitSequenceArray = BitSequenceArray<DiskCharArray>; std::__cxx11::string = std::__cxx11::basic_string<char>]’
+cargo:warning=src/ffi/lzt_core/node_array/compact_array/CompactArray.h:247:37:   required from ‘bool CompactArray<TSymbol, TIndex, TBitSequenceArray>::load(std::__cxx11::string) [with TSymbol = unsigned char; TIndex = long int; TBitSequenceArray = BitSequenceArray<DiskCharArray>; std::__cxx11::string = std::__cxx11::basic_string<char>]’
+cargo:warning=src/ffi/lzt-interface.cpp:35:31:   required from here
+cargo:warning=src/ffi/lzt_core/node_array/compact_array/../../serialization/BitSequenceArray.h:82:23: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+cargo:warning=     for (int i = 0; i < bitsPerSequence; ++i) {
+cargo:warning=                     ~~^~~~~~~~~~~~~~~~~
+cargo:warning=In file included from src/ffi/lzt_core/util/../dictionary/char_trie/Trie.h:10:0,
+cargo:warning=                 from src/ffi/lzt_core/util/factory.h:8,
+cargo:warning=                 from src/ffi/lzt-interface.h:14,
+cargo:warning=                 from src/ffi/lzt-interface.cpp:1:
+cargo:warning=src/ffi/lzt_core/util/../dictionary/char_trie/../../node_array/vector_array/VectorArray.h: In instantiation of ‘VectorArray<Tsymbol, Tindex>::VectorArray(Tindex, bool) [with TSymbol = unsigned char; TIndex = long int]’:
+cargo:warning=src/ffi/lzt_core/util/../dictionary/char_trie/Trie.h:121:10:   required from ‘Trie<TNodeArray>::Trie(Trie<TNodeArray>::TIndex, bool) [with TNodeArray = VectorArray<unsigned char, long int>; Trie<TNodeArray>::TIndex = long int]’
+cargo:warning=src/ffi/lzt_core/util/factory.h:23:30:   required from ‘Trie<TNodeArray>* getTrie(WordList<typename TNodeArray::Symbol>&, bool) [with TNodeArray = VectorArray<unsigned char, long int>; typename TNodeArray::Symbol = unsigned char]’
+cargo:warning=src/ffi/lzt_core/util/factory.h:43:49:   required from ‘TNodeArray* getEnumArray(WordList<typename TNodeArray::Symbol>&) [with TNodeArray = VectorArray<unsigned char, long int>; typename TNodeArray::Symbol = unsigned char]’
+cargo:warning=src/ffi/lzt_core/util/factory.h:79:53:   required from ‘TNodeArray* getLzArrayLCT(WordList<typename TNodeArray::Symbol>&, bool) [with TNodeArray = VectorArray<unsigned char, long int>; typename TNodeArray::Symbol = unsigned char]’
+cargo:warning=src/ffi/lzt_core/node_array/compact_array/CompactArrayBuilder.h:66:56:   required from ‘bool CompactArrayBuilder<TS, TI, TBitSequenceArray>::buildSaveCompactArray(WordList<TSymbol>*, std::__cxx11::string, std::__cxx11::string, bool) [with TSymbol = unsigned char; TIndex = long int; TBitSequenceArray = BitSequenceArray<DiskCharArray>; std::__cxx11::string = std::__cxx11::basic_string<char>]’
+cargo:warning=src/ffi/lzt-interface.cpp:23:62:   required from here
+cargo:warning=src/ffi/lzt_core/util/../dictionary/char_trie/../../node_array/vector_array/VectorArray.h:61:18: warning: ‘VectorArray<unsigned char, long int>::cow’ will be initialized after [-Wreorder]
+cargo:warning=     vector<bool> cow;
+cargo:warning=                  ^~~
+cargo:warning=src/ffi/lzt_core/util/../dictionary/char_trie/../../node_array/vector_array/VectorArray.h:59:18: warning:   ‘std::vector<bool> VectorArray<unsigned char, long int>::eow’ [-Wreorder]
+cargo:warning=     vector<bool> eow;
+cargo:warning=                  ^~~
+cargo:warning=src/ffi/lzt_core/util/../dictionary/char_trie/../../node_array/vector_array/VectorArray.h:81:1: warning:   when initialized here [-Wreorder]
+cargo:warning= VectorArray<Tsymbol, Tindex>::VectorArray(Tindex cap, bool en):
+cargo:warning= ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+cargo:warning=src/ffi/lzt_core/util/../dictionary/char_trie/../../node_array/vector_array/VectorArray.h:59:18: warning: ‘VectorArray<unsigned char, long int>::eow’ will be initialized after [-Wreorder]
+cargo:warning=     vector<bool> eow;
+cargo:warning=                  ^~~
+cargo:warning=src/ffi/lzt_core/util/../dictionary/char_trie/../../node_array/vector_array/VectorArray.h:49:12: warning:   ‘long int VectorArray<unsigned char, long int>::capacity’ [-Wreorder]
+cargo:warning=     TIndex capacity;
+cargo:warning=            ^~~~~~~~
+cargo:warning=src/ffi/lzt_core/util/../dictionary/char_trie/../../node_array/vector_array/VectorArray.h:81:1: warning:   when initialized here [-Wreorder]
+cargo:warning= VectorArray<Tsymbol, Tindex>::VectorArray(Tindex cap, bool en):
+cargo:warning= ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+cargo:warning=In file included from src/ffi/lzt_core/node_array/compact_array/CompactSymbolArray.h:11:0,
+cargo:warning=                 from src/ffi/lzt_core/node_array/compact_array/CompactArray.h:8,
+cargo:warning=                 from src/ffi/lzt-interface.h:17,
+cargo:warning=                 from src/ffi/lzt-interface.cpp:1:
+cargo:warning=src/ffi/lzt_core/node_array/compact_array/../../serialization/BitSequenceArray.h: In instantiation of ‘void BitSequenceArray<TCharArray>::setSequence(size_t, BitSequence) [with TCharArray = MemCharArray; size_t = long unsigned int]’:
+cargo:warning=src/ffi/lzt_core/node_array/compact_array/CompactSymbolArray.h:250:17:   required from ‘void CompactSymbolArray<TSymbol, TBitSequenceArray>::writeSymbolsToStream(std::ostream&) [with TSymbol = unsigned char; TBitSequenceArray = BitSequenceArray<DiskCharArray>; std::ostream = std::basic_ostream<char>]’
+cargo:warning=src/ffi/lzt_core/node_array/compact_array/CompactSymbolArray.h:175:33:   required from ‘bool CompactSymbolArray<TSymbol, TBitSequenceArray>::persist(std::__cxx11::string) [with TSymbol = unsigned char; TBitSequenceArray = BitSequenceArray<DiskCharArray>; std::__cxx11::string = std::__cxx11::basic_string<char>]’
+cargo:warning=src/ffi/lzt_core/node_array/compact_array/CompactArray.h:316:9:   required from ‘bool CompactArray<TSymbol, TIndex, TBitSequenceArray>::persistSubstructures(std::__cxx11::string) [with TSymbol = unsigned char; TIndex = long int; TBitSequenceArray = BitSequenceArray<DiskCharArray>; std::__cxx11::string = std::__cxx11::basic_string<char>]’
+cargo:warning=src/ffi/lzt_core/node_array/compact_array/CompactArray.h:221:40:   required from ‘bool CompactArray<TSymbol, TIndex, TBitSequenceArray>::persist(std::__cxx11::string) [with TSymbol = unsigned char; TIndex = long int; TBitSequenceArray = BitSequenceArray<DiskCharArray>; std::__cxx11::string = std::__cxx11::basic_string<char>]’
+cargo:warning=src/ffi/lzt_core/node_array/compact_array/CompactArrayBuilder.h:83:10:   required from ‘bool CompactArrayBuilder<TS, TI, TBitSequenceArray>::buildSaveCompactArray(WordList<TSymbol>*, std::__cxx11::string, std::__cxx11::string, bool) [with TSymbol = unsigned char; TIndex = long int; TBitSequenceArray = BitSequenceArray<DiskCharArray>; std::__cxx11::string = std::__cxx11::basic_string<char>]’
+cargo:warning=src/ffi/lzt-interface.cpp:23:62:   required from here
+cargo:warning=src/ffi/lzt_core/node_array/compact_array/../../serialization/BitSequenceArray.h:201:23: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+cargo:warning=     for (int i = 0; i < bitsPerSequence; ++i) {
+cargo:warning=                     ~~^~~~~~~~~~~~~~~~~
+cargo:warning=In file included from src/ffi/lzt_core/node_array/compact_array/../../serialization/BitSequenceArray.h:13:0,
+cargo:warning=                 from src/ffi/lzt_core/node_array/compact_array/CompactSymbolArray.h:11,
+cargo:warning=                 from src/ffi/lzt_core/node_array/compact_array/CompactArray.h:8,
+cargo:warning=                 from src/ffi/lzt-interface.h:17,
+cargo:warning=                 from src/ffi/lzt-interface.cpp:1:
+cargo:warning=src/ffi/lzt_core/node_array/compact_array/../../serialization/../util/filesystem_utils.h: At global scope:
+cargo:warning=src/ffi/lzt_core/node_array/compact_array/../../serialization/../util/filesystem_utils.h:25:22: warning: ‘InfoAndResult file_info(std::__cxx11::string)’ declared ‘static’ but never defined [-Wunused-function]
+cargo:warning= static InfoAndResult file_info(string fname);
+cargo:warning=                      ^~~~~~~~~
+cargo:warning=In file included from src/ffi/lzt_core/util/factory.h:9:0,
+cargo:warning=                 from src/ffi/lzt-interface.h:14,
+cargo:warning=                 from src/ffi/lzt-interface.cpp:1:
+cargo:warning=src/ffi/lzt_core/util/../dictionary/lz_trie/LzTrie.h: In instantiation of ‘bool LzTrie<TNodeArray>::compressedContains(Titerator) const [with TIterator = const unsigned char*; TNodeArray = CompactArray<unsigned char, long int, BitSequenceArray<DiskCharArray> >]’:
+cargo:warning=src/ffi/lzt_core/util/../dictionary/lz_trie/LzTrie.h:115:30:   required from ‘bool LzTrie<TNodeArray>::containsWord(const TSymbol*) [with TNodeArray = CompactArray<unsigned char, long int, BitSequenceArray<DiskCharArray> >; LzTrie<TNodeArray>::TSymbol = unsigned char]’
+cargo:warning=src/ffi/lzt-interface.cpp:73:1:   required from here
+cargo:warning=src/ffi/lzt_core/util/../dictionary/lz_trie/LzTrie.h:469:14: warning: variable ‘pop’ set but not used [-Wunused-but-set-variable]
+cargo:warning=         bool pop = false;
+cargo:warning=              ^~~
+cargo:warning=In file included from src/ffi/lzt-interface.h:13:0,
+cargo:warning=                 from src/ffi/lzt-interface.cpp:1:
+cargo:warning=src/ffi/lzt_core/util/WordFileReader.h: In instantiation of ‘WordList<TSymbol>* WordFileReader<TSymbol>::getWordsCSD() [with TSymbol = unsigned char]’:
+cargo:warning=src/ffi/lzt_core/util/WordFileReader.h:93:33:   required from ‘WordList<TSymbol>* WordFileReader<TSymbol>::getWords() [with TSymbol = unsigned char]’
+cargo:warning=src/ffi/lzt_core/util/../compress/lz_compressor/../ICompressor.h:44:28:   required from ‘TNodeArray* ICompressor<TNodeArray>::compressWords(std::__cxx11::string) [with TNodeArray = VectorArray<unsigned char, long int>; std::__cxx11::string = std::__cxx11::basic_string<char>]’
+cargo:warning=src/ffi/lzt-interface.cpp:73:1:   required from here
+cargo:warning=src/ffi/lzt_core/util/WordFileReader.h:138:28: warning: unused variable ‘elements’ [-Wunused-variable]
+cargo:warning=         uint lenCurrent=0, elements=0, maxlen=0;
+cargo:warning=                            ^~~~~~~~
+exit code: 0
+running: "c++" "-O0" "-ffunction-sections" "-fdata-sections" "-fPIC" "-g" "-fno-omit-frame-pointer" "-m64" "-Wall" "-Wextra" "-o" "/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out/src/ffi/lzt-utils.o" "-c" "src/ffi/lzt-utils.cpp"
+cargo:warning=In file included from src/ffi/lzt_core/util/../node_array/compact_array_legacy/../../serialization_legacy/BitSequence.h:8:0,
+cargo:warning=                 from src/ffi/lzt_core/util/../node_array/compact_array_legacy/../../serialization_legacy/BitSequenceArray.h:6,
+cargo:warning=                 from src/ffi/lzt_core/util/../node_array/compact_array_legacy/CompactArray.h:10,
+cargo:warning=                 from src/ffi/lzt_core/util/factory.h:12,
+cargo:warning=                 from src/ffi/lzt-interface-old.h:14,
+cargo:warning=                 from src/ffi/lzt-utils.h:4,
+cargo:warning=                 from src/ffi/lzt-utils.cpp:1:
+cargo:warning=src/ffi/lzt_core/util/../node_array/compact_array_legacy/../../serialization_legacy/../debug/lzt_test.h:26:1: warning: multi-line comment [-Wcomment]
+cargo:warning= //        #define TEST_ASSERT(assert) \
+cargo:warning= ^
+cargo:warning=src/ffi/lzt_core/util/../node_array/compact_array_legacy/../../serialization_legacy/../debug/lzt_test.h:31:1: warning: multi-line comment [-Wcomment]
+cargo:warning= //        #define TEST_ASSERT_MESSAGE(assert, message) \
+cargo:warning= ^
+cargo:warning=In file included from src/ffi/lzt_core/util/../dictionary/util/WordList.h:10:0,
+cargo:warning=                 from src/ffi/lzt_core/util/WordFileReader.h:11,
+cargo:warning=                 from src/ffi/lzt-interface-old.h:13,
+cargo:warning=                 from src/ffi/lzt-utils.h:4,
+cargo:warning=                 from src/ffi/lzt-utils.cpp:1:
+cargo:warning=src/ffi/lzt_core/util/../dictionary/util/../../util/utils.h: In function ‘size_t hashCombine(size_t, size_t)’:
+cargo:warning=src/ffi/lzt_core/util/../dictionary/util/../../util/utils.h:117:40: warning: suggest parentheses around ‘+’ inside ‘<<’ [-Wparentheses]
+cargo:warning=     hash_cum ^= hash_part + 0x9e3779b9 + hash_cum << 6 + hash_cum >> 2;
+cargo:warning=                 ~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~
+cargo:warning=In file included from src/ffi/lzt_core/util/../node_array/compact_array_legacy/../../serialization_legacy/BitSequenceArray.h:6:0,
+cargo:warning=                 from src/ffi/lzt_core/util/../node_array/compact_array_legacy/CompactArray.h:10,
+cargo:warning=                 from src/ffi/lzt_core/util/factory.h:12,
+cargo:warning=                 from src/ffi/lzt-interface-old.h:14,
+cargo:warning=                 from src/ffi/lzt-utils.h:4,
+cargo:warning=                 from src/ffi/lzt-utils.cpp:1:
+cargo:warning=src/ffi/lzt_core/util/../node_array/compact_array_legacy/../../serialization_legacy/BitSequence.h: In member function ‘int BitSequence::maxNonzeroBit() const’:
+cargo:warning=src/ffi/lzt_core/util/../node_array/compact_array_legacy/../../serialization_legacy/BitSequence.h:83:9: warning: unused variable ‘h’ [-Wunused-variable]
+cargo:warning=     int h = 0;
+cargo:warning=         ^
+cargo:warning=In file included from src/ffi/lzt_core/util/../node_array/compact_array_legacy/CompactArray.h:10:0,
+cargo:warning=                 from src/ffi/lzt_core/util/factory.h:12,
+cargo:warning=                 from src/ffi/lzt-interface-old.h:14,
+cargo:warning=                 from src/ffi/lzt-utils.h:4,
+cargo:warning=                 from src/ffi/lzt-utils.cpp:1:
+cargo:warning=src/ffi/lzt_core/util/../node_array/compact_array_legacy/../../serialization_legacy/BitSequenceArray.h: In member function ‘BitSequence BitSequenceArrayL::operator[](size_t) const’:
+cargo:warning=src/ffi/lzt_core/util/../node_array/compact_array_legacy/../../serialization_legacy/BitSequenceArray.h:64:23: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+cargo:warning=     for (int i = 0; i < bitsPerSequence; ++i) {
+cargo:warning=                     ~~^~~~~~~~~~~~~~~~~
+cargo:warning=In file included from src/ffi/lzt_core/util/../compress/sa_compressor/LCPTreeCompressor.hpp:11:0,
+cargo:warning=                 from src/ffi/lzt_core/util/factory.h:15,
+cargo:warning=                 from src/ffi/lzt-interface-old.h:14,
+cargo:warning=                 from src/ffi/lzt-utils.h:4,
+cargo:warning=                 from src/ffi/lzt-utils.cpp:1:
+cargo:warning=src/ffi/lzt_core/util/../compress/sa_compressor/SaCompressor.hpp: In constructor ‘SaCompressorConfig::SaCompressorConfig()’:
+cargo:warning=src/ffi/lzt_core/util/../compress/sa_compressor/SaCompressor.hpp:85:12: warning: ‘SaCompressorConfig::grShuffles’ will be initialized after [-Wreorder]
+cargo:warning=     size_t grShuffles;
+cargo:warning=            ^~~~~~~~~~
+cargo:warning=src/ffi/lzt_core/util/../compress/sa_compressor/SaCompressor.hpp:77:10: warning:   ‘bool SaCompressorConfig::visualize’ [-Wreorder]
+cargo:warning=     bool visualize;
+cargo:warning=          ^~~~~~~~~
+cargo:warning=src/ffi/lzt_core/util/../compress/sa_compressor/SaCompressor.hpp:34:5: warning:   when initialized here [-Wreorder]
+cargo:warning=     SaCompressorConfig():
+cargo:warning=     ^~~~~~~~~~~~~~~~~~
+cargo:warning=src/ffi/lzt_core/util/../compress/sa_compressor/SaCompressor.hpp: In member function ‘void SaCompressor<TNodeArray>::replaceSequencesLcp(SaCompressor<TNodeArray>::TIndex, SaCompressor<TNodeArray>::TIndex, SaCompressor<TNodeArray>::TIndex)’:
+cargo:warning=src/ffi/lzt_core/util/../compress/sa_compressor/SaCompressor.hpp:1620:5: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+cargo:warning=     if (b >= r) return; if (len < 2) return;
+cargo:warning=     ^~
+cargo:warning=src/ffi/lzt_core/util/../compress/sa_compressor/SaCompressor.hpp:1620:25: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+cargo:warning=     if (b >= r) return; if (len < 2) return;
+cargo:warning=                         ^~
+cargo:warning=src/ffi/lzt-utils.cpp: In function ‘TSymbol* stringToTSymbolString(std::__cxx11::string)’:
+cargo:warning=src/ffi/lzt-utils.cpp:10:19: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+cargo:warning=     for (i = 0; i < str.size(); ++i) tss[i] = (TSymbol)str[i];
+cargo:warning=                 ~~^~~~~~~~~~~~
+cargo:warning=src/ffi/lzt-utils.cpp: In function ‘std::vector<unsigned char> string2SymbolVec(std::__cxx11::string)’:
+cargo:warning=src/ffi/lzt-utils.cpp:20:23: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+cargo:warning=     for (int i = 0; i < s.size(); ++i) sv[i] = (TSymbol)s[i];
+cargo:warning=                     ~~^~~~~~~~~~
+cargo:warning=src/ffi/lzt-utils.cpp: In function ‘std::__cxx11::string symbolVec2string(std::vector<unsigned char>)’:
+cargo:warning=src/ffi/lzt-utils.cpp:40:23: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+cargo:warning=     for (int j = 0; j < w.size(); ++j) s.push_back(w[j]);
+cargo:warning=                     ~~^~~~~~~~~~
+cargo:warning=src/ffi/lzt-utils.cpp: In function ‘WordList<unsigned char>* flatwords2WordList(FlatWordList<unsigned char>)’:
+cargo:warning=src/ffi/lzt-utils.cpp:65:25: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+cargo:warning=     for(size_t i = 0; i < fwords.length; ++i) {
+cargo:warning=                       ~~^~~~~~~~~~~~~~~
+cargo:warning=In file included from src/ffi/lzt-interface-old.h:13:0,
+cargo:warning=                 from src/ffi/lzt-utils.h:4,
+cargo:warning=                 from src/ffi/lzt-utils.cpp:1:
+cargo:warning=src/ffi/lzt_core/util/WordFileReader.h: In instantiation of ‘WordList<TSymbol>* WordFileReader<TSymbol>::getWordsCSD() [with TSymbol = unsigned char]’:
+cargo:warning=src/ffi/lzt_core/util/WordFileReader.h:93:33:   required from ‘WordList<TSymbol>* WordFileReader<TSymbol>::getWords() [with TSymbol = unsigned char]’
+cargo:warning=src/ffi/lzt-utils.cpp:114:48:   required from here
+cargo:warning=src/ffi/lzt_core/util/WordFileReader.h:138:28: warning: unused variable ‘elements’ [-Wunused-variable]
+cargo:warning=         uint lenCurrent=0, elements=0, maxlen=0;
+cargo:warning=                            ^~~~~~~~
+exit code: 0
+running: "c++" "-O0" "-ffunction-sections" "-fdata-sections" "-fPIC" "-g" "-fno-omit-frame-pointer" "-m64" "-Wall" "-Wextra" "-o" "/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out/src/ffi/lzt_core/node_array/na_utils.o" "-c" "src/ffi/lzt_core/node_array/na_utils.cpp"
+exit code: 0
+running: "c++" "-O0" "-ffunction-sections" "-fdata-sections" "-fPIC" "-g" "-fno-omit-frame-pointer" "-m64" "-Wall" "-Wextra" "-o" "/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out/src/ffi/lzt_core/node_array/util/CmmExporter.o" "-c" "src/ffi/lzt_core/node_array/util/CmmExporter.cpp"
+exit code: 0
+running: "c++" "-O0" "-ffunction-sections" "-fdata-sections" "-fPIC" "-g" "-fno-omit-frame-pointer" "-m64" "-Wall" "-Wextra" "-o" "/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out/src/ffi/lzt_core/node_array/na_browser/NodeArrayBrowser.o" "-c" "src/ffi/lzt_core/node_array/na_browser/NodeArrayBrowser.cpp"
+cargo:warning=src/ffi/lzt_core/node_array/na_browser/NodeArrayBrowser.cpp: In copy constructor ‘NodeArrayBrowser::NodeArrayBrowser(const NodeArrayBrowser&)’:
+cargo:warning=src/ffi/lzt_core/node_array/na_browser/NodeArrayBrowser.cpp:16:60: warning: unused parameter ‘orig’ [-Wunused-parameter]
+cargo:warning= NodeArrayBrowser::NodeArrayBrowser(const NodeArrayBrowser& orig) {
+cargo:warning=                                                            ^~~~
+exit code: 0
+running: "c++" "-O0" "-ffunction-sections" "-fdata-sections" "-fPIC" "-g" "-fno-omit-frame-pointer" "-m64" "-Wall" "-Wextra" "-o" "/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out/src/ffi/lzt_core/node_array/types/symbol/char/char_symbol.o" "-c" "src/ffi/lzt_core/node_array/types/symbol/char/char_symbol.cpp"
+exit code: 0
+running: "c++" "-O0" "-ffunction-sections" "-fdata-sections" "-fPIC" "-g" "-fno-omit-frame-pointer" "-m64" "-Wall" "-Wextra" "-o" "/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out/src/ffi/lzt_core/node_array/concepts/instantiator.o" "-c" "src/ffi/lzt_core/node_array/concepts/instantiator.cpp"
+exit code: 0
+running: "c++" "-O0" "-ffunction-sections" "-fdata-sections" "-fPIC" "-g" "-fno-omit-frame-pointer" "-m64" "-Wall" "-Wextra" "-o" "/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out/src/ffi/lzt_core/util/TempFile.o" "-c" "src/ffi/lzt_core/util/TempFile.cpp"
+cargo:warning=In file included from src/ffi/lzt_core/util/TempFile.h:4:0,
+cargo:warning=                 from src/ffi/lzt_core/util/TempFile.cpp:1:
+cargo:warning=src/ffi/lzt_core/util/utils.h: In function ‘size_t hashCombine(size_t, size_t)’:
+cargo:warning=src/ffi/lzt_core/util/utils.h:117:40: warning: suggest parentheses around ‘+’ inside ‘<<’ [-Wparentheses]
+cargo:warning=     hash_cum ^= hash_part + 0x9e3779b9 + hash_cum << 6 + hash_cum >> 2;
+cargo:warning=                 ~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~
+cargo:warning=In file included from src/ffi/lzt_core/util/TempFile.h:5:0,
+cargo:warning=                 from src/ffi/lzt_core/util/TempFile.cpp:1:
+cargo:warning=src/ffi/lzt_core/util/filesystem_utils.h: At global scope:
+cargo:warning=src/ffi/lzt_core/util/filesystem_utils.h:25:22: warning: ‘InfoAndResult file_info(std::__cxx11::string)’ declared ‘static’ but never defined [-Wunused-function]
+cargo:warning= static InfoAndResult file_info(string fname);
+cargo:warning=                      ^~~~~~~~~
+exit code: 0
+running: "c++" "-O0" "-ffunction-sections" "-fdata-sections" "-fPIC" "-g" "-fno-omit-frame-pointer" "-m64" "-Wall" "-Wextra" "-o" "/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out/src/ffi/lzt_core/util/etimer.o" "-c" "src/ffi/lzt_core/util/etimer.cpp"
+exit code: 0
+running: "c++" "-O0" "-ffunction-sections" "-fdata-sections" "-fPIC" "-g" "-fno-omit-frame-pointer" "-m64" "-Wall" "-Wextra" "-o" "/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out/src/ffi/lzt_core/util/Timer.o" "-c" "src/ffi/lzt_core/util/Timer.cpp"
+cargo:warning=src/ffi/lzt_core/util/Timer.cpp: In copy constructor ‘Timer::Timer(const Timer&)’:
+cargo:warning=src/ffi/lzt_core/util/Timer.cpp:6:27: warning: unused parameter ‘orig’ [-Wunused-parameter]
+cargo:warning= Timer::Timer(const Timer& orig) {
+cargo:warning=                           ^~~~
+exit code: 0
+running: "c++" "-O0" "-ffunction-sections" "-fdata-sections" "-fPIC" "-g" "-fno-omit-frame-pointer" "-m64" "-Wall" "-Wextra" "-o" "/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out/src/ffi/lzt_core/util/utils.o" "-c" "src/ffi/lzt_core/util/utils.cpp"
+cargo:warning=In file included from src/ffi/lzt_core/util/utils.cpp:3:0:
+cargo:warning=src/ffi/lzt_core/util/utils.h: In function ‘size_t hashCombine(size_t, size_t)’:
+cargo:warning=src/ffi/lzt_core/util/utils.h:117:40: warning: suggest parentheses around ‘+’ inside ‘<<’ [-Wparentheses]
+cargo:warning=     hash_cum ^= hash_part + 0x9e3779b9 + hash_cum << 6 + hash_cum >> 2;
+cargo:warning=                 ~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~
+exit code: 0
+running: "c++" "-O0" "-ffunction-sections" "-fdata-sections" "-fPIC" "-g" "-fno-omit-frame-pointer" "-m64" "-Wall" "-Wextra" "-o" "/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out/src/ffi/lzt_core/dictionary/lztrie_dict/huffman/HuffmanCodecCreator.o" "-c" "src/ffi/lzt_core/dictionary/lztrie_dict/huffman/HuffmanCodecCreator.cpp"
+cargo:warning=In file included from src/ffi/lzt_core/dictionary/lztrie_dict/huffman/../../../serialization_legacy/BitSequence.h:8:0,
+cargo:warning=                 from src/ffi/lzt_core/dictionary/lztrie_dict/huffman/../../../serialization_legacy/BitSequenceArray.h:6,
+cargo:warning=                 from src/ffi/lzt_core/dictionary/lztrie_dict/huffman/HuffmanDecoder.h:7,
+cargo:warning=                 from src/ffi/lzt_core/dictionary/lztrie_dict/huffman/HuffmanCodecCreator.h:6,
+cargo:warning=                 from src/ffi/lzt_core/dictionary/lztrie_dict/huffman/HuffmanCodecCreator.cpp:4:
+cargo:warning=src/ffi/lzt_core/dictionary/lztrie_dict/huffman/../../../serialization_legacy/../debug/lzt_test.h:26:1: warning: multi-line comment [-Wcomment]
+cargo:warning= //        #define TEST_ASSERT(assert) \
+cargo:warning= ^
+cargo:warning=src/ffi/lzt_core/dictionary/lztrie_dict/huffman/../../../serialization_legacy/../debug/lzt_test.h:31:1: warning: multi-line comment [-Wcomment]
+cargo:warning= //        #define TEST_ASSERT_MESSAGE(assert, message) \
+cargo:warning= ^
+cargo:warning=In file included from src/ffi/lzt_core/dictionary/lztrie_dict/huffman/../../../serialization_legacy/BitSequenceArray.h:6:0,
+cargo:warning=                 from src/ffi/lzt_core/dictionary/lztrie_dict/huffman/HuffmanDecoder.h:7,
+cargo:warning=                 from src/ffi/lzt_core/dictionary/lztrie_dict/huffman/HuffmanCodecCreator.h:6,
+cargo:warning=                 from src/ffi/lzt_core/dictionary/lztrie_dict/huffman/HuffmanCodecCreator.cpp:4:
+cargo:warning=src/ffi/lzt_core/dictionary/lztrie_dict/huffman/../../../serialization_legacy/BitSequence.h: In member function ‘int BitSequence::maxNonzeroBit() const’:
+cargo:warning=src/ffi/lzt_core/dictionary/lztrie_dict/huffman/../../../serialization_legacy/BitSequence.h:83:9: warning: unused variable ‘h’ [-Wunused-variable]
+cargo:warning=     int h = 0;
+cargo:warning=         ^
+cargo:warning=In file included from src/ffi/lzt_core/dictionary/lztrie_dict/huffman/HuffmanDecoder.h:7:0,
+cargo:warning=                 from src/ffi/lzt_core/dictionary/lztrie_dict/huffman/HuffmanCodecCreator.h:6,
+cargo:warning=                 from src/ffi/lzt_core/dictionary/lztrie_dict/huffman/HuffmanCodecCreator.cpp:4:
+cargo:warning=src/ffi/lzt_core/dictionary/lztrie_dict/huffman/../../../serialization_legacy/BitSequenceArray.h: In member function ‘BitSequence BitSequenceArrayL::operator[](size_t) const’:
+cargo:warning=src/ffi/lzt_core/dictionary/lztrie_dict/huffman/../../../serialization_legacy/BitSequenceArray.h:64:23: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+cargo:warning=     for (int i = 0; i < bitsPerSequence; ++i) {
+cargo:warning=                     ~~^~~~~~~~~~~~~~~~~
+cargo:warning=In file included from src/ffi/lzt_core/dictionary/lztrie_dict/huffman/HuffmanCodecCreator.cpp:4:0:
+cargo:warning=src/ffi/lzt_core/dictionary/lztrie_dict/huffman/HuffmanCodecCreator.h: In constructor ‘HuffmanCodecCreator::HuffmanCodecCreator(size_t, const size_t*)’:
+cargo:warning=src/ffi/lzt_core/dictionary/lztrie_dict/huffman/HuffmanCodecCreator.h:30:19: warning: ‘HuffmanCodecCreator::freqs’ will be initialized after [-Wreorder]
+cargo:warning=     const size_t *freqs;
+cargo:warning=                   ^~~~~
+cargo:warning=src/ffi/lzt_core/dictionary/lztrie_dict/huffman/HuffmanCodecCreator.h:24:12: warning:   ‘size_t HuffmanCodecCreator::N’ [-Wreorder]
+cargo:warning=     size_t N;
+cargo:warning=            ^
+cargo:warning=src/ffi/lzt_core/dictionary/lztrie_dict/huffman/HuffmanCodecCreator.cpp:14:1: warning:   when initialized here [-Wreorder]
+cargo:warning= HuffmanCodecCreator::HuffmanCodecCreator(size_t numSymbols, const size_t* freq):
+cargo:warning= ^~~~~~~~~~~~~~~~~~~
+cargo:warning=src/ffi/lzt_core/dictionary/lztrie_dict/huffman/HuffmanCodecCreator.cpp: In member function ‘void HuffmanCodecCreator::calcStartCodes()’:
+cargo:warning=src/ffi/lzt_core/dictionary/lztrie_dict/huffman/HuffmanCodecCreator.cpp:96:24: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+cargo:warning=         if (lengths[i] > maxLen) maxLen = lengths[i];
+cargo:warning=             ~~~~~~~~~~~^~~~~~~~
+exit code: 0
+running: "c++" "-O0" "-ffunction-sections" "-fdata-sections" "-fPIC" "-g" "-fno-omit-frame-pointer" "-m64" "-Wall" "-Wextra" "-o" "/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out/src/ffi/lzt_core/dictionary/lztrie_dict/huffman/HuffmanCoder.o" "-c" "src/ffi/lzt_core/dictionary/lztrie_dict/huffman/HuffmanCoder.cpp"
+cargo:warning=In file included from src/ffi/lzt_core/dictionary/lztrie_dict/huffman/../../../serialization_legacy/BitSequence.h:8:0,
+cargo:warning=                 from src/ffi/lzt_core/dictionary/lztrie_dict/huffman/HuffmanCode.h:4,
+cargo:warning=                 from src/ffi/lzt_core/dictionary/lztrie_dict/huffman/HuffmanCoder.h:6,
+cargo:warning=                 from src/ffi/lzt_core/dictionary/lztrie_dict/huffman/HuffmanCoder.cpp:1:
+cargo:warning=src/ffi/lzt_core/dictionary/lztrie_dict/huffman/../../../serialization_legacy/../debug/lzt_test.h:26:1: warning: multi-line comment [-Wcomment]
+cargo:warning= //        #define TEST_ASSERT(assert) \
+cargo:warning= ^
+cargo:warning=src/ffi/lzt_core/dictionary/lztrie_dict/huffman/../../../serialization_legacy/../debug/lzt_test.h:31:1: warning: multi-line comment [-Wcomment]
+cargo:warning= //        #define TEST_ASSERT_MESSAGE(assert, message) \
+cargo:warning= ^
+cargo:warning=In file included from src/ffi/lzt_core/dictionary/lztrie_dict/huffman/HuffmanCode.h:4:0,
+cargo:warning=                 from src/ffi/lzt_core/dictionary/lztrie_dict/huffman/HuffmanCoder.h:6,
+cargo:warning=                 from src/ffi/lzt_core/dictionary/lztrie_dict/huffman/HuffmanCoder.cpp:1:
+cargo:warning=src/ffi/lzt_core/dictionary/lztrie_dict/huffman/../../../serialization_legacy/BitSequence.h: In member function ‘int BitSequence::maxNonzeroBit() const’:
+cargo:warning=src/ffi/lzt_core/dictionary/lztrie_dict/huffman/../../../serialization_legacy/BitSequence.h:83:9: warning: unused variable ‘h’ [-Wunused-variable]
+cargo:warning=     int h = 0;
+cargo:warning=         ^
+exit code: 0
+running: "c++" "-O0" "-ffunction-sections" "-fdata-sections" "-fPIC" "-g" "-fno-omit-frame-pointer" "-m64" "-Wall" "-Wextra" "-o" "/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out/src/ffi/lzt_core/dictionary/lztrie_dict/huffman/HuffmanDecoder.o" "-c" "src/ffi/lzt_core/dictionary/lztrie_dict/huffman/HuffmanDecoder.cpp"
+cargo:warning=In file included from src/ffi/lzt_core/dictionary/lztrie_dict/huffman/../../../serialization_legacy/BitSequence.h:8:0,
+cargo:warning=                 from src/ffi/lzt_core/dictionary/lztrie_dict/huffman/../../../serialization_legacy/BitSequenceArray.h:6,
+cargo:warning=                 from src/ffi/lzt_core/dictionary/lztrie_dict/huffman/HuffmanDecoder.h:7,
+cargo:warning=                 from src/ffi/lzt_core/dictionary/lztrie_dict/huffman/HuffmanDecoder.cpp:1:
+cargo:warning=src/ffi/lzt_core/dictionary/lztrie_dict/huffman/../../../serialization_legacy/../debug/lzt_test.h:26:1: warning: multi-line comment [-Wcomment]
+cargo:warning= //        #define TEST_ASSERT(assert) \
+cargo:warning= ^
+cargo:warning=src/ffi/lzt_core/dictionary/lztrie_dict/huffman/../../../serialization_legacy/../debug/lzt_test.h:31:1: warning: multi-line comment [-Wcomment]
+cargo:warning= //        #define TEST_ASSERT_MESSAGE(assert, message) \
+cargo:warning= ^
+cargo:warning=In file included from src/ffi/lzt_core/dictionary/lztrie_dict/huffman/../../../serialization_legacy/BitSequenceArray.h:6:0,
+cargo:warning=                 from src/ffi/lzt_core/dictionary/lztrie_dict/huffman/HuffmanDecoder.h:7,
+cargo:warning=                 from src/ffi/lzt_core/dictionary/lztrie_dict/huffman/HuffmanDecoder.cpp:1:
+cargo:warning=src/ffi/lzt_core/dictionary/lztrie_dict/huffman/../../../serialization_legacy/BitSequence.h: In member function ‘int BitSequence::maxNonzeroBit() const’:
+cargo:warning=src/ffi/lzt_core/dictionary/lztrie_dict/huffman/../../../serialization_legacy/BitSequence.h:83:9: warning: unused variable ‘h’ [-Wunused-variable]
+cargo:warning=     int h = 0;
+cargo:warning=         ^
+cargo:warning=In file included from src/ffi/lzt_core/dictionary/lztrie_dict/huffman/HuffmanDecoder.h:7:0,
+cargo:warning=                 from src/ffi/lzt_core/dictionary/lztrie_dict/huffman/HuffmanDecoder.cpp:1:
+cargo:warning=src/ffi/lzt_core/dictionary/lztrie_dict/huffman/../../../serialization_legacy/BitSequenceArray.h: In member function ‘BitSequence BitSequenceArrayL::operator[](size_t) const’:
+cargo:warning=src/ffi/lzt_core/dictionary/lztrie_dict/huffman/../../../serialization_legacy/BitSequenceArray.h:64:23: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+cargo:warning=     for (int i = 0; i < bitsPerSequence; ++i) {
+cargo:warning=                     ~~^~~~~~~~~~~~~~~~~
+exit code: 0
+running: "c++" "-O0" "-ffunction-sections" "-fdata-sections" "-fPIC" "-g" "-fno-omit-frame-pointer" "-m64" "-Wall" "-Wextra" "-o" "/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out/src/ffi/lzt_core/serialization_legacy/BitPointer.o" "-c" "src/ffi/lzt_core/serialization_legacy/BitPointer.cpp"
+exit code: 0
+running: "c++" "-O0" "-ffunction-sections" "-fdata-sections" "-fPIC" "-g" "-fno-omit-frame-pointer" "-m64" "-Wall" "-Wextra" "-o" "/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out/src/ffi/lzt_core/serialization_legacy/SerializationUtils.o" "-c" "src/ffi/lzt_core/serialization_legacy/SerializationUtils.cpp"
+cargo:warning=In file included from src/ffi/lzt_core/serialization_legacy/BitSequence.h:8:0,
+cargo:warning=                 from src/ffi/lzt_core/serialization_legacy/SerializationUtils.h:5,
+cargo:warning=                 from src/ffi/lzt_core/serialization_legacy/SerializationUtils.cpp:1:
+cargo:warning=src/ffi/lzt_core/serialization_legacy/../debug/lzt_test.h:26:1: warning: multi-line comment [-Wcomment]
+cargo:warning= //        #define TEST_ASSERT(assert) \
+cargo:warning= ^
+cargo:warning=src/ffi/lzt_core/serialization_legacy/../debug/lzt_test.h:31:1: warning: multi-line comment [-Wcomment]
+cargo:warning= //        #define TEST_ASSERT_MESSAGE(assert, message) \
+cargo:warning= ^
+cargo:warning=In file included from src/ffi/lzt_core/serialization_legacy/SerializationUtils.h:5:0,
+cargo:warning=                 from src/ffi/lzt_core/serialization_legacy/SerializationUtils.cpp:1:
+cargo:warning=src/ffi/lzt_core/serialization_legacy/BitSequence.h: In member function ‘int BitSequence::maxNonzeroBit() const’:
+cargo:warning=src/ffi/lzt_core/serialization_legacy/BitSequence.h:83:9: warning: unused variable ‘h’ [-Wunused-variable]
+cargo:warning=     int h = 0;
+cargo:warning=         ^
+cargo:warning=In file included from src/ffi/lzt_core/serialization_legacy/SerializationUtils.h:6:0,
+cargo:warning=                 from src/ffi/lzt_core/serialization_legacy/SerializationUtils.cpp:1:
+cargo:warning=src/ffi/lzt_core/serialization_legacy/BitSequenceArray.h: In member function ‘BitSequence BitSequenceArrayL::operator[](size_t) const’:
+cargo:warning=src/ffi/lzt_core/serialization_legacy/BitSequenceArray.h:64:23: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+cargo:warning=     for (int i = 0; i < bitsPerSequence; ++i) {
+cargo:warning=                     ~~^~~~~~~~~~~~~~~~~
+cargo:warning=src/ffi/lzt_core/serialization_legacy/SerializationUtils.cpp: In copy constructor ‘SerializationUtils::SerializationUtils(const SerializationUtils&)’:
+cargo:warning=src/ffi/lzt_core/serialization_legacy/SerializationUtils.cpp:6:66: warning: unused parameter ‘orig’ [-Wunused-parameter]
+cargo:warning= SerializationUtils::SerializationUtils(const SerializationUtils& orig) {
+cargo:warning=                                                                  ^~~~
+cargo:warning=src/ffi/lzt_core/serialization_legacy/SerializationUtils.cpp: In static member function ‘static BitBlocksArray SerializationUtils::getNonzeroBlocks(BitSequence)’:
+cargo:warning=src/ffi/lzt_core/serialization_legacy/SerializationUtils.cpp:24:23: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+cargo:warning=     for (int i = 0; i < array.size; ++i)
+cargo:warning=                     ~~^~~~~~~~~~~~
+cargo:warning=src/ffi/lzt_core/serialization_legacy/SerializationUtils.cpp: In static member function ‘static BitSequence SerializationUtils::fromNonzeroBlocks(BitBlocksArray)’:
+cargo:warning=src/ffi/lzt_core/serialization_legacy/SerializationUtils.cpp:32:23: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+cargo:warning=     for (int i = 0; i < array.size; ++i)
+cargo:warning=                     ~~^~~~~~~~~~~~
+cargo:warning=src/ffi/lzt_core/serialization_legacy/SerializationUtils.cpp: In static member function ‘static T SerializationUtils::integerFromStream(std::istream&) [with T = bool; std::istream = std::basic_istream<char>]’:
+cargo:warning=src/ffi/lzt_core/serialization_legacy/SerializationUtils.cpp:59:10: warning: unused variable ‘b’ [-Wunused-variable]
+cargo:warning=     bool b = (ch == 0) ? false : true;
+cargo:warning=          ^
+cargo:warning=src/ffi/lzt_core/serialization_legacy/SerializationUtils.cpp:60:1: warning: no return statement in function returning non-void [-Wreturn-type]
+cargo:warning= }
+cargo:warning= ^
+exit code: 0
+running: "c++" "-O0" "-ffunction-sections" "-fdata-sections" "-fPIC" "-g" "-fno-omit-frame-pointer" "-m64" "-Wall" "-Wextra" "-o" "/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out/src/ffi/lzt_core/serialization_legacy/BitSequenceArray.o" "-c" "src/ffi/lzt_core/serialization_legacy/BitSequenceArray.cpp"
+cargo:warning=In file included from src/ffi/lzt_core/serialization_legacy/BitSequence.h:8:0,
+cargo:warning=                 from src/ffi/lzt_core/serialization_legacy/BitSequenceArray.h:6,
+cargo:warning=                 from src/ffi/lzt_core/serialization_legacy/BitSequenceArray.cpp:3:
+cargo:warning=src/ffi/lzt_core/serialization_legacy/../debug/lzt_test.h:26:1: warning: multi-line comment [-Wcomment]
+cargo:warning= //        #define TEST_ASSERT(assert) \
+cargo:warning= ^
+cargo:warning=src/ffi/lzt_core/serialization_legacy/../debug/lzt_test.h:31:1: warning: multi-line comment [-Wcomment]
+cargo:warning= //        #define TEST_ASSERT_MESSAGE(assert, message) \
+cargo:warning= ^
+cargo:warning=In file included from src/ffi/lzt_core/serialization_legacy/BitSequenceArray.h:6:0,
+cargo:warning=                 from src/ffi/lzt_core/serialization_legacy/BitSequenceArray.cpp:3:
+cargo:warning=src/ffi/lzt_core/serialization_legacy/BitSequence.h: In member function ‘int BitSequence::maxNonzeroBit() const’:
+cargo:warning=src/ffi/lzt_core/serialization_legacy/BitSequence.h:83:9: warning: unused variable ‘h’ [-Wunused-variable]
+cargo:warning=     int h = 0;
+cargo:warning=         ^
+cargo:warning=In file included from src/ffi/lzt_core/serialization_legacy/BitSequenceArray.cpp:3:0:
+cargo:warning=src/ffi/lzt_core/serialization_legacy/BitSequenceArray.h: In member function ‘BitSequence BitSequenceArrayL::operator[](size_t) const’:
+cargo:warning=src/ffi/lzt_core/serialization_legacy/BitSequenceArray.h:64:23: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+cargo:warning=     for (int i = 0; i < bitsPerSequence; ++i) {
+cargo:warning=                     ~~^~~~~~~~~~~~~~~~~
+cargo:warning=src/ffi/lzt_core/serialization_legacy/BitSequenceArray.h: In constructor ‘BitSequenceArrayL::BitSequenceArrayL()’:
+cargo:warning=src/ffi/lzt_core/serialization_legacy/BitSequenceArray.h:47:12: warning: ‘BitSequenceArrayL::bitsPerSequence’ will be initialized after [-Wreorder]
+cargo:warning=     size_t bitsPerSequence;
+cargo:warning=            ^~~~~~~~~~~~~~~
+cargo:warning=src/ffi/lzt_core/serialization_legacy/BitSequenceArray.h:46:12: warning:   ‘size_t BitSequenceArrayL::numOfSequences’ [-Wreorder]
+cargo:warning=     size_t numOfSequences;
+cargo:warning=            ^~~~~~~~~~~~~~
+cargo:warning=src/ffi/lzt_core/serialization_legacy/BitSequenceArray.cpp:6:1: warning:   when initialized here [-Wreorder]
+cargo:warning= BitSequenceArrayL::BitSequenceArrayL()
+cargo:warning= ^~~~~~~~~~~~~~~~~
+cargo:warning=In file included from src/ffi/lzt_core/serialization_legacy/BitSequenceArray.cpp:3:0:
+cargo:warning=src/ffi/lzt_core/serialization_legacy/BitSequenceArray.h:46:12: warning: ‘BitSequenceArrayL::numOfSequences’ will be initialized after [-Wreorder]
+cargo:warning=     size_t numOfSequences;
+cargo:warning=            ^~~~~~~~~~~~~~
+cargo:warning=src/ffi/lzt_core/serialization_legacy/BitSequenceArray.h:45:12: warning:   ‘size_t BitSequenceArrayL::numOfBlocks’ [-Wreorder]
+cargo:warning=     size_t numOfBlocks;
+cargo:warning=            ^~~~~~~~~~~
+cargo:warning=src/ffi/lzt_core/serialization_legacy/BitSequenceArray.cpp:6:1: warning:   when initialized here [-Wreorder]
+cargo:warning= BitSequenceArrayL::BitSequenceArrayL()
+cargo:warning= ^~~~~~~~~~~~~~~~~
+cargo:warning=src/ffi/lzt_core/serialization_legacy/BitSequenceArray.cpp: In member function ‘void BitSequenceArrayL::setSequence(size_t, BitSequence)’:
+cargo:warning=src/ffi/lzt_core/serialization_legacy/BitSequenceArray.cpp:85:23: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+cargo:warning=     for (int i = 0; i < bitsPerSequence; ++i) {
+cargo:warning=                     ~~^~~~~~~~~~~~~~~~~
+exit code: 0
+running: "c++" "-O0" "-ffunction-sections" "-fdata-sections" "-fPIC" "-g" "-fno-omit-frame-pointer" "-m64" "-Wall" "-Wextra" "-o" "/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out/src/ffi/lzt_core/serialization_legacy/BitSequence.o" "-c" "src/ffi/lzt_core/serialization_legacy/BitSequence.cpp"
+cargo:warning=In file included from src/ffi/lzt_core/serialization_legacy/BitSequence.h:8:0,
+cargo:warning=                 from src/ffi/lzt_core/serialization_legacy/BitSequence.cpp:3:
+cargo:warning=src/ffi/lzt_core/serialization_legacy/../debug/lzt_test.h:26:1: warning: multi-line comment [-Wcomment]
+cargo:warning= //        #define TEST_ASSERT(assert) \
+cargo:warning= ^
+cargo:warning=src/ffi/lzt_core/serialization_legacy/../debug/lzt_test.h:31:1: warning: multi-line comment [-Wcomment]
+cargo:warning= //        #define TEST_ASSERT_MESSAGE(assert, message) \
+cargo:warning= ^
+cargo:warning=In file included from src/ffi/lzt_core/serialization_legacy/BitSequence.cpp:3:0:
+cargo:warning=src/ffi/lzt_core/serialization_legacy/BitSequence.h: In member function ‘int BitSequence::maxNonzeroBit() const’:
+cargo:warning=src/ffi/lzt_core/serialization_legacy/BitSequence.h:83:9: warning: unused variable ‘h’ [-Wunused-variable]
+cargo:warning=     int h = 0;
+cargo:warning=         ^
+cargo:warning=src/ffi/lzt_core/serialization_legacy/BitSequence.cpp: In member function ‘std::__cxx11::string BitSequence::toString() const’:
+cargo:warning=src/ffi/lzt_core/serialization_legacy/BitSequence.cpp:111:26: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+cargo:warning=     for (size_t i = 0; i < getNumberOfBits(); ++i)
+cargo:warning=                        ~~^~~~~~~~~~~~~~~~~~~
+exit code: 0
+running: "c++" "-O0" "-ffunction-sections" "-fdata-sections" "-fPIC" "-g" "-fno-omit-frame-pointer" "-m64" "-Wall" "-Wextra" "-o" "/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out/src/ffi/lzt_core/serialization_legacy/BitVector.o" "-c" "src/ffi/lzt_core/serialization_legacy/BitVector.cpp"
+cargo:warning=In file included from src/ffi/lzt_core/serialization_legacy/BitSequence.h:8:0,
+cargo:warning=                 from src/ffi/lzt_core/serialization_legacy/BitVector.h:7,
+cargo:warning=                 from src/ffi/lzt_core/serialization_legacy/BitVector.cpp:1:
+cargo:warning=src/ffi/lzt_core/serialization_legacy/../debug/lzt_test.h:26:1: warning: multi-line comment [-Wcomment]
+cargo:warning= //        #define TEST_ASSERT(assert) \
+cargo:warning= ^
+cargo:warning=src/ffi/lzt_core/serialization_legacy/../debug/lzt_test.h:31:1: warning: multi-line comment [-Wcomment]
+cargo:warning= //        #define TEST_ASSERT_MESSAGE(assert, message) \
+cargo:warning= ^
+cargo:warning=In file included from src/ffi/lzt_core/serialization_legacy/BitVector.h:7:0,
+cargo:warning=                 from src/ffi/lzt_core/serialization_legacy/BitVector.cpp:1:
+cargo:warning=src/ffi/lzt_core/serialization_legacy/BitSequence.h: In member function ‘int BitSequence::maxNonzeroBit() const’:
+cargo:warning=src/ffi/lzt_core/serialization_legacy/BitSequence.h:83:9: warning: unused variable ‘h’ [-Wunused-variable]
+cargo:warning=     int h = 0;
+cargo:warning=         ^
+cargo:warning=In file included from src/ffi/lzt_core/serialization_legacy/SerializationUtils.h:6:0,
+cargo:warning=                 from src/ffi/lzt_core/serialization_legacy/BitVector.cpp:8:
+cargo:warning=src/ffi/lzt_core/serialization_legacy/BitSequenceArray.h: In member function ‘BitSequence BitSequenceArrayL::operator[](size_t) const’:
+cargo:warning=src/ffi/lzt_core/serialization_legacy/BitSequenceArray.h:64:23: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+cargo:warning=     for (int i = 0; i < bitsPerSequence; ++i) {
+cargo:warning=                     ~~^~~~~~~~~~~~~~~~~
+cargo:warning=In file included from src/ffi/lzt_core/serialization_legacy/BitVector.cpp:1:0:
+cargo:warning=src/ffi/lzt_core/serialization_legacy/BitVector.h: In constructor ‘BitVector::BitVector(size_t)’:
+cargo:warning=src/ffi/lzt_core/serialization_legacy/BitVector.h:43:11: warning: ‘BitVector::blocks’ will be initialized after [-Wreorder]
+cargo:warning=     char* blocks;
+cargo:warning=           ^~~~~~
+cargo:warning=src/ffi/lzt_core/serialization_legacy/BitVector.h:38:12: warning:   ‘size_t BitVector::numBlocks’ [-Wreorder]
+cargo:warning=     size_t numBlocks;
+cargo:warning=            ^~~~~~~~~
+cargo:warning=src/ffi/lzt_core/serialization_legacy/BitVector.cpp:11:1: warning:   when initialized here [-Wreorder]
+cargo:warning= BitVector::BitVector(size_t sz): blocks(NULL), numBlocks(0) {
+cargo:warning= ^~~~~~~~~
+cargo:warning=src/ffi/lzt_core/serialization_legacy/BitVector.cpp: In member function ‘std::__cxx11::string BitVector::toString()’:
+cargo:warning=src/ffi/lzt_core/serialization_legacy/BitVector.cpp:52:72: warning: second operand of conditional expression has no effect [-Wunused-value]
+cargo:warning=     for (size_t i = 0; i < getSize(); ++i) ss << (*this)[i] ? '1' : '0';
+cargo:warning=                                                                        ^
+cargo:warning=src/ffi/lzt_core/serialization_legacy/BitVector.cpp:52:72: warning: third operand of conditional expression has no effect [-Wunused-value]
+exit code: 0
+running: "c++" "-O0" "-ffunction-sections" "-fdata-sections" "-fPIC" "-g" "-fno-omit-frame-pointer" "-m64" "-Wall" "-Wextra" "-o" "/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out/src/ffi/lzt_core/serialization_legacy/serialization.o" "-c" "src/ffi/lzt_core/serialization_legacy/serialization.cpp"
+exit code: 0
+running: "c++" "-O0" "-ffunction-sections" "-fdata-sections" "-fPIC" "-g" "-fno-omit-frame-pointer" "-m64" "-Wall" "-Wextra" "-o" "/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out/src/ffi/lzt_core/serialization_legacy/array/BitSequenceArraySer.o" "-c" "src/ffi/lzt_core/serialization_legacy/array/BitSequenceArraySer.cpp"
+cargo:warning=In file included from src/ffi/lzt_core/serialization_legacy/array/../BitSequence.h:8:0,
+cargo:warning=                 from src/ffi/lzt_core/serialization_legacy/array/../BitSequenceArray.h:6,
+cargo:warning=                 from src/ffi/lzt_core/serialization_legacy/array/BitSequenceArraySer.h:6,
+cargo:warning=                 from src/ffi/lzt_core/serialization_legacy/array/BitSequenceArraySer.cpp:1:
+cargo:warning=src/ffi/lzt_core/serialization_legacy/array/../../debug/lzt_test.h:26:1: warning: multi-line comment [-Wcomment]
+cargo:warning= //        #define TEST_ASSERT(assert) \
+cargo:warning= ^
+cargo:warning=src/ffi/lzt_core/serialization_legacy/array/../../debug/lzt_test.h:31:1: warning: multi-line comment [-Wcomment]
+cargo:warning= //        #define TEST_ASSERT_MESSAGE(assert, message) \
+cargo:warning= ^
+cargo:warning=In file included from src/ffi/lzt_core/serialization_legacy/array/../BitSequenceArray.h:6:0,
+cargo:warning=                 from src/ffi/lzt_core/serialization_legacy/array/BitSequenceArraySer.h:6,
+cargo:warning=                 from src/ffi/lzt_core/serialization_legacy/array/BitSequenceArraySer.cpp:1:
+cargo:warning=src/ffi/lzt_core/serialization_legacy/array/../BitSequence.h: In member function ‘int BitSequence::maxNonzeroBit() const’:
+cargo:warning=src/ffi/lzt_core/serialization_legacy/array/../BitSequence.h:83:9: warning: unused variable ‘h’ [-Wunused-variable]
+cargo:warning=     int h = 0;
+cargo:warning=         ^
+cargo:warning=In file included from src/ffi/lzt_core/serialization_legacy/array/BitSequenceArraySer.h:6:0,
+cargo:warning=                 from src/ffi/lzt_core/serialization_legacy/array/BitSequenceArraySer.cpp:1:
+cargo:warning=src/ffi/lzt_core/serialization_legacy/array/../BitSequenceArray.h: In member function ‘BitSequence BitSequenceArrayL::operator[](size_t) const’:
+cargo:warning=src/ffi/lzt_core/serialization_legacy/array/../BitSequenceArray.h:64:23: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+cargo:warning=     for (int i = 0; i < bitsPerSequence; ++i) {
+cargo:warning=                     ~~^~~~~~~~~~~~~~~~~
+exit code: 0
+running: "c++" "-O0" "-ffunction-sections" "-fdata-sections" "-fPIC" "-g" "-fno-omit-frame-pointer" "-m64" "-Wall" "-Wextra" "-o" "/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out/src/ffi/lzt_core/debug/DebugException.o" "-c" "src/ffi/lzt_core/debug/DebugException.cpp"
+exit code: 0
+running: "c++" "-O0" "-ffunction-sections" "-fdata-sections" "-fPIC" "-g" "-fno-omit-frame-pointer" "-m64" "-Wall" "-Wextra" "-o" "/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out/src/ffi/lzt_core/debug/StackTrace.o" "-c" "src/ffi/lzt_core/debug/StackTrace.cpp"
+cargo:warning=src/ffi/lzt_core/debug/StackTrace.cpp: In copy constructor ‘StackTrace::StackTrace(const StackTrace&)’:
+cargo:warning=src/ffi/lzt_core/debug/StackTrace.cpp:18:42: warning: unused parameter ‘orig’ [-Wunused-parameter]
+cargo:warning= StackTrace::StackTrace(const StackTrace& orig) {
+cargo:warning=                                          ^~~~
+cargo:warning=src/ffi/lzt_core/debug/StackTrace.cpp: In member function ‘void StackTrace::recordStackTrace(int)’:
+cargo:warning=src/ffi/lzt_core/debug/StackTrace.cpp:29:39: warning: unused parameter ‘topPops’ [-Wunused-parameter]
+cargo:warning= void StackTrace::recordStackTrace(int topPops) {
+cargo:warning=                                       ^~~~~~~
+exit code: 0
+running: "c++" "-O0" "-ffunction-sections" "-fdata-sections" "-fPIC" "-g" "-fno-omit-frame-pointer" "-m64" "-Wall" "-Wextra" "-o" "/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out/src/ffi/lzt_core/suffix_array/CharStringSA.o" "-c" "src/ffi/lzt_core/suffix_array/CharStringSA.cpp"
+cargo:warning=src/ffi/lzt_core/suffix_array/CharStringSA.cpp: In member function ‘void CharStringSA::computeLPF()’:
+cargo:warning=src/ffi/lzt_core/suffix_array/CharStringSA.cpp:129:27: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+cargo:warning=         for (int j = 0; j < buff.size(); ++j) st.push(buff[j]);
+cargo:warning=                         ~~^~~~~~~~~~~~~
+exit code: 0
+running: "c++" "-O0" "-ffunction-sections" "-fdata-sections" "-fPIC" "-g" "-fno-omit-frame-pointer" "-m64" "-Wall" "-Wextra" "-o" "/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out/src/ffi/lzt_core/serialization/MemCharArray.o" "-c" "src/ffi/lzt_core/serialization/MemCharArray.cpp"
+cargo:warning=In file included from src/ffi/lzt_core/serialization/../serialization_legacy/BitSequence.h:8:0,
+cargo:warning=                 from src/ffi/lzt_core/serialization/../serialization_legacy/SerializationUtils.h:5,
+cargo:warning=                 from src/ffi/lzt_core/serialization/MemCharArray.h:15,
+cargo:warning=                 from src/ffi/lzt_core/serialization/MemCharArray.cpp:3:
+cargo:warning=src/ffi/lzt_core/serialization/../serialization_legacy/../debug/lzt_test.h:26:1: warning: multi-line comment [-Wcomment]
+cargo:warning= //        #define TEST_ASSERT(assert) \
+cargo:warning= ^
+cargo:warning=src/ffi/lzt_core/serialization/../serialization_legacy/../debug/lzt_test.h:31:1: warning: multi-line comment [-Wcomment]
+cargo:warning= //        #define TEST_ASSERT_MESSAGE(assert, message) \
+cargo:warning= ^
+cargo:warning=In file included from src/ffi/lzt_core/serialization/../serialization_legacy/SerializationUtils.h:5:0,
+cargo:warning=                 from src/ffi/lzt_core/serialization/MemCharArray.h:15,
+cargo:warning=                 from src/ffi/lzt_core/serialization/MemCharArray.cpp:3:
+cargo:warning=src/ffi/lzt_core/serialization/../serialization_legacy/BitSequence.h: In member function ‘int BitSequence::maxNonzeroBit() const’:
+cargo:warning=src/ffi/lzt_core/serialization/../serialization_legacy/BitSequence.h:83:9: warning: unused variable ‘h’ [-Wunused-variable]
+cargo:warning=     int h = 0;
+cargo:warning=         ^
+cargo:warning=In file included from src/ffi/lzt_core/serialization/../serialization_legacy/SerializationUtils.h:6:0,
+cargo:warning=                 from src/ffi/lzt_core/serialization/MemCharArray.h:15,
+cargo:warning=                 from src/ffi/lzt_core/serialization/MemCharArray.cpp:3:
+cargo:warning=src/ffi/lzt_core/serialization/../serialization_legacy/BitSequenceArray.h: In member function ‘BitSequence BitSequenceArrayL::operator[](size_t) const’:
+cargo:warning=src/ffi/lzt_core/serialization/../serialization_legacy/BitSequenceArray.h:64:23: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+cargo:warning=     for (int i = 0; i < bitsPerSequence; ++i) {
+cargo:warning=                     ~~^~~~~~~~~~~~~~~~~
+cargo:warning=In file included from src/ffi/lzt_core/serialization/MemCharArray.h:14:0,
+cargo:warning=                 from src/ffi/lzt_core/serialization/MemCharArray.cpp:3:
+cargo:warning=src/ffi/lzt_core/serialization/../util/filesystem_utils.h: At global scope:
+cargo:warning=src/ffi/lzt_core/serialization/../util/filesystem_utils.h:25:22: warning: ‘InfoAndResult file_info(std::__cxx11::string)’ declared ‘static’ but never defined [-Wunused-function]
+cargo:warning= static InfoAndResult file_info(string fname);
+cargo:warning=                      ^~~~~~~~~
+exit code: 0
+running: "c++" "-O0" "-ffunction-sections" "-fdata-sections" "-fPIC" "-g" "-fno-omit-frame-pointer" "-m64" "-Wall" "-Wextra" "-o" "/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out/src/ffi/lzt_core/serialization/DiskCharArray.o" "-c" "src/ffi/lzt_core/serialization/DiskCharArray.cpp"
+cargo:warning=In file included from src/ffi/lzt_core/serialization/../serialization_legacy/BitSequence.h:8:0,
+cargo:warning=                 from src/ffi/lzt_core/serialization/../serialization_legacy/SerializationUtils.h:5,
+cargo:warning=                 from src/ffi/lzt_core/serialization/DiskCharArray.h:17,
+cargo:warning=                 from src/ffi/lzt_core/serialization/DiskCharArray.cpp:3:
+cargo:warning=src/ffi/lzt_core/serialization/../serialization_legacy/../debug/lzt_test.h:26:1: warning: multi-line comment [-Wcomment]
+cargo:warning= //        #define TEST_ASSERT(assert) \
+cargo:warning= ^
+cargo:warning=src/ffi/lzt_core/serialization/../serialization_legacy/../debug/lzt_test.h:31:1: warning: multi-line comment [-Wcomment]
+cargo:warning= //        #define TEST_ASSERT_MESSAGE(assert, message) \
+cargo:warning= ^
+cargo:warning=In file included from src/ffi/lzt_core/serialization/../serialization_legacy/SerializationUtils.h:5:0,
+cargo:warning=                 from src/ffi/lzt_core/serialization/DiskCharArray.h:17,
+cargo:warning=                 from src/ffi/lzt_core/serialization/DiskCharArray.cpp:3:
+cargo:warning=src/ffi/lzt_core/serialization/../serialization_legacy/BitSequence.h: In member function ‘int BitSequence::maxNonzeroBit() const’:
+cargo:warning=src/ffi/lzt_core/serialization/../serialization_legacy/BitSequence.h:83:9: warning: unused variable ‘h’ [-Wunused-variable]
+cargo:warning=     int h = 0;
+cargo:warning=         ^
+cargo:warning=In file included from src/ffi/lzt_core/serialization/../serialization_legacy/SerializationUtils.h:6:0,
+cargo:warning=                 from src/ffi/lzt_core/serialization/DiskCharArray.h:17,
+cargo:warning=                 from src/ffi/lzt_core/serialization/DiskCharArray.cpp:3:
+cargo:warning=src/ffi/lzt_core/serialization/../serialization_legacy/BitSequenceArray.h: In member function ‘BitSequence BitSequenceArrayL::operator[](size_t) const’:
+cargo:warning=src/ffi/lzt_core/serialization/../serialization_legacy/BitSequenceArray.h:64:23: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+cargo:warning=     for (int i = 0; i < bitsPerSequence; ++i) {
+cargo:warning=                     ~~^~~~~~~~~~~~~~~~~
+cargo:warning=In file included from src/ffi/lzt_core/serialization/DiskCharArray.h:18:0,
+cargo:warning=                 from src/ffi/lzt_core/serialization/DiskCharArray.cpp:3:
+cargo:warning=src/ffi/lzt_core/serialization/../util/utils.h: In function ‘size_t hashCombine(size_t, size_t)’:
+cargo:warning=src/ffi/lzt_core/serialization/../util/utils.h:117:40: warning: suggest parentheses around ‘+’ inside ‘<<’ [-Wparentheses]
+cargo:warning=     hash_cum ^= hash_part + 0x9e3779b9 + hash_cum << 6 + hash_cum >> 2;
+cargo:warning=                 ~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~
+cargo:warning=In file included from src/ffi/lzt_core/serialization/DiskCharArray.cpp:3:0:
+cargo:warning=src/ffi/lzt_core/serialization/DiskCharArray.h: In constructor ‘DiskArrayChar::DiskArrayChar(DiskCharArray*, size_t, char)’:
+cargo:warning=src/ffi/lzt_core/serialization/DiskCharArray.h:104:10: warning: ‘DiskArrayChar::ch’ will be initialized after [-Wreorder]
+cargo:warning=     char ch;
+cargo:warning=          ^~
+cargo:warning=src/ffi/lzt_core/serialization/DiskCharArray.h:103:12: warning:   ‘size_t DiskArrayChar::index’ [-Wreorder]
+cargo:warning=     size_t index;
+cargo:warning=            ^~~~~
+cargo:warning=src/ffi/lzt_core/serialization/DiskCharArray.h:94:5: warning:   when initialized here [-Wreorder]
+cargo:warning=     DiskArrayChar(DiskCharArray* arr, size_t idx, char c): ch(c), index(idx), array(arr) {};
+cargo:warning=     ^~~~~~~~~~~~~
+cargo:warning=src/ffi/lzt_core/serialization/DiskCharArray.h:103:12: warning: ‘DiskArrayChar::index’ will be initialized after [-Wreorder]
+cargo:warning=     size_t index;
+cargo:warning=            ^~~~~
+cargo:warning=src/ffi/lzt_core/serialization/DiskCharArray.h:102:20: warning:   ‘DiskCharArray* DiskArrayChar::array’ [-Wreorder]
+cargo:warning=     DiskCharArray* array;
+cargo:warning=                    ^~~~~
+cargo:warning=src/ffi/lzt_core/serialization/DiskCharArray.h:94:5: warning:   when initialized here [-Wreorder]
+cargo:warning=     DiskArrayChar(DiskCharArray* arr, size_t idx, char c): ch(c), index(idx), array(arr) {};
+cargo:warning=     ^~~~~~~~~~~~~
+cargo:warning=In file included from /usr/include/c++/7/cassert:44:0,
+cargo:warning=                 from src/ffi/lzt_core/serialization/../serialization_legacy/SerializationUtils.h:7,
+cargo:warning=                 from src/ffi/lzt_core/serialization/DiskCharArray.h:17,
+cargo:warning=                 from src/ffi/lzt_core/serialization/DiskCharArray.cpp:3:
+cargo:warning=src/ffi/lzt_core/serialization/DiskCharArray.cpp: In member function ‘virtual bool DiskCharArray::resize(size_t)’:
+cargo:warning=src/ffi/lzt_core/serialization/DiskCharArray.cpp:169:17: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+cargo:warning=     assert(size == newSize);
+cargo:warning=            ~~~~~^~~~
+cargo:warning=In file included from src/ffi/lzt_core/serialization/DiskCharArray.h:19:0,
+cargo:warning=                 from src/ffi/lzt_core/serialization/DiskCharArray.cpp:3:
+cargo:warning=src/ffi/lzt_core/serialization/../util/filesystem_utils.h: At global scope:
+cargo:warning=src/ffi/lzt_core/serialization/../util/filesystem_utils.h:25:22: warning: ‘InfoAndResult file_info(std::__cxx11::string)’ declared ‘static’ but never defined [-Wunused-function]
+cargo:warning= static InfoAndResult file_info(string fname);
+cargo:warning=                      ^~~~~~~~~
+cargo:warning=src/ffi/lzt_core/serialization/DiskCharArray.cpp: In member function ‘virtual bool DiskCharArray::resize(size_t)’:
+cargo:warning=src/ffi/lzt_core/serialization/DiskCharArray.cpp:170:1: warning: control reaches end of non-void function [-Wreturn-type]
+cargo:warning= }
+cargo:warning= ^
+exit code: 0
+running: "c++" "-O0" "-ffunction-sections" "-fdata-sections" "-fPIC" "-g" "-fno-omit-frame-pointer" "-m64" "-Wall" "-Wextra" "-o" "/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out/src/ffi/lzt_core/util/filesystem_utils.o" "-c" "src/ffi/lzt_core/util/filesystem_utils.cpp"
+cargo:warning=src/ffi/lzt_core/util/filesystem_utils.cpp: In function ‘int unlink(const char*, const stat*, int, FTW*)’:
+cargo:warning=src/ffi/lzt_core/util/filesystem_utils.cpp:40:49: warning: unused parameter ‘sb’ [-Wunused-parameter]
+cargo:warning= int unlink(const char *path, const struct stat *sb, int tflag, struct FTW *buff) {
+cargo:warning=                                                 ^~
+cargo:warning=src/ffi/lzt_core/util/filesystem_utils.cpp:40:57: warning: unused parameter ‘tflag’ [-Wunused-parameter]
+cargo:warning= int unlink(const char *path, const struct stat *sb, int tflag, struct FTW *buff) {
+cargo:warning=                                                         ^~~~~
+cargo:warning=src/ffi/lzt_core/util/filesystem_utils.cpp:40:76: warning: unused parameter ‘buff’ [-Wunused-parameter]
+cargo:warning= int unlink(const char *path, const struct stat *sb, int tflag, struct FTW *buff) {
+cargo:warning=                                                                            ^~~~
+cargo:warning=src/ffi/lzt_core/util/filesystem_utils.cpp: In function ‘bool copy_file(std::__cxx11::string, std::__cxx11::string)’:
+cargo:warning=src/ffi/lzt_core/util/filesystem_utils.cpp:64:30: warning: missing initializer for member ‘stat::st_ino’ [-Wmissing-field-initializers]
+cargo:warning=     struct stat fileinfo = {0};
+cargo:warning=                              ^
+cargo:warning=src/ffi/lzt_core/util/filesystem_utils.cpp:64:30: warning: missing initializer for member ‘stat::st_nlink’ [-Wmissing-field-initializers]
+cargo:warning=src/ffi/lzt_core/util/filesystem_utils.cpp:64:30: warning: missing initializer for member ‘stat::st_mode’ [-Wmissing-field-initializers]
+cargo:warning=src/ffi/lzt_core/util/filesystem_utils.cpp:64:30: warning: missing initializer for member ‘stat::st_uid’ [-Wmissing-field-initializers]
+cargo:warning=src/ffi/lzt_core/util/filesystem_utils.cpp:64:30: warning: missing initializer for member ‘stat::st_gid’ [-Wmissing-field-initializers]
+cargo:warning=src/ffi/lzt_core/util/filesystem_utils.cpp:64:30: warning: missing initializer for member ‘stat::__pad0’ [-Wmissing-field-initializers]
+cargo:warning=src/ffi/lzt_core/util/filesystem_utils.cpp:64:30: warning: missing initializer for member ‘stat::st_rdev’ [-Wmissing-field-initializers]
+cargo:warning=src/ffi/lzt_core/util/filesystem_utils.cpp:64:30: warning: missing initializer for member ‘stat::st_size’ [-Wmissing-field-initializers]
+cargo:warning=src/ffi/lzt_core/util/filesystem_utils.cpp:64:30: warning: missing initializer for member ‘stat::st_blksize’ [-Wmissing-field-initializers]
+cargo:warning=src/ffi/lzt_core/util/filesystem_utils.cpp:64:30: warning: missing initializer for member ‘stat::st_blocks’ [-Wmissing-field-initializers]
+cargo:warning=src/ffi/lzt_core/util/filesystem_utils.cpp:64:30: warning: missing initializer for member ‘stat::st_atim’ [-Wmissing-field-initializers]
+cargo:warning=src/ffi/lzt_core/util/filesystem_utils.cpp:64:30: warning: missing initializer for member ‘stat::st_mtim’ [-Wmissing-field-initializers]
+cargo:warning=src/ffi/lzt_core/util/filesystem_utils.cpp:64:30: warning: missing initializer for member ‘stat::st_ctim’ [-Wmissing-field-initializers]
+cargo:warning=src/ffi/lzt_core/util/filesystem_utils.cpp:64:30: warning: missing initializer for member ‘stat::__glibc_reserved’ [-Wmissing-field-initializers]
+exit code: 0
+AR_x86_64-unknown-linux-gnu = None
+AR_x86_64_unknown_linux_gnu = None
+HOST_AR = None
+AR = None
+running: "ar" "crs" "/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out/liblzt.a" "/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out/src/ffi/lzt.o" "/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out/src/ffi/lzt-interface.o" "/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out/src/ffi/lzt-utils.o" "/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out/src/ffi/lzt_core/node_array/na_utils.o" "/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out/src/ffi/lzt_core/node_array/util/CmmExporter.o" "/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out/src/ffi/lzt_core/node_array/na_browser/NodeArrayBrowser.o" "/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out/src/ffi/lzt_core/node_array/types/symbol/char/char_symbol.o" "/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out/src/ffi/lzt_core/node_array/concepts/instantiator.o" "/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out/src/ffi/lzt_core/util/TempFile.o" "/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out/src/ffi/lzt_core/util/etimer.o" "/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out/src/ffi/lzt_core/util/Timer.o" "/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out/src/ffi/lzt_core/util/utils.o" "/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out/src/ffi/lzt_core/dictionary/lztrie_dict/huffman/HuffmanCodecCreator.o" "/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out/src/ffi/lzt_core/dictionary/lztrie_dict/huffman/HuffmanCoder.o" "/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out/src/ffi/lzt_core/dictionary/lztrie_dict/huffman/HuffmanDecoder.o" "/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out/src/ffi/lzt_core/serialization_legacy/BitPointer.o" "/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out/src/ffi/lzt_core/serialization_legacy/SerializationUtils.o" "/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out/src/ffi/lzt_core/serialization_legacy/BitSequenceArray.o" "/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out/src/ffi/lzt_core/serialization_legacy/BitSequence.o" "/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out/src/ffi/lzt_core/serialization_legacy/BitVector.o" "/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out/src/ffi/lzt_core/serialization_legacy/serialization.o" "/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out/src/ffi/lzt_core/serialization_legacy/array/BitSequenceArraySer.o" "/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out/src/ffi/lzt_core/debug/DebugException.o" "/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out/src/ffi/lzt_core/debug/StackTrace.o" "/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out/src/ffi/lzt_core/suffix_array/CharStringSA.o" "/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out/src/ffi/lzt_core/serialization/MemCharArray.o" "/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out/src/ffi/lzt_core/serialization/DiskCharArray.o" "/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out/src/ffi/lzt_core/util/filesystem_utils.o"
+exit code: 0
+cargo:rustc-link-lib=static=lzt
+cargo:rustc-link-search=native=/home/robert/projects/Algorithms/fastqlzt/sfq/src/crates/lzt/target/debug/build/lzt-191b1132b6502cc6/out
+cargo:rustc-link-lib=stdc++
