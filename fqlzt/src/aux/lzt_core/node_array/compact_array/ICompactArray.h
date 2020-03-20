@@ -21,6 +21,7 @@ public:
     virtual TNode operator[](TIndex i) = 0;
     virtual TIndex getSize() const = 0;
     virtual bool isEnumerated() const = 0;    
+    virtual void setCache(size_t cacheSize) = 0;
     
 };
 

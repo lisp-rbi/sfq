@@ -21,3 +21,7 @@ bool Lzt::read(string triePath, bool inMem) {
 vector<vector<TSymbol> >* Lzt::getFastqRecords(vector<TSymbol> prefix) {
     return queryTrie(trie, prefix);
 }
+
+void Lzt::setCacheSize(size_t size) {
+    trie->nodes.setCache(size);
+}

@@ -31,6 +31,8 @@ class Lzt {
          * Empty prefix lists all words.
          */
         vector<vector<TSymbol> > * getFastqRecords(vector<TSymbol> prefix);
+        
+        void setCacheSize(size_t size);
 
     private:
         TLzTrie *trie = NULL;
