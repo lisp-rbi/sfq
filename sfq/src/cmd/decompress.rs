@@ -82,8 +82,9 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
                         fdb.set_model(seq_stats.3);
 
                     }
-                    let exp = (count as f64).log(alpha.len() as f64) as u32;
-                    let inc = alpha.len().pow(exp-1);
+                    //let exp = (count as f64).log(alpha.len() as f64) as u32;
+                    //let inc = alpha.len().pow(exp-1);
+                    let inc = alpha.len().pow(5); // set to 5th iteration 
                     eprintln!("Batch size {}", inc);
 
 
