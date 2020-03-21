@@ -68,7 +68,7 @@
       }
 
       pub fn fasta_dw<W: Write> (&mut self, mut writer:  W) -> Result<bool,Error>  {
-          let (mut sw , mut ssw, mut x, y, mut bw)= (0u8, true, 0, 1000, 0);
+          let (mut sw , mut ssw, mut x, mut y, mut bw)= (0u8, true, 0, 1000, 0);
           let mut buff = vec![0u8; y];
 
           //writer.write_all(&self.get_fastq());
@@ -83,6 +83,7 @@
                       if bw == 1 && ssw == true {
                           buff.resize(x,0x00);
                           writer.write_all(&self.revcomp(String::from_utf8(buff.clone()).unwrap()).as_bytes()).unwrap();
+                          y=x;
                           x=0;
                       }
                       write!(writer, "{}", *ch as char).unwrap();
