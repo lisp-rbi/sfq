@@ -195,21 +195,16 @@ Tools:
 SPRING   
 sfq   
 
-Input files (./data/):
+Input files (./data/):   
 
-nova.R1.fq (1.7GB)
-nova.R2.fq (1.7GB)
-cvrg = ~15x
-
-
-L2_R1.fq (14.1GB)
-L2_R2.fq (14.1GB)
-cvrg = ~117x
+L2_R1.fq (14.1GB)   
+L2_R2.fq (14.1GB)   
+cvrg = ~117x   
 
 
-H2_R1.fq (14.7GB)
-H2_R2.fq (14.7GB)
-cvrg = ~136x
+H2_R1.fq (14.7GB)   
+H2_R2.fq (14.7GB)   
+cvrg = ~136x   
 
 Prepare data:
 
@@ -217,17 +212,268 @@ Prepare data:
 mkdir In
 mkdir Out
 
-perl -e '$x = 400; $in_1="nova_R1.fq"; $in_2="nova_R2.fq";for(1..5){ $x = $x*10; system("head -n $x $in_1 > In/$_\_$in_1; head -n $x $in_2 > In/$_\_$in_2;")}'
+##  change $xx = $x*2 to *3 *4 *5
 
-perl -e '$x = 4000; $in_1="L2_R1.fq"; $in_2="L2_R2.fq";for(1..5){ $x = $x*10; system("head -n $x $in_1 > In/$_\_$in_1; head -n $x $in_2 > In/$_\_$in_2;")}'
+perl -e '$x = 4000; $in_1="../NovaSeq/L2_R1.fq"; $in_2="../NovaSeq/L2_R2.fq";for(1..4){ $x = $x*10; $xx= $x*2; system("head -n $xx $in_1 | tail -n $x > In/$_\_L2_R1.fq; head -n $xx $in_2  | tail -n $x > In/$_\_L2_R2.fq;")}'
 
-perl -e '$x = 4000; $in_1="H2_R1.fq"; $in_2="H2_R2.fq";for(1..5){ $x = $x*10; system("head -n $x $in_1 > In/$_\_$in_1; head -n $x $in_2 > In/$_\_$in_2;")}'
+perl -e '$x = 4000; $in_1="../HiSeq/H2_R1.fq"; $in_2="../HiSeq/H2_R2.fq";for(1..4){ $x = $x*10;     $xx= $x*2; system("head -n $xx $in_1 | tail -n $x > In/$_\_H2_R1.fq; head -n $xx $in_2 | tail -n $x > In/$_\_H2_R2.fq;")}'
+
+perl -e '$x = 4000; $in_1="../NovaSeq/nova.R1.fq"; $in_2="../NovaSeq/nova.R2.fq";for(1..4){ $x = $x*10; $xx= $x*2; system("head -n $xx $in_1 | tail -n $x > In/$_\_nova_R1.fq; head -n $xx $in_2 | tail -n $x > In/$_\_nova_R2.fq;")}'
+
+
+
+## analyisi protocols
+# bench full
+bench.pl -i sfq_vs_spring.bench  -d 10 -i Run_complete -b 1
+# bench lossy
+bench.pl -i sfq_lossy.bench  -d 10 -i Run_lossy_1 -b 1
+
+
 ```
 
-Benchmark:
+Benchmark (sfq_vs_spring.bench):
 
 
 ```
+
+## Plotting:
+
+%TagClasses:     Tool   ,       Data   ,   Process   ,  Mode   ,     Size     ,    IO
+#------------------------------------------------------------------------------#
+%PlotRuntime: sfq/spring, HiSeq/NovaSeq,   Compress  ,    -    ,    NoLimit   ,     -     : Compression_NoMemLimit
+%PlotRuntime: sfq/spring, HiSeq/NovaSeq,  Decompress ,   Ram   ,    NoLimit   ,     -     : Decompression_RAM
+%PlotRuntime: sfq/spring, HiSeq/NovaSeq,  Decompress ,   Disc  ,    NoLimit   ,     -     : Decompression_Disc
+%PlotRuntime: sfq/spring, HiSeq/NovaSeq,   Compress  ,    -    ,     20GB     ,     -     : Compression_20GBMemLimit
+%PlotRuntime: sfq/spring, HiSeq/NovaSeq,  Decompress ,   Ram   ,     20GB     ,     -     : Decompression_Ram_20GBMemLimit
+%PlotRuntime: sfq/spring, HiSeq/NovaSeq,  Decompress ,   Disc  ,     20GB     ,     -     : Decompression_Disc_20GBMemLimit
+#------------------------------------------------------------------------------#
+%PlotDisc:        sfq   ,   NovaSeq    ,  Decompress ,    -    ,       -      ,35/350/3500: SFQ_Compretion_Ratio
+%PlotDisc:       spring ,   NovaSeq    ,  Decompress ,    -    ,       -      ,35/350/3500: SPRING_Compretion_Ratio
+#------------------------------------------------------------------------------#
+%PlotMemory:  sfq/spring, HiSeq/NovaSeq,   Compress  ,    -    ,    NoLimit   ,     -     : Compression_NoMemLimit
+%PlotMemory:  sfq/spring, HiSeq/NovaSeq,  Decompress ,   Ram   ,    NoLimit   ,     -     : Decompression_RAM
+%PlotMemory:  sfq/spring, HiSeq/NovaSeq,  Decompress ,   Disc  ,    NoLimit   ,     -     : Decompression_Disc
+%PlotMemory:  sfq/spring, HiSeq/NovaSeq,   Compress  ,    -    ,     20GB     ,     -     : Compression_NoMemLimit
+%PlotMemory:  sfq/spring, HiSeq/NovaSeq,  Decompress ,   Ram   ,     20GB     ,     -     : Decompression_Ram_20GBMemLimit
+%PlotMemory:  sfq/spring, HiSeq/NovaSeq,  Decompress ,   Disc  ,     20GB     ,     -     : Decompression_Disc_20GBMemLimit
+
+
+%FlagClasses: Output, Input
+################################################################################
+# NovaSeq
+################################################################################
+#------------------------------------------------------------------------------#
+##  NovaSeq cov = 116.65x (12.67x per base)
+#
+#  [SPRING] measuring runtime, memory and filesize
+#
+# Compressing
+#
+%Tags:    spring, NovaSeq, Compress , -, NoLimit,  -
+spring -c -i ./In/1_L2_R1.fq ./In/1_L2_R2.fq -o ./Out/1_L2.spring -t 1
+%Tags:    spring, NovaSeq, Compress , -, NoLimit,  -
+spring -c -i ./In/2_L2_R1.fq ./In/2_L2_R2.fq -o ./Out/2_L2.spring -t 1
+%Tags:    spring, NovaSeq, Compress , -, NoLimit,  -
+spring -c -i ./In/3_L2_R1.fq ./In/3_L2_R2.fq -o ./Out/3_L2.spring -t 1
+%Tags:    spring, NovaSeq, Compress , -, NoLimit,  -
+spring -c -i ./In/4_L2_R1.fq ./In/4_L2_R2.fq -o ./Out/4_L2.spring -t 1
+#
+# Decompressing
+#
+%Tags:    spring, NovaSeq, Decompress , -, NoLimit,  -
+spring -d -i ./Out/1_L2.spring -o ./Out/1_L2.fastq
+%Tags:    spring, NovaSeq, Decompress , -, NoLimit,  35
+%Flags:   -o,          -i
+spring -d -i ./Out/2_L2.spring -o ./Out/2_L2.fastq
+%Tags:    spring, NovaSeq, Decompress , -, NoLimit,  350
+%Flags:   -o,          -i
+spring -d -i ./Out/3_L2.spring -o ./Out/3_L2.fastq
+%Tags:    spring, NovaSeq, Decompress , -, NoLimit,  3500
+%Flags:   -o,          -i
+spring -d -i ./Out/4_L2.spring -o ./Out/4_L2.fastq
+
+
+#----------------------------------------------#
+#  [sfq] measuring runtime, memory and filesize
+#----------------------------------------------#
+#
+# Compressing
+#
+%Tags:    sfq, NovaSeq, Compress , -, NoLimit,  -
+sfq -i ./In/1_L2_R1.fq -j ./In/1_L2_R2.fq -a c -t fastq -o ./Out/1_L2.sfq
+%Tags:    sfq, NovaSeq, Compress , -, NoLimit,  -
+sfq -i ./In/2_L2_R1.fq -j ./In/2_L2_R2.fq -a c -t fastq -o ./Out/2_L2.sfq
+%Tags:    sfq, NovaSeq, Compress , -, NoLimit,  -
+sfq -i ./In/3_L2_R1.fq -j ./In/3_L2_R2.fq -a c -t fastq -o ./Out/3_L2.sfq
+%Tags:    sfq, NovaSeq, Compress , -, NoLimit,  -
+sfq -i ./In/4_L2_R1.fq -j ./In/4_L2_R2.fq -a c -t fastq -o ./Out/4_L2.sfq
+#
+# Decompressing
+#
+%Tags:    sfq, NovaSeq, Decompress , Ram, NoLimit,  -
+sfq -i ./Out/1_L2.sfq -a d -t fastq -f fq -m R -o ./Out/1_r-L2_R1R2.fq
+%Tags:    sfq, NovaSeq, Decompress , Ram, NoLimit,  35
+%Flags:   -o,          -i
+sfq -i ./Out/2_L2.sfq -a d -t fastq -f fq -m R -o ./Out/2_r-L2_R1R2.fq
+%Tags:    sfq, NovaSeq, Decompress , Ram, NoLimit,  350
+%Flags:   -o,          -i
+sfq -i ./Out/3_L2.sfq -a d -t fastq -f fq -m R -o ./Out/3_r-L2_R1R2.fq
+%Tags:    sfq, NovaSeq, Decompress , Ram, NoLimit,  3500
+%Flags:   -o,          -i
+sfq -i ./Out/4_L2.sfq -a d -t fastq -f fq -m R -o ./Out/4_r-L2_R1R2.fq
+#
+#
+%Tags:    sfq, NovaSeq, Decompress , Disc, NoLimit,  -
+sfq -i ./Out/1_L2.sfq -a d -t fastq -f fq -m D -o ./Out/1_d-L2_R1R2.fq
+%Tags:    sfq, NovaSeq, Decompress , Disc, NoLimit,  -
+sfq -i ./Out/2_L2.sfq -a d -t fastq -f fq -m D -o ./Out/2_d-L2_R1R2.fq
+%Tags:    sfq, NovaSeq, Decompress , Disc, NoLimit,  -
+sfq -i ./Out/3_L2.sfq -a d -t fastq -f fq -m D -o ./Out/3_d-L2_R1R2.fq
+%Tags:    sfq, NovaSeq, Decompress , Disc, NoLimit,  -
+sfq -i ./Out/4_L2.sfq -a d -t fastq -f fq -m D -o ./Out/4_d-L2_R1R2.fq
+
+
+
+################################################################################
+# HiSeq
+################################################################################
+#------------------------------------------------------------------------------#
+#  HiSeq 2500 cov = 136.15x (variable string length)
+#
+#  [SPRING] measuring runtime, memory and filesize
+#
+# Compressing
+#
+%Tags:    spring, HiSeq, Compress , -, NoLimit,  -
+spring -c -i ./In/1_H2_R1.fq ./In/1_H2_R2.fq -o ./Out/1_H2.spring -t 1
+%Tags:    spring, HiSeq, Compress , -, NoLimit,  -
+spring -c -i ./In/2_H2_R1.fq ./In/2_H2_R2.fq -o ./Out/2_H2.spring -t 1
+%Tags:    spring, HiSeq, Compress , -, NoLimit,  -
+spring -c -i ./In/3_H2_R1.fq ./In/3_H2_R2.fq -o ./Out/3_H2.spring -t 1
+%Tags:    spring, HiSeq, Compress , -, NoLimit,  -
+spring -c -i ./In/4_H2_R1.fq ./In/4_H2_R2.fq -o ./Out/4_H2.spring -t 1
+#
+# Decompressing
+#
+%Tags:    spring, HiSeq, Decompress , -, NoLimit,  -
+spring -d -i ./Out/1_H2.spring -o ./Out/1_H2.fastq
+%Tags:    spring, HiSeq, Decompress , -, NoLimit,  35
+%Flags:   -o,          -i
+spring -d -i ./Out/2_H2.spring -o ./Out/2_H2.fastq
+%Tags:    spring, HiSeq, Decompress , -, NoLimit,  350
+%Flags:   -o,          -i
+spring -d -i ./Out/3_H2.spring -o ./Out/3_H2.fastq
+%Tags:    spring, HiSeq, Decompress , -, NoLimit,  3500
+%Flags:   -o,          -i
+spring -d -i ./Out/4_H2.spring -o ./Out/4_H2.fastq
+
+
+
+#----------------------------------------------#
+#  [sfq] measuring runtime, memory and filesize
+#----------------------------------------------#
+#
+# Compressing
+#
+%Tags:    sfq, HiSeq, Compress , -, NoLimit,  -
+sfq -i ./In/1_H2_R1.fq -j ./In/1_H2_R2.fq -a c -t fastq -o ./Out/1_H2.sfq
+%Tags:    sfq, HiSeq, Compress , -, NoLimit,  -
+sfq -i ./In/2_H2_R1.fq -j ./In/2_H2_R2.fq -a c -t fastq -o ./Out/2_H2.sfq
+%Tags:    sfq, HiSeq, Compress , -, NoLimit,  -
+sfq -i ./In/3_H2_R1.fq -j ./In/3_H2_R2.fq -a c -t fastq -o ./Out/3_H2.sfq
+%Tags:    sfq, HiSeq, Compress , -, NoLimit,  -
+sfq -i ./In/4_H2_R1.fq -j ./In/4_H2_R2.fq -a c -t fastq -o ./Out/4_H2.sfq
+#
+# Decompressing
+#
+%Tags:    sfq, HiSeq, Decompress , Ram, NoLimit,  -
+sfq -i ./Out/1_H2.sfq -a d -t fastq -f fq -m R -o ./Out/1_r-H2_R1R2.fq
+%Tags:    sfq, HiSeq, Decompress , Ram, NoLimit,  35
+%Flags:   -o,          -i
+sfq -i ./Out/2_H2.sfq -a d -t fastq -f fq -m R -o ./Out/2_r-H2_R1R2.fq
+%Tags:    sfq, HiSeq, Decompress , Ram, NoLimit,  350
+%Flags:   -o,          -i
+sfq -i ./Out/3_H2.sfq -a d -t fastq -f fq -m R -o ./Out/3_r-H2_R1R2.fq
+%Tags:    sfq, HiSeq, Decompress , Ram, NoLimit,  3500
+%Flags:   -o,          -i
+sfq -i ./Out/4_H2.sfq -a d -t fastq -f fq -m R -o ./Out/4_r-H2_R1R2.fq
+#
+#
+%Tags:    sfq, HiSeq, Decompress , Disc, NoLimit,  -
+sfq -i ./Out/1_H2.sfq -a d -t fastq -f fq -m D -o ./Out/1_d-H2_R1R2.fq
+%Tags:    sfq, HiSeq, Decompress , Disc, NoLimit,  -
+sfq -i ./Out/2_H2.sfq -a d -t fastq -f fq -m D -o ./Out/2_d-H2_R1R2.fq
+%Tags:    sfq, HiSeq, Decompress , Disc, NoLimit,  -
+sfq -i ./Out/3_H2.sfq -a d -t fastq -f fq -m D -o ./Out/3_d-H2_R1R2.fq
+%Tags:    sfq, HiSeq, Decompress , Disc, NoLimit,  -
+sfq -i ./Out/4_H2.sfq -a d -t fastq -f fq -m D -o ./Out/4_d-H2_R1R2.fq
+
+```
+
+Benchmark (sfq_lossy.bench):
+
+
+```
+
+## Plotting:
+
+%TagClasses:     Tool   ,       Data   ,   Process   ,  Mode   ,     Size     ,    IO
+#------------------------------------------------------------------------------#
+%PlotRuntime:    sfq    , HiSeq/NovaSeq,   Compress  ,    -    ,    NoLimit   ,     -     : Compression_NoMemLimit
+%PlotRuntime:    sfq    , HiSeq/NovaSeq,  Decompress ,   Ram   ,    NoLimit   ,     -     : Decompression_RAM
+%PlotRuntime:    sfq    , HiSeq/NovaSeq,  Decompress ,   Disc  ,    NoLimit   ,     -     : Decompression_Disc
+#------------------------------------------------------------------------------#
+%PlotDisc:       sfq    ,   NovaSeq    ,  Decompress ,    -    ,       -      ,35/350/3500: SFQ_Compretion_Ratio
+#------------------------------------------------------------------------------#
+%PlotMemory:     sfq    , HiSeq/NovaSeq,   Compress  ,    -    ,    NoLimit   ,     -     : Compression_NoMemLimit
+%PlotMemory:     sfq    , HiSeq/NovaSeq,  Decompress ,   Ram   ,    NoLimit   ,     -     : Decompression_RAM
+%PlotMemory:     sfq    , HiSeq/NovaSeq,  Decompress ,   Disc  ,    NoLimit   ,     -     : Decompression_Disc
+
+
+
+%FlagClasses: Output, Input
+
+
+sfq -i ./In/1_L2_R1.fq -j ./In/1_L2_R2.fq -a c -t fastq -o ./Out/1_L2.sfq -s lossy
+sfq -i ./In/2_L2_R1.fq -j ./In/2_L2_R2.fq -a c -t fastq -o ./Out/2_L2.sfq -s lossy
+sfq -i ./In/3_L2_R1.fq -j ./In/3_L2_R2.fq -a c -t fastq -o ./Out/3_L2.sfq -s lossy
+sfq -i ./In/4_L2_R1.fq -j ./In/4_L2_R2.fq -a c -t fastq -o ./Out/4_L2.sfq -s lossy
+#
+#
+sfq -i ./Out/1_L2.sfq -a d -t fastq -f fq -m R -o ./Out/1_r-L2_R1R2.fq -s lossy
+sfq -i ./Out/2_L2.sfq -a d -t fastq -f fq -m R -o ./Out/2_r-L2_R1R2.fq -s lossy
+sfq -i ./Out/3_L2.sfq -a d -t fastq -f fq -m R -o ./Out/3_r-L2_R1R2.fq -s lossy
+sfq -i ./Out/4_L2.sfq -a d -t fastq -f fq -m R -o ./Out/4_r-L2_R1R2.fq -s lossy
+#
+#
+sfq -i ./Out/1_L2.sfq -a d -t fastq -f fq -m D -o ./Out/1_d-L2_R1R2.fq -s lossy
+sfq -i ./Out/2_L2.sfq -a d -t fastq -f fq -m D -o ./Out/2_d-L2_R1R2.fq -s lossy
+sfq -i ./Out/3_L2.sfq -a d -t fastq -f fq -m D -o ./Out/3_d-L2_R1R2.fq -s lossy
+sfq -i ./Out/4_L2.sfq -a d -t fastq -f fq -m D -o ./Out/4_d-L2_R1R2.fq -s lossy
+#
+#
+sfq -i ./In/1_H2_R1.fq -j ./In/1_H2_R2.fq -a c -t fastq -o ./Out/1_H2.sfq -s lossy
+sfq -i ./In/2_H2_R1.fq -j ./In/2_H2_R2.fq -a c -t fastq -o ./Out/2_H2.sfq -s lossy
+sfq -i ./In/3_H2_R1.fq -j ./In/3_H2_R2.fq -a c -t fastq -o ./Out/3_H2.sfq -s lossy
+sfq -i ./In/4_H2_R1.fq -j ./In/4_H2_R2.fq -a c -t fastq -o ./Out/4_H2.sfq -s lossy
+#
+#
+sfq -i ./Out/1_H2.sfq -a d -t fastq -f fq -m R -o ./Out/1_r-H2_R1R2.fq -s lossy
+sfq -i ./Out/2_H2.sfq -a d -t fastq -f fq -m R -o ./Out/2_r-H2_R1R2.fq -s lossy
+sfq -i ./Out/3_H2.sfq -a d -t fastq -f fq -m R -o ./Out/3_r-H2_R1R2.fq -s lossy
+sfq -i ./Out/4_H2.sfq -a d -t fastq -f fq -m R -o ./Out/4_r-H2_R1R2.fq -s lossy
+#
+#
+sfq -i ./Out/1_H2.sfq -a d -t fastq -f fq -m D -o ./Out/1_d-H2_R1R2.fq -s lossy
+sfq -i ./Out/2_H2.sfq -a d -t fastq -f fq -m D -o ./Out/2_d-H2_R1R2.fq -s lossy
+sfq -i ./Out/3_H2.sfq -a d -t fastq -f fq -m D -o ./Out/3_d-H2_R1R2.fq -s lossy
+sfq -i ./Out/4_H2.sfq -a d -t fastq -f fq -m D -o ./Out/4_d-H2_R1R2.fq -s lossy
+#
+
+
+
+
+
 ##  NovaSeq cov = 15x (12.71x per base)
 #
 #  [SPRING] measuring runtime, memory and filesize
@@ -238,7 +484,6 @@ spring -c -i ./In/1_nova_R1.fq ./In/1_nova_R2.fq -o ./Out/1_nova.spring -t 1
 spring -c -i ./In/2_nova_R1.fq ./In/2_nova_R2.fq -o ./Out/2_nova.spring -t 1
 spring -c -i ./In/3_nova_R1.fq ./In/3_nova_R2.fq -o ./Out/3_nova.spring -t 1
 spring -c -i ./In/4_nova_R1.fq ./In/4_nova_R2.fq -o ./Out/4_nova.spring -t 1
-spring -c -i ./In/5_nova_R1.fq ./In/5_nova_R2.fq -o ./Out/5_nova.spring -t 1
 #
 # Decompressing
 #
@@ -246,7 +491,6 @@ spring -d -i ./Out/1_nova.spring -o ./Out/1_nova.fastq
 spring -d -i ./Out/2_nova.spring -o ./Out/2_nova.fastq
 spring -d -i ./Out/3_nova.spring -o ./Out/3_nova.fastq
 spring -d -i ./Out/4_nova.spring -o ./Out/4_nova.fastq
-spring -d -i ./Out/5_nova.spring -o ./Out/5_nova.fastq
 #
 #  [sfq] measuring runtime, memory and filesize
 #
@@ -256,94 +500,37 @@ sfq -i ./In/1_nova_R1.fq -j ./In/1_nova_R2.fq -a c -t fastq -o ./Out/1_nova.sfq
 sfq -i ./In/2_nova_R1.fq -j ./In/2_nova_R2.fq -a c -t fastq -o ./Out/2_nova.sfq
 sfq -i ./In/3_nova_R1.fq -j ./In/3_nova_R2.fq -a c -t fastq -o ./Out/3_nova.sfq
 sfq -i ./In/4_nova_R1.fq -j ./In/4_nova_R2.fq -a c -t fastq -o ./Out/4_nova.sfq
-sfq -i ./In/5_nova_R1.fq -j ./In/5_nova_R2.fq -a c -t fastq -o ./Out/5_nova.sfq
 #
 # Decompressing
 #
-sfq -i ./Out/1_nova.sfq -a d -t fastq -f fq -o ./Out/1_nova_R1R2.fq
-sfq -i ./Out/2_nova.sfq -a d -t fastq -f fq -o ./Out/2_nova_R1R2.fq
-sfq -i ./Out/3_nova.sfq -a d -t fastq -f fq -o ./Out/3_nova_R1R2.fq
-sfq -i ./Out/4_nova.sfq -a d -t fastq -f fq -o ./Out/4_nova_R1R2.fq
-sfq -i ./Out/5_nova.sfq -a d -t fastq -f fq -o ./Out/5_nova_R1R2.fq
+sfq -i ./Out/1_nova.sfq -a d -t fastq -f fq -m R -o ./Out/1_r-nova_R1R2.fq
+sfq -i ./Out/2_nova.sfq -a d -t fastq -f fq -m R -o ./Out/2_r-nova_R1R2.fq
+sfq -i ./Out/3_nova.sfq -a d -t fastq -f fq -m R -o ./Out/3_r-nova_R1R2.fq
+sfq -i ./Out/4_nova.sfq -a d -t fastq -f fq -m R -o ./Out/4_r-nova_R1R2.fq
 #
-##  NovaSeq cov = 116.65x (12.67x per base)
 #
-#  [SPRING] measuring runtime, memory and filesize
+sfq -i ./Out/1_nova.sfq -a d -t fastq -f fq -m D -o ./Out/1_d-nova_R1R2.fq
+sfq -i ./Out/2_nova.sfq -a d -t fastq -f fq -m D -o ./Out/2_d-nova_R1R2.fq
+sfq -i ./Out/3_nova.sfq -a d -t fastq -f fq -m D -o ./Out/3_d-nova_R1R2.fq
+sfq -i ./Out/4_nova.sfq -a d -t fastq -f fq -m D -o ./Out/4_d-nova_R1R2.fq
 #
-# Compressing
-#
-spring -c -i ./In/1_L2_R1.fq ./In/1_L2_R2.fq -o ./Out/1_L2.spring -t 1
-spring -c -i ./In/2_L2_R1.fq ./In/2_L2_R2.fq -o ./Out/2_L2.spring -t 1
-spring -c -i ./In/3_L2_R1.fq ./In/3_L2_R2.fq -o ./Out/3_L2.spring -t 1
-spring -c -i ./In/4_L2_R1.fq ./In/4_L2_R2.fq -o ./Out/4_L2.spring -t 1
-spring -c -i ./In/5_L2_R1.fq ./In/5_L2_R2.fq -o ./Out/5_L2.spring -t 1
-#
-# Decompressing
-#
-spring -d -i ./Out/1_L2.spring -o ./Out/1_L2.fastq
-spring -d -i ./Out/2_L2.spring -o ./Out/2_L2.fastq
-spring -d -i ./Out/3_L2.spring -o ./Out/3_L2.fastq
-spring -d -i ./Out/4_L2.spring -o ./Out/4_L2.fastq
-spring -d -i ./Out/5_L2.spring -o ./Out/5_L2.fastq
-#
-#  [sfq] measuring runtime, memory and filesize
-#
-# Compressing
-#
-sfq -i ./In/1_L2_R1.fq -j ./In/1_L2_R2.fq -a c -t fastq -o ./Out/1_L2.sfq
-sfq -i ./In/2_L2_R1.fq -j ./In/2_L2_R2.fq -a c -t fastq -o ./Out/2_L2.sfq
-sfq -i ./In/3_L2_R1.fq -j ./In/3_L2_R2.fq -a c -t fastq -o ./Out/3_L2.sfq
-sfq -i ./In/4_L2_R1.fq -j ./In/4_L2_R2.fq -a c -t fastq -o ./Out/4_L2.sfq
-sfq -i ./In/5_L2_R1.fq -j ./In/5_L2_R2.fq -a c -t fastq -o ./Out/5_L2.sfq
-#
-# Decompressing
-#
-sfq -i ./Out/1_L2.sfq -a d -t fastq -f fq -o ./Out/1_L2_R1R2.fq
-sfq -i ./Out/2_L2.sfq -a d -t fastq -f fq -o ./Out/2_L2_R1R2.fq
-sfq -i ./Out/3_L2.sfq -a d -t fastq -f fq -o ./Out/3_L2_R1R2.fq
-sfq -i ./Out/4_L2.sfq -a d -t fastq -f fq -o ./Out/4_L2_R1R2.fq
-sfq -i ./Out/5_L2.sfq -a d -t fastq -f fq -o ./Out/5_L2_R1R2.fq
-#
-#  HiSeq 2500 cov = 136.15x (variable string length)
-#
-#  [SPRING] measuring runtime, memory and filesize
-#
-# Compressing
-#
-spring -c -i ./In/1_H2_R1.fq ./In/1_H2_R2.fq -o ./Out/1_H2.spring -t 1
-spring -c -i ./In/2_H2_R1.fq ./In/2_H2_R2.fq -o ./Out/2_H2.spring -t 1
-spring -c -i ./In/3_H2_R1.fq ./In/3_H2_R2.fq -o ./Out/3_H2.spring -t 1
-spring -c -i ./In/4_H2_R1.fq ./In/4_H2_R2.fq -o ./Out/4_H2.spring -t 1
-spring -c -i ./In/5_H2_R1.fq ./In/5_H2_R2.fq -o ./Out/5_H2.spring -t 1
-#
-# Decompressing
-#
-spring -d -i ./Out/1_H2.spring -o ./Out/1_H2.fastq
-spring -d -i ./Out/2_H2.spring -o ./Out/2_H2.fastq
-spring -d -i ./Out/3_H2.spring -o ./Out/3_H2.fastq
-spring -d -i ./Out/4_H2.spring -o ./Out/4_H2.fastq
-spring -d -i ./Out/5_H2.spring -o ./Out/5_H2.fastq
-#
-#  [sfq] measuring runtime, memory and filesize
-#
-# Compressing
-#
-sfq -i ./In/1_H2_R1.fq -j ./In/1_H2_R2.fq -a c -t fastq -o ./Out/1_H2.sfq
-sfq -i ./In/2_H2_R1.fq -j ./In/2_H2_R2.fq -a c -t fastq -o ./Out/2_H2.sfq
-sfq -i ./In/3_H2_R1.fq -j ./In/3_H2_R2.fq -a c -t fastq -o ./Out/3_H2.sfq
-sfq -i ./In/4_H2_R1.fq -j ./In/4_H2_R2.fq -a c -t fastq -o ./Out/4_H2.sfq
-sfq -i ./In/5_H2_R1.fq -j ./In/5_H2_R2.fq -a c -t fastq -o ./Out/5_H2.sfq
-#
-# Decompressing
-#
-sfq -i ./Out/1_H2.sfq -a d -t fastq -f fq -o ./Out/1_H2_R1R2.fq
-sfq -i ./Out/2_H2.sfq -a d -t fastq -f fq -o ./Out/2_H2_R1R2.fq
-sfq -i ./Out/3_H2.sfq -a d -t fastq -f fq -o ./Out/3_H2_R1R2.fq
-sfq -i ./Out/4_H2.sfq -a d -t fastq -f fq -o ./Out/4_H2_R1R2.fq
-sfq -i ./Out/5_H2.sfq -a d -t fastq -f fq -o ./Out/5_H2_R1R2.fq
+
+```
+
+Execution:
+
+```
+bench -f "-i,-o" -o Run_1_out -d 1 -i Run_1 -p sfq_spring.bench
+bench -f "-i,-o" -o Run_2_out -d 1 -i Run_2 -p sfq_spring_2.bench
+bench -f "-i,-o" -o Run_3_out -d 1 -i Run_3 -p sfq_spring_3.bench
+```
+
+Results:
+
 ```
 
 
+```
 
 
 ### Runtime analysis
