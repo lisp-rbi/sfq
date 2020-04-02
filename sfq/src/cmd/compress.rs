@@ -55,7 +55,6 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
     };
 
 
-
     if let Some(x) = cli.value_of("cmode") {
 
         if x == "lossy"{
@@ -67,7 +66,6 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
     }else{
         panic!("Compression compromised!");
     }
-
 
     eprintln!(" {:.2?}", before.elapsed());
 
@@ -103,6 +101,7 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
             1 => {
                 out = format!("{}.{}",cli.value_of("output").unwrap(),"seq.sfq");
                 let cpcnt = fdb.get_cpcnt();
+
                 index(&fdb.get_tsv("h+s"),&cpcnt)
 
             },
@@ -117,10 +116,9 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
         x.0.push(10u8);
         x.0.extend( make_stats(x.1,x.3,x.2, fdb.get_model()));
 
-
-
         // make zthis more consise
         for i in 0..x.0.len(){
+            //eprint!("{}", x.0[i] as char); // DEBUG!!
           if x.0[i] == 10u8{
               x.0[i]=0u8;
           }

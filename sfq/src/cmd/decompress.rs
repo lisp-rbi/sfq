@@ -84,8 +84,8 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
                     }
                     //let exp = (count as f64).log(alpha.len() as f64) as u32;
                     //let inc = alpha.len().pow(exp-1);
-                    let inc = alpha.len().pow(5); // set to 5th iteration
-                    eprintln!("Batch size {}", inc);
+                    let pow : u32 = if wlen <= 6 {(wlen as u32)-1}else{6};
+                    let inc = alpha.len().pow(pow); // set to 5th iteration
 
 
                     let (mut i, mut j, mut pp) = (0,inc-1, 0);
@@ -103,12 +103,17 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
 
                         let prefix = enc_start[..e].to_vec();
                         let enc = str::from_utf8(&prefix).unwrap();
+
                         {
                             eprint!("Seq ... ");
                             let st = Instant::now();
                             let mut seq_out: Vec<u8> = seq_lzt.get_records(&enc);
                             let ms = (st.elapsed().as_millis() +1) as u64;
+                            //eprintln!("LZT  {:?}", String::from_utf8(seq_out.clone()).unwrap());
+
                             let dis = deindex(&mut seq_out);
+                            //eprintln!("LZT  {:?} \ndis:{:?}", String::from_utf8(seq_out.clone()).unwrap(),dis);
+
                             let mut numcnt  = 0;
                             for p in seq_out.iter(){
                                 if *p == 10u8 {
@@ -137,12 +142,19 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
                             let mut qual_out = qual_lzt.get_records(&enc);
                             eprintln!("Rec/sec: {:.2?}", (((pp) as u64)/((st.elapsed().as_millis() +1) as u64 ))*1000 );
                             let dis = deindex(&mut qual_out);
+                            //eprintln!("LZT  {:?} \ndis:{:?}", String::from_utf8(qual_out.clone()).unwrap(),dis);
+
+
                             fdb.set_qual(qual_out);
 
+
+
                             if let Some(y) = cli.value_of("cmode") {
+
                                 if y == "lossy"{
                                     fdb.expand();
                                 }
+
                             }else{
                                 panic!("Decompression compromised!");
                             }
