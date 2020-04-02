@@ -180,8 +180,8 @@ impl Get for Fdb {
         }
 
         let len = slt+hlt+qlt;
-        eprintln!("get.rs: 179-FXME: {}", len);
-        let mut vec : Vec<u8> = vec![0u8; len*2];
+        eprintln!("get.rs: 183-FXME: {}", len);
+        let mut vec : Vec<u8> = vec![0u8; len*4];
 
 
         loop{
@@ -224,10 +224,12 @@ impl Get for Fdb {
             x+=1;
         }
 
+
         vec.resize(x-1,  0x00);// -1 rm \n
         vec
 
     }
+
 
     fn get_cpcnt (&self) -> Vec<usize> {
         self.cpcnt.clone()
