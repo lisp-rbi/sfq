@@ -105,6 +105,7 @@
                      if bw == 1 && ssw == true{
                          if x == y{
                              buff.extend(vec![0u8;y]);
+                             y=y*2;
                          }
                          buff[x] = *ch;
                          x+=1;
