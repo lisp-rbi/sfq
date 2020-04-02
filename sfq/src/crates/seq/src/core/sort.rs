@@ -10,6 +10,8 @@ impl Fdb {
             prim_vec: &mut Vec<u8>,
             sec_vec:  &mut Vec<u8>) -> bool {
 
+                //eprintln!("{:?}\n{:?}\n{:?}", key_vec, prim_vec, sec_vec);
+
             if self.qual.len() == 0 {
                 panic!("sort_by() only works when fastq file is loaded properly!");
             }
