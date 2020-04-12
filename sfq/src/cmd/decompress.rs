@@ -62,7 +62,7 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
 
                     let mut head_lzt = FFI::open(&head,memmod); //// escape header
                     let mut seq_lzt  = FFI::open(&seq,memmod);
-                    let mut qual_lzt = if q {FFI::open(&qual,memmod)}else{FFI::empty()};
+                    //let mut qual_lzt = if q {FFI::open(&qual,memmod)}else{FFI::empty()};
 
                     let ( mut count, mut alpha, mut wlen, mut model) = (0,Vec::new(),0, false);
 
@@ -82,6 +82,9 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
                         fdb.set_model(seq_stats.3);
 
                     }
+
+                    head_lzt.drop();
+                    seq_lzt.drop();
                     //let exp = (count as f64).log(alpha.len() as f64) as u32;
                     //let inc = alpha.len().pow(exp-1);
                     let pow : u32 = if wlen <= 6 {(wlen as u32)-1}else{6};
@@ -91,6 +94,10 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
                     let (mut i, mut j, mut pp) = (0,inc-1, 0);
 
                     while i < count {
+
+                        let mut head_lzt = FFI::open(&head,memmod); //// escape header
+                        let mut seq_lzt  = FFI::open(&seq,memmod);
+                        let mut qual_lzt = if q {FFI::open(&qual,memmod)}else{FFI::empty()};
 
                         let enc_start = encode(i, wlen, &alpha);
                         let enc_stop  = encode(j, wlen, &alpha);
@@ -125,6 +132,7 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
                             fdb.set_numrec(numcnt);
                             fdb.set_seq(seq_out);
                             fdb.set_cpcnt(dis);
+
                         }
                         {
                             eprint!("Head ... ");
@@ -135,6 +143,7 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
 
                             let dis = deindex(&mut head_out);
                             fdb.set_head(head_out);
+
                         }
                         if q {
                             eprint!("Qual ... ");
@@ -148,7 +157,6 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
                             fdb.set_qual(qual_out);
 
 
-
                             if let Some(y) = cli.value_of("cmode") {
 
                                 if y == "lossy"{
@@ -158,18 +166,21 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
                             }else{
                                 panic!("Decompression compromised!");
                             }
+
                         }else{
                             let qvec = vec!['\n' as u8; fdb.get_numrec()];
                             fdb.set_qual(qvec);
                         }
 
-                        fdb.save_append(cli.value_of("output").unwrap(), cli.value_of("outfmt").unwrap());
+                       fdb.save_append(cli.value_of("output").unwrap(), cli.value_of("outfmt").unwrap());
 
                         fdb.clear();
+
+                        head_lzt.drop();
+                        qual_lzt.drop();
+                        seq_lzt.drop();
                     }
-                    head_lzt.drop();
-                    qual_lzt.drop();
-                    seq_lzt.drop();
+
                 },
                 _=> {
                     panic!("File format {} not recognized",x)
