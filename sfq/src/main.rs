@@ -15,10 +15,14 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+use std::alloc::System;
+
+#[global_allocator]
+static A: System = System;
 
 
-#[cfg(test)]
-mod tests;
+//#[cfg(test)]
+//mod tests;
 
 // modules
 mod cli;
