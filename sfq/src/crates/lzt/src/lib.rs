@@ -147,23 +147,13 @@ impl FFI {
                ) as usize;
 
                let mut tq = vec![43u8;size];
-/*
-               let mut ta = vec![43u8;size];
-               ta.push('\n' as u8);
-               ta.extend(ta.clone());
-               ta.push('\n' as u8);
-               ta.extend(ta.clone());
-*/
 
                get_query_results(
                    self.raw[i],
                    tq.as_mut_ptr()
                );
 
-
-
                qres.extend(tq);
-
            }
         }
         if qres[qres.len()-1] == '\n' as u8{
