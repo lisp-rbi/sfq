@@ -56,7 +56,7 @@ class Lzt {
          * Query (loaded) trie by prefix, return a list of all words sharing the prefix.
          * Empty prefix lists all words.
          */
-       vector<vector<TSymbol> > * getRecords(vector<TSymbol> prefix);
+       vector<TSymbol>  getRecords(vector<TSymbol> prefix);
 
      private:
         TLzTrie *trie = NULL;

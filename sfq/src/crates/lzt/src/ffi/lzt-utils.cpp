@@ -99,12 +99,35 @@ vector<vector<TSymbol> >* wordList2VecOfVec(WordList<TSymbol>* words) {
     for (size_t i = 0; i < words->numberOfWords(); ++i) {
         TSymbol const * s = (*words)[i];
         vector<TSymbol> vword;
-        for (size_t j = 0; s[j] != 0; ++j)
-            vword.push_back(s[j]);
+        for (size_t j = 0; s[j] != 0; ++j){
+          vword.push_back(s[j]);
+        }
+
         vvwords->push_back(vword);
+        //   MAKE DEL HEREdelete [] vword;
     }
     return vvwords;
 }
+
+
+
+/**
+ * Converts WordList to vector representation.
+ * This is for testing purposes, since loaders in the library produce WordLists
+ * and fasta interface methods use vectors of vectors
+ */
+vector<TSymbol > wordList2Vec(WordList<TSymbol>* words) {
+    vector<TSymbol > vec ;
+    for (size_t i = 0; i < words->numberOfWords(); ++i) {
+        TSymbol const * s = (*words)[i];
+        for (size_t j = 0; s[j] != 0; ++j){
+          vec.push_back(s[j]);
+        }
+        vec.push_back((TSymbol) '\n');
+    }
+    return vec;
+}
+
 
 /**
  * Reads words from word-per-line txt file to flat words format.
@@ -125,11 +148,12 @@ vector<vector<TSymbol> >* readWordsFromFileVecVec(string file) {
     WordFileReader<TSymbol> reader(file);
     WordList<TSymbol>* words = reader.getWords();
     vector<vector<TSymbol> >* vvwords = wordList2VecOfVec(words);
-    for(size_t i = 0; i < vvwords->size(); ++i) {
+/*    for(size_t i = 0; i < vvwords->size(); ++i) {
         vector<TSymbol> w = (*vvwords)[i];
 //        for(int j = 0; j < w.size(); ++j) cout << w[j];
 //        cout<<endl;
     }
+    */
     delete words;
     return vvwords;
 }

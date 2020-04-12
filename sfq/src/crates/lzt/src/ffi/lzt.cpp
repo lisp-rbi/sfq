@@ -8,7 +8,12 @@ Lzt::Lzt(string Path, size_t cashsize, bool inMem){
 }
 
 Lzt::~Lzt(){
-   if (trie != NULL) freeTrieMem(trie);
+
+   if (trie != NULL){
+     cout << "destructing the object"<< endl;
+     vector<TSymbol>().swap(objvec);
+     freeTrieMem(trie);
+   }
 }
 
 bool Lzt::make(TSymbol* words, long length, string savePath, bool sortWords) {
@@ -21,7 +26,7 @@ bool Lzt::read(string triePath, size_t cashsize, bool inMem) {
     return trie != NULL;
 }
 
-vector<vector<TSymbol> >* Lzt::getRecords(vector<TSymbol> prefix) {
+vector<TSymbol > Lzt::getRecords(vector<TSymbol> prefix) {
     return queryTrie(trie, prefix);
 }
 
@@ -74,22 +79,26 @@ extern "C" {
 
 // ABI -> manually delete an lzt object -> destruct
     void delete_lzt(Lzt *obj) {
-        delete obj;
+        delete  obj;
     }
 
 // ABI -> query lzt : prefix search
 		unsigned long query_lzt (Lzt *obj, uchar* pattern, unsigned long pln){
 
       vector<uchar> ptt(pattern, pattern + pln);
-      vector<vector<uchar>>* out = obj->getRecords(ptt);
 
-      obj->objvec = std::accumulate(
+      obj->objvec = obj->getRecords(ptt);
+
+
+/*
+      std::accumulate(
         out->begin(), out->end(), vector<uchar>(), [](vector<uchar> (a), vector<uchar> (b)) {
           a.insert(a.end(), b.begin(), b.end());
           a.push_back('\n');
           return a;
         }
       );
+*/
 
       return (unsigned long) obj->objvec.size();
 		}
