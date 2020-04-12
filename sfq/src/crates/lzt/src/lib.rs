@@ -16,7 +16,7 @@ use util::common::{
 
 
 // global variable -> maybe move into objects ?
-static CASHSIZE: usize = 50000;
+static CASHSIZE: usize = 30000;
 
 
 #[cfg(test)]
@@ -146,20 +146,31 @@ impl FFI {
                    pattern.len() as libc::c_ulong,
                ) as usize;
 
-               let mut tq = vec![0u8;size];
-
+               let mut tq = vec![43u8;size];
+/*
+               let mut ta = vec![43u8;size];
+               ta.push('\n' as u8);
+               ta.extend(ta.clone());
+               ta.push('\n' as u8);
+               ta.extend(ta.clone());
+*/
 
                get_query_results(
                    self.raw[i],
                    tq.as_mut_ptr()
                );
 
+
+
                qres.extend(tq);
+
            }
         }
         if qres[qres.len()-1] == '\n' as u8{
             qres.resize(qres.len()-1, 0x00);
         }
+
+//        println!("{:?}", String::from_utf8(qres.clone()).unwrap()  );
 
         qres
     }
