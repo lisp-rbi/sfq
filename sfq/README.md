@@ -51,7 +51,7 @@ This will compile the source to `./target/release/`
 
 
 
-sfq 0.01
+sfq 0.1.7
 Robert Bakaric <rbakaric@irb.hr>, Damir Korencic<dkorencic@irb.hr>
 
     ______     ______   ______    	
@@ -247,8 +247,8 @@ Benchmark (sfq_vs_spring.bench):
 %PlotRuntime: sfq/spring, HiSeq/NovaSeq,  Decompress ,   Ram   ,     20GB     ,     -     : Decompression_Ram_20GBMemLimit
 %PlotRuntime: sfq/spring, HiSeq/NovaSeq,  Decompress ,   Disc  ,     20GB     ,     -     : Decompression_Disc_20GBMemLimit
 #------------------------------------------------------------------------------#
-%PlotDisc:        sfq   ,   NovaSeq    ,  Decompress ,    -    ,       -      ,35/350/3500: SFQ_Compretion_Ratio
-%PlotDisc:       spring ,   NovaSeq    ,  Decompress ,    -    ,       -      ,35/350/3500: SPRING_Compretion_Ratio
+%PlotDisc:        sfq   ,   NovaSeq    ,  Decompress ,    -    ,       -      ,sf35/sf350/sf3500: SFQ_Compretion_Ratio
+%PlotDisc:       spring ,   NovaSeq    ,  Decompress ,    -    ,       -      ,sp35/sp350/sp3500: SPRING_Compretion_Ratio
 #------------------------------------------------------------------------------#
 %PlotMemory:  sfq/spring, HiSeq/NovaSeq,   Compress  ,    -    ,    NoLimit   ,     -     : Compression_NoMemLimit
 %PlotMemory:  sfq/spring, HiSeq/NovaSeq,  Decompress ,   Ram   ,    NoLimit   ,     -     : Decompression_RAM
@@ -258,7 +258,7 @@ Benchmark (sfq_vs_spring.bench):
 %PlotMemory:  sfq/spring, HiSeq/NovaSeq,  Decompress ,   Disc  ,     20GB     ,     -     : Decompression_Disc_20GBMemLimit
 
 
-%FlagClasses: Output, Input
+%FlagClasses: Input, Output
 ################################################################################
 # NovaSeq
 ################################################################################
@@ -270,26 +270,31 @@ Benchmark (sfq_vs_spring.bench):
 # Compressing
 #
 %Tags:    spring, NovaSeq, Compress , -, NoLimit,  -
+%Flags: -i, -o
 spring -c -i ./In/1_L2_R1.fq ./In/1_L2_R2.fq -o ./Out/1_L2.spring -t 1
-%Tags:    spring, NovaSeq, Compress , -, NoLimit,  -
+%Tags:    spring, NovaSeq, Compress , -, NoLimit,  sp35
+%Flags: -i, -o
 spring -c -i ./In/2_L2_R1.fq ./In/2_L2_R2.fq -o ./Out/2_L2.spring -t 1
-%Tags:    spring, NovaSeq, Compress , -, NoLimit,  -
+%Tags:    spring, NovaSeq, Compress , -, NoLimit,  sp350
+%Flags: -i, -o
 spring -c -i ./In/3_L2_R1.fq ./In/3_L2_R2.fq -o ./Out/3_L2.spring -t 1
-%Tags:    spring, NovaSeq, Compress , -, NoLimit,  -
+%Tags:    spring, NovaSeq, Compress , -, NoLimit,  sp3500
+%Flags: -i, -o
 spring -c -i ./In/4_L2_R1.fq ./In/4_L2_R2.fq -o ./Out/4_L2.spring -t 1
 #
 # Decompressing
 #
 %Tags:    spring, NovaSeq, Decompress , -, NoLimit,  -
+%Flags: -i, -o
 spring -d -i ./Out/1_L2.spring -o ./Out/1_L2.fastq
-%Tags:    spring, NovaSeq, Decompress , -, NoLimit,  35
-%Flags:   -o,          -i
+%Tags:    spring, NovaSeq, Decompress , -, NoLimit,  -
+%Flags:   -i,          -o
 spring -d -i ./Out/2_L2.spring -o ./Out/2_L2.fastq
-%Tags:    spring, NovaSeq, Decompress , -, NoLimit,  350
-%Flags:   -o,          -i
+%Tags:    spring, NovaSeq, Decompress , -, NoLimit,  -
+%Flags:   -i,          -o
 spring -d -i ./Out/3_L2.spring -o ./Out/3_L2.fastq
-%Tags:    spring, NovaSeq, Decompress , -, NoLimit,  3500
-%Flags:   -o,          -i
+%Tags:    spring, NovaSeq, Decompress , -, NoLimit,  -
+%Flags:   -i,          -o
 spring -d -i ./Out/4_L2.spring -o ./Out/4_L2.fastq
 
 
@@ -300,36 +305,45 @@ spring -d -i ./Out/4_L2.spring -o ./Out/4_L2.fastq
 # Compressing
 #
 %Tags:    sfq, NovaSeq, Compress , -, NoLimit,  -
+%Flags: -i, -o
 sfq -i ./In/1_L2_R1.fq -j ./In/1_L2_R2.fq -a c -t fastq -o ./Out/1_L2.sfq
-%Tags:    sfq, NovaSeq, Compress , -, NoLimit,  -
+%Tags:    sfq, NovaSeq, Compress , -, NoLimit,  sf35
+%Flags: -i, -o
 sfq -i ./In/2_L2_R1.fq -j ./In/2_L2_R2.fq -a c -t fastq -o ./Out/2_L2.sfq
-%Tags:    sfq, NovaSeq, Compress , -, NoLimit,  -
+%Tags:    sfq, NovaSeq, Compress , -, NoLimit,  sf350
+%Flags: -i, -o
 sfq -i ./In/3_L2_R1.fq -j ./In/3_L2_R2.fq -a c -t fastq -o ./Out/3_L2.sfq
-%Tags:    sfq, NovaSeq, Compress , -, NoLimit,  -
+%Tags:    sfq, NovaSeq, Compress , -, NoLimit,  sf3500
+%Flags: -i, -o
 sfq -i ./In/4_L2_R1.fq -j ./In/4_L2_R2.fq -a c -t fastq -o ./Out/4_L2.sfq
 #
 # Decompressing
 #
 %Tags:    sfq, NovaSeq, Decompress , Ram, NoLimit,  -
+%Flags: -i, -o
 sfq -i ./Out/1_L2.sfq -a d -t fastq -f fq -m R -o ./Out/1_r-L2_R1R2.fq
-%Tags:    sfq, NovaSeq, Decompress , Ram, NoLimit,  35
-%Flags:   -o,          -i
+%Tags:    sfq, NovaSeq, Decompress , Ram, NoLimit,  -
+%Flags:   -i,          -o
 sfq -i ./Out/2_L2.sfq -a d -t fastq -f fq -m R -o ./Out/2_r-L2_R1R2.fq
-%Tags:    sfq, NovaSeq, Decompress , Ram, NoLimit,  350
-%Flags:   -o,          -i
+%Tags:    sfq, NovaSeq, Decompress , Ram, NoLimit,  -
+%Flags:   -i,          -o
 sfq -i ./Out/3_L2.sfq -a d -t fastq -f fq -m R -o ./Out/3_r-L2_R1R2.fq
-%Tags:    sfq, NovaSeq, Decompress , Ram, NoLimit,  3500
-%Flags:   -o,          -i
+%Tags:    sfq, NovaSeq, Decompress , Ram, NoLimit,  -
+%Flags:   -i,          -o
 sfq -i ./Out/4_L2.sfq -a d -t fastq -f fq -m R -o ./Out/4_r-L2_R1R2.fq
 #
 #
 %Tags:    sfq, NovaSeq, Decompress , Disc, NoLimit,  -
+%Flags: -i, -o
 sfq -i ./Out/1_L2.sfq -a d -t fastq -f fq -m D -o ./Out/1_d-L2_R1R2.fq
 %Tags:    sfq, NovaSeq, Decompress , Disc, NoLimit,  -
+%Flags: -i, -o
 sfq -i ./Out/2_L2.sfq -a d -t fastq -f fq -m D -o ./Out/2_d-L2_R1R2.fq
 %Tags:    sfq, NovaSeq, Decompress , Disc, NoLimit,  -
+%Flags: -i, -o
 sfq -i ./Out/3_L2.sfq -a d -t fastq -f fq -m D -o ./Out/3_d-L2_R1R2.fq
 %Tags:    sfq, NovaSeq, Decompress , Disc, NoLimit,  -
+%Flags: -i, -o
 sfq -i ./Out/4_L2.sfq -a d -t fastq -f fq -m D -o ./Out/4_d-L2_R1R2.fq
 
 
@@ -345,26 +359,31 @@ sfq -i ./Out/4_L2.sfq -a d -t fastq -f fq -m D -o ./Out/4_d-L2_R1R2.fq
 # Compressing
 #
 %Tags:    spring, HiSeq, Compress , -, NoLimit,  -
+%Flags: -i, -o
 spring -c -i ./In/1_H2_R1.fq ./In/1_H2_R2.fq -o ./Out/1_H2.spring -t 1
 %Tags:    spring, HiSeq, Compress , -, NoLimit,  -
+%Flags: -i, -o
 spring -c -i ./In/2_H2_R1.fq ./In/2_H2_R2.fq -o ./Out/2_H2.spring -t 1
 %Tags:    spring, HiSeq, Compress , -, NoLimit,  -
+%Flags: -i, -o
 spring -c -i ./In/3_H2_R1.fq ./In/3_H2_R2.fq -o ./Out/3_H2.spring -t 1
 %Tags:    spring, HiSeq, Compress , -, NoLimit,  -
+%Flags: -i, -o
 spring -c -i ./In/4_H2_R1.fq ./In/4_H2_R2.fq -o ./Out/4_H2.spring -t 1
 #
 # Decompressing
 #
 %Tags:    spring, HiSeq, Decompress , -, NoLimit,  -
+%Flags: -i, -o
 spring -d -i ./Out/1_H2.spring -o ./Out/1_H2.fastq
-%Tags:    spring, HiSeq, Decompress , -, NoLimit,  35
-%Flags:   -o,          -i
+%Tags:    spring, HiSeq, Decompress , -, NoLimit,  -
+%Flags:   -i,          -o
 spring -d -i ./Out/2_H2.spring -o ./Out/2_H2.fastq
-%Tags:    spring, HiSeq, Decompress , -, NoLimit,  350
-%Flags:   -o,          -i
+%Tags:    spring, HiSeq, Decompress , -, NoLimit,  -
+%Flags:   -i,          -o
 spring -d -i ./Out/3_H2.spring -o ./Out/3_H2.fastq
-%Tags:    spring, HiSeq, Decompress , -, NoLimit,  3500
-%Flags:   -o,          -i
+%Tags:    spring, HiSeq, Decompress , -, NoLimit,  -
+%Flags:   -i,          -o
 spring -d -i ./Out/4_H2.spring -o ./Out/4_H2.fastq
 
 
@@ -376,36 +395,45 @@ spring -d -i ./Out/4_H2.spring -o ./Out/4_H2.fastq
 # Compressing
 #
 %Tags:    sfq, HiSeq, Compress , -, NoLimit,  -
+%Flags: -i, -o
 sfq -i ./In/1_H2_R1.fq -j ./In/1_H2_R2.fq -a c -t fastq -o ./Out/1_H2.sfq
 %Tags:    sfq, HiSeq, Compress , -, NoLimit,  -
+%Flags: -i, -o
 sfq -i ./In/2_H2_R1.fq -j ./In/2_H2_R2.fq -a c -t fastq -o ./Out/2_H2.sfq
 %Tags:    sfq, HiSeq, Compress , -, NoLimit,  -
+%Flags: -i, -o
 sfq -i ./In/3_H2_R1.fq -j ./In/3_H2_R2.fq -a c -t fastq -o ./Out/3_H2.sfq
 %Tags:    sfq, HiSeq, Compress , -, NoLimit,  -
+%Flags: -i, -o
 sfq -i ./In/4_H2_R1.fq -j ./In/4_H2_R2.fq -a c -t fastq -o ./Out/4_H2.sfq
 #
 # Decompressing
 #
 %Tags:    sfq, HiSeq, Decompress , Ram, NoLimit,  -
+%Flags: -i, -o
 sfq -i ./Out/1_H2.sfq -a d -t fastq -f fq -m R -o ./Out/1_r-H2_R1R2.fq
-%Tags:    sfq, HiSeq, Decompress , Ram, NoLimit,  35
-%Flags:   -o,          -i
+%Tags:    sfq, HiSeq, Decompress , Ram, NoLimit,  sf35
+%Flags:   -i,          -o
 sfq -i ./Out/2_H2.sfq -a d -t fastq -f fq -m R -o ./Out/2_r-H2_R1R2.fq
-%Tags:    sfq, HiSeq, Decompress , Ram, NoLimit,  350
-%Flags:   -o,          -i
+%Tags:    sfq, HiSeq, Decompress , Ram, NoLimit,  sf350
+%Flags:   -i,          -o
 sfq -i ./Out/3_H2.sfq -a d -t fastq -f fq -m R -o ./Out/3_r-H2_R1R2.fq
-%Tags:    sfq, HiSeq, Decompress , Ram, NoLimit,  3500
-%Flags:   -o,          -i
+%Tags:    sfq, HiSeq, Decompress , Ram, NoLimit,  sf3500
+%Flags:   -i,          -o
 sfq -i ./Out/4_H2.sfq -a d -t fastq -f fq -m R -o ./Out/4_r-H2_R1R2.fq
 #
 #
 %Tags:    sfq, HiSeq, Decompress , Disc, NoLimit,  -
+%Flags: -i, -o
 sfq -i ./Out/1_H2.sfq -a d -t fastq -f fq -m D -o ./Out/1_d-H2_R1R2.fq
 %Tags:    sfq, HiSeq, Decompress , Disc, NoLimit,  -
+%Flags: -i, -o
 sfq -i ./Out/2_H2.sfq -a d -t fastq -f fq -m D -o ./Out/2_d-H2_R1R2.fq
 %Tags:    sfq, HiSeq, Decompress , Disc, NoLimit,  -
+%Flags: -i, -o
 sfq -i ./Out/3_H2.sfq -a d -t fastq -f fq -m D -o ./Out/3_d-H2_R1R2.fq
 %Tags:    sfq, HiSeq, Decompress , Disc, NoLimit,  -
+%Flags: -i, -o
 sfq -i ./Out/4_H2.sfq -a d -t fastq -f fq -m D -o ./Out/4_d-H2_R1R2.fq
 
 ```
