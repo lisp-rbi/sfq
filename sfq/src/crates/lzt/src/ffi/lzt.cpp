@@ -10,7 +10,6 @@ Lzt::Lzt(string Path, size_t cashsize, bool inMem){
 Lzt::~Lzt(){
 
    if (trie != NULL){
-     cout << "destructing the object"<< endl;
      vector<TSymbol>().swap(objvec);
      freeTrieMem(trie);
    }

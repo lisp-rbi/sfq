@@ -85,6 +85,12 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
 
                     head_lzt.drop();
                     seq_lzt.drop();
+
+                    let mut head_lzt = FFI::open(&head,memmod); //// escape header
+                    let mut seq_lzt  = FFI::open(&seq,memmod);
+                    let mut qual_lzt = if q {FFI::open(&qual,memmod)}else{FFI::empty()};
+
+
                     //let exp = (count as f64).log(alpha.len() as f64) as u32;
                     //let inc = alpha.len().pow(exp-1);
                     let pow : u32 = if wlen <= 6 {(wlen as u32)-1}else{6};
@@ -94,10 +100,6 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
                     let (mut i, mut j, mut pp) = (0,inc-1, 0);
 
                     while i < count {
-
-                        let mut head_lzt = FFI::open(&head,memmod); //// escape header
-                        let mut seq_lzt  = FFI::open(&seq,memmod);
-                        let mut qual_lzt = if q {FFI::open(&qual,memmod)}else{FFI::empty()};
 
                         let enc_start = encode(i, wlen, &alpha);
                         let enc_stop  = encode(j, wlen, &alpha);
@@ -112,7 +114,7 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
                         let enc = str::from_utf8(&prefix).unwrap();
 
                         {
-                            eprint!("Seq ... ");
+                            //eprint!("Seq ... ");
                             let st = Instant::now();
                             let mut seq_out: Vec<u8> = seq_lzt.get_records(&enc);
                             let ms = (st.elapsed().as_millis() +1) as u64;
@@ -128,28 +130,28 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
                                 }
                             }
                             pp=numcnt.clone();
-                            eprintln!("Rec/sec: {:.2?}", (((pp) as u64)/ms) * 1000);
+                            //eprintln!("Rec/sec: {:.2?}", (((pp) as u64)/ms) * 1000);
                             fdb.set_numrec(numcnt);
                             fdb.set_seq(seq_out);
                             fdb.set_cpcnt(dis);
 
                         }
                         {
-                            eprint!("Head ... ");
+                            //eprint!("Head ... ");
                             let st = Instant::now();
 
                             let mut head_out = head_lzt.get_records(&enc);
-                            eprintln!("Rec/sec: {:.2?}", (((pp) as u64)/((st.elapsed().as_millis() +1) as u64 ))*1000);
+                            //eprintln!("Rec/sec: {:.2?}", (((pp) as u64)/((st.elapsed().as_millis() +1) as u64 ))*1000);
 
                             let dis = deindex(&mut head_out);
                             fdb.set_head(head_out);
 
                         }
                         if q {
-                            eprint!("Qual ... ");
+                            //eprint!("Qual ... ");
                             let st = Instant::now();
                             let mut qual_out = qual_lzt.get_records(&enc);
-                            eprintln!("Rec/sec: {:.2?}", (((pp) as u64)/((st.elapsed().as_millis() +1) as u64 ))*1000 );
+                            //eprintln!("Rec/sec: {:.2?}", (((pp) as u64)/((st.elapsed().as_millis() +1) as u64 ))*1000 );
                             let dis = deindex(&mut qual_out);
                             //eprintln!("LZT  {:?} \ndis:{:?}", String::from_utf8(qual_out.clone()).unwrap(),dis);
 
@@ -176,10 +178,11 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
 
                         fdb.clear();
 
-                        head_lzt.drop();
-                        qual_lzt.drop();
-                        seq_lzt.drop();
+
                     }
+                    head_lzt.drop();
+                    qual_lzt.drop();
+                    seq_lzt.drop();
 
                 },
                 _=> {

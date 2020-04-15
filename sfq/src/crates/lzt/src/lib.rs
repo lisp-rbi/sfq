@@ -16,7 +16,7 @@ use util::common::{
 
 
 // global variable -> maybe move into objects ?
-static CASHSIZE: usize = 30000;
+static CASHSIZE: usize = 50000;
 
 
 #[cfg(test)]
