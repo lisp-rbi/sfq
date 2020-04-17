@@ -555,13 +555,147 @@ bench -f "-i,-o" -o Run_3_out -d 1 -i Run_3 -p sfq_spring_3.bench
 
 Results:
 
+![Results](https://bitbucket.org/mirda_root/fastqlzt/downloads/Complete.results.png)
+
+```
+
+# Runtime
+
+#Tool	Data	Process	Mode	Size	IO	TotTime
+spring	NovaSeq	Compress	-	NoLimit	-	1.314435
+spring	NovaSeq	Compress	-	NoLimit	sp35	12.408721
+spring	NovaSeq	Compress	-	NoLimit	sp350	114.348113
+spring	NovaSeq	Compress	-	NoLimit	sp3500	824.884892
+spring	NovaSeq	Decompress	-	NoLimit	-	0.311604
+spring	NovaSeq	Decompress	-	NoLimit	-	3.248917
+spring	NovaSeq	Decompress	-	NoLimit	-	13.010098
+spring	NovaSeq	Decompress	-	NoLimit	-	62.756803
+sfq	NovaSeq	Compress	-	NoLimit	-	5.35513
+sfq	NovaSeq	Compress	-	NoLimit	sf35	98.56705
+sfq	NovaSeq	Compress	-	NoLimit	sf350	1640.892372
+sfq	NovaSeq	Compress	-	NoLimit	sf3500	25592.704953
+sfq	NovaSeq	Decompress	Ram	NoLimit	-	2.263316
+sfq	NovaSeq	Decompress	Ram	NoLimit	-	33.171961
+sfq	NovaSeq	Decompress	Ram	NoLimit	-	373.64435
+sfq	NovaSeq	Decompress	Ram	NoLimit	-	4184.688771
+sfq	NovaSeq	Decompress	Disc	NoLimit	-	3.550235
+sfq	NovaSeq	Decompress	Disc	NoLimit	-	54.516524
+sfq	NovaSeq	Decompress	Disc	NoLimit	-	675.640949
+sfq	NovaSeq	Decompress	Disc	NoLimit	-	8071.721965
+spring	HiSeq	Compress	-	NoLimit	-	0.65684
+spring	HiSeq	Compress	-	NoLimit	-	5.197979
+spring	HiSeq	Compress	-	NoLimit	-	67.285613
+spring	HiSeq	Compress	-	NoLimit	-	939.648139
+spring	HiSeq	Decompress	-	NoLimit	-	0.238969
+spring	HiSeq	Decompress	-	NoLimit	-	2.437223
+spring	HiSeq	Decompress	-	NoLimit	-	9.176422
+spring	HiSeq	Decompress	-	NoLimit	-	68.923665
+sfq	HiSeq	Compress	-	NoLimit	-	4.175356
+sfq	HiSeq	Compress	-	NoLimit	-	68.826063
+sfq	HiSeq	Compress	-	NoLimit	-	1053.707942
+sfq	HiSeq	Compress	-	NoLimit	-	15288.47841
+sfq	HiSeq	Decompress	Ram	NoLimit	-	2.180624
+sfq	HiSeq	Decompress	Ram	NoLimit	sf35	30.193404
+sfq	HiSeq	Decompress	Ram	NoLimit	sf350	337.530509
+sfq	HiSeq	Decompress	Ram	NoLimit	sf3500	3750.55229
+sfq	HiSeq	Decompress	Disc	NoLimit	-	3.149178
+sfq	HiSeq	Decompress	Disc	NoLimit	-	47.046225
+sfq	HiSeq	Decompress	Disc	NoLimit	-	582.450215
+sfq	HiSeq	Decompress	Disc	NoLimit	-	6894.860908
+
+#Memory
+
+#Tool	Data	Process	Mode	Size	IO	MemMax(MB)
+spring	NovaSeq	Compress	-	NoLimit	-	1
+spring	NovaSeq	Compress	-	NoLimit	sp35	360697856.00
+spring	NovaSeq	Compress	-	NoLimit	sp350	520544256.00
+spring	NovaSeq	Compress	-	NoLimit	sp3500	1562038272.00
+spring	NovaSeq	Decompress	-	NoLimit	-	1
+spring	NovaSeq	Decompress	-	NoLimit	-	325021696.00
+spring	NovaSeq	Decompress	-	NoLimit	-	1868050432.00
+spring	NovaSeq	Decompress	-	NoLimit	-	3702935552.00
+sfq	NovaSeq	Compress	-	NoLimit	-	274587648.00
+sfq	NovaSeq	Compress	-	NoLimit	sf35	2410684416.00
+sfq	NovaSeq	Compress	-	NoLimit	sf350	22849122304.00
+sfq	NovaSeq	Compress	-	NoLimit	sf3500	247594078208.00
+sfq	NovaSeq	Decompress	Ram	NoLimit	-	65159168.00
+sfq	NovaSeq	Decompress	Ram	NoLimit	-	115138560.00
+sfq	NovaSeq	Decompress	Ram	NoLimit	-	246566912.00
+sfq	NovaSeq	Decompress	Ram	NoLimit	-	1333821440.00
+sfq	NovaSeq	Decompress	Disc	NoLimit	-	63426560.00
+sfq	NovaSeq	Decompress	Disc	NoLimit	-	97697792.00
+sfq	NovaSeq	Decompress	Disc	NoLimit	-	109510656.00
+sfq	NovaSeq	Decompress	Disc	NoLimit	-	111230976.00
+spring	HiSeq	Compress	-	NoLimit	-	1
+spring	HiSeq	Compress	-	NoLimit	-	353136640.00
+spring	HiSeq	Compress	-	NoLimit	-	545492992.00
+spring	HiSeq	Compress	-	NoLimit	-	1582522368.00
+spring	HiSeq	Decompress	-	NoLimit	-	1
+spring	HiSeq	Decompress	-	NoLimit	-	311009280.00
+spring	HiSeq	Decompress	-	NoLimit	-	1791750144.00
+spring	HiSeq	Decompress	-	NoLimit	-	3770601472.00
+sfq	HiSeq	Compress	-	NoLimit	-	249999360.00
+sfq	HiSeq	Compress	-	NoLimit	-	2237997056.00
+sfq	HiSeq	Compress	-	NoLimit	-	21727391744.00
+sfq	HiSeq	Compress	-	NoLimit	-	234954555392.00
+sfq	HiSeq	Decompress	Ram	NoLimit	-	69664768.00
+sfq	HiSeq	Decompress	Ram	NoLimit	sf35	110338048.00
+sfq	HiSeq	Decompress	Ram	NoLimit	sf350	255045632.00
+sfq	HiSeq	Decompress	Ram	NoLimit	sf3500	1666015232.00
+sfq	HiSeq	Decompress	Disc	NoLimit	-	68227072.00
+sfq	HiSeq	Decompress	Disc	NoLimit	-	98926592.00
+sfq	HiSeq	Decompress	Disc	NoLimit	-	108351488.00
+sfq	HiSeq	Decompress	Disc	NoLimit	-	109764608.00
+
+# Disc
+
+#Tool	Data	Process	Mode	Size	IO	DiscUsageFlags:Input	Output
+spring	NovaSeq	Compress	-	NoLimit	-	7088000	820000
+spring	NovaSeq	Compress	-	NoLimit	sp35	70808000	7452000
+spring	NovaSeq	Compress	-	NoLimit	sp350	707944000	56752000
+spring	NovaSeq	Compress	-	NoLimit	sp3500	7079840000	390076000
+spring	NovaSeq	Decompress	DR	NoLimit	-	820000	7088000
+spring	NovaSeq	Decompress	DR	NoLimit	-	7452000	70808000
+spring	NovaSeq	Decompress	DR	NoLimit	-	56752000	707944000
+spring	NovaSeq	Decompress	DR	NoLimit	-	390076000	7079840000
+sfq	NovaSeq	Compress	-	NoLimit	-	7088000	1772000
+sfq	NovaSeq	Compress	-	NoLimit	sf35	70808000	15144000
+sfq	NovaSeq	Compress	-	NoLimit	sf350	707952000	136220000
+sfq	NovaSeq	Compress	-	NoLimit	sf3500	7079840000	1195592000
+sfq	NovaSeq	Decompress	Ram	NoLimit	-	1772000	7088000
+sfq	NovaSeq	Decompress	Ram	NoLimit	-	15144000	70808000
+sfq	NovaSeq	Decompress	Ram	NoLimit	-	136220000	707952000
+sfq	NovaSeq	Decompress	Ram	NoLimit	-	1195592000	7059176000
+sfq	NovaSeq	Decompress	Disc	NoLimit	-	1772000	5836000
+sfq	NovaSeq	Decompress	Disc	NoLimit	-	15144000	69596000
+sfq	NovaSeq	Decompress	Disc	NoLimit	-	136220000	705604000
+sfq	NovaSeq	Decompress	Disc	NoLimit	-	1195592000	7059176000
+spring	HiSeq	Compress	-	NoLimit	-	6248000	580000
+spring	HiSeq	Compress	-	NoLimit	-	62832000	5572000
+spring	HiSeq	Compress	-	NoLimit	-	632656000	56180000
+spring	HiSeq	Compress	-	NoLimit	-	6366320000	579144000
+spring	HiSeq	Decompress	DR	NoLimit	-	580000	6248000
+spring	HiSeq	Decompress	DR	NoLimit	-	5572000	62732000
+spring	HiSeq	Decompress	DR	NoLimit	-	56180000	632656000
+spring	HiSeq	Decompress	DR	NoLimit	-	579144000	6366320000
+sfq	HiSeq	Compress	-	NoLimit	-	6248000	1604000
+sfq	HiSeq	Compress	-	NoLimit	-	62732000	14088000
+sfq	HiSeq	Compress	-	NoLimit	-	632656000	145740000
+sfq	HiSeq	Compress	-	NoLimit	-	6366320000	1520592000
+sfq	HiSeq	Decompress	Ram	NoLimit	-	1604000	6248000
+sfq	HiSeq	Decompress	Ram	NoLimit	sf35	14088000	62732000
+sfq	HiSeq	Decompress	Ram	NoLimit	sf350	145740000	632656000
+sfq	HiSeq	Decompress	Ram	NoLimit	sf3500	1520592000	6366320000
+sfq	HiSeq	Decompress	Disc	NoLimit	-	1604000	6248000
+sfq	HiSeq	Decompress	Disc	NoLimit	-	14088000	62732000
+sfq	HiSeq	Decompress	Disc	NoLimit	-	145740000	632656000
+sfq	HiSeq	Decompress	Disc	NoLimit	-	1520592000	6366320000
+
+
 ```
 
 
-```
-
-
-### Runtime analysis
+### results
 
 
 InputSize X Time
