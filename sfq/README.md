@@ -557,6 +557,8 @@ Results:
 
 ![Results](https://bitbucket.org/mirda_root/fastqlzt/downloads/Complete.results.png)
 
+
+ * Compression ration was calculated using complete dataset including Headers
 ```
 
 # Runtime
