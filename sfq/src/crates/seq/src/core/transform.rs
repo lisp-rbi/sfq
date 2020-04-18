@@ -233,10 +233,13 @@ impl Fdb {
 
         let data = self.get_tsv("h+s+q");
 
-        let mut size = 0;   // THis should be fixed -> memory explosion here
+        let mut size = 0;
+        let mut max  = 0;
+
         for i in self.cpcnt.iter() {
-            size += *i * self.seq.len();
+            if *i > max {max= *i};
         }
+        size = max * self.seq.len();
 
         let mut h = vec![0u8;size];
         let mut s = vec![0u8;size];
