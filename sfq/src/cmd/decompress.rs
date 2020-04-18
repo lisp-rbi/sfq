@@ -70,10 +70,11 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
                     // get info :alloc
                     {
 
-                        let head_stats  = get_stats(&head_lzt.get_records("~~~~~X")); //// escape header
-                        let seq_stats   = get_stats( &seq_lzt.get_records("~~~~~X"));
+                        let head_stats  = get_stats(&head_lzt.get_records("~~~~~^")); //// escape header
+                        let seq_stats   = get_stats( &seq_lzt.get_records("~~~~~^"));
 
                         assert_eq!(seq_stats,head_stats);
+                        
 
                         count = seq_stats.0;
                         alpha = seq_stats.1;
@@ -107,8 +108,12 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
                         j+=inc;
                         i+=inc;
 
-                        if j> count {j=count;}
-                        let e = enc_start.iter().zip(enc_stop.iter()).filter(|&(a, b)| a == b).count();
+                        if j > count {j=count;}
+                        let mut e = 0;
+
+                        for i in 0..enc_start.len() {
+                            if enc_start[i] == enc_stop[i] {e+=1;}else{break;}
+                        }
 
                         let prefix = enc_start[..e].to_vec();
                         let enc = str::from_utf8(&prefix).unwrap();
