@@ -607,7 +607,7 @@ sfq	HiSeq	Decompress	Disc	NoLimit	-	6894.860908
 
 #Memory
 
-#Tool	Data	Process	Mode	Size	IO	MemMax(MB)
+#Tool	Data	Process	Mode	Size	IO	MemMax(B)
 spring	NovaSeq	Compress	-	NoLimit	-	1
 spring	NovaSeq	Compress	-	NoLimit	sp35	360697856.00
 spring	NovaSeq	Compress	-	NoLimit	sp350	520544256.00
@@ -648,6 +648,9 @@ sfq	HiSeq	Decompress	Disc	NoLimit	-	68227072.00
 sfq	HiSeq	Decompress	Disc	NoLimit	-	98926592.00
 sfq	HiSeq	Decompress	Disc	NoLimit	-	108351488.00
 sfq	HiSeq	Decompress	Disc	NoLimit	-	109764608.00
+
+
+* Value of 1 indicates short lived process memory usage of which wan not recorded
 
 # Disc
 
