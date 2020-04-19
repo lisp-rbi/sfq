@@ -118,7 +118,7 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
 
         // make zthis more consise
         for i in 0..x.0.len(){
-            eprint!("{}", x.0[i] as char); // DEBUG!!
+            //eprint!("{}", x.0[i] as char); // DEBUG!!
           if x.0[i] == 10u8{
               x.0[i]=0u8;
           }

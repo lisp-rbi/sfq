@@ -194,9 +194,6 @@ impl Fdb {
         self.cpcnt[c] =rc+1;c+=1;self.cpcnt[c] =fc+1;c+=1;
         self.cpcnt.resize(c,0x00);
 
-
-
-
         for i in a[rh].iter(){self.head[h] = *i; h+=1;}
         self.head[h] = 10u8; h+=1;
 
@@ -232,14 +229,7 @@ impl Fdb {
     pub fn expand(&mut self) -> &mut Self {
 
         let data = self.get_tsv("h+s+q");
-
-        let mut size = 0;
-        let mut max  = 0;
-
-        for i in self.cpcnt.iter() {
-            if *i > max {max= *i};
-        }
-        size = max * self.seq.len();
+        let size = self.cpcnt.iter().max().unwrap() * self.seq.len();
 
         let mut h = vec![0u8;size];
         let mut s = vec![0u8;size];
