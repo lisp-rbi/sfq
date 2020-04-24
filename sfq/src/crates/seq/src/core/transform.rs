@@ -101,7 +101,7 @@ impl Fdb {
                 for i in a[fs].iter(){ self.seq[s] = *i; s+=1;}
                 self.seq[s] = 10u8; s+=1;
 
-                for i in qavg.iter(){self.qual[q] = *i as u8; q+=1;}
+                for i in qavg.iter(){if *i as u8 != 0u8 {self.qual[q] = *i as u8; q+=1;}else{break;}}
                 self.qual[q] = 10u8; q+=1;
 
                 qavg = vec![0f64;if a[fq].len()> b[fq].len() {a[fq].len()}else{b[fq].len()}];
@@ -121,7 +121,7 @@ impl Fdb {
         for i in a[fs].iter(){ self.seq[s] = *i; s+=1;}
         self.seq[s] = 10u8; s+=1;
 
-        for i in qavg.iter(){self.qual[q] = *i as u8; q+=1;}
+        for i in qavg.iter(){if *i as u8 != 0u8 {self.qual[q] = *i as u8; q+=1;}else{break;}}
         self.qual[q] = 10u8; q+=1;
 
         self.head.resize(h-1,0x00);
@@ -159,7 +159,7 @@ impl Fdb {
                 for i in a[rs].iter(){self.seq[s] = *i; s+=1;}
                 self.seq[s] = 10u8; s+=1;
 
-                for i in qravg.iter(){self.qual[q] = *i as u8; q+=1;}
+                for i in qravg.iter(){if *i as u8 != 0u8 {self.qual[q] = *i as u8; q+=1;}else{break;}}
                 self.qual[q] = 10u8; q+=1;
 
                 qravg = vec![0f64;if a[rq].len()> b[rq].len() {a[rq].len()}else{b[rq].len()}];
@@ -178,7 +178,7 @@ impl Fdb {
                 for i in a[fs].iter(){ self.seq[s] = *i; s+=1;}
                 self.seq[s] = 10u8; s+=1;
 
-                for i in qfavg.iter(){self.qual[q] = *i as u8; q+=1;}
+                for i in qfavg.iter(){if *i as u8 != 0u8 {self.qual[q] = *i as u8; q+=1;}else{break;}}
                 self.qual[q] = 10u8; q+=1;
                 qfavg = vec![0f64; if a[fq].len()> b[fq].len() {a[fq].len()}else{b[fq].len()}];
             }else{
@@ -206,10 +206,10 @@ impl Fdb {
         for i in a[fs].iter(){ self.seq[s] = *i; s+=1;}
         self.seq[s] = 10u8;
 
-        for i in qravg.iter(){self.qual[q] = *i as u8; q+=1;}
+        for i in qravg.iter(){if *i as u8 != 0u8 {self.qual[q] = *i as u8; q+=1;}else{break;}}
         self.qual[q] = 10u8; q+=1;
 
-        for i in qfavg.iter(){self.qual[q] = *i as u8; q+=1;}
+        for i in qfavg.iter(){if *i as u8 != 0u8 {self.qual[q] = *i as u8; q+=1;}else{break;}}
         self.qual[q] = 10u8;
 
         self.head.resize(h,0x00);
