@@ -117,10 +117,10 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
         x.0.extend( make_stats(x.1,x.3,x.2, fdb.get_model()));
 
         // make zthis more consise
-        for i in 0..x.0.len(){
-            //eprint!("{}", x.0[i] as char); // DEBUG!!
-          if x.0[i] == 10u8{
-              x.0[i]=0u8;
+        for j in 0..x.0.len(){
+            //eprint!("{}", x.0[j] as char); // DEBUG!!
+          if x.0[j] == 10u8{
+              x.0[j]=0u8;
           }
         }
 
