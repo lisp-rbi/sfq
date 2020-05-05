@@ -15,6 +15,10 @@ use util::common::{
 };
 
 
+// global variable -> maybe move into objects ?
+static CASHSIZE: usize = 50000;
+
+
 #[cfg(test)]
 mod tests;
 
@@ -35,6 +39,7 @@ impl FFI {
 
         let lpm = mem*100; // number of lines per MB
         let (mut l, mut s, mut j) = (0,0,0);
+
 
         // check for null termination
         if vec[vec.len()-1] != 0u8 {vec.push(0u8)};
@@ -73,6 +78,7 @@ impl FFI {
                             open_lzt(
                                 pth.as_ptr(),
                                 pth.len() as libc::c_int,
+                                CASHSIZE as libc::c_int,
                                 mmode
                             )
                         );
@@ -88,7 +94,7 @@ impl FFI {
         }
     }
 
-    
+
     pub fn empty() -> Self {
 
         FFI {
@@ -108,6 +114,7 @@ impl FFI {
                 open_lzt(
                     pth.as_ptr(),
                     pth.len() as libc::c_int,
+                    CASHSIZE as libc::c_int,
                     memmod
                 )
             };
@@ -139,8 +146,7 @@ impl FFI {
                    pattern.len() as libc::c_ulong,
                ) as usize;
 
-               let mut tq = vec![0u8;size];
-
+               let mut tq = vec![43u8;size];
 
                get_query_results(
                    self.raw[i],
@@ -153,6 +159,8 @@ impl FFI {
         if qres[qres.len()-1] == '\n' as u8{
             qres.resize(qres.len()-1, 0x00);
         }
+
+//        println!("{:?}", String::from_utf8(qres.clone()).unwrap()  );
 
         qres
     }

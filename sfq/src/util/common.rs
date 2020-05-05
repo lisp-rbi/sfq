@@ -37,10 +37,11 @@ pub fn get_keys (file:&str) -> Vec<Vec<u8>>{
 }
 
 
-pub fn comp_wlen(v: &Vec<u8>, a: String) -> (usize,usize) {
+pub fn comp_wlen(v: &Vec<usize>, a: String) -> (usize,usize) {
     let alpha = a.len();
-    let cnt = v.iter().filter(|&r| *r == '\n' as u8).count() +1;
-    (cnt ,(((cnt+1)/2) as f64).log(alpha as f64).ceil() as usize)
+    let cnt = *v.iter().max().unwrap() * v.len();
+    //let cnt = v.iter().filter(|&r| *r == '\n' as u8).count() +1;
+    (cnt ,((cnt+1) as f64).log(alpha as f64).ceil() as usize)
 }
 
 
@@ -87,11 +88,11 @@ pub fn index(v: &Vec<u8>, cp: &Vec<usize>) -> (Vec<u8>, usize, usize,String) {
 
     let alpha ="ACGT".to_string(); // this should be dynamyc
 
-    let (cnt,wlen)= comp_wlen(&v, alpha.clone());
+    let (cnt,wlen)= comp_wlen(&cp, alpha.clone());
         eprintln!("Bug in common l:89");
     let mut vec = vec![0u8;v.len()+ ((cnt+1)*wlen*3)+(2*cnt)+2];
 
-    let (mut x, mut y, r, f, t ) = (0,0,'A' as u8, 'G' as u8, 'X' as u8);
+    let (mut x, mut y, r, f, t ) = (0,0,'A' as u8, 'G' as u8, '^' as u8);
 
     let nvec :Vec<_> = v.split(|i| *i=='\n' as u8).collect();
 
@@ -121,7 +122,7 @@ pub fn index(v: &Vec<u8>, cp: &Vec<usize>) -> (Vec<u8>, usize, usize,String) {
         }
         if cp[e] > 1 {
             let cdcp = encode(cp[e],wlen,&alpha.as_bytes().to_vec());
-            vec[y] = 'X' as u8;y+=1;
+            vec[y] = '^' as u8;y+=1;
 
             for j in cdcp.iter(){
                 vec[y] = *j;y+=1
@@ -139,12 +140,11 @@ pub fn index(v: &Vec<u8>, cp: &Vec<usize>) -> (Vec<u8>, usize, usize,String) {
 pub fn hindex(v: &Vec<u8>, cp: &Vec<usize>) ->  (Vec<u8>, usize, usize,String)  {
 
     let alpha ="ACGT".to_string(); // this should be dynamyc
-    let (cnt,wlen)= comp_wlen(&v, alpha.clone());
+    let (cnt,wlen)= comp_wlen(&cp, alpha.clone());
 
-    eprintln!("Bug in common l:140");
-    let mut vec = vec![0u8;v.len()+ ((cnt+1)*3*wlen)+2*(cnt+2)];
-
-    let (mut x, mut y, r, f, t ) = (0,0,'A' as u8, 'G' as u8, 'X' as u8);
+    eprintln!("Bug in common l:140 {} {}", cnt, wlen);
+    let mut vec = vec![0u8;v.len()*2 + ((cnt+1)*6*wlen)+2*(cnt+2)];
+    let (mut x, mut y, r, f, t ) = (0,0,'A' as u8, 'G' as u8, '^' as u8);
 
     let nvec :Vec<_> = v.split(|i| *i=='\n' as u8).collect();
 
@@ -172,7 +172,7 @@ pub fn hindex(v: &Vec<u8>, cp: &Vec<usize>) ->  (Vec<u8>, usize, usize,String)  
         }
         if cp[e] > 1 {
             let cdcp = encode(cp[e],wlen,&alpha.as_bytes().to_vec());
-            vec[y] = 'X' as u8;y+=1;
+            vec[y] = '^' as u8;y+=1;
 
             for j in cdcp.iter(){
                 vec[y] = *j;y+=1
@@ -255,13 +255,14 @@ pub fn tsv_encode(v: &Vec<u8>, p: bool) -> Vec<u8> {
 */
 pub fn deindex(v: &mut Vec<u8>) -> Vec<usize>  {
 
-    let (mut j, mut x, mut print, mut b) = (0,0, false,0);
+    let (mut j, mut x, mut print, mut singleton,  mut b) = (0,0, false,true, 0);
 
     let mut vec = vec![0;v.iter().filter(|&r|*r == '\n' as u8).count()+1];
 
     for (e,i) in v.clone().iter().enumerate(){
 
         if *i == 10u8 {
+            singleton = false;
             if print == true{
                 vec[x] = 1;
             }else{
@@ -271,7 +272,7 @@ pub fn deindex(v: &mut Vec<u8>) -> Vec<usize>  {
             v[j] = *i;j+=1;
             print = false;
 
-        }else if  *i == 88u8 {
+        }else if  *i == 94u8 {
             if print == false{
                 print = true;
             }else{
@@ -286,10 +287,12 @@ pub fn deindex(v: &mut Vec<u8>) -> Vec<usize>  {
         }
     }
 
-    if print == true{
+    if singleton {eprintln!("Singleton is true");}
+
+    if print == true  || singleton == true{
         vec[x] = 1;
     }else{
-        vec[x] = decode(&v[b..v.len()].to_vec(), &b"ACGT".to_vec());
+        vec[x] = decode(&v[b..v.len()].to_vec(), &b"ACGT".to_vec())+1;
         //j+=1;
     }
 
@@ -407,7 +410,7 @@ pub fn parse_codex (codex: &str) -> (usize,String) {
 
 pub fn get_stats(st: &Vec<u8>) -> (usize,Vec<u8>,usize, bool) {
 
-    let mut stats_vec: Vec<_> = st.split(|i| *i == 88u8).collect();
+    let mut stats_vec: Vec<_> = st.split(|i| *i == 94u8).collect();
 
     let num_of_rec = std::str::from_utf8(stats_vec[1]).unwrap().parse::<usize>().unwrap();
     let alpha      = stats_vec[2].to_owned();
@@ -422,13 +425,13 @@ pub fn make_stats(num_of_rec: usize, alpha: String, padding: usize, model: bool)
 
     let mut vec : Vec<u8> = Vec::new();
 
-    vec.extend(b"~~~~~X".to_vec());
+    vec.extend(b"~~~~~^".to_vec());
     vec.extend(num_of_rec.to_string().as_bytes().to_vec());
-    vec.push(88u8);
+    vec.push(94u8);
     vec.extend(alpha.as_bytes().to_vec());
-    vec.push(88u8);
+    vec.push(94u8);
     vec.extend(padding.to_string().as_bytes().to_vec());
-    vec.push(88u8);
+    vec.push(94u8);
     if model ==true {
         vec.push(49u8);
     }else{

@@ -18,9 +18,9 @@ string symbolVec2string(vector<TSymbol> w);
 /**************** WORD SET CONVERSIONS ****************/
 WordList<TSymbol>* vecOfVec2WordList(vector<vector<TSymbol> >* words);
 vector<vector<TSymbol> >* wordList2VecOfVec(WordList<TSymbol>* words);
+vector<TSymbol> wordList2Vec(WordList<TSymbol>* words);
 
-
-template <typename TSymbol> struct FlatWordList {   
+template <typename TSymbol> struct FlatWordList {
     FlatWordList(TSymbol* w, long l): words(w), length(l) {}
     TSymbol *words;
     long length;
@@ -35,4 +35,3 @@ vector<vector<TSymbol> >* readWordsFromFileVecVec(string file);
 /**************************************************************/
 
 #endif /* LZT_UTILS_H */
-

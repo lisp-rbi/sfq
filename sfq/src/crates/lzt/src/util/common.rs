@@ -8,6 +8,7 @@ extern "C" {
     pub fn open_lzt(
         pth: *const libc::c_uchar,
         len: libc::c_int,
+        cashsize: libc::c_int,
         mmode: bool
     ) -> *mut LztObj;
 

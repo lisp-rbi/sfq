@@ -27,6 +27,8 @@ public:
     bool containsWord(TSymbol const * word);
     WordList<TSymbol>* getWordsByPrefix(TSymbol const * word, long maxWords=0, bool diag=false);
 
+    friend class Lzt;
+
 private:
 
     /** for recursive trie searching, data about a location where

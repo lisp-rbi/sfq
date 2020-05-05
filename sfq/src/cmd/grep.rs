@@ -65,8 +65,8 @@ pub fn export (cli: ArgMatches<'static>) -> bool {
 
                     {
 
-                        let head_stats  = get_stats(&head_lzt.get_records("~~~~~X"));
-                        let seq_stats   = get_stats( &seq_lzt.get_records("~~~~~X"));
+                        let head_stats  = get_stats(&head_lzt.get_records("~~~~~^"));
+                        let seq_stats   = get_stats( &seq_lzt.get_records("~~~~~^"));
 
                         assert_eq!(seq_stats,head_stats);
 

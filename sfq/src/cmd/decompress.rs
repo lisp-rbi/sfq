@@ -62,7 +62,7 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
 
                     let mut head_lzt = FFI::open(&head,memmod); //// escape header
                     let mut seq_lzt  = FFI::open(&seq,memmod);
-                    let mut qual_lzt = if q {FFI::open(&qual,memmod)}else{FFI::empty()};
+                    //let mut qual_lzt = if q {FFI::open(&qual,memmod)}else{FFI::empty()};
 
                     let ( mut count, mut alpha, mut wlen, mut model) = (0,Vec::new(),0, false);
 
@@ -70,10 +70,11 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
                     // get info :alloc
                     {
 
-                        let head_stats  = get_stats(&head_lzt.get_records("~~~~~X")); //// escape header
-                        let seq_stats   = get_stats( &seq_lzt.get_records("~~~~~X"));
+                        let head_stats  = get_stats(&head_lzt.get_records("~~~~~^")); //// escape header
+                        let seq_stats   = get_stats( &seq_lzt.get_records("~~~~~^"));
 
                         assert_eq!(seq_stats,head_stats);
+                        
 
                         count = seq_stats.0;
                         alpha = seq_stats.1;
@@ -82,11 +83,22 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
                         fdb.set_model(seq_stats.3);
 
                     }
-                    let exp = (count as f64).log(alpha.len() as f64) as u32;
-                    let inc = alpha.len().pow(exp-1);
+
+                    head_lzt.drop();
+                    seq_lzt.drop();
+
+                    let mut head_lzt = FFI::open(&head,memmod); //// escape header
+                    let mut seq_lzt  = FFI::open(&seq,memmod);
+                    let mut qual_lzt = if q {FFI::open(&qual,memmod)}else{FFI::empty()};
 
 
-                    let (mut i, mut j) = (0,inc-1);
+                    //let exp = (count as f64).log(alpha.len() as f64) as u32;
+                    //let inc = alpha.len().pow(exp-1);
+                    let pow : u32 = if wlen <= 6 {(wlen as u32)-1}else{6};
+                    let inc = alpha.len().pow(pow); // set to 5th iteration
+
+
+                    let (mut i, mut j, mut pp) = (0,inc-1, 0);
 
                     while i < count {
 
@@ -96,54 +108,87 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
                         j+=inc;
                         i+=inc;
 
-                        if j> count {j=count;}
-                        let e = enc_start.iter().zip(enc_stop.iter()).filter(|&(a, b)| a == b).count();
+                        if j > count {j=count;}
+                        let mut e = 0;
+
+                        for i in 0..enc_start.len() {
+                            if enc_start[i] == enc_stop[i] {e+=1;}else{break;}
+                        }
 
                         let prefix = enc_start[..e].to_vec();
                         let enc = str::from_utf8(&prefix).unwrap();
+
                         {
+                            //eprint!("Seq ... ");
+                            let st = Instant::now();
                             let mut seq_out: Vec<u8> = seq_lzt.get_records(&enc);
+                            let ms = (st.elapsed().as_millis() +1) as u64;
+                            //eprintln!("LZT  {:?}", String::from_utf8(seq_out.clone()).unwrap());
+
                             let dis = deindex(&mut seq_out);
+                            //eprintln!("LZT  {:?} \ndis:{:?}", String::from_utf8(seq_out.clone()).unwrap(),dis);
+
                             let mut numcnt  = 0;
                             for p in seq_out.iter(){
                                 if *p == 10u8 {
                                     numcnt+=1;
                                 }
                             }
+                            pp=numcnt.clone();
+                            //eprintln!("Rec/sec: {:.2?}", (((pp) as u64)/ms) * 1000);
                             fdb.set_numrec(numcnt);
                             fdb.set_seq(seq_out);
                             fdb.set_cpcnt(dis);
+
                         }
                         {
+                            //eprint!("Head ... ");
+                            let st = Instant::now();
+
                             let mut head_out = head_lzt.get_records(&enc);
+                            //eprintln!("Rec/sec: {:.2?}", (((pp) as u64)/((st.elapsed().as_millis() +1) as u64 ))*1000);
+
                             let dis = deindex(&mut head_out);
                             fdb.set_head(head_out);
+
                         }
                         if q {
+                            //eprint!("Qual ... ");
+                            let st = Instant::now();
                             let mut qual_out = qual_lzt.get_records(&enc);
+                            //eprintln!("Rec/sec: {:.2?}", (((pp) as u64)/((st.elapsed().as_millis() +1) as u64 ))*1000 );
                             let dis = deindex(&mut qual_out);
+                            //eprintln!("LZT  {:?} \ndis:{:?}", String::from_utf8(qual_out.clone()).unwrap(),dis);
+
+
                             fdb.set_qual(qual_out);
 
+
                             if let Some(y) = cli.value_of("cmode") {
+
                                 if y == "lossy"{
                                     fdb.expand();
                                 }
+
                             }else{
                                 panic!("Decompression compromised!");
                             }
+
                         }else{
                             let qvec = vec!['\n' as u8; fdb.get_numrec()];
-                            eprintln!("-----------------------{}", fdb.get_numrec());
                             fdb.set_qual(qvec);
                         }
 
-                        fdb.save_append(cli.value_of("output").unwrap(), cli.value_of("outfmt").unwrap());
+                       fdb.save_append(cli.value_of("output").unwrap(), cli.value_of("outfmt").unwrap());
 
                         fdb.clear();
+
+
                     }
                     head_lzt.drop();
                     qual_lzt.drop();
                     seq_lzt.drop();
+
                 },
                 _=> {
                     panic!("File format {} not recognized",x)

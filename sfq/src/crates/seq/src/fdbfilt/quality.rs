@@ -3,6 +3,7 @@ use crate::{Fdb};
 impl Fdb {
 
     pub(crate) fn qavrg (&self, qual: &Vec<u8>, qavg: &mut Vec<f64>,  i: usize) {
+
         for (e,q) in qual.iter().enumerate() {
              qavg[e] = ((qavg[e] * (i-1) as f64) + *q as f64)/i as f64;
         }

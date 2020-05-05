@@ -18,11 +18,11 @@ impl Fdb {
         }else{
             let b = self.get_tsv("s+q");
             let h = self.get_head();
+
             let body : Vec<_> = b.split(|i| *i == 10u8).collect();
             let head : Vec<_> = h.split(|i| *i == 10u8).collect();
             let mut x = 0;
             let mut tmp = vec![0u8; self.head.len()+self.seq.len()+self.qual.len()+100];
-
             for i in (1..head.len()).step_by(2){
                 let (mut m, mut n) = (0,0);
                 for j in 0..body[i-1].len(){
@@ -32,9 +32,10 @@ impl Fdb {
                 }
                 for j in 0..body[i].len(){
                     tmp[x] = body[i][j];x+=1;
+                    n+=1;
                     if body[i][j] == 9u8 {break;}
                 }
-                n=m;
+
                 for j in m..body[i-1].len(){
                     tmp[x] = body[i-1][j];x+=1;
                     if body[i-1][j] == 9u8 {break;}
@@ -58,9 +59,9 @@ impl Fdb {
             tmp.resize(x-1, 0x00);
             tmp
         };
+
         let mut sorted : Vec<_> = tsv.split(|i| *i == 10u8).collect();
         sorted.sort();
-
         if self.paired==true {
             if  self.filter_fwd_and_rev(&mut sorted) == false {
                 panic!("Panic!!");
@@ -70,8 +71,6 @@ impl Fdb {
                 panic!("Panic!!")
             };
         }
-
-
 
         self
     }
@@ -95,16 +94,17 @@ impl Fdb {
             if self.compare_vslice(a[fs], b[fs]) == false {
                 fc=1;
 
-                for i in a[fh].iter(){self.head[h] = *i; h+=1;}
+                for i in a[fh].iter(){self.head[h] = *i;  h+=1;}
                 self.head[h] = 10u8; h+=1;
+
 
                 for i in a[fs].iter(){ self.seq[s] = *i; s+=1;}
                 self.seq[s] = 10u8; s+=1;
 
-                for i in qavg.iter(){self.qual[q] = *i as u8; q+=1;}
+                for i in qavg.iter(){if *i as u8 != 0u8 {self.qual[q] = *i as u8; q+=1;}else{break;}}
                 self.qual[q] = 10u8; q+=1;
 
-                qavg = vec![0f64;a[fq].len()];
+                qavg = vec![0f64;if a[fq].len()> b[fq].len() {a[fq].len()}else{b[fq].len()}];
 
             }else{
                 fc+=1;
@@ -121,7 +121,7 @@ impl Fdb {
         for i in a[fs].iter(){ self.seq[s] = *i; s+=1;}
         self.seq[s] = 10u8; s+=1;
 
-        for i in qavg.iter(){self.qual[q] = *i as u8; q+=1;}
+        for i in qavg.iter(){if *i as u8 != 0u8 {self.qual[q] = *i as u8; q+=1;}else{break;}}
         self.qual[q] = 10u8; q+=1;
 
         self.head.resize(h-1,0x00);
@@ -143,8 +143,6 @@ impl Fdb {
         self.cpcnt = vec![0;self.head.len()];
 
         for i in 1..sorted.len(){
-            //println!("{:?}", String::from_utf8(sorted[i].to_vec()).unwrap());
-
             let b : Vec<_> = sorted[i].split(|i| *i == 9u8).collect();
 
             self.qavrg(&(a[fq].to_vec()), &mut qfavg, fc);
@@ -161,10 +159,10 @@ impl Fdb {
                 for i in a[rs].iter(){self.seq[s] = *i; s+=1;}
                 self.seq[s] = 10u8; s+=1;
 
-                for i in qravg.iter(){self.qual[q] = *i as u8; q+=1;}
+                for i in qravg.iter(){if *i as u8 != 0u8 {self.qual[q] = *i as u8; q+=1;}else{break;}}
                 self.qual[q] = 10u8; q+=1;
 
-                qravg = vec![0f64;a[rq].len()];
+                qravg = vec![0f64;if a[rq].len()> b[rq].len() {a[rq].len()}else{b[rq].len()}];
 
             }else{
                 rc+=1;
@@ -180,9 +178,9 @@ impl Fdb {
                 for i in a[fs].iter(){ self.seq[s] = *i; s+=1;}
                 self.seq[s] = 10u8; s+=1;
 
-                for i in qfavg.iter(){self.qual[q] = *i as u8; q+=1;}
+                for i in qfavg.iter(){if *i as u8 != 0u8 {self.qual[q] = *i as u8; q+=1;}else{break;}}
                 self.qual[q] = 10u8; q+=1;
-                qfavg = vec![0f64;a[fq].len()];
+                qfavg = vec![0f64; if a[fq].len()> b[fq].len() {a[fq].len()}else{b[fq].len()}];
             }else{
                 fc+=1;
             }
@@ -196,9 +194,6 @@ impl Fdb {
         self.cpcnt[c] =rc+1;c+=1;self.cpcnt[c] =fc+1;c+=1;
         self.cpcnt.resize(c,0x00);
 
-
-
-
         for i in a[rh].iter(){self.head[h] = *i; h+=1;}
         self.head[h] = 10u8; h+=1;
 
@@ -211,10 +206,10 @@ impl Fdb {
         for i in a[fs].iter(){ self.seq[s] = *i; s+=1;}
         self.seq[s] = 10u8;
 
-        for i in qravg.iter(){self.qual[q] = *i as u8; q+=1;}
+        for i in qravg.iter(){if *i as u8 != 0u8 {self.qual[q] = *i as u8; q+=1;}else{break;}}
         self.qual[q] = 10u8; q+=1;
 
-        for i in qfavg.iter(){self.qual[q] = *i as u8; q+=1;}
+        for i in qfavg.iter(){if *i as u8 != 0u8 {self.qual[q] = *i as u8; q+=1;}else{break;}}
         self.qual[q] = 10u8;
 
         self.head.resize(h,0x00);
@@ -234,11 +229,7 @@ impl Fdb {
     pub fn expand(&mut self) -> &mut Self {
 
         let data = self.get_tsv("h+s+q");
-
-        let mut size = 0;   // THis should be fixed -> memory explosion here
-        for i in self.cpcnt.iter() {
-            size += *i * self.seq.len();
-        }
+        let size = self.cpcnt.iter().max().unwrap() * self.seq.len();
 
         let mut h = vec![0u8;size];
         let mut s = vec![0u8;size];
@@ -252,6 +243,8 @@ impl Fdb {
         let tsv : Vec<_> = data.split(|i| *i == 10u8).collect();
 
         for i in 0..tsv.len() {
+
+            //eprintln!(">>>>{:?}", String::from_utf8(tsv[i].to_vec()).unwrap());
 
             let a : Vec<_> = tsv[i].split(|i| *i == 9u8).collect();
 
@@ -272,11 +265,13 @@ impl Fdb {
                     bs = es+1;
                     bq = eq+1;
                 }
+                //eprintln!("buff_h {:?}\nh {:?}\ns {:?}\nq {:?}\n",buff_h, h,s,q);
 
 
             }else{
 
                 let hd = a[0].to_vec();
+                //eprintln!("cpcnt  {:?}",self.cpcnt[i]);
                 for j in 1..self.cpcnt[i] {
 
                     let mut  hr = hd.clone();
@@ -318,7 +313,6 @@ impl Fdb {
         self.head = h;
         self.seq = s;
         self.qual = q;
-
 
         self.sort("h");
 

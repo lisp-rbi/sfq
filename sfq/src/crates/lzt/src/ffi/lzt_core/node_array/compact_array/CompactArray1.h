@@ -155,10 +155,11 @@ CompactArray<TSymbol, TIndex, TBitSequenceArray>::operator[](TIndex i) {
     size_t index = fromBitSequence<size_t>(indexBits, bitsPerIndex);
 
     if (isCached and symbolCache.contains(index)) {
-        node = symbolCache.fetch(index);
-        cache.add(i, node);
-        return node;
-    }
+       node = symbolCache.fetch(index);
+       cache.add(i, node);
+       return node;
+     }
+
     // get silbing and symbol data from the table
     node.sibling = numberFromBits<TIndex>(siblings[index], siblings.getSequenceSize());
     // TODO TIndex type operation (conversion to size_t)
@@ -176,9 +177,9 @@ CompactArray<TSymbol, TIndex, TBitSequenceArray>::operator[](TIndex i) {
     }
     else node.enumerated = false;
 
-    if (isCached) {
-        symbolCache.add(index, node);
-        cache.add(i, node);
+    if (isCached){
+      symbolCache.add(index, node);
+      cache.add(i, node);
     }
     return node;
 }

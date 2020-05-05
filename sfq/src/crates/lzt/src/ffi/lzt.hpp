@@ -32,7 +32,7 @@ class Lzt {
 
 
       /* Constructor! */
-      Lzt(string Path, bool inMem);
+      Lzt(string Path, size_t cashsize, bool inMem);
 
       /* Destructor */
       ~Lzt();
@@ -50,13 +50,13 @@ class Lzt {
          *  Return true if loading is successful, else false.
          */
 
-       bool read(string triePath, bool inMem);
+       bool read(string triePath, size_t cashsize, bool inMem);
 
         /**
          * Query (loaded) trie by prefix, return a list of all words sharing the prefix.
          * Empty prefix lists all words.
          */
-       vector<vector<TSymbol> > * getRecords(vector<TSymbol> prefix);
+       vector<TSymbol>  getRecords(vector<TSymbol> prefix);
 
      private:
         TLzTrie *trie = NULL;
