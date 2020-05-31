@@ -1,9 +1,7 @@
 use std::fs;
 use std::str;
 use clap::*;
-use crate::util::common::{
-    *
-};
+use crate::util::common::*;
 use std::time::Instant;
 use seq::{
     Fdb,

@@ -1,8 +1,6 @@
 use std::str;
 use clap::*;
-use crate::util::common::{
-    *
-};
+use crate::util::common::*;
 use std::time::Instant;
 use seq::{
     Fdb,
@@ -14,6 +12,7 @@ use lzt::{
     FFI,
     Drop
 };
+
 
 
 
@@ -74,7 +73,7 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
                         let seq_stats   = get_stats( &seq_lzt.get_records("~~~~~^"));
 
                         assert_eq!(seq_stats,head_stats);
-                        
+
 
                         count = seq_stats.0;
                         alpha = seq_stats.1;
@@ -122,7 +121,7 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
                             //eprint!("Seq ... ");
                             let st = Instant::now();
                             let mut seq_out: Vec<u8> = seq_lzt.get_records(&enc);
-                            let ms = (st.elapsed().as_millis() +1) as u64;
+                            let ms: u64 = (st.elapsed().as_millis() +1) as u64;
                             //eprintln!("LZT  {:?}", String::from_utf8(seq_out.clone()).unwrap());
 
                             let dis = deindex(&mut seq_out);

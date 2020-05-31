@@ -1,8 +1,6 @@
 use clap::*;
 use sys_info::{mem_info};
-use crate::util::common::{
-    *
-};
+use crate::util::common::*;
 
 use std::time::Instant;
 use std::str::FromStr;
