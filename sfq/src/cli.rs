@@ -34,7 +34,7 @@ pub(crate) fn parse_cli ()->  clap::ArgMatches<'static> {
             Auth: Bakaric R. Korencic, D. & Ristov, S.";
 
     let  matches = App::new("sfq")
-          .version("0.2.0")
+          .version("0.2.1")
           .author("Robert Bakaric <rbakaric@irb.hr>, Damir Korencic<dkorencic@irb.hr>")
           .about(head)
 
@@ -85,7 +85,7 @@ pub(crate) fn parse_cli ()->  clap::ArgMatches<'static> {
            .arg(Arg::with_name("outfmt")
                .short("f")
                .long("outfmt")
-               .default_value("fa")
+               .default_value("fq")
                .required(true)
                .value_name("fq|fa|s|q|h|...")
                .help("Output format: \n \n\tfq   \t:fastq, \n\tfa  \t:fasta, \n\ts  \t:sequence, \n\tq  \t:quality, \n\th  \t:head, \n\ts+q  \t:sequence quality, \n\th+q  \t:head quality, \n\th+s  \t:head sequence, \n\th+s+q  \t:head sequence quality, \n\ts+h+q  \t:sequence head quality, \n\t...\n")
@@ -99,7 +99,7 @@ pub(crate) fn parse_cli ()->  clap::ArgMatches<'static> {
                 .value_name("fastq|fasta|raw")
                 .help("File types supported")
                 .takes_value(true))
-
+/*
           .arg(Arg::with_name("make-index")
                .short("y")
                .long("make-index")
@@ -108,7 +108,7 @@ pub(crate) fn parse_cli ()->  clap::ArgMatches<'static> {
                .value_name("hd|>3")
                .help("Make index (4,5,6,... - kmer size, hd - high dimensional kmer index)")
                .takes_value(true))
-
+*/
           .arg(Arg::with_name("mem-mod")
                .short("m")
                .long("memory-mode")
