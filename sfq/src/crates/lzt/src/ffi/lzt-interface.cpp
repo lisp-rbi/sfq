@@ -55,9 +55,10 @@ TLzTrie* loadTrie(string trieFolder, bool mem) {
  */
 vector<TSymbol > queryTrie(TLzTrie* trie, vector<TSymbol> query) {
     TSymbol* nativeQuery = symbolVec2array(query);
+    vector<TSymbol > result;
     WordList<TSymbol>* words = trie->getWordsByPrefix(nativeQuery);
-
-    vector<TSymbol > result = wordList2Vec(words);
+    if (words != NULL)
+      result = wordList2Vec(words);
     delete words;
     delete [] nativeQuery;
     return result;

@@ -33,6 +33,7 @@ private:
 
     typedef typename vector<TSymbol*>::iterator TIter;
     bool copyWords;
+    bool full;
 
     vector<TSymbol*> words;
 
@@ -41,7 +42,7 @@ private:
 };
 
 template <typename TSymbol>
-WordList<TSymbol>::WordList(bool cpyWords): copyWords(cpyWords) {}
+WordList<TSymbol>::WordList(bool cpyWords): copyWords(cpyWords){}
 
 template <typename TSymbol>
 WordList<TSymbol>::~WordList() {
