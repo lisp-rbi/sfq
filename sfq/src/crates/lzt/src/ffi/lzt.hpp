@@ -58,6 +58,8 @@ class Lzt {
          */
        vector<TSymbol>  getRecords(vector<TSymbol> prefix);
 
+       void drop();
+
      private:
         TLzTrie *trie = NULL;
 };
