@@ -89,7 +89,7 @@ pub fn index(v: &Vec<u8>, cp: &Vec<usize>) -> (Vec<u8>, usize, usize,String) {
     let alpha ="ACGT".to_string(); // this should be dynamyc
 
     let (cnt,wlen)= comp_wlen(&cp, alpha.clone());
-        eprintln!("Bug in common l:89");
+        //eprintln!("Bug in common l:89");
     let mut vec = vec![0u8;v.len()+ ((cnt+1)*wlen*3)+(2*cnt)+2];
 
     let (mut x, mut y, r, f, t ) = (0,0,'A' as u8, 'G' as u8, '^' as u8);
@@ -142,7 +142,7 @@ pub fn hindex(v: &Vec<u8>, cp: &Vec<usize>) ->  (Vec<u8>, usize, usize,String)  
     let alpha ="ACGT".to_string(); // this should be dynamyc
     let (cnt,wlen)= comp_wlen(&cp, alpha.clone());
 
-    eprintln!("Bug in common l:140 {} {}", cnt, wlen);
+    //eprintln!("Bug in common l:140 {} {}", cnt, wlen);
     let mut vec = vec![0u8;v.len()*2 + ((cnt+1)*6*wlen)+2*(cnt+2)];
     let (mut x, mut y, r, f, t ) = (0,0,'A' as u8, 'G' as u8, '^' as u8);
 

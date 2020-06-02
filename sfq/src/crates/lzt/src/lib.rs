@@ -37,7 +37,7 @@ impl FFI {
 
     pub fn new( path : &str, vec: &mut Vec<u8>, mem: usize, mmode: bool) -> Self {
 
-        let lpm = mem*100; // number of lines per MB
+        let lpm = mem*50; // number of lines per MB
         let (mut l, mut s, mut j) = (0,0,0);
 
 
@@ -65,15 +65,17 @@ impl FFI {
                     let v =  &vec[s..i+1].to_vec();
                     //println!("{:?} -- {} {}", vec[i], v.len(), v[v.len()-1]);
                     unsafe {
-                        if make_lzt(
-                            v.as_ptr(),
-                            v.len() as libc::c_ulong,
-                            pth.as_ptr(),
-                            pth.len() as libc::c_int,
-                        ) == false {
+                        {
+                            if make_lzt(
+                                v.as_ptr(),
+                                v.len() as libc::c_ulong,
+                                pth.as_ptr(),
+                                pth.len() as libc::c_int,
+                            ) == false {
                             // FXME: add it to errorr management
                                 panic!("Error with creating lzt indedx!");
-                        };
+                            };
+                        }
                         lzt_vec.push(
                             open_lzt(
                                 pth.as_ptr(),
