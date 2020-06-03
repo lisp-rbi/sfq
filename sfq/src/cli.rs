@@ -118,13 +118,13 @@ pub(crate) fn parse_cli ()->  clap::ArgMatches<'static> {
                .help("Memory mode: defines memory type  (D - disc, R - RAM)")
                .takes_value(true))
 
-          .arg(Arg::with_name("max-mem")
-               .short("M")
-               .long("max-memory-used")
+          .arg(Arg::with_name("fragment-size")
+               .short("F")
+               .long("fragment-size")
                .default_value("Max")
                .required(true)
                .value_name("Max|3600,5000")
-               .help("Max Memory to be used (in MB, Max - use all available)")
+               .help("Number of lines to be processed at a time (Max - use all available)")
                .takes_value(true))
 
           .arg(Arg::with_name("list")

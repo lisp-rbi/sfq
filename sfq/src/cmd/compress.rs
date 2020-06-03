@@ -32,7 +32,7 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
         fdb.load(cli.value_of("input-rev").unwrap(), false);
     }
 
-    let mymem : usize = if let Some(x) = cli.value_of("max-mem") {
+    let mymem : usize = if let Some(x) = cli.value_of("fragment-size") {
         if x == "Max" {
             (mem_info().unwrap().total/1000) as usize
         }else{

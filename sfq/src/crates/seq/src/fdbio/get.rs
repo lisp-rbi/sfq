@@ -180,7 +180,7 @@ impl Get for Fdb {
         }
 
         let len = slt+hlt+qlt;
-        eprintln!("get.rs: 183-FXME: {}", len);
+        //eprintln!("get.rs: 183-FXME: {}", len);
         let mut vec : Vec<u8> = vec![0u8; len*4];
 
 

@@ -75,7 +75,9 @@ impl FFI {
                             // FXME: add it to errorr management
                                 panic!("Error with creating lzt indedx!");
                             };
+
                         }
+                        /*
                         lzt_vec.push(
                             open_lzt(
                                 pth.as_ptr(),
@@ -84,6 +86,7 @@ impl FFI {
                                 mmode
                             )
                         );
+                        */
                     }
                     s = i+1;
                     l = 0;
@@ -92,8 +95,13 @@ impl FFI {
         }
 
         FFI {
+            raw: Vec::new()
+        }
+/*
+        FFI {
             raw: lzt_vec
         }
+*/
     }
 
 
