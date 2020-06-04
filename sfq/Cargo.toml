@@ -1,6 +1,6 @@
 [package]
 name = "sfq"
-version = "0.2.0"
+version = "0.2.1"
 authors = ["Robert Bakaric <rbakaric@exaltum.eu>"]
 edition = "2018"
 
