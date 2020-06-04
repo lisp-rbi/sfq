@@ -110,6 +110,14 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
 
             }
         };
+        if  i==0 {
+            fdb.clear_head();
+        }else if i==1 {
+            fdb.clear_seq();
+        }else{
+            fdb.clear_qual();
+        }
+
         //stats processing
         x.0.push(10u8);
         x.0.extend( make_stats(x.1,x.3,x.2, fdb.get_model()));
@@ -129,7 +137,6 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
             memmod
         );
         lzt.drop();
-
         i+=1;
     }
 

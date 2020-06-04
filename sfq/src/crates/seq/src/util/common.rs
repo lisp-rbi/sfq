@@ -30,6 +30,19 @@ impl Fdb{
         self
     }
 
+    pub fn clear_head(&mut self) -> &mut Self {
+        self.head.resize(0,0x00);
+        self
+    }
+    pub fn clear_seq(&mut self) -> &mut Self {
+        self.seq.resize(0,0x00);
+        self
+    }
+    pub fn clear_qual(&mut self) -> &mut Self {
+        self.qual.resize(0,0x00);
+        self
+    }
+
     pub fn revcomp(&self, s: String) -> String {
 
         s.chars()
