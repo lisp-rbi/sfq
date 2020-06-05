@@ -21,6 +21,7 @@ bool createTrie(TSymbol* words, long length, string fname, bool sortWords) {
     }
     bool res = builder.buildSaveCompactArray(wlist, fname, "");
     delete wlist;
+
     return res;
 }
 

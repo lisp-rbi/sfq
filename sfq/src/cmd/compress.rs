@@ -110,13 +110,6 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
 
             }
         };
-        if  i==0 {
-            fdb.clear_head();
-        }else if i==1 {
-            fdb.clear_seq();
-        }else{
-            fdb.clear_qual();
-        }
 
         //stats processing
         x.0.push(10u8);

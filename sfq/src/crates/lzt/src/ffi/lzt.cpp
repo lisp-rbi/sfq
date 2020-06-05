@@ -24,7 +24,8 @@ void Lzt::drop(){
 
 
 bool Lzt::make(TSymbol* words, long length, string savePath, bool sortWords) {
-    return createTrie(words, length, savePath, sortWords);
+    //return createTrie(words, length, savePath, sortWords);
+    return true;
 }
 
 bool Lzt::read(string triePath, size_t cashsize, bool inMem) {
