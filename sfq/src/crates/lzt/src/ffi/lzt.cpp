@@ -8,7 +8,6 @@ Lzt::Lzt(string Path, size_t cashsize, bool inMem){
 }
 
 Lzt::~Lzt(){
-
    if (trie != NULL){
      vector<TSymbol>().swap(objvec);
      freeTrieMem(trie);
@@ -24,8 +23,8 @@ void Lzt::drop(){
 
 
 bool Lzt::make(TSymbol* words, long length, string savePath, bool sortWords) {
-    //return createTrie(words, length, savePath, sortWords);
-    return true;
+    return createTrie(words, length, savePath, sortWords);
+    //return true;
 }
 
 bool Lzt::read(string triePath, size_t cashsize, bool inMem) {

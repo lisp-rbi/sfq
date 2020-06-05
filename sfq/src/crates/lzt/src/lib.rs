@@ -47,6 +47,7 @@ impl FFI {
         let mut lzt_vec : Vec<*mut LztObj> = Vec::new();
 
         for i in 0..vec.len() {
+            eprintln!("processing:{}" , i);
 
             if vec[i] == 0u8 || i == vec.len()-1 {
                 l+=1;
@@ -63,6 +64,7 @@ impl FFI {
                     }
 
                     let v =  &vec[s..i+1].to_vec();
+                    eprintln!("entring _lzt");
                     //println!("{:?} -- {} {}", vec[i], v.len(), v[v.len()-1]);
                     unsafe {
                         {
@@ -76,7 +78,7 @@ impl FFI {
                                 panic!("Error with creating lzt indedx!");
                             };
 
-                        }
+                        };
 
                         /*
                         lzt_vec.push(
@@ -89,6 +91,7 @@ impl FFI {
                         );
                         */
                     }
+                    eprintln!("exiting _lzt");
                     s = i+1;
                     l = 0;
                 }
