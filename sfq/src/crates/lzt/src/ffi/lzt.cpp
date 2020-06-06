@@ -14,13 +14,6 @@ Lzt::~Lzt(){
    }
 }
 
-void Lzt::drop(){
-   if (trie != NULL){
-     vector<TSymbol>().swap(objvec);
-     freeTrieMem(trie);
-   }
-}
-
 
 bool Lzt::make(TSymbol* words, long length, string savePath, bool sortWords) {
     return createTrie(words, length, savePath, sortWords);
@@ -86,7 +79,6 @@ extern "C" {
 
 // ABI -> manually delete an lzt object -> destruct
     void delete_lzt(Lzt *obj) {
-        obj->drop();
         delete  obj;
     }
 
