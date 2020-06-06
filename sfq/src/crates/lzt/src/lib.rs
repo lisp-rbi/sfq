@@ -66,20 +66,17 @@ impl FFI {
                     //eprintln!("entring _lzt");
                     //println!("{:?} -- {} {}", vec[i], v.len(), v[v.len()-1]);
                     unsafe {
-                        {
-                            if make_lzt(
+                        if make_lzt(
                                 v.as_ptr(),
                                 v.len() as libc::c_ulong,
                                 pth.as_ptr(),
                                 pth.len() as libc::c_int,
-                            ) == false {
+                        ) == false {
                             // FXME: add it to errorr management
                                 panic!("Error with creating lzt indedx!");
-                            };
-
                         };
 
-                        /*
+
                         lzt_vec.push(
                             open_lzt(
                                 pth.as_ptr(),
@@ -88,7 +85,7 @@ impl FFI {
                                 mmode
                             )
                         );
-                        */
+
                     }
                     //eprintln!("exiting _lzt");
                     s = i+1;
@@ -98,13 +95,9 @@ impl FFI {
         }
 
         FFI {
-            raw: Vec::new()
-        }
-/*
-        FFI {
             raw: lzt_vec
         }
-*/
+
     }
 
 
