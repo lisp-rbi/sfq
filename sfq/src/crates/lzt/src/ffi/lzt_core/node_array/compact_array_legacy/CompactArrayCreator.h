@@ -117,6 +117,8 @@ CompactArrayCreatorL<TNodeArray>::createCompactArray() {
     // Copy entire array by storing indexes of nodes in the distinct node table.
     copyNodeIndexes();
 
+    delete [] distinctInd;
+
     return compactArray;
 }
 

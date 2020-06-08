@@ -937,6 +937,10 @@ void LCPTreeCompressor<TNodeArray>::freeMemory() {
     repStart.freeBlocks();
     repEnd.freeBlocks();
 
+
+    // longest common prefix array
+    TIndex* lcp;
+
     if (config.visualize) vstream.close();
 }
 
