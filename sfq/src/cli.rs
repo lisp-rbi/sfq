@@ -34,7 +34,7 @@ pub(crate) fn parse_cli ()->  clap::ArgMatches<'static> {
             Auth: Bakaric R. Korencic, D. & Ristov, S.";
 
     let  matches = App::new("sfq")
-          .version("0.2.1.9")
+          .version("0.2.2")
           .author("Robert Bakaric <rbakaric@irb.hr>, Damir Korencic<dkorencic@irb.hr>")
           .about(head)
 

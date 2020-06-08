@@ -1,6 +1,6 @@
 [package]
 name = "lzt"
-version = "0.1.3"
+version = "0.1.6"
 authors = ["Robert Bakaric <rbakaric@exaltum.eu>"]
 edition = "2018"
 build = "build.rs"
