@@ -931,7 +931,10 @@ void LCPTreeCompressor<TNodeArray>::freeMemAfterCompress() {
 // free memory at the end of the entire compression process
 template <typename TNodeArray>
 void LCPTreeCompressor<TNodeArray>::freeMemory() {
-    replaced.resize(0);
+    //replaced.resize(0);
+    replaced.freeBlocks();
+    repStart.freeBlocks();
+    repEnd.freeBlocks();
     if (config.visualize) vstream.close();
 }
 

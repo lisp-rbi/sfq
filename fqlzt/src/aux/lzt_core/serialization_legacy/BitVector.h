@@ -30,6 +30,8 @@ public:
     void writeToStream(ostream& stream) const;
     void readFromStream(istream& stream);
 
+    void freeBlocks();
+    
 private:    
 
     // size in bits
@@ -43,7 +45,7 @@ private:
     char* blocks;   
 
     void reallocateBlocks();
-    void freeBlocks();
+    //void freeBlocks();
 
 };
 

@@ -54,7 +54,8 @@ int main(int argc, char** argv) {
 
 void compressTrie() {    
     FlatWordList<TSymbol> fwords = readWordsFromFile(params["-i"]);        
-    createTrie(fwords.words, fwords.length, params["-d"]);    
+    bool sort = params.count("-sort") > 0;
+    createTrie(fwords.words, fwords.length, params["-d"], sort);    
     delete [] fwords.words;
 }
 
@@ -204,6 +205,7 @@ void createParameterMap(int argc, char** argv) {
             else if (arg == "-c") params[arg] = "true";
             else if (arg == "-z") params[arg] = "true";
             else if (arg == "-m") params[arg] = "true";
+            else if (arg == "-sort") params[arg] = "true";
         }
     }
     inMem = params.count("-m") > 0;
