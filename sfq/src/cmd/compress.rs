@@ -22,7 +22,7 @@ use lzt::{
 
 pub fn compress (cli: ArgMatches<'static>) -> bool {
 
-    eprint!("Reading data ... ");
+    eprintln!("Reading data ... ");
 
     let before = Instant::now();
 
@@ -85,7 +85,7 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
 
     eprintln!(" {:.2?}", before.elapsed());
 
-    eprint!("Compressing ... ");
+    eprintln!("Preprocessing the input data ... ");
 
     let before = Instant::now();
 
@@ -105,28 +105,25 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
     let mut line_length: usize = 0;
     let mut stop_count: bool = false;
 
-    // loop is good for the memory
+    // start the loop to preprocess the data and save tmp files
     while i < j {
         let mut out = String::new();
         let mut tmp = String::new();
 
         let mut x = match i {
             0 => {
-                out = format!("{}/{}.{}",outdir,cli.value_of("output").unwrap(),"seq.sfq");
                 tmp = format!("{}/{}.{}",outdir,cli.value_of("output").unwrap(),"seq.tmp");
                 let cpcnt = fdb.get_cpcnt();
                 index(&fdb.get_tsv("h+s"),&cpcnt)
 
             },
             1 => {
-                out = format!("{}/{}.{}",outdir,cli.value_of("output").unwrap(),"head.sfq");
                 tmp = format!("{}/{}.{}",outdir,cli.value_of("output").unwrap(),"head.tmp");
                 let cpcnt = fdb.get_cpcnt();
                 hindex(&fdb.get_head(),&cpcnt)
 
             },
             _ => {
-                out = format!("{}/{}.{}",outdir,cli.value_of("output").unwrap(),"qual.sfq");
                 tmp = format!("{}/{}.{}",outdir,cli.value_of("output").unwrap(),"qual.tmp");
                 let cpcnt = fdb.get_cpcnt();
                 index(&fdb.get_tsv("h+q"),&cpcnt)
@@ -154,6 +151,35 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
         }
         drop(x);
 
+        i+=1;
+    }
+    // erase the FDB structure to free the RAM
+    fdb.clear();
+    eprintln!("Time spent on data preprocessing: {:.2?}", before.elapsed());
+
+    let before = Instant::now();
+    // repeat the loop to read tmp files and compress the data
+    eprintln!("Compressing ... ");
+    i = 0;
+    while i < j {
+        let mut out = String::new();
+        let mut tmp = String::new();
+
+        let mut x = match i {
+            0 => {
+                out = format!("{}/{}.{}",outdir,cli.value_of("output").unwrap(),"seq.sfq");
+                tmp = format!("{}/{}.{}",outdir,cli.value_of("output").unwrap(),"seq.tmp");
+            },
+            1 => {
+                out = format!("{}/{}.{}",outdir,cli.value_of("output").unwrap(),"head.sfq");
+                tmp = format!("{}/{}.{}",outdir,cli.value_of("output").unwrap(),"head.tmp");
+            },
+            _ => {
+                out = format!("{}/{}.{}",outdir,cli.value_of("output").unwrap(),"qual.sfq");
+                tmp = format!("{}/{}.{}",outdir,cli.value_of("output").unwrap(),"qual.tmp");
+            }
+        };
+
         let mut lzt = FFI::new(
             &out,
             &tmp,
@@ -166,10 +192,7 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
         i+=1;
     }
 
-    eprintln!(" {:.2?}", before.elapsed());
+    eprintln!("Time spent on data compression: {:.2?}", before.elapsed());
     true
-
-
-
 
 }
