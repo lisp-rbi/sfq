@@ -17,6 +17,7 @@ bool createTrie(TSymbol* words, long length, string fname, bool sortWords) {
     // create folder if it does not exist
     if (accessible_filename(fname, "") == "") {
         bool res = create_directory(fname);
+        bool list_written = write_list(fname,fwords,length);
         if (!res) return false;
     }
     bool res = builder.buildSaveCompactArray(wlist, fname, "");

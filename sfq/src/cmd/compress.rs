@@ -4,6 +4,7 @@ use crate::util::common::*;
 
 use std::time::Instant;
 use std::str::FromStr;
+use std::mem;
 
 use seq::{
     Fdb,
@@ -25,6 +26,17 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
 
     let before = Instant::now();
 
+    // if output directory name exists in cli, use that, 
+    // otherwise use the basic output name
+    let outdir: &str = if let Some(x) = cli.value_of("output-dir") {
+        cli.value_of("output-dir").unwrap()
+    } else {
+        cli.value_of("output").unwrap()
+    };
+    if make_dir(outdir) == false{
+        panic!("Creating output directory failed");
+    };
+
     let mut fdb = Fdb::new(cli.value_of("infmt").unwrap());
     fdb.load(cli.value_of("input").unwrap(), true);
 
@@ -32,14 +44,20 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
         fdb.load(cli.value_of("input-rev").unwrap(), false);
     }
 
+    // a flag to signal whether we count memory for compression or lines
+    let mut use_lines: bool = false;
     let mymem : usize = if let Some(x) = cli.value_of("fragment-size") {
         if x == "Max" {
-            (mem_info().unwrap().total/1000) as usize
+            // use all available RAM minus 100MB for safety
+            (mem_info().unwrap().total - 102400) as usize
         }else{
+            // we take the number of lines to compress at a time
+            use_lines = true;
             usize::from_str(x).unwrap()
         }
     }else{
-        1000
+        // if nothing is defined, take 100MB RAM and work with that
+        102400
     };
 
     let memmod : bool = if let Some(x) = cli.value_of("mem-mod") {
@@ -84,27 +102,32 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
         }
     };
     let mut i = 0;
+    let mut line_length: usize = 0;
+    let mut stop_count: bool = false;
 
     // loop is good for the memory
     while i < j {
         let mut out = String::new();
+        let mut tmp = String::new();
 
         let mut x = match i {
             0 => {
-                out = format!("{}.{}",cli.value_of("output").unwrap(),"head.sfq");
+                out = format!("{}/{}.{}",outdir,cli.value_of("output").unwrap(),"seq.sfq");
+                tmp = format!("{}/{}.{}",outdir,cli.value_of("output").unwrap(),"seq.tmp");
+                let cpcnt = fdb.get_cpcnt();
+                index(&fdb.get_tsv("h+s"),&cpcnt)
+
+            },
+            1 => {
+                out = format!("{}/{}.{}",outdir,cli.value_of("output").unwrap(),"head.sfq");
+                tmp = format!("{}/{}.{}",outdir,cli.value_of("output").unwrap(),"head.tmp");
                 let cpcnt = fdb.get_cpcnt();
                 hindex(&fdb.get_head(),&cpcnt)
 
             },
-            1 => {
-                out = format!("{}.{}",cli.value_of("output").unwrap(),"seq.sfq");
-                let cpcnt = fdb.get_cpcnt();
-
-                index(&fdb.get_tsv("h+s"),&cpcnt)
-
-            },
             _ => {
-                out = format!("{}.{}",cli.value_of("output").unwrap(),"qual.sfq");
+                out = format!("{}/{}.{}",outdir,cli.value_of("output").unwrap(),"qual.sfq");
+                tmp = format!("{}/{}.{}",outdir,cli.value_of("output").unwrap(),"qual.tmp");
                 let cpcnt = fdb.get_cpcnt();
                 index(&fdb.get_tsv("h+q"),&cpcnt)
 
@@ -113,21 +136,31 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
 
         //stats processing
         x.0.push(10u8);
-        x.0.extend( make_stats(x.1,x.3,x.2, fdb.get_model()));
+        x.0.extend( make_stats(x.1,x.3.clone(),x.2, fdb.get_model()));
 
         // make zthis more consise
         for j in 0..x.0.len(){
             //eprint!("{}", x.0[j] as char); // DEBUG!!
-          if x.0[j] == 10u8{
-              x.0[j]=0u8;
-          }
+            if stop_count == false{
+                line_length += 1;
+            }
+            if x.0[j] == 10u8{
+                x.0[j]=0u8;
+                stop_count = true;
+            }
         }
+        if save_tmp(&tmp,&mut x.0) == false {
+            panic!("Error saving temporary file {:?}",tmp);
+        }
+        drop(x);
 
         let mut lzt = FFI::new(
             &out,
-            &mut x.0,
+            &tmp,
             mymem,
-            memmod
+            memmod,
+            line_length,
+            use_lines
         );
         lzt.drop();
         i+=1;

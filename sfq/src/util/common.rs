@@ -1,8 +1,47 @@
 use std::io::{self, prelude::*, stdout, Write, Read, BufReader, BufWriter};
-use std::fs::File;
+use std::fs::{File,metadata,remove_file,remove_dir_all,create_dir};
+use std::str;
+use std::mem;
 use regex::Regex;
 use rand::prelude::*;
 use fxhash::FxHashSet;
+
+pub fn save_tmp(filename: &str, vec: &mut Vec<u8>) -> bool{
+
+    let mut file = File::create(filename).expect("Unable to create file");
+    for elem in vec {
+        if *elem == 0u8 { 
+            let result = match write!(file,"{}\n",elem){
+                Ok(result) => result,
+                Err(e) => panic!("Error in writing to file {}", filename),
+            };
+        } else {
+            let result = match write!(file,"{} ",elem){
+                Ok(result) => result,
+                Err(e) => panic!("Error in writing to file {}", filename),
+            };
+        }
+
+    }
+    true
+}
+
+pub fn make_dir(dirname: &str) -> bool{
+    if metadata(&dirname).is_ok() == true {
+        if metadata(&dirname).unwrap().is_file() == true {
+            remove_file(&dirname).unwrap();
+        }else {
+            remove_dir_all(&dirname).unwrap();
+        }
+    } else {
+        eprintln!("dirname {} is not ok!", dirname);
+    }
+    let result = match create_dir(dirname){
+        Ok(result) => result,
+        Err(e) => panic!("Error in creating directory {}", dirname),
+    };
+    true
+}
 
 pub fn make_key(pos: usize, alpha: usize, word: usize) -> String{
 
@@ -437,7 +476,6 @@ pub fn make_stats(num_of_rec: usize, alpha: String, padding: usize, model: bool)
     }else{
         vec.push(48u8);
     }
-
 
     vec
 

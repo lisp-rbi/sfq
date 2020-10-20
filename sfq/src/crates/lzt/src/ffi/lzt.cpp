@@ -30,8 +30,6 @@ vector<TSymbol > Lzt::getRecords(vector<TSymbol> prefix) {
     return queryTrie(trie, prefix);
 }
 
-
-
 /* ABI:
  * Aplicationbinting interface for Rust fqlzt library
  */
@@ -73,7 +71,6 @@ extern "C" {
     Lzt* open_lzt( uchar* path, int pln, size_t cashsize, bool mmode){
       std::string inPath(reinterpret_cast<char*>(path),pln);
 
-      //cout << inPath << end;
       return new Lzt(inPath, cashsize, mmode);
     }
 
@@ -83,11 +80,11 @@ extern "C" {
     }
 
 // ABI -> query lzt : prefix search
-		unsigned long query_lzt (Lzt *obj, uchar* pattern, unsigned long pln){
+    unsigned long query_lzt (Lzt *obj, uchar* pattern, unsigned long pln){
 
-      vector<uchar> ptt(pattern, pattern + pln);
+        vector<uchar> ptt(pattern, pattern + pln);
 
-      obj->objvec = obj->getRecords(ptt);
+        obj->objvec = obj->getRecords(ptt);
 
 
 /*

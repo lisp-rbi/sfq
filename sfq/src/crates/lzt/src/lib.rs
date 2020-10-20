@@ -7,6 +7,7 @@ use std::str;
 use std::fs;
 use ffi::LztObj;
 use util::common::{
+    read_tmp,
     make_lzt,
     open_lzt,
     delete_lzt,
@@ -22,8 +23,6 @@ static CASHSIZE: usize = 10000;
 #[cfg(test)]
 mod tests;
 
-
-
 pub trait Drop{
     fn drop(&mut self);
 }
@@ -35,63 +34,58 @@ pub struct FFI {
 
 impl FFI {
 
-    pub fn new( path : &str, vec: &mut Vec<u8>, mem: usize, mmode: bool) -> Self {
+    pub fn new( path : &str, tmp_path: &str, mem: usize, mmode: bool, line_length: usize, use_lines: bool) -> Self {
 
-        let lpm = mem*50; // number of lines per MB
-        let (mut l, mut s, mut j) = (0,0,0);
-
-
-        // check for null termination
-        if vec[vec.len()-1] != 0u8 {vec.push(0u8)};
+        let lpm: usize = match use_lines {
+            true => {
+                mem
+            }, 
+            false => {
+                (mem * 1024) / (line_length * 55) // number of lines to read at time
+            }
+        };
 
         let mut lzt_vec : Vec<*mut LztObj> = Vec::new();
-
-        for i in 0..vec.len() {
-
-            if vec[i] == 0u8 || i == vec.len()-1 {
-                l+=1;
-                if l == lpm || i == vec.len()-1 {
-                    j+=1;
-                    let pth = format!("{}.{}", path, j.to_string());
-
-                    if fs::metadata(&pth).is_ok() == true {
-                        if fs::metadata(&pth).unwrap().is_file() == true {
-                            fs::remove_file(&pth).unwrap();
-                        }else {
-                            fs::remove_dir_all(&pth).unwrap();
-                        }
-                    }
-
-                    let v =  &vec[s..i+1].to_vec();
-                    //eprintln!("entring _lzt");
-                    //println!("{:?} -- {} {}", vec[i], v.len(), v[v.len()-1]);
-                    unsafe {
-                        if make_lzt(
-                                v.as_ptr(),
-                                v.len() as libc::c_ulong,
-                                pth.as_ptr(),
-                                pth.len() as libc::c_int,
-                        ) == false {
-                            // FXME: add it to errorr management
-                                panic!("Error with creating lzt indedx!");
-                        };
-
-
-                        lzt_vec.push(
-                            open_lzt(
-                                pth.as_ptr(),
-                                pth.len() as libc::c_int,
-                                CASHSIZE as libc::c_int,
-                                mmode
-                            )
-                        );
-
-                    }
-                    //eprintln!("exiting _lzt");
-                    s = i+1;
-                    l = 0;
+        let mut end_of_file : bool = false;
+        let mut start: i64 = 0;
+        let mut end: i64 = (lpm as i64) - 1;
+        let mut j: i64 = 1;
+        while end_of_file == false {
+            let mut v : Vec<u8> = Vec::new();
+            end_of_file = read_tmp(&tmp_path,&mut v,start,end);
+            let pth = format!("{}.{}", path, j.to_string());
+            if fs::metadata(&pth).is_ok() == true {
+                if fs::metadata(&pth).unwrap().is_file() == true {
+                    fs::remove_file(&pth).unwrap();
+                }else {
+                    fs::remove_dir_all(&pth).unwrap();
                 }
             }
+            unsafe {
+                if make_lzt(
+                        v.as_ptr(),
+                        v.len() as libc::c_ulong,
+                        pth.as_ptr(),
+                        pth.len() as libc::c_int,
+                ) == false {
+                    // FXME: add it to errorr management
+                        panic!("Error with creating lzt indedx!");
+                };
+
+
+                lzt_vec.push(
+                    open_lzt(
+                        pth.as_ptr(),
+                        pth.len() as libc::c_int,
+                        CASHSIZE as libc::c_int,
+                        mmode
+                    )
+                );
+
+            }
+
+            start += lpm as i64; end += lpm as i64;
+            j += 1;
         }
 
         FFI {
