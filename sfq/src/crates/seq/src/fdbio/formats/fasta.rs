@@ -73,7 +73,7 @@ impl Fdb{
                 fwd_seq.extend(fwd_line.as_bytes());
                 fwd_seq.extend(b"\0");
                 for elem in fwd_seq{
-                    if r == self.numrec-1 {self.line_length += 1;}
+                    if r == 0 {self.line_length += 1;}
                     if elem == 0 {write!(seq_writer,"{:?}\n",elem);} 
                     else {write!(seq_writer,"{:?} ",elem);}
                 }
