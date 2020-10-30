@@ -47,7 +47,6 @@ fn main() {
 
     let cli = parse_cli();
 
-
     match cli.value_of("action") {
 
         Some(x) => {
@@ -83,7 +82,6 @@ fn main() {
         }
 
     }
-
 
 
 }

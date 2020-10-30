@@ -29,6 +29,13 @@ impl Fdb{
             "stdin" => {
                 Box::new(io::stdin())
             },
+            "" => {
+                let mut dummyfile: &str = "dummy.txt";
+                File::create(dummyfile)
+                    .expect(&(format!("Error creating {} file",dummyfile)));
+                Box::new(File::open(dummyfile)
+                    .expect(&(format!("Error opening {:?} file",dummyfile))))
+            },
             _       => {
                 Box::new(File::open(file)
                     .expect(&(format!("Error opening {} file",file))))
@@ -76,6 +83,28 @@ impl Fdb{
         }
 
         true
+    }
+
+    pub fn count_lines(&mut self, path: &str) -> Result<u64, String> {
+    
+        let mut reader = BufReader::new(Box::new(File::open(path)
+                    .expect(&(format!("Error opening {} file",path)))));
+        let mut num_of_lines: u64 = 0;
+        let mut line = String::from("");
+    
+        loop{
+            match reader.read_line(&mut line) {
+                Ok( _ ) => {
+                        if line.len() == 0 {
+                            break;
+                        }
+                        num_of_lines += 1;
+                        line.clear();
+                },
+                Err(why) => return Err(why.to_string())
+            };
+        }
+        Ok(num_of_lines)
     }
 
 }

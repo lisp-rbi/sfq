@@ -19,7 +19,6 @@
 use snafu::{ErrorCompat, ResultExt, Snafu};
 
 use std::{
-    fs,
     path::{Path, PathBuf},
 };
 

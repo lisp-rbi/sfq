@@ -34,15 +34,12 @@ pub struct FFI {
 
 impl FFI {
 
-    pub fn new( path : &str, tmp_path: &str, mem: usize, mmode: bool, line_length: usize, use_lines: bool) -> Self {
+    pub fn new( path : &str, tmp_path: &str, mem: usize, mmode: bool, line_length: usize, numrec: usize, use_lines: bool) -> Self {
 
         let lpm: usize = match use_lines {
-            true => {
-                mem
-            }, 
-            false => {
-                (mem * 1024) / (line_length * 55) // number of lines to read at time
-            }
+            true => {mem}, 
+            // number of lines to read at time
+            false => {(mem * 1024) / (line_length * 55)}
         };
 
         let mut lzt_vec : Vec<*mut LztObj> = Vec::new();
@@ -51,6 +48,7 @@ impl FFI {
         let mut end: i64 = (lpm as i64) - 1;
         let mut j: i64 = 1;
         while end_of_file == false {
+            if (end == (numrec-1) as i64) && (numrec%lpm == 0) {end += 1;}
             let mut v : Vec<u8> = Vec::new();
             end_of_file = read_tmp(&tmp_path,&mut v,start,end);
             let pth = format!("{}.{}", path, j.to_string());
@@ -136,7 +134,6 @@ impl FFI {
         // set of files  : FXME : this is a stupid approach
 
         let mut qres : Vec<u8> = Vec::new();
-
 
         for i in 0..self.raw.len() {
             unsafe{

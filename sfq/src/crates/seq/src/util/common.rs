@@ -56,12 +56,9 @@ impl Fdb{
 
     }
 
-    pub fn  encode (
-        self,
-        a: usize,
-        b: usize,
-        c: &Vec<u8>) -> Vec<u8>{
+    pub fn  encode (&mut self, a: usize, b: usize) -> Vec<u8>{
 
+        let c = self.alpha.as_bytes().to_vec();
         let (mut v, mut res) = (vec![0u8;b],a);
 
         for i in 0..b {
@@ -71,6 +68,28 @@ impl Fdb{
         }
         v
     }
+
+    pub fn comp_wlen(&self) -> (usize,usize) {
+        let alpha = self.alpha.len();
+        let cnt = self.cpcnt.iter().max().unwrap() * self.cpcnt.len();
+        (cnt ,((cnt+1) as f64).log(alpha as f64).ceil() as usize)
+    }
+
+    pub fn make_stats(&self, padding: usize) -> Vec<u8> {
+
+        let mut vec : Vec<u8> = Vec::new();
+ 
+        vec.extend(b"~~~~~^".to_vec());
+        vec.extend(self.numrec.to_string().as_bytes().to_vec());
+        vec.push(94u8);
+        vec.extend(self.alpha.as_bytes().to_vec());
+        vec.push(94u8);
+        vec.extend(padding.to_string().as_bytes().to_vec());
+        vec.push(94u8);
+        if self.paired == true {vec.push(49u8);}
+        else {vec.push(48u8);}
+        vec
+}
 
     pub(crate) fn compare_vslice(&self, va: &[u8], vb: &[u8]) -> bool {
 

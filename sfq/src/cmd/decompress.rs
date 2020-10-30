@@ -18,7 +18,7 @@ use lzt::{
 
 
 pub fn extract(cli: ArgMatches<'static>) -> bool {
-    eprint!("Decompressing...");
+    eprintln!("Decompressing...");
     let before = Instant::now();
 
 
@@ -53,9 +53,9 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
                     let mut qual = String::new();
 
                     if let Some(x) = cli.value_of("input") {
-                        head = format!("{}.{}",x,"head.sfq");
-                        seq  = format!("{}.{}",x,"seq.sfq");
-                        qual = format!("{}.{}",x,"qual.sfq");
+                        head = format!("{}/{}.{}",x,x,"head.sfq");
+                        seq  = format!("{}/{}.{}",x,x,"seq.sfq");
+                        qual = format!("{}/{}.{}",x,x,"qual.sfq");
                     }
 
 
@@ -180,7 +180,7 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
 
                        fdb.save_append(cli.value_of("output").unwrap(), cli.value_of("outfmt").unwrap());
 
-                        fdb.clear();
+                       fdb.clear();
 
 
                     }

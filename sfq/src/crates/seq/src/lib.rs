@@ -63,7 +63,7 @@ pub trait Push {
 
 pub trait Load {
 
-    fn load(&mut self, path: &str, direction: bool) -> &mut Self;
+    fn load(&mut self, fwd_path: &str, rev_path: &str, output: &str) -> &mut Self;
 
 }
 
@@ -82,7 +82,9 @@ pub trait Save {
 #[derive(Debug, Clone)]
 pub struct Fdb {
     format: String,
-    numrec: usize,
+    pub numrec: usize,
+    pub line_length: usize,
+    alpha: String,
     paired: bool,
     head: Vec<u8>,
     seq: Vec<u8>,
@@ -102,7 +104,9 @@ impl Fdb {
 
         Fdb{
             format: ftype,
-            numrec:  0,
+            numrec: 0,
+            line_length: 0,
+            alpha: "ACGT".to_string(),
             paired: false,
             head: Vec::new(),
             seq: Vec::new(),

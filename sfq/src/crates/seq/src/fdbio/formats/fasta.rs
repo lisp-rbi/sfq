@@ -21,99 +21,142 @@
   use crate::util::error::Error;
   use std::io::{prelude::*, Write};
 
-  impl Fdb{
-      pub fn fasta_up<R: BufRead>(&mut self,  reader:  R, direction: bool) -> Result<bool,Error> {
+impl Fdb{
+    pub fn fasta_up<R: BufRead>(&mut self,  fwd_reader:  R, rev_reader: R, output: &str) -> Result<bool,Error> {
 
-          let mut r = 0;
+        let mut cnt=0;
+        let mut r: usize = 0;
+        let tmp_head = format!("{}/{}.head.tmp", output, output);
+        let tmp_seq = format!("{}/{}.seq.tmp", output, output);
+        let mut head_writer = self.make_append_writer(&tmp_head);
+        let mut seq_writer = self.make_append_writer(&tmp_seq);
+       
+        let mut fwd_lines = fwd_reader.lines().map(|l| l.unwrap());
+        let mut rev_lines = rev_reader.lines().map(|l| l.unwrap());
+        let (count, wlen) = self.comp_wlen();
+       
+        for fwd_line in fwd_lines {
+            if  &fwd_line[..1] == ">" {
+                let mut fwd_head: Vec<u8> = Vec::new();
+                fwd_head.extend(self.encode(r,wlen));
+                fwd_head.extend(b"G");
+                fwd_head.extend(b"^");
+                fwd_head.extend(fwd_line.as_bytes());
+                if self.paired == true {fwd_head.extend(b"F\0");}
+                else {fwd_head.extend(b"\0");}
+                for elem in fwd_head{
+                    if elem == 0 {write!(head_writer,"{:?}\n",elem);} 
+                    else {write!(head_writer,"{:?} ",elem);}
+                }
+                if self.paired == true {
+                    let mut rev_head: Vec<u8> = Vec::new();
+                    rev_head.extend(self.encode(r+1,wlen));
+                    rev_head.extend(b"A");
+                    rev_head.extend(b"^");
+                    let rev_line = match rev_lines.next() {
+                        Some(p) => p,
+                        None => "0".to_string(),
+                    };
+                    rev_head.extend(rev_line.as_bytes());
+                    rev_head.extend(b"R\0");
+                    for elem in rev_head{
+                        if elem == 0 {write!(head_writer,"{:?}\n",elem);} 
+                        else {write!(head_writer,"{:?} ",elem);}
+                    }
+                }
+                continue;
+            } else {
+                let mut fwd_seq: Vec<u8> = Vec::new();
+                fwd_seq.extend(self.encode(r,wlen));
+                fwd_seq.extend(b"G");
+                fwd_seq.extend(b"^");
+                fwd_seq.extend(fwd_line.as_bytes());
+                fwd_seq.extend(b"\0");
+                for elem in fwd_seq{
+                    if r == self.numrec-1 {self.line_length += 1;}
+                    if elem == 0 {write!(seq_writer,"{:?}\n",elem);} 
+                    else {write!(seq_writer,"{:?} ",elem);}
+                }
+                if self.paired == true {
+                    let mut rev_seq: Vec<u8> = Vec::new();
+                    rev_seq.extend(self.encode(r+1,wlen));
+                    rev_seq.extend(b"A");
+                    rev_seq.extend(b"^");
+                    let rev_line = match rev_lines.next() {
+                        Some(p) => self.revcomp(p),
+                        None => "0".to_string(),
+                    };
+                    rev_seq.extend(rev_line.as_bytes());
+                    rev_seq.extend(b"\0");
+                    for elem in rev_seq{
+                        if elem == 0 {write!(seq_writer,"{:?}\n",elem);} 
+                        else {write!(seq_writer,"{:?} ",elem);}
+                    }
+                    r += 2;
+                } else {r += 1;}
+                continue;
+            }
+        }
 
-          if direction == false {
-              self.paired=true;
-          }
+        let stats = self.make_stats(wlen);
+        for stat in stats{
+            write!(head_writer,"{:?} ",stat);
+            write!(seq_writer,"{:?} ",stat);
+        }
+
+        if self.paired == false {self.rm_file("dummy.txt");}
+       
+        if self.numrec > 0 {Ok(true)}
+        else{Ok(false)}
+    }
+
+    pub fn fasta_dw<W: Write> (&mut self, mut writer:  W) -> Result<bool,Error>  {
+        let (mut sw , mut ssw, mut x, mut y, mut bw)= (0u8, true, 0, 1000, 0);
+        let mut buff = vec![0u8; y];
+
+        //writer.write_all(&self.get_fastq());
 
 
-          for line in reader.lines() {
-              let  str = line.unwrap();
-              if  &str[..1] == ">" {
-                  if r > 0 { self.seq.extend(b"\n");}
-                  self.head.extend(str.as_bytes());
-                  if direction == true {
-                      self.head.extend(b"F\n");
-                  }else{
-                      self.head.extend(b"R\n");
-                  }
-                  r = r+1;
-              }else{
-                  let s = if  direction == false {
-                      self.revcomp(str)
-                  }else{
-                      str
-                  };
-
-                  self.seq.extend(s.as_bytes());
-                  self.qual.extend(b"\n")
-              }
-          }
-          self.numrec = r;
-
-          self.head.resize(self.head.len()-1,  0x00);
-          self.seq.resize(self.seq.len(),  0x00);
-          self.qual.resize(self.qual.len(),  0x00);
+        for ch in self.get_fasta().iter() {
 
 
-          if self.numrec > 0 {
-              Ok(true)
-          }else{
-              Ok(false)
-          }
-      }
+            match *ch {
 
-      pub fn fasta_dw<W: Write> (&mut self, mut writer:  W) -> Result<bool,Error>  {
-          let (mut sw , mut ssw, mut x, mut y, mut bw)= (0u8, true, 0, 1000, 0);
-          let mut buff = vec![0u8; y];
+                10u8 => {
+                    if bw == 1 && ssw == true {
+                        buff.resize(x,0x00);
+                        writer.write_all(&self.revcomp(String::from_utf8(buff.clone()).unwrap()).as_bytes()).unwrap();
+                        y=x;
+                        x=0;
+                    }
+                    write!(writer, "{}", *ch as char).unwrap();
+                    bw+=1;
+                    if sw == 82u8 {
+                        ssw = true;
+                    }else{
+                        ssw = false;
+                    }
+                    if bw == 2{bw = 0}
+                },
+                _   => {
+                    if bw == 1 && ssw == true{
+                        if x == y{
+                            buff.extend(vec![0u8;y]);
+                            y*=2;
+                        }
+                        buff[x] = *ch;
+                        x+=1;
 
-          //writer.write_all(&self.get_fastq());
+                    }else {
+                        write!(writer, "{}", *ch as char).unwrap();
+                    }
+                }
+            }
+            sw = *ch;
+        }
+        write!(writer, "{}", 10u8 as char).unwrap();
 
+        Ok(true)
 
-          for ch in self.get_fasta().iter() {
-
-
-              match *ch {
-
-                  10u8 => {
-                      if bw == 1 && ssw == true {
-                          buff.resize(x,0x00);
-                          writer.write_all(&self.revcomp(String::from_utf8(buff.clone()).unwrap()).as_bytes()).unwrap();
-                          y=x;
-                          x=0;
-                      }
-                      write!(writer, "{}", *ch as char).unwrap();
-                      bw+=1;
-                      if sw == 82u8 {
-                          ssw = true;
-                      }else{
-                          ssw = false;
-                      }
-                      if bw == 2{bw = 0}
-                  },
-                  _   => {
-                      if bw == 1 && ssw == true{
-                          if x == y{
-                              buff.extend(vec![0u8;y]);
-                              y*=2;
-                          }
-                          buff[x] = *ch;
-                          x+=1;
-
-                      }else {
-                          write!(writer, "{}", *ch as char).unwrap();
-                      }
-                  }
-              }
-              sw = *ch;
-          }
-          write!(writer, "{}", 10u8 as char).unwrap();
-
-          Ok(true)
-
-      }
-  }
+    }
+}

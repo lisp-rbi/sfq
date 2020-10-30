@@ -34,7 +34,7 @@ pub fn make_dir(dirname: &str) -> bool{
             remove_dir_all(&dirname).unwrap();
         }
     } else {
-        eprintln!("dirname {} is not ok!", dirname);
+        eprintln!("Creating output directory {}.", dirname);
     }
     let result = match create_dir(dirname){
         Ok(result) => result,
@@ -478,9 +478,6 @@ pub fn make_stats(num_of_rec: usize, alpha: String, padding: usize, model: bool)
     }
 
     vec
-
-
-
 }
 
 pub fn parse_conditional(text: &str) -> (String,String){

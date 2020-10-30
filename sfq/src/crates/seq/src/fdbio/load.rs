@@ -21,35 +21,35 @@ use crate::{Load, Fdb};
 
 impl Load for Fdb {
 
-    fn load(&mut self, path: &str, direction: bool) -> &mut Self{
+    fn load(&mut self, fwd_path: &str, rev_path: &str, output: &str) -> &mut Self{
 
-        let reader = self.make_reader(path);
-
-        if self.head.len() > 0 {
-            self.head.extend(b"\n");
-        }
-        if self.seq.len() > 0 {
-            self.seq.extend(b"\n");
-        }
-        if self.qual.len() > 0 {
-            self.qual.extend(b"\n");
+        let fwd_reader = self.make_reader(fwd_path);
+        let rev_reader = self.make_reader(rev_path);
+        let mut direction: bool = true;
+        if rev_path.len() > 0 {self.paired = true;}
+        let num_of_lines = self.count_lines(&fwd_path).unwrap();
+        let mut rev_num_of_lines: u64 = 0;
+        if self.paired == true {rev_num_of_lines = self.count_lines(&rev_path).unwrap();}
+        if (self.paired == true) && num_of_lines != rev_num_of_lines {
+            eprintln!("WARNING: The number of records in forward and reverse files differ!");
+            eprintln!("I will proceed anyways....");
         }
 
         match &self.format[..] {
             "fastq" => {
-
-                if let Ok(false) = self.fastq_up(reader,direction) {
+                self.numrec = (num_of_lines as usize) / 4;
+                self.cpcnt = vec![1;(self.numrec+2)*2];
+                if let Ok(false) = self.fastq_up(fwd_reader,rev_reader,output) {
                     panic!("{} file not uploaded !", self.format);
                 };
-
 
             },
             "fasta" => {
-
-                if let Ok(false) = self.fasta_up(reader,direction) {
+                self.numrec = (num_of_lines as usize) / 2;
+                self.cpcnt = vec![1;(self.numrec+2)*2];
+                if let Ok(false) = self.fasta_up(fwd_reader,rev_reader,output) {
                     panic!("{} file not uploaded !", self.format);
                 };
-
             },
             _       => {
                 panic!("format not supported!");

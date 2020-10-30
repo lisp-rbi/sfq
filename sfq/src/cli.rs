@@ -60,16 +60,8 @@ pub(crate) fn parse_cli ()->  clap::ArgMatches<'static> {
                .long("output")
                .required(false)
                .value_name("FILE")
-               .default_value("stdout")
+               //.default_value("stdout")
                .help("Output file: interleved if paired fastq, dict.lzt if compressed")
-               .takes_value(true))
-
-          .arg(Arg::with_name("output-dir")
-               .short("d")
-               .long("output-dir")
-               .required(false)
-               .value_name("DIRECTORY")
-               .help("Output directory")
                .takes_value(true))
 
           .arg(Arg::with_name("action")
