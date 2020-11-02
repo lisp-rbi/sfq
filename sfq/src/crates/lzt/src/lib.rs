@@ -48,6 +48,7 @@ impl FFI {
         let mut end: i64 = (lpm as i64) - 1;
         let mut j: i64 = 1;
         while end_of_file == false {
+            // if there is only one line left at the end, add to the last trie
             if (end == (numrec-1) as i64) && (numrec%lpm == 0) {end += 1;}
             let mut v : Vec<u8> = Vec::new();
             end_of_file = read_tmp(&tmp_path,&mut v,start,end);

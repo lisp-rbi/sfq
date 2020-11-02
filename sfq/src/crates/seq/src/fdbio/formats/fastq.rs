@@ -156,8 +156,8 @@ impl Fdb{
                         if elem == 0 {write!(qual_writer,"{:?}\n",elem);} 
                         else {write!(qual_writer,"{:?} ",elem);}
                     }
-                    r += 2;
-                } else {r += 1;}
+                } 
+                r += 1;
                 cnt = 0;
                 continue;
             }

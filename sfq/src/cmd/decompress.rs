@@ -36,7 +36,15 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
 
     //let (wlen,alpha) = parse_codex(cli.value_of("codex").unwrap());
 
-    if fdb.rm_file(cli.value_of("output").unwrap()) == false {
+    let mut output: &str;
+    // if keyword -o is defined, use that name,
+    // otherwise send result to stdout
+    match cli.value_of("output") {
+        Some(x) => { output = cli.value_of("output").unwrap(); }
+        None => { output = "stdout"; }
+    }
+
+    if fdb.rm_file(output) == false {
         panic!("cannot rm file ");
     }
 
@@ -178,7 +186,7 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
                             fdb.set_qual(qvec);
                         }
 
-                       fdb.save_append(cli.value_of("output").unwrap(), cli.value_of("outfmt").unwrap());
+                       fdb.save_append(output, cli.value_of("outfmt").unwrap());
 
                        fdb.clear();
 

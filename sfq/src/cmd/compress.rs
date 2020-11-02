@@ -63,7 +63,7 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
         cli.value_of("output").unwrap()
     } else {
         if let Some(y) = cli.value_of("input-rev") {    
-            stem_name.push_str("_FR");
+            stem_name.push_str(".FR");
             &stem_name
         }
         else {&stem_name}
@@ -143,7 +143,7 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
             numrec,
             use_lines
         );
-        fs::remove_file(&tmp).unwrap();
+        //fs::remove_file(&tmp).unwrap();
         lzt.drop();
         let mut x = match i {
             0 => {
