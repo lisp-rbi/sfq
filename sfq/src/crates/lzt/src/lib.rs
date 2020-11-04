@@ -67,8 +67,8 @@ impl FFI {
                         pth.as_ptr(),
                         pth.len() as libc::c_int,
                 ) == false {
-                    // FXME: add it to errorr management
-                        panic!("Error with creating lzt indedx!");
+                    // FXME: add it to error management
+                        panic!("Error with creating lzt index!");
                 };
 
 

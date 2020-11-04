@@ -85,7 +85,7 @@ pub struct Fdb {
     pub numrec: usize,
     pub line_length: usize,
     alpha: String,
-    paired: bool,
+    pub paired: bool,
     head: Vec<u8>,
     seq: Vec<u8>,
     qual: Vec<u8>,

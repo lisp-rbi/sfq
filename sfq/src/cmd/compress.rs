@@ -20,9 +20,6 @@ use lzt::{
     Drop
 };
 
-
-
-
 pub fn compress (cli: ArgMatches<'static>) -> bool {
 
     eprintln!("Reading data ... ");
@@ -30,7 +27,8 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
     let before = Instant::now();
 
     eprintln!("Total RAM at your disposal = {:?} KB", mem_info().unwrap().total);
-    // a flag to signal whether we count memory for compression or lines
+    // a flag to signal whether we count memory for compression or we take lines
+    // from the input
     let mut use_lines: bool = false;
     let mymem : usize = if let Some(x) = cli.value_of("fragment-size") {
         if x == "Max" {
@@ -49,8 +47,10 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
         else {false}
     } else {true};
 
+    // take name of the input file, reverse is by defauls an empty string
     let fwd_input: &str = cli.value_of("input").unwrap();
     let mut rev_input: &str = "";
+    // if reverse file is given, take its name
     if let Some(x) = cli.value_of("input-rev") {
         rev_input = cli.value_of("input-rev").unwrap();
     }
@@ -107,7 +107,13 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
     };
     let mut i = 0;
     let mut line_length: usize = fdb.line_length;
-    let mut numrec: usize = fdb.numrec;
+    // numrec serves when reading tmp files for compression
+    // we need to know when we have read the entire file
+    // if it is paired, the entire file is 2*fdb.numrec
+    let mut numrec: usize = match fdb.paired {
+        true => 2*fdb.numrec,
+        false => fdb.numrec
+    };
     // erase the FDB structure to free the RAM
     fdb.clear();
     eprintln!("Time spent on data preprocessing: {:.2?}", before.elapsed());
