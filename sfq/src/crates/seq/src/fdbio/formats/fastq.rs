@@ -45,13 +45,13 @@ impl Fdb{
         }
     }
 */
-    pub fn fastq_up<R: BufRead>(&mut self, fwd_reader: R, rev_reader: R, output: &str) -> Result<bool,Error> {
+    pub fn fastq_up<R: BufRead>(&mut self, fwd_reader: R, rev_reader: R, outdir: &str, output: &str) -> Result<bool,Error> {
 
         let mut cnt=0;
         let mut r: usize = 0;
-        let tmp_head = format!("{}/{}.head.tmp", output, output);
-        let tmp_seq = format!("{}/{}.seq.tmp", output, output);
-        let tmp_qual = format!("{}/{}.qual.tmp", output, output);
+        let tmp_head = format!("{}/{}.head.tmp", outdir, output);
+        let tmp_seq = format!("{}/{}.seq.tmp", outdir, output);
+        let tmp_qual = format!("{}/{}.qual.tmp", outdir, output);
         let mut head_writer = self.make_append_writer(&tmp_head);
         let mut seq_writer = self.make_append_writer(&tmp_seq);
         let mut qual_writer = self.make_append_writer(&tmp_qual);

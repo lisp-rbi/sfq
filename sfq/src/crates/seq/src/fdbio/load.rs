@@ -21,7 +21,7 @@ use crate::{Load, Fdb};
 
 impl Load for Fdb {
 
-    fn load(&mut self, fwd_path: &str, rev_path: &str, output: &str) -> &mut Self{
+    fn load(&mut self, fwd_path: &str, rev_path: &str, outdir: &str, output: &str) -> &mut Self{
 
         let fwd_reader = self.make_reader(fwd_path);
         let rev_reader = self.make_reader(rev_path);
@@ -39,7 +39,7 @@ impl Load for Fdb {
             "fastq" => {
                 self.numrec = (num_of_lines as usize) / 4;
                 self.cpcnt = vec![1;(self.numrec+2)*2];
-                if let Ok(false) = self.fastq_up(fwd_reader,rev_reader,output) {
+                if let Ok(false) = self.fastq_up(fwd_reader,rev_reader,outdir,output) {
                     panic!("{} file not uploaded !", self.format);
                 };
 

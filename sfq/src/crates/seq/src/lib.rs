@@ -63,7 +63,7 @@ pub trait Push {
 
 pub trait Load {
 
-    fn load(&mut self, fwd_path: &str, rev_path: &str, output: &str) -> &mut Self;
+    fn load(&mut self, fwd_path: &str, rev_path: &str, outdir: &str, output: &str) -> &mut Self;
 
 }
 

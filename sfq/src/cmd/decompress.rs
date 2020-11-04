@@ -2,6 +2,8 @@ use std::str;
 use clap::*;
 use crate::util::common::*;
 use std::time::Instant;
+use std::path::Path;
+use std::ffi::OsStr;
 use seq::{
     Fdb,
     Save,
@@ -61,9 +63,10 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
                     let mut qual = String::new();
 
                     if let Some(x) = cli.value_of("input") {
-                        head = format!("{}/{}.{}",x,x,"head.sfq");
-                        seq  = format!("{}/{}.{}",x,x,"seq.sfq");
-                        qual = format!("{}/{}.{}",x,x,"qual.sfq");
+                        let mut stem_name = String::from(Path::new(cli.value_of("input").unwrap()).file_stem().and_then(OsStr::to_str).unwrap());
+                        head = format!("{}/{}.{}",x,stem_name,"head.sfq");
+                        seq  = format!("{}/{}.{}",x,stem_name,"seq.sfq");
+                        qual = format!("{}/{}.{}",x,stem_name,"qual.sfq");
                     }
 
 

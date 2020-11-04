@@ -56,8 +56,8 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
     }
 
     // If output name is defined in cli, use that
-    // otherwise: if it is paired-end take input-file name - ext + _FR
-    //            if it is not paired-end, take input-file name - ext
+    // otherwise: if it is paired-end take input-file name - ext + _FR.sfq
+    //            if it is not paired-end, take input-file name - ext + .sfq
     let mut stem_name = String::from(Path::new(fwd_input).file_stem().and_then(OsStr::to_str).unwrap());
     let mut output: &str = if let Some(x) = cli.value_of("output") {
         cli.value_of("output").unwrap()
@@ -68,11 +68,13 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
         }
         else {&stem_name}
     };
+    let mut outdir = String::from(output);
+    outdir.push_str(".sfq");
 
-    if make_dir(output) == false{ panic!("Creating output directory failed"); };
+    if make_dir(&outdir) == false{ panic!("Creating output directory failed"); };
 
     let mut fdb = Fdb::new(cli.value_of("infmt").unwrap());
-    fdb.load(fwd_input,rev_input,output);
+    fdb.load(fwd_input,rev_input,&outdir,output);
 
 /*
     if let Some(x) = cli.value_of("cmode") {
@@ -121,16 +123,16 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
 
         let mut x = match i {
             0 => {
-                out = format!("{}/{}.{}",output,output,"seq.sfq");
-                tmp = format!("{}/{}.{}",output,output,"seq.tmp");
+                out = format!("{}/{}.{}",outdir,output,"seq.sfq");
+                tmp = format!("{}/{}.{}",outdir,output,"seq.tmp");
             },                                                          
             1 => {                                                      
-                out = format!("{}/{}.{}",output,output,"head.sfq");
-                tmp = format!("{}/{}.{}",output,output,"head.tmp");
+                out = format!("{}/{}.{}",outdir,output,"head.sfq");
+                tmp = format!("{}/{}.{}",outdir,output,"head.tmp");
             },                                                          
             _ => {                                                      
-                out = format!("{}/{}.{}",output,output,"qual.sfq");
-                tmp = format!("{}/{}.{}",output,output,"qual.tmp");
+                out = format!("{}/{}.{}",outdir,output,"qual.sfq");
+                tmp = format!("{}/{}.{}",outdir,output,"qual.tmp");
             }
         };
 
@@ -143,7 +145,7 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
             numrec,
             use_lines
         );
-        //fs::remove_file(&tmp).unwrap();
+        fs::remove_file(&tmp).unwrap();
         lzt.drop();
         let mut x = match i {
             0 => {
