@@ -3,6 +3,8 @@ use std::str;
 use clap::*;
 use crate::util::common::*;
 use std::time::Instant;
+use std::path::Path;
+use std::ffi::OsStr;
 use seq::{
     Fdb,
     Set,
@@ -33,7 +35,15 @@ pub fn export (cli: ArgMatches<'static>) -> bool {
 
     let mut fdb = Fdb::new(cli.value_of("infmt").unwrap());
 
-    if fdb.rm_file(cli.value_of("output").unwrap()) == false {
+    let mut output: &str;
+    // if keyword -o is defined, use that name,
+    // otherwise send result to stdout
+    match cli.value_of("output") {
+        Some(x) => { output = cli.value_of("output").unwrap(); }
+        None => { output = "stdout"; }
+    }
+
+    if fdb.rm_file(output) == false {
         panic!("cannot rm file ");
     }
 
@@ -50,9 +60,10 @@ pub fn export (cli: ArgMatches<'static>) -> bool {
                     let mut seq = String::new();
 
                     if let Some(x) = cli.value_of("input") {
-                        head = format!("{}.{}",x,"head.sfq");
-                        seq  = format!("{}.{}",x,"seq.sfq");
-                        qual = format!("{}.{}",x,"qual.sfq");
+                        let mut stem_name = String::from(Path::new(cli.value_of("input").unwrap()).file_stem().and_then(OsStr::to_str).unwrap());
+                        head = format!("{}/{}.{}",x,stem_name,"head.sfq");
+                        seq  = format!("{}/{}.{}",x,stem_name,"seq.sfq");
+                        qual = format!("{}/{}.{}",x,stem_name,"qual.sfq");
                     }
 
                     let mut head_lzt = FFI::open(&head,memmod);
@@ -141,9 +152,9 @@ pub fn export (cli: ArgMatches<'static>) -> bool {
                             let dis = deindex(&mut qual_out);
                             fdb.set_qual(qual_out);
 
-                            if let Some(x) = cli.value_of("cmode") {
+                            if let Some(y) = cli.value_of("cmode") {
 
-                                if x == "lossy"{
+                                if y == "lossy"{
                                     fdb.expand();
                                 }
                             }else{
@@ -154,7 +165,7 @@ pub fn export (cli: ArgMatches<'static>) -> bool {
                             fdb.set_qual(qvec);
                         }
 
-                        fdb.save_append(cli.value_of("output").unwrap(),cli.value_of("outfmt").unwrap());
+                        fdb.save_append(output,cli.value_of("outfmt").unwrap());
 
                         fdb.clear();
                     }
