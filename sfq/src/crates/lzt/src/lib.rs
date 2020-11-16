@@ -1,4 +1,3 @@
-
 extern crate libc;
 mod util;
 pub mod ffi;
@@ -15,10 +14,8 @@ use util::common::{
     get_query_results
 };
 
-
 // global variable -> maybe move into objects ?
-static CASHSIZE: usize = 10000;
-
+static CASHSIZE: usize = 1000000;
 
 #[cfg(test)]
 mod tests;
@@ -29,29 +26,33 @@ pub trait Drop{
 
 #[derive(Debug, Clone)]
 pub struct FFI {
-    raw: Vec<*mut LztObj>
+    raw: Vec<*mut LztObj>,
+    pub num_of_lzt: u8,
 }
 
 impl FFI {
 
     pub fn new( path : &str, tmp_path: &str, mem: usize, mmode: bool, line_length: usize, numrec: usize, use_lines: bool) -> Self {
 
-        let lpm: usize = match use_lines {
+        let mut lpm: usize = match use_lines {
             true => {mem}, 
             // number of lines to read at time
             false => {(mem * 1024) / (line_length * 55)}
         };
+        // assure that corresponding fwd and rev recods end up in same Trie
+        if lpm%2 == 1 {lpm += 1;}
 
         let mut lzt_vec : Vec<*mut LztObj> = Vec::new();
         let mut end_of_file : bool = false;
-        let mut start: i64 = 0;
-        let mut end: i64 = (lpm as i64) - 1;
-        let mut j: i64 = 1;
+        let mut start: u64 = 0;
+        let mut end: u64 = (lpm as u64) - 1;
+        let mut num_lzt_rec: u64 = 0;
+        let mut j: u64 = 1;
         while end_of_file == false {
             // if there is only one line left at the end, add to the last trie
-            if (end == (numrec-1) as i64) && (numrec%lpm == 0) {end += 1;}
+            if (end == (numrec-1) as u64) && (numrec%lpm == 0) {end += 1;}
             let mut v : Vec<u8> = Vec::new();
-            end_of_file = read_tmp(&tmp_path,&mut v,start,end);
+            end_of_file = read_tmp(&tmp_path,&mut v,start,end,&mut num_lzt_rec);
             let pth = format!("{}.{}", path, j.to_string());
             if fs::metadata(&pth).is_ok() == true {
                 if fs::metadata(&pth).unwrap().is_file() == true {
@@ -71,7 +72,6 @@ impl FFI {
                         panic!("Error with creating lzt index!");
                 };
 
-
                 lzt_vec.push(
                     open_lzt(
                         pth.as_ptr(),
@@ -80,27 +80,26 @@ impl FFI {
                         mmode
                     )
                 );
-
             }
 
-            start += lpm as i64; end += lpm as i64;
+            start += lpm as u64; end += lpm as u64;
             j += 1;
         }
 
         FFI {
-            raw: lzt_vec
+            raw: lzt_vec,
+            num_of_lzt: (j-1) as u8,
         }
-
     }
 
 
     pub fn empty() -> Self {
 
         FFI {
-            raw: Vec::new()
+            raw: Vec::new(),
+            num_of_lzt: 0,
         }
     }
-
 
     pub fn open( path: &str, memmod: bool) -> Self {
 
@@ -123,12 +122,12 @@ impl FFI {
         }
 
         FFI {
-            raw: lzt_vec
+            raw: lzt_vec,
+            num_of_lzt: j-1,
         }
     }
 
-
-    pub fn get_records(&self, pattern: &str)-> Vec<u8> {
+    pub fn get_records(&self, pattern: &str, position: &i32)-> Vec<u8> {
 
         // remember that here you can use ranges to limit
         // the rearch to a specified
@@ -136,35 +135,56 @@ impl FFI {
 
         let mut qres : Vec<u8> = Vec::new();
 
-        for i in 0..self.raw.len() {
-            unsafe{
-               let size = query_lzt(
-                   self.raw[i],
-                   pattern.as_ptr(),
-                   pattern.len() as libc::c_ulong,
-               ) as usize;
+        // if position is -1, search all LZTs for the pattern
+        match position {
+            -1 => {
+                for i in 0..self.raw.len() {
+                    unsafe{
+                       let size = query_lzt(
+                           self.raw[i],
+                           pattern.as_ptr(),
+                           pattern.len() as libc::c_ulong,
+                       ) as usize;
+                
+                       let mut tq = vec![43u8;size];
+                
+                       get_query_results(
+                           self.raw[i],
+                           tq.as_mut_ptr()
+                       );
+                
+                       qres.extend(tq);
+                    }
+                }
+            }
+        // otherwise, search only given LZT for the pattern
+            _ => {
+                assert!(position >= &1);
+                unsafe{
+                    let size = query_lzt(
+                        self.raw[(*position as usize)-1],
+                        pattern.as_ptr(),
+                        pattern.len() as libc::c_ulong,
+                    ) as usize;
+                
+                    let mut tq = vec![43u8;size];
+                
+                    get_query_results(
+                        self.raw[(*position as usize)-1],
+                        tq.as_mut_ptr()
+                    );
 
-               let mut tq = vec![43u8;size];
-
-               get_query_results(
-                   self.raw[i],
-                   tq.as_mut_ptr()
-               );
-
-               qres.extend(tq);
-           }
+                    qres.extend(tq);
+                }
+            }
         }
         if qres[qres.len()-1] == '\n' as u8{
             qres.resize(qres.len()-1, 0x00);
         }
-
 //        println!("{:?}", String::from_utf8(qres.clone()).unwrap()  );
-
         qres
     }
-
 }
-
 
 impl Drop for FFI {
     fn drop(&mut self) {
@@ -172,9 +192,6 @@ impl Drop for FFI {
             unsafe {
                 delete_lzt(self.raw[i]);
             }
-
-
         }
-
     }
 }

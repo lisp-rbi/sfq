@@ -27,14 +27,9 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
     let mut fdb = Fdb::new(cli.value_of("infmt").unwrap());
 
     let memmod : bool = if let Some(x) = cli.value_of("mem-mod") {
-        if x == "R" {
-            true
-        }else{
-            false
-        }
-    }else{
-        true
-    };
+        if x == "R" {true}
+        else {false}
+    } else {true};
 
     //let (wlen,alpha) = parse_codex(cli.value_of("codex").unwrap());
 
@@ -46,9 +41,7 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
         None => { output = "stdout"; }
     }
 
-    if fdb.rm_file(output) == false {
-        panic!("cannot rm file ");
-    }
+    if fdb.rm_file(output) == false {panic!("cannot rm file ");}
 
     match cli.value_of("infmt") {
 
@@ -69,69 +62,56 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
                         qual = format!("{}/{}.{}",x,stem_name,"qual.sfq");
                     }
 
+                    let ( mut count, mut alpha, mut wlen, mut model) = (0,Vec::new(),0, false);
 
                     let mut head_lzt = FFI::open(&head,memmod); //// escape header
                     let mut seq_lzt  = FFI::open(&seq,memmod);
-                    //let mut qual_lzt = if q {FFI::open(&qual,memmod)}else{FFI::empty()};
+                    let mut qual_lzt = if q {FFI::open(&qual,memmod)} else {FFI::empty()};
 
-                    let ( mut count, mut alpha, mut wlen, mut model) = (0,Vec::new(),0, false);
-
-
-                    // get info :alloc
                     {
-
-                        let head_stats  = get_stats(&head_lzt.get_records("~~~~~^")); //// escape header
-                        let seq_stats   = get_stats( &seq_lzt.get_records("~~~~~^"));
+                        let head_stats  = get_stats(&head_lzt.get_records("~~~~~^",&(head_lzt.num_of_lzt as i32))); //// escape header
+                        let seq_stats   = get_stats( &seq_lzt.get_records("~~~~~^",&(seq_lzt.num_of_lzt as i32)));
 
                         assert_eq!(seq_stats,head_stats);
-
 
                         count = seq_stats.0;
                         alpha = seq_stats.1;
                         wlen  = seq_stats.2;
-
                         fdb.set_model(seq_stats.3);
 
                     }
 
-                    head_lzt.drop();
-                    seq_lzt.drop();
-
-                    let mut head_lzt = FFI::open(&head,memmod); //// escape header
-                    let mut seq_lzt  = FFI::open(&seq,memmod);
-                    let mut qual_lzt = if q {FFI::open(&qual,memmod)}else{FFI::empty()};
-
-
-                    //let exp = (count as f64).log(alpha.len() as f64) as u32;
-                    //let inc = alpha.len().pow(exp-1);
                     let pow : u32 = if wlen <= 6 {(wlen as u32)-1}else{6};
                     let inc = alpha.len().pow(pow); // set to 5th iteration
 
-
                     let (mut i, mut j, mut pp) = (0,inc-1, 0);
+                    //let (mut i, mut j, mut pp) = (1,inc, 0);
 
                     while i < count {
 
                         let enc_start = encode(i, wlen, &alpha);
                         let enc_stop  = encode(j, wlen, &alpha);
 
-                        j+=inc;
-                        i+=inc;
+                        j += inc;
+                        i += inc;
 
                         if j > count {j=count;}
                         let mut e = 0;
 
-                        for i in 0..enc_start.len() {
-                            if enc_start[i] == enc_stop[i] {e+=1;}else{break;}
+                        // see at which digit start and stop prefixes begin to differ
+                        for k in 0..enc_start.len() {
+                            if enc_start[k] == enc_stop[k] {e+=1;} 
+                            else {break;}
                         }
 
+                        // take start prefix up to the point start and stop are equal
                         let prefix = enc_start[..e].to_vec();
                         let enc = str::from_utf8(&prefix).unwrap();
 
                         {
                             //eprint!("Seq ... ");
                             let st = Instant::now();
-                            let mut seq_out: Vec<u8> = seq_lzt.get_records(&enc);
+                            let mut seq_out: Vec<u8> = seq_lzt.get_records(&enc,&-1);
                             let ms: u64 = (st.elapsed().as_millis() +1) as u64;
                             //eprintln!("LZT  {:?}", String::from_utf8(seq_out.clone()).unwrap());
 
@@ -155,7 +135,7 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
                             //eprint!("Head ... ");
                             let st = Instant::now();
 
-                            let mut head_out = head_lzt.get_records(&enc);
+                            let mut head_out = head_lzt.get_records(&enc,&-1);
                             //eprintln!("Rec/sec: {:.2?}", (((pp) as u64)/((st.elapsed().as_millis() +1) as u64 ))*1000);
 
                             let dis = deindex(&mut head_out);
@@ -165,21 +145,15 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
                         if q {
                             //eprint!("Qual ... ");
                             let st = Instant::now();
-                            let mut qual_out = qual_lzt.get_records(&enc);
+                            let mut qual_out = qual_lzt.get_records(&enc,&-1);
                             //eprintln!("Rec/sec: {:.2?}", (((pp) as u64)/((st.elapsed().as_millis() +1) as u64 ))*1000 );
                             let dis = deindex(&mut qual_out);
                             //eprintln!("LZT  {:?} \ndis:{:?}", String::from_utf8(qual_out.clone()).unwrap(),dis);
 
-
                             fdb.set_qual(qual_out);
 
-
                             if let Some(y) = cli.value_of("cmode") {
-
-                                if y == "lossy"{
-                                    fdb.expand();
-                                }
-
+                                if y == "lossy"{fdb.expand();}
                             }else{
                                 panic!("Decompression compromised!");
                             }
@@ -188,19 +162,14 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
                             let qvec = vec!['\n' as u8; fdb.get_numrec()];
                             fdb.set_qual(qvec);
                         }
-
-                       fdb.save_append(output, cli.value_of("outfmt").unwrap());
-
-                       fdb.clear();
-
-
+                        fdb.save_append(output, cli.value_of("outfmt").unwrap());
+                        fdb.clear();
                     }
                     head_lzt.drop();
                     qual_lzt.drop();
                     seq_lzt.drop();
-
                 },
-                _=> {
+                _ => {
                     panic!("File format {} not recognized",x)
                 }
             }

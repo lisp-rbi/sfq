@@ -30,8 +30,12 @@ impl Load for Fdb {
         let num_of_lines = self.count_lines(&fwd_path).unwrap();
         let mut rev_num_of_lines: u64 = 0;
         if self.paired == true {rev_num_of_lines = self.count_lines(&rev_path).unwrap();}
-        if (self.paired == true) && num_of_lines != rev_num_of_lines {
-            eprintln!("WARNING: The number of records in forward and reverse files differ!");
+        if (self.paired == true) && num_of_lines > rev_num_of_lines {
+            eprintln!("WARNING: Numrec in reverse file < numrec in forward!");
+            eprintln!("I will proceed anyways....");
+        } else if (self.paired == true) && num_of_lines < rev_num_of_lines {
+            eprintln!("WARNING: Numrec in reverse file > numrec in forward!");
+            eprintln!("You will lose excess reverse records!");
             eprintln!("I will proceed anyways....");
         }
 
@@ -45,9 +49,9 @@ impl Load for Fdb {
 
             },
             "fasta" => {
-                self.numrec = (num_of_lines as usize) / 2;
+                self.numrec = num_of_lines as usize;
                 self.cpcnt = vec![1;(self.numrec+2)*2];
-                if let Ok(false) = self.fasta_up(fwd_reader,rev_reader,output) {
+                if let Ok(false) = self.fasta_up(fwd_reader,rev_reader,outdir,output) {
                     panic!("{} file not uploaded !", self.format);
                 };
             },

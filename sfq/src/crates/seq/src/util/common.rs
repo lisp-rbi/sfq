@@ -69,7 +69,7 @@ impl Fdb{
         v
     }
 
-    pub fn comp_wlen(&self) -> (usize,usize) {
+    pub fn comp_wlen(& self) -> (usize,usize) {
         let alpha = self.alpha.len();
         let cnt = self.cpcnt.iter().max().unwrap() * self.cpcnt.len();
         (cnt ,((cnt+1) as f64).log(alpha as f64).ceil() as usize)

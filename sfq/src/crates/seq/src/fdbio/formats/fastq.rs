@@ -17,9 +17,11 @@
  */
 
 
- use crate::{Fdb,Get,Save};
- use crate::util::error::Error;
- use std::io::{ prelude::*,  Write};
+use crate::{Fdb,Get,Save};
+use crate::util::error::Error;
+use std::io::{ prelude::*,  Write};
+use std::string::String;
+use std::str;
 
 // function to read fastq files
 impl Fdb{
@@ -48,7 +50,7 @@ impl Fdb{
     pub fn fastq_up<R: BufRead>(&mut self, fwd_reader: R, rev_reader: R, outdir: &str, output: &str) -> Result<bool,Error> {
 
         let mut cnt=0;
-        let mut r: usize = 0;
+        let mut r: usize = 1;
         let tmp_head = format!("{}/{}.head.tmp", outdir, output);
         let tmp_seq = format!("{}/{}.seq.tmp", outdir, output);
         let tmp_qual = format!("{}/{}.qual.tmp", outdir, output);
@@ -62,62 +64,46 @@ impl Fdb{
 
         for fwd_line in fwd_lines {
             if  cnt == 0 {
-                let mut fwd_head: Vec<u8> = Vec::new();
-                fwd_head.extend(self.encode(r,wlen));
-                fwd_head.extend(b"G");
-                fwd_head.extend(b"^");
-                fwd_head.extend(fwd_line.as_bytes());
-                if self.paired == true {fwd_head.extend(b"F\0");}
-                else {fwd_head.extend(b"\0");}
-                for elem in fwd_head{
-                    if elem == 0 {write!(head_writer,"{:?}\n",elem);} 
-                    else {write!(head_writer,"{:?} ",elem);}
-                }
+                let mut fwd_head = String::from("");
+                fwd_head.push_str(str::from_utf8(&self.encode(r,wlen)).unwrap());
+                fwd_head.push_str("G^");
+                fwd_head.push_str(&fwd_line);
+                if self.paired == true {fwd_head.push_str("F\0\n");}
+                else {fwd_head.push_str("\0\n");}
+                head_writer.write_all(&fwd_head.as_bytes());
                 if self.paired == true {
-                    let mut rev_head: Vec<u8> = Vec::new();
-                    rev_head.extend(self.encode(r+1,wlen));
-                    rev_head.extend(b"A");
-                    rev_head.extend(b"^");
+                    let mut rev_head = String::from("");
+                    rev_head.push_str(str::from_utf8(&self.encode(r,wlen)).unwrap());
+                    rev_head.push_str("A^");
                     let rev_line = match rev_lines.next() {
                         Some(p) => p,
                         None => "0".to_string(),
                     };
-                    rev_head.extend(rev_line.as_bytes());
-                    rev_head.extend(b"R\0");
-                    for elem in rev_head{
-                        if elem == 0 {write!(head_writer,"{:?}\n",elem);} 
-                        else {write!(head_writer,"{:?} ",elem);}
-                    }
+                    rev_head.push_str(&rev_line);
+                    rev_head.push_str("R\0\n");
+                    head_writer.write_all(&rev_head.as_bytes());
                 }
                 cnt = cnt+1;
                 continue;
             }else if cnt == 1 {
-                let mut fwd_seq: Vec<u8> = Vec::new();
-                fwd_seq.extend(self.encode(r,wlen));
-                fwd_seq.extend(b"G");
-                fwd_seq.extend(b"^");
-                fwd_seq.extend(fwd_line.as_bytes());
-                fwd_seq.extend(b"\0");
-                for elem in fwd_seq{
-                    if r == 0 {self.line_length += 1;}
-                    if elem == 0 {write!(seq_writer,"{:?}\n",elem);} 
-                    else {write!(seq_writer,"{:?} ",elem);}
-                }
+                let mut fwd_seq = String::from("");
+                fwd_seq.push_str(str::from_utf8(&self.encode(r,wlen)).unwrap());
+                fwd_seq.push_str("G^");
+                fwd_seq.push_str(&fwd_line);
+                fwd_seq.push_str("\0\n");
+                if r == 1 {self.line_length += fwd_seq.len()-1;}
+                seq_writer.write_all(&fwd_seq.as_bytes());
                 if self.paired == true {
-                    let mut rev_seq: Vec<u8> = Vec::new();
-                    rev_seq.extend(self.encode(r+1,wlen));
-                    rev_seq.extend(b"A");
-                    rev_seq.extend(b"^");
+                    let mut rev_seq = String::from("");
+                    rev_seq.push_str(str::from_utf8(&self.encode(r,wlen)).unwrap());
+                    rev_seq.push_str("A^");
                     let rev_line = match rev_lines.next() {
                         Some(p) => self.revcomp(p),
                         None => "0".to_string(),
                     };
-                    rev_seq.extend(rev_line.as_bytes());
-                    rev_seq.extend(b"\0");
-                    for elem in rev_seq{
-                        if elem == 0 {write!(seq_writer,"{:?}\n",elem);} 
-                        else {write!(seq_writer,"{:?} ",elem);}
-                    }
+                    rev_seq.push_str(&rev_line);
+                    rev_seq.push_str("\0\n");
+                    seq_writer.write_all(&rev_seq.as_bytes());
                 }
                 cnt = cnt+1;
                 continue;
@@ -131,31 +117,23 @@ impl Fdb{
                 cnt += 1;
                 continue;
             }else if cnt == 3 {
-                let mut fwd_qual: Vec<u8> = Vec::new();
-                fwd_qual.extend(self.encode(r,wlen));
-                fwd_qual.extend(b"G");
-                fwd_qual.extend(b"^");
-                fwd_qual.extend(fwd_line.as_bytes());
-                fwd_qual.extend(b"\0");
-                for elem in fwd_qual{
-                    if elem == 0 {write!(qual_writer,"{:?}\n",elem);} 
-                    else {write!(qual_writer,"{:?} ",elem);}
-                }
+                let mut fwd_qual = String::from("");
+                fwd_qual.push_str(str::from_utf8(&self.encode(r,wlen)).unwrap());
+                fwd_qual.push_str("G^");
+                fwd_qual.push_str(&fwd_line);
+                fwd_qual.push_str("\0\n");
+                qual_writer.write_all(&fwd_qual.as_bytes());
                 if self.paired == true {
-                    let mut rev_qual: Vec<u8> = Vec::new();
-                    rev_qual.extend(self.encode(r+1,wlen));
-                    rev_qual.extend(b"A");
-                    rev_qual.extend(b"^");
+                    let mut rev_qual = String::from("");
+                    rev_qual.push_str(str::from_utf8(&self.encode(r,wlen)).unwrap());
+                    rev_qual.push_str("A^");
                     let rev_line = match rev_lines.next() {
                         Some(p) => p,
                         None => "0".to_string(),
                     };
-                    rev_qual.extend(rev_line.as_bytes());
-                    rev_qual.extend(b"\0");
-                    for elem in rev_qual{
-                        if elem == 0 {write!(qual_writer,"{:?}\n",elem);} 
-                        else {write!(qual_writer,"{:?} ",elem);}
-                    }
+                    rev_qual.push_str(&rev_line);
+                    rev_qual.push_str("\0\n");
+                    qual_writer.write_all(&rev_qual.as_bytes());
                 } 
                 r += 1;
                 cnt = 0;
@@ -164,11 +142,9 @@ impl Fdb{
         }
 
         let stats = self.make_stats(wlen);
-        for stat in stats{
-            write!(head_writer,"{:?} ",stat);
-            write!(seq_writer,"{:?} ",stat);
-            write!(qual_writer,"{:?} ",stat);
-        }
+        head_writer.write_all(str::from_utf8(&stats).unwrap().as_bytes());
+        seq_writer.write_all(str::from_utf8(&stats).unwrap().as_bytes());
+        qual_writer.write_all(str::from_utf8(&stats).unwrap().as_bytes());
 
         //println!("{}:{}\n{:?}\n{:?}\n{:?}", self.seq.len(), self.seq[self.seq.len()-1], String::from_utf8(self.seq.clone()), String::from_utf8(self.qual.clone()), String::from_utf8(self.head.clone()));
         if self.paired == false {self.rm_file("dummy.txt");}

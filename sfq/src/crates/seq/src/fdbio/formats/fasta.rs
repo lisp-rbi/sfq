@@ -17,95 +17,99 @@
  */
 
 
-  use crate::{Fdb,Get};
-  use crate::util::error::Error;
-  use std::io::{prelude::*, Write};
+use crate::{Fdb,Get};
+use crate::util::error::Error;
+use std::io::{prelude::*, Write};
+use std::string::String;
+use std::str;
 
 impl Fdb{
-    pub fn fasta_up<R: BufRead>(&mut self,  fwd_reader:  R, rev_reader: R, output: &str) -> Result<bool,Error> {
+    pub fn fasta_up<R: BufRead>(&mut self,  fwd_reader:  R, rev_reader: R, outdir: &str, output: &str) -> Result<bool,Error> {
 
         let mut cnt=0;
-        let mut r: usize = 0;
-        let tmp_head = format!("{}/{}.head.tmp", output, output);
-        let tmp_seq = format!("{}/{}.seq.tmp", output, output);
+        let mut r: usize = 1;
+        let tmp_head = format!("{}/{}.head.tmp", outdir, output);
+        let tmp_seq = format!("{}/{}.seq.tmp", outdir, output);
         let mut head_writer = self.make_append_writer(&tmp_head);
         let mut seq_writer = self.make_append_writer(&tmp_seq);
        
         let mut fwd_lines = fwd_reader.lines().map(|l| l.unwrap());
         let mut rev_lines = rev_reader.lines().map(|l| l.unwrap());
         let (count, wlen) = self.comp_wlen();
-       
+        let mut new_record: bool = true;
+        let mut seq_lines: usize = 0;
+        let mut fwd_seq = String::from("");
+        let mut rev_seq = String::from("");
+ 
         for fwd_line in fwd_lines {
             if  &fwd_line[..1] == ">" {
-                let mut fwd_head: Vec<u8> = Vec::new();
-                fwd_head.extend(self.encode(r,wlen));
-                fwd_head.extend(b"G");
-                fwd_head.extend(b"^");
-                fwd_head.extend(fwd_line.as_bytes());
-                if self.paired == true {fwd_head.extend(b"F\0");}
-                else {fwd_head.extend(b"\0");}
-                for elem in fwd_head{
-                    if elem == 0 {write!(head_writer,"{:?}\n",elem);} 
-                    else {write!(head_writer,"{:?} ",elem);}
-                }
+                new_record = true;
+                let mut fwd_head = String::from("");
+                fwd_head.push_str(str::from_utf8(&self.encode(r,wlen)).unwrap());
+                fwd_head.push_str("G^");
+                fwd_head.push_str(&fwd_line);
+                if self.paired == true {fwd_head.push_str("F\0\n");}
+                else {fwd_head.push_str("\0\n");}
+                head_writer.write_all(&fwd_head.as_bytes());
                 if self.paired == true {
-                    let mut rev_head: Vec<u8> = Vec::new();
-                    rev_head.extend(self.encode(r+1,wlen));
-                    rev_head.extend(b"A");
-                    rev_head.extend(b"^");
+                    let mut rev_head = String::from("");
+                    rev_head.push_str(str::from_utf8(&self.encode(r,wlen)).unwrap());
+                    rev_head.push_str("A^");
                     let rev_line = match rev_lines.next() {
                         Some(p) => p,
                         None => "0".to_string(),
                     };
-                    rev_head.extend(rev_line.as_bytes());
-                    rev_head.extend(b"R\0");
-                    for elem in rev_head{
-                        if elem == 0 {write!(head_writer,"{:?}\n",elem);} 
-                        else {write!(head_writer,"{:?} ",elem);}
-                    }
+                    rev_head.push_str(&rev_line);
+                    rev_head.push_str("R\0\n");
+                    head_writer.write_all(&rev_head.as_bytes());
                 }
+                r += 1;
                 continue;
             } else {
-                let mut fwd_seq: Vec<u8> = Vec::new();
-                fwd_seq.extend(self.encode(r,wlen));
-                fwd_seq.extend(b"G");
-                fwd_seq.extend(b"^");
-                fwd_seq.extend(fwd_line.as_bytes());
-                fwd_seq.extend(b"\0");
-                for elem in fwd_seq{
-                    if r == 0 {self.line_length += 1;}
-                    if elem == 0 {write!(seq_writer,"{:?}\n",elem);} 
-                    else {write!(seq_writer,"{:?} ",elem);}
+                if new_record == true {
+                    seq_lines = 0;
+                    if r > 2 {
+                        fwd_seq.push_str("\0\n");
+                        if r == 3 {self.line_length = fwd_seq.len()-1;}
+                        seq_writer.write_all(&fwd_seq.as_bytes());
+                        fwd_seq = String::from("");
+                    }
+                    fwd_seq.push_str(str::from_utf8(&self.encode(r-1,wlen)).unwrap());
+                    fwd_seq.push_str("G^");
                 }
+                seq_lines += 1;
+                fwd_seq.push_str(&fwd_line);
                 if self.paired == true {
-                    let mut rev_seq: Vec<u8> = Vec::new();
-                    rev_seq.extend(self.encode(r+1,wlen));
-                    rev_seq.extend(b"A");
-                    rev_seq.extend(b"^");
+                    if new_record == true {
+                        if r > 2 {
+                            rev_seq.push_str("\0\n");
+                            seq_writer.write_all(&rev_seq.as_bytes());
+                            rev_seq = String::from("");
+                        }
+                        rev_seq.push_str(str::from_utf8(&self.encode(r-1,wlen)).unwrap());
+                        rev_seq.push_str("A^");
+                    }
                     let rev_line = match rev_lines.next() {
                         Some(p) => self.revcomp(p),
                         None => "0".to_string(),
                     };
-                    rev_seq.extend(rev_line.as_bytes());
-                    rev_seq.extend(b"\0");
-                    for elem in rev_seq{
-                        if elem == 0 {write!(seq_writer,"{:?}\n",elem);} 
-                        else {write!(seq_writer,"{:?} ",elem);}
-                    }
-                    r += 2;
-                } else {r += 1;}
+                    rev_seq.push_str(&rev_line);
+                }
+                new_record = false;
                 continue;
             }
         }
+        fwd_seq.push_str("\0\n");
+        rev_seq.push_str("\0\n");
+        seq_writer.write_all(&fwd_seq.as_bytes());
+        seq_writer.write_all(&rev_seq.as_bytes());
 
         let stats = self.make_stats(wlen);
-        for stat in stats{
-            write!(head_writer,"{:?} ",stat);
-            write!(seq_writer,"{:?} ",stat);
-        }
+        head_writer.write_all(str::from_utf8(&stats).unwrap().as_bytes());
+        seq_writer.write_all(str::from_utf8(&stats).unwrap().as_bytes());
 
         if self.paired == false {self.rm_file("dummy.txt");}
-       
+
         if self.numrec > 0 {Ok(true)}
         else{Ok(false)}
     }
@@ -118,8 +122,6 @@ impl Fdb{
 
 
         for ch in self.get_fasta().iter() {
-
-
             match *ch {
 
                 10u8 => {

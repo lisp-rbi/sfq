@@ -88,11 +88,11 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
     }else{
         panic!("Compression compromised!");
     }
-
+*/
     eprintln!(" {:.2?}", before.elapsed());
 
     eprintln!("Preprocessing the input data ... ");
-*/
+
     let j = match cli.value_of("infmt") {
         Some(x) => {
             match x {

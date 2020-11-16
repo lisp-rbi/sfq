@@ -326,7 +326,7 @@ pub fn deindex(v: &mut Vec<u8>) -> Vec<usize>  {
         }
     }
 
-    if singleton {eprintln!("Singleton is true");}
+    //if singleton {eprintln!("Singleton is true");}
 
     if print == true  || singleton == true{
         vec[x] = 1;
@@ -447,16 +447,19 @@ pub fn parse_codex (codex: &str) -> (usize,String) {
 }
 
 
-pub fn get_stats(st: &Vec<u8>) -> (usize,Vec<u8>,usize, bool) {
+pub fn get_stats(st: &Vec<u8>) -> (usize,Vec<u8>,usize, bool, u32) {
 
     let mut stats_vec: Vec<_> = st.split(|i| *i == 94u8).collect();
 
     let num_of_rec = std::str::from_utf8(stats_vec[1]).unwrap().parse::<usize>().unwrap();
     let alpha      = stats_vec[2].to_owned();
     let padding    = std::str::from_utf8(stats_vec[3]).unwrap().parse::<usize>().unwrap();
+    // if unpaired. model is 48u8 (false), if paired 49u8 (true)
     let model = if stats_vec[4][0] == 48u8 {false} else  {true};
+    // number of lines in the first LZT, needed for targeted search of multiTrie
+    let num_lzt_rec = std::str::from_utf8(stats_vec[5]).unwrap().parse::<usize>().unwrap();
 
-    (num_of_rec,alpha,padding, model)
+    (num_of_rec,alpha,padding,model,num_lzt_rec as u32)
 
 }
 

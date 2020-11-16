@@ -159,10 +159,10 @@ vector<vector<TSymbol> >* readWordsFromFileVecVec(string file) {
 }
 
 /**
- * Writes a list of corresponding prefixes to a CSV file.
+ * Writes a list of corresponding prefixes to a file.
  */
 bool write_list(string path, FlatWordList<TSymbol> fwords, unsigned long wln){
-    string listname = path + "/list.csv";
+    string listname = path + "/list";
     ofstream listfile;
     listfile.open(listname);
     bool write = true;
@@ -174,7 +174,7 @@ bool write_list(string path, FlatWordList<TSymbol> fwords, unsigned long wln){
 	    continue;
 	} 
 	else if (*fwords.words == *stringToTSymbolString("^")){
-	    listfile << ", ";
+	    listfile << endl;
             write = false;
             fwords.words++;
 	    continue;

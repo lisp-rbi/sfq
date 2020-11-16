@@ -2,19 +2,24 @@ use std::io::{self, prelude::*, Read, BufReader};
 use std::fs::{File,metadata};
 use crate::ffi::LztObj;
 
-pub fn read_tmp(filename: &str, vec: &mut Vec<u8>, start: i64, end: i64) -> bool{
+pub fn read_tmp(filename: &str, vec: &mut Vec<u8>, start: u64, end: u64, num_lzt_rec: &mut u64) -> bool {
     assert!(metadata(filename).unwrap().is_file());
     let file = File::open(filename).expect("Unable to read tmp file");
     let file = BufReader::new(file);
-    let mut line_number = 0;
+    let mut line_number: u64 = 0;
     let mut last_line: bool = false;
     for line in file.lines(){
         if (line_number >= start) && (line_number <= end) {
-            let line = line.unwrap();
-            let mut u8_line: Vec<u8> = line.trim().split(" ").map(|x| x.parse::<u8>().unwrap()).collect(); 
+            let mut u8_line: Vec<u8> = line.unwrap().as_bytes().to_vec();
             last_line = u8_line[u8_line.len()-1] != 0u8;
-            if last_line {u8_line.push(0u8);}
+            if last_line {
+                u8_line.push(94u8);
+                // add number of lines in first trie
+                u8_line.append(&mut num_lzt_rec.to_string().as_bytes().to_vec());
+                u8_line.push(0u8);
+            }
             vec.extend(u8_line);
+            if start == 0 {*num_lzt_rec = line_number + 1;}
         } else if line_number > end {
             break;
         };

@@ -98,7 +98,11 @@ impl Fdb{
                         if line.len() == 0 {
                             break;
                         }
-                        num_of_lines += 1;
+                        if &self.format == "fasta" {
+                            if &line[..1] == ">" {num_of_lines += 1;}
+                        } else if &self.format == "fastq" {
+                            num_of_lines += 1;
+                        }
                         line.clear();
                 },
                 Err(why) => return Err(why.to_string())

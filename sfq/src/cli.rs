@@ -116,6 +116,7 @@ pub(crate) fn parse_cli ()->  clap::ArgMatches<'static> {
             .long("memory-mode")
             .default_value("D")
             .required(true)
+            .possible_values(&["D","R"])
             .value_name("D|R")
             .help("Memory mode: defines memory type  (D - disc, R - RAM)")
             .takes_value(true))
@@ -126,6 +127,7 @@ pub(crate) fn parse_cli ()->  clap::ArgMatches<'static> {
             .default_value("Max")
             .required(true)
             .value_name("Max|3600,5000")
+            .hidden(true)
             .help("Number of lines to be processed at a time (Max - use all available)")
             .takes_value(true))
 
