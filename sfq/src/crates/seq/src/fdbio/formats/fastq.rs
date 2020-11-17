@@ -77,15 +77,15 @@ impl Fdb{
                     rev_head.push_str("A^");
                     let rev_line = match rev_lines.next() {
                         Some(p) => p,
-                        None => "0".to_string(),
+                        None => {cnt += 1; continue;},
                     };
                     rev_head.push_str(&rev_line);
                     rev_head.push_str("R\0\n");
                     head_writer.write_all(&rev_head.as_bytes());
                 }
-                cnt = cnt+1;
+                cnt += 1;
                 continue;
-            }else if cnt == 1 {
+            } else if cnt == 1 {
                 let mut fwd_seq = String::from("");
                 fwd_seq.push_str(str::from_utf8(&self.encode(r,wlen)).unwrap());
                 fwd_seq.push_str("G^");
@@ -99,15 +99,15 @@ impl Fdb{
                     rev_seq.push_str("A^");
                     let rev_line = match rev_lines.next() {
                         Some(p) => self.revcomp(p),
-                        None => "0".to_string(),
+                        None => {cnt += 1; continue;},
                     };
                     rev_seq.push_str(&rev_line);
                     rev_seq.push_str("\0\n");
                     seq_writer.write_all(&rev_seq.as_bytes());
                 }
-                cnt = cnt+1;
+                cnt += 1;
                 continue;
-            }else if cnt == 2 {
+            } else if cnt == 2 {
                 if self.paired == true {
                     let rev_line = match rev_lines.next() {
                         Some(p) => p,
@@ -116,7 +116,7 @@ impl Fdb{
                 }
                 cnt += 1;
                 continue;
-            }else if cnt == 3 {
+            } else if cnt == 3 {
                 let mut fwd_qual = String::from("");
                 fwd_qual.push_str(str::from_utf8(&self.encode(r,wlen)).unwrap());
                 fwd_qual.push_str("G^");
@@ -129,7 +129,7 @@ impl Fdb{
                     rev_qual.push_str("A^");
                     let rev_line = match rev_lines.next() {
                         Some(p) => p,
-                        None => "0".to_string(),
+                        None => {r += 1; cnt = 0; continue;},
                     };
                     rev_qual.push_str(&rev_line);
                     rev_qual.push_str("\0\n");
@@ -138,6 +138,49 @@ impl Fdb{
                 r += 1;
                 cnt = 0;
                 continue;
+            }
+        }
+
+        // in case fwd file is shorter than rev file, loop over remaining rev file
+        if self.paired == true {
+            loop {
+                match rev_lines.next() {
+                    Some(rev_line) => {
+                        if  cnt == 0 {
+                            let mut rev_head = String::from("");
+                            rev_head.push_str(str::from_utf8(&self.encode(r,wlen)).unwrap());
+                            rev_head.push_str("A^");
+                            rev_head.push_str(&rev_line);
+                            rev_head.push_str("R\0\n");
+                            head_writer.write_all(&rev_head.as_bytes());
+                            cnt += 1;
+                            continue;
+                        } else if cnt == 1 {
+                            let mut rev_seq = String::from("");
+                            rev_seq.push_str(str::from_utf8(&self.encode(r,wlen)).unwrap());
+                            rev_seq.push_str("A^");
+                            rev_seq.push_str(&self.revcomp(rev_line));
+                            rev_seq.push_str("\0\n");
+                            seq_writer.write_all(&rev_seq.as_bytes());
+                            cnt += 1;
+                            continue;
+                        } else if cnt == 2 {
+                            cnt += 1;
+                            continue;
+                        } else if cnt == 3 {
+                            let mut rev_qual = String::from("");
+                            rev_qual.push_str(str::from_utf8(&self.encode(r,wlen)).unwrap());
+                            rev_qual.push_str("A^");
+                            rev_qual.push_str(&rev_line);
+                            rev_qual.push_str("\0\n");
+                            qual_writer.write_all(&rev_qual.as_bytes());
+                            r += 1;
+                            cnt = 0;
+                            continue;
+                        }
+                    }
+                    None => {break;}
+                }
             }
         }
 

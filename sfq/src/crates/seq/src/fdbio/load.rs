@@ -27,7 +27,7 @@ impl Load for Fdb {
         let rev_reader = self.make_reader(rev_path);
         let mut direction: bool = true;
         if rev_path.len() > 0 {self.paired = true;}
-        let num_of_lines = self.count_lines(&fwd_path).unwrap();
+        let mut num_of_lines = self.count_lines(&fwd_path).unwrap();
         let mut rev_num_of_lines: u64 = 0;
         if self.paired == true {rev_num_of_lines = self.count_lines(&rev_path).unwrap();}
         if (self.paired == true) && num_of_lines > rev_num_of_lines {
@@ -35,8 +35,8 @@ impl Load for Fdb {
             eprintln!("I will proceed anyways....");
         } else if (self.paired == true) && num_of_lines < rev_num_of_lines {
             eprintln!("WARNING: Numrec in reverse file > numrec in forward!");
-            eprintln!("You will lose excess reverse records!");
             eprintln!("I will proceed anyways....");
+            num_of_lines = rev_num_of_lines;
         }
 
         match &self.format[..] {
