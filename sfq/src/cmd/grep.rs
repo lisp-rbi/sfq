@@ -116,7 +116,11 @@ pub fn export (cli: ArgMatches<'static>) -> bool {
                         }
                         let prefix = encode(*id, wlen, &alpha);
                         let enc = str::from_utf8(&prefix).unwrap();
-                        let pos: i32 = ((*id as f32) / (num_lzt_rec as f32)).ceil() as i32;
+                        let mut pos: i32 = ((*id as f32) / (num_lzt_rec as f32)).ceil() as i32;
+                        // if calculated position if larger than the number of Tries in multitrie
+                        // this is probably because fwd and rev are mismatched
+                        // instead, let's search the entire multiTrie for that index
+                        if &head_lzt.num_of_lzt < &(pos as u8) {pos = -1;}
 
                         {
                             let mut seq_out = seq_lzt.get_records(&enc,&pos);
