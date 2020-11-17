@@ -100,7 +100,7 @@ impl Fdb{
             }
         }
         fwd_seq.push_str("\0\n");
-        rev_seq.push_str("\0\n");
+        if self.paired == true {rev_seq.push_str("\0\n");}
         seq_writer.write_all(&fwd_seq.as_bytes());
         seq_writer.write_all(&rev_seq.as_bytes());
 
