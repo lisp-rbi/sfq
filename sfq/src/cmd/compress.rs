@@ -29,16 +29,11 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
     eprintln!("Total RAM at your disposal = {:?} KB", mem_info().unwrap().total);
     // a flag to signal whether we count memory for compression or we take lines
     // from the input
-    let mut use_lines: bool = false;
     let mymem : usize = if let Some(x) = cli.value_of("fragment-size") {
-        if x == "Max" {
-            // use all available RAM minus 100MB for safety
-            (mem_info().unwrap().total - 102400) as usize
-        }else{
-            // we take the number of lines to compress at a time
-            use_lines = true;
-            usize::from_str(x).unwrap()
-        }
+        // use all available RAM minus 100MB for safety
+        if x == "Max" {(mem_info().unwrap().total - 102400) as usize}
+        // user assigns RAM to compress at a time, convert to KB
+        else{usize::from_str(x).unwrap() * 1024}
     // if nothing is defined, take 100MB RAM and work with that
     } else {102400};
 
@@ -101,12 +96,11 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
                 _       => 0
             }
         },
-        None  => {
-            panic!("File type not defined");
-        }
+        None    => {panic!("File type not defined");}
     };
     let mut i = 0;
     let mut line_length: usize = fdb.line_length;
+
     // numrec serves when reading tmp files for compression
     // we need to know when we have read the entire file
     // if it is paired, the entire file is 2*fdb.numrec
@@ -142,15 +136,7 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
             }
         };
 
-        let mut lzt = FFI::new(
-            &out,
-            &tmp,
-            mymem,
-            memmod,
-            line_length,
-            numrec,
-            use_lines
-        );
+        let mut lzt = FFI::new(&out,&tmp,mymem,memmod,line_length,numrec);
         fs::remove_file(&tmp).unwrap();
         lzt.drop();
         let mut x = match i {

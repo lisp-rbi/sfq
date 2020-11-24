@@ -69,8 +69,10 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
                     let mut qual_lzt = if q {FFI::open(&qual,memmod)} else {FFI::empty()};
 
                     {
-                        let head_stats  = get_stats(&head_lzt.get_records("~~~~~^",&(head_lzt.num_of_lzt as i32))); //// escape header
-                        let seq_stats   = get_stats( &seq_lzt.get_records("~~~~~^",&(seq_lzt.num_of_lzt as i32)));
+                        //let head_stats  = get_stats(&head_lzt.get_records("~~~~~^",&(head_lzt.num_of_lzt as i32))); //// escape header
+                        //let seq_stats   = get_stats( &seq_lzt.get_records("~~~~~^",&(seq_lzt.num_of_lzt as i32)));
+                        let head_stats  = get_stats(&head_lzt.get_records("~~~~~^",&-1)); //// escape header
+                        let seq_stats   = get_stats( &seq_lzt.get_records("~~~~~^",&-1));
 
                         assert_eq!(seq_stats,head_stats);
 
@@ -85,7 +87,6 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
                     let inc = alpha.len().pow(pow); // set to 5th iteration
 
                     let (mut i, mut j, mut pp) = (0,inc-1, 0);
-                    //let (mut i, mut j, mut pp) = (1,inc, 0);
 
                     while i < count {
 

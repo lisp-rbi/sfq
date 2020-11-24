@@ -105,18 +105,16 @@ fn print_help(){
     println!("        \\/_____/   \\/_/     \\/___/_/ \n\n");	
     println!("   Authors: Bakaric R., Hrsak D., Korencic, D. & Ristov, S.\n");
     println!("USAGE:");
-    println!("    sfq [OPTIONS] --action <c|d|q> --compression-mode <complete|lossy> --fragment-size <Max|3600,5000> --infmt <fastq|fasta> --input <FILE> --list <file.csv|rand(10)> --memory-mode <D|R> --outfmt <fq|fa|s|q|h|...>");
+    println!("    sfq [OPTIONS] --action <c|d|q> --compression-mode <complete|lossy> --infmt <fastq|fasta> --input <FILE> --list <file.csv|rand(10)> --memory-mode <D|R> --outfmt <fq|fa|s|q|h|...>");
     println!("FLAGS:");
     println!("    -h, --help       Prints help information");
     println!("    -V, --version    Prints version information\n");
     println!("OPTIONS:");
-    println!("    -a, --action <c|d|q>                       Action: (c) compress, (d) decompress, (q) get <requires --list >");
+    println!("    -a, --action <c|d|g>                       Action: (c) compress, (d) decompress, (g) get <requires --list >");
     println!("                                               [default: c]");
     println!("    -s, --compression-mode <complete|lossy>    Compression mode [default: complete]");
-    println!("    -F, --fragment-size <Max|3600,5000>        Number of lines to be processed at a time (Max - use all available)");
-    println!("                                               [default: Max]");
     println!("    -t, --infmt <fastq|fasta>                  File types supported [default: fastq]");
-    println!("    -i, --input <FILE>                         Input file (fasta,fastq,lzt) [default: stdin]");
+    println!("    -i, --input <FILE>                         Input file (fasta,fastq,sfq)");
     println!("    -j, --input-rev <FILE>                     Input file of a revers file (fastq)");
     println!("    -l, --list <file.csv|rand(10)>             Please provide a list of prefixes, records of which are to be extracted");
     println!("                                               (works only with -a g) [default: rand(10)]");
@@ -134,7 +132,7 @@ fn print_help(){
     println!("                                               	s+h+q  	:sequence head quality, ");
     println!("                                               	...");
     println!("                                                [default: fq]");
-    println!("    -o, --output <FILE>                        Output file: interleaved if paired fastq, dict.lzt if compressed");
+    println!("    -o, --output <FILE>                        Output file: interleaved if input is two paired end fastq files");
 
 }
 

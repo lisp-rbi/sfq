@@ -61,6 +61,8 @@ impl Fdb{
         let mut fwd_lines = fwd_reader.lines().map(|l| l.unwrap());
         let mut rev_lines = rev_reader.lines().map(|l| l.unwrap());
         let (count, wlen) = self.comp_wlen();
+        //let mut lengths: Vec<usize> = Vec::new();
+        //let mut max_seq_length: u32 = 0;
 
         for fwd_line in fwd_lines {
             if  cnt == 0 {
@@ -91,7 +93,9 @@ impl Fdb{
                 fwd_seq.push_str("G^");
                 fwd_seq.push_str(&fwd_line);
                 fwd_seq.push_str("\0\n");
+                //if ((fwd_seq.len() - 1) as u32) > max_seq_length {max_seq_length = (fwd_seq.len()-1) as u32;}
                 if r == 1 {self.line_length += fwd_seq.len()-1;}
+                //lengths.push(fwd_seq.len()-1);
                 seq_writer.write_all(&fwd_seq.as_bytes());
                 if self.paired == true {
                     let mut rev_seq = String::from("");
@@ -184,6 +188,8 @@ impl Fdb{
             }
         }
 
+        //for length in &lengths {eprint!("{:?} ", length);}
+        //eprintln!("len of lengths = {:?}, max_seq_length = {:?}", lengths.len(), max_seq_length);
         let stats = self.make_stats(wlen);
         head_writer.write_all(str::from_utf8(&stats).unwrap().as_bytes());
         seq_writer.write_all(str::from_utf8(&stats).unwrap().as_bytes());

@@ -8,31 +8,27 @@ use crate::ffi::LztObj;
 // vec: input/output vector of bytes to send to LZT
 // start/end: input, marks the chunk of file to be read and compressed
 // num_lzt_rec: input/output, number of records in first batch
-pub fn read_tmp(filename: &str, vec: &mut Vec<u8>, start: u64, end: u64, num_lzt_rec: &mut u64) -> bool {
+pub fn read_tmp(filename: &str, vec: &mut Vec<u8>, start: u64, end: &mut u64, available_mem: &mut u64) -> bool {
     assert!(metadata(filename).unwrap().is_file());
     let file = File::open(filename).expect("Unable to read tmp file");
     let file = BufReader::new(file);
     let mut line_number: u64 = 0;
     let mut last_line: bool = false;
     for line in file.lines(){
-        if (line_number >= start) && (line_number <= end) {
+        //eprintln!("*end = {:?}", *end);
+        if line_number >= start {
+            // if there are more bytes in the vector than available mem, break the loop
+            // also make sure we stop at even number of records (mod is 1 bc we start at 0)
+            if (vec.len() as u64 > *available_mem) && (*end%2 == 1) {break;}
             // transform the line in a vector of bytes
             let mut u8_line: Vec<u8> = line.unwrap().as_bytes().to_vec();
             // last line (stats) found if it doesn't end in zero
             last_line = u8_line[u8_line.len()-1] != 0u8;
-            if last_line {
-                u8_line.push(94u8);
-                // add number of lines in first trie
-                u8_line.append(&mut num_lzt_rec.to_string().as_bytes().to_vec());
-                // add a zero to the first line
-                u8_line.push(0u8);
-            }
+            // add a zero to the first line
+            if last_line {u8_line.push(0u8);}
             // append the transformed line to the vector
             vec.extend(u8_line);
-            // if we are in first trie, count number of records
-            if start == 0 {*num_lzt_rec = line_number + 1;}
-        } else if line_number > end {
-            break;
+            *end += 1;
         };
         line_number += 1;
     }

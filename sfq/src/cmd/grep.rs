@@ -71,6 +71,8 @@ pub fn export (cli: ArgMatches<'static>) -> bool {
                         // get stats in the last multitrie
                         let head_stats  = get_stats(&head_lzt.get_records("~~~~~^",&(head_lzt.num_of_lzt as i32)));
                         let seq_stats   = get_stats( &seq_lzt.get_records("~~~~~^",&(seq_lzt.num_of_lzt as i32)));
+                        //let head_stats  = get_stats(&head_lzt.get_records("~~~~~^",&-1));
+                        //let seq_stats   = get_stats( &seq_lzt.get_records("~~~~~^",&-1));
 
                         assert_eq!(seq_stats,head_stats);
 
@@ -78,9 +80,9 @@ pub fn export (cli: ArgMatches<'static>) -> bool {
                         alpha = seq_stats.1;
                         wlen  = seq_stats.2;
                         fdb.set_model(seq_stats.3);
-                        num_lzt_rec  = seq_stats.4 as i32;
+                        //num_lzt_rec  = seq_stats.4 as i32;
                         // if pair-ended, numrec in first Trie is number of lines divided by 2
-                        if fdb.paired == true {num_lzt_rec /= 2;}
+                        //if fdb.paired == true {num_lzt_rec /= 2;}
                     }
 
                     let mut grep : Vec <usize> = Vec::new();
@@ -116,14 +118,15 @@ pub fn export (cli: ArgMatches<'static>) -> bool {
                         }
                         let prefix = encode(*id, wlen, &alpha);
                         let enc = str::from_utf8(&prefix).unwrap();
-                        let mut pos: i32 = ((*id as f32) / (num_lzt_rec as f32)).ceil() as i32;
+                        //let mut pos: i32 = ((*id as f32) / (num_lzt_rec as f32)).ceil() as i32;
                         // if calculated position if larger than the number of Tries in multitrie
                         // this is probably because fwd and rev are mismatched
                         // instead, let's search the entire multiTrie for that index
-                        if &head_lzt.num_of_lzt < &(pos as u8) {pos = -1;}
+                        //if &head_lzt.num_of_lzt < &(pos as u8) {pos = -1;}
 
                         {
-                            let mut seq_out = seq_lzt.get_records(&enc,&pos);
+                            //let mut seq_out = seq_lzt.get_records(&enc,&pos);
+                            let mut seq_out = seq_lzt.get_records(&enc,&-1);
                             let dis = deindex(&mut seq_out);
                             let mut numcnt  = 0;
                             for p in seq_out.iter(){
@@ -135,12 +138,14 @@ pub fn export (cli: ArgMatches<'static>) -> bool {
                             fdb.set_cpcnt(dis);
                         }
                         {
-                            let mut head_out = head_lzt.get_records(&enc,&pos);
+                            //let mut head_out = head_lzt.get_records(&enc,&pos);
+                            let mut head_out = head_lzt.get_records(&enc,&-1);
                             let dis = deindex(&mut head_out);
                             fdb.set_head(head_out);
                         }
                         if q {
-                            let mut qual_out = qual_lzt.get_records(&enc,&pos);
+                            //let mut qual_out = qual_lzt.get_records(&enc,&pos);
+                            let mut qual_out = qual_lzt.get_records(&enc,&-1);
                             let dis = deindex(&mut qual_out);
                             fdb.set_qual(qual_out);
 

@@ -4,6 +4,7 @@ pub mod ffi;
 
 use std::str;
 use std::fs;
+use std::convert::TryInto;
 use ffi::LztObj;
 use util::common::{
     read_tmp,
@@ -32,34 +33,25 @@ pub struct FFI {
 
 impl FFI {
 
-    pub fn new( path : &str, tmp_path: &str, mem: usize, mmode: bool, line_length: usize, numrec: usize, use_lines: bool) -> Self {
+    pub fn new( path : &str, tmp_path: &str, mem: usize, mmode: bool, line_length: usize, numrec: usize) -> Self {
 
-        let mut lpm: usize = match use_lines {
-            true => {mem}, 
-            // number of lines to read at time
-            false => {(mem * 1024) / (line_length * 55)}
-        };
-        // assure that corresponding fwd and rev recods end up in same Trie
-        if lpm%2 == 1 {lpm += 1;}
+        // convert available memory into bytes, one sign is one byte
+        // for each byte of data, we need ~52 bytes of RAM, put 55 for safety
+        let mut available_mem: u64 = ((mem * 1024) / 55).try_into().unwrap();
 
         let mut lzt_vec : Vec<*mut LztObj> = Vec::new();
         let mut end_of_file : bool = false;
         let mut start: u64 = 0;
-        let mut end: u64 = (lpm as u64) - 1;
-        let mut num_lzt_rec: u64 = 0;
+        let mut end: u64 = 0;
         let mut j: u64 = 1;
+
         while end_of_file == false {
-            // if there is only one line left at the end, add to the last trie
-            if (end == (numrec-1) as u64) && (numrec%lpm == 0) {end += 1;}
             let mut v : Vec<u8> = Vec::new();
-            end_of_file = read_tmp(&tmp_path,&mut v,start,end,&mut num_lzt_rec);
+            end_of_file = read_tmp(&tmp_path,&mut v,start,&mut end,&mut available_mem);
             let pth = format!("{}.{}", path, j.to_string());
             if fs::metadata(&pth).is_ok() == true {
-                if fs::metadata(&pth).unwrap().is_file() == true {
-                    fs::remove_file(&pth).unwrap();
-                }else {
-                    fs::remove_dir_all(&pth).unwrap();
-                }
+                if fs::metadata(&pth).unwrap().is_file() == true {fs::remove_file(&pth).unwrap();}
+                else {fs::remove_dir_all(&pth).unwrap();}
             }
             unsafe {
                 if make_lzt(
@@ -82,7 +74,8 @@ impl FFI {
                 );
             }
 
-            start += lpm as u64; end += lpm as u64;
+            // in new Trie, start where we last stopped
+            start = end;
             j += 1;
         }
 

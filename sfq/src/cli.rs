@@ -34,8 +34,8 @@ pub(crate) fn parse_cli ()->  clap::ArgMatches<'static> {
             Authors: Bakaric R., Hrsak D., Korencic, D. & Ristov, S.";
 
     let matches = App::new("sfq")
-        .version("0.2.2")
-        .author("Robert Bakaric <rbakaric@irb.hr>, Damir Korencic<dkorencic@irb.hr>")
+        .version("0.3.0")
+        .author("Robert Bakaric <rbakaric@irb.hr>, Dalibor Hrsak <dalibor.hrsak@irb.hr>, Damir Korencic <dkorencic@irb.hr>")
         .about(head)
         //.setting(AppSettings::ArgRequiredElseHelp)
         //.setting(AppSettings::AllowMissingPositional)
@@ -44,9 +44,8 @@ pub(crate) fn parse_cli ()->  clap::ArgMatches<'static> {
             .short("i")
             .long("input")
             .required(true)
-            .default_value("stdin")
             .value_name("FILE")
-            .help("Input file (fasta,fastq,lzt)")
+            .help("Input file (fasta,fastq,sfq)")
             .takes_value(true))
 
         .arg(Arg::with_name("input-rev")
@@ -54,7 +53,7 @@ pub(crate) fn parse_cli ()->  clap::ArgMatches<'static> {
             .long("input-rev")
             .required(false)
             .value_name("FILE")
-            .help("Input file of a revers file (fastq)")
+            .help("Filename of a reverse file (fastq, fasta)")
             .takes_value(true))
 
         .arg(Arg::with_name("output")
@@ -63,7 +62,7 @@ pub(crate) fn parse_cli ()->  clap::ArgMatches<'static> {
             .required(false)
             .value_name("FILE")
             //.default_value("stdout")
-            .help("Output file: interleaved if paired fastq, dict.lzt if compressed")
+            .help("Output file; interleaved if input is two paired end fastq files")
             .takes_value(true))
 
         .arg(Arg::with_name("action")
@@ -71,8 +70,8 @@ pub(crate) fn parse_cli ()->  clap::ArgMatches<'static> {
             .long("action")
             .default_value("c")
             .required(true)
-            .value_name("c|d|q")
-            .help("Action: (c) compress, (d) decompress, (q) get <requires --list > ")
+            .value_name("c|d|g")
+            .help("Action: (c) compress, (d) decompress, (g) get <requires --list > ")
             .takes_value(true))
 
         .arg(Arg::with_name("cmode")
@@ -136,8 +135,8 @@ pub(crate) fn parse_cli ()->  clap::ArgMatches<'static> {
             .long("list")
             .required(true)
             .default_value("rand(10)")
-            .value_name("file.csv|rand(10)")
-            .help("Please provide a list of prefixes, records of which are to be extracted (works only with -a g)")
+            .value_name("filename|rand(10)")
+            .help("SFQ returns records associated with the input prefixes (works only with -a g).")
             .takes_value(true))
 
         .get_matches();
