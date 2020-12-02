@@ -1,4 +1,5 @@
 use std::str;
+use std::str::FromStr;
 use clap::*;
 use crate::util::common::*;
 use std::time::Instant;
@@ -14,10 +15,6 @@ use lzt::{
     FFI,
     Drop
 };
-
-
-
-
 
 pub fn extract(cli: ArgMatches<'static>) -> bool {
     eprintln!("Decompressing...");
@@ -40,6 +37,13 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
         Some(x) => { output = cli.value_of("output").unwrap(); }
         None => { output = "stdout"; }
     }
+
+    // exponent of the alphabet length; input file is read in batches
+    // of records len(alphabet)^exponent
+    let exponent: usize = match cli.value_of("decompress-exponent") {
+        Some(x) => {usize::from_str(x).unwrap()}
+        None => {6}
+    };
 
     if fdb.rm_file(output) == false {panic!("cannot rm file ");}
 
@@ -69,8 +73,6 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
                     let mut qual_lzt = if q {FFI::open(&qual,memmod)} else {FFI::empty()};
 
                     {
-                        //let head_stats  = get_stats(&head_lzt.get_records("~~~~~^",&(head_lzt.num_of_lzt as i32))); //// escape header
-                        //let seq_stats   = get_stats( &seq_lzt.get_records("~~~~~^",&(seq_lzt.num_of_lzt as i32)));
                         let head_stats  = get_stats(&head_lzt.get_records("~~~~~^",&-1)); //// escape header
                         let seq_stats   = get_stats( &seq_lzt.get_records("~~~~~^",&-1));
 
@@ -83,8 +85,8 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
 
                     }
 
-                    let pow : u32 = if wlen <= 6 {(wlen as u32)-1}else{6};
-                    let inc = alpha.len().pow(pow); // set to 5th iteration
+                    let pow : usize = if wlen <= exponent {(wlen as usize)-1}else{exponent};
+                    let inc = alpha.len().pow(pow as u32); // set to 5th iteration
 
                     let (mut i, mut j, mut pp) = (0,inc-1, 0);
 
@@ -110,7 +112,7 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
                         let enc = str::from_utf8(&prefix).unwrap();
 
                         {
-                            //eprint!("Seq ... ");
+                            //eprintln!("Seq ... ");
                             let st = Instant::now();
                             let mut seq_out: Vec<u8> = seq_lzt.get_records(&enc,&-1);
                             let ms: u64 = (st.elapsed().as_millis() +1) as u64;

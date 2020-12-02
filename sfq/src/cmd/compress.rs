@@ -137,7 +137,7 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
         };
 
         let mut lzt = FFI::new(&out,&tmp,mymem,memmod,line_length,numrec);
-        fs::remove_file(&tmp).unwrap();
+        //fs::remove_file(&tmp).unwrap();
         lzt.drop();
         let mut x = match i {
             0 => {

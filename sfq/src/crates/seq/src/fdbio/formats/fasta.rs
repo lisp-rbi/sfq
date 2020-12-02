@@ -40,6 +40,7 @@ impl Fdb{
         let mut seq_lines: usize = 0;
         let mut fwd_seq = String::from("");
         let mut rev_seq = String::from("");
+        let mut tmp_rev_seq = String::from("");
  
         for fwd_line in fwd_lines {
             if  &fwd_line[..1] == ">" {
@@ -67,7 +68,6 @@ impl Fdb{
                 continue;
             } else {
                 if new_record == true {
-                    seq_lines = 0;
                     if r > 2 {
                         fwd_seq.push_str("\0\n");
                         if r == 3 {self.line_length = fwd_seq.len()-1;}
@@ -77,30 +77,36 @@ impl Fdb{
                     fwd_seq.push_str(str::from_utf8(&self.encode(r-1,wlen)).unwrap());
                     fwd_seq.push_str("G^");
                 }
-                seq_lines += 1;
                 fwd_seq.push_str(&fwd_line);
                 if self.paired == true {
                     if new_record == true {
                         if r > 2 {
+                            rev_seq.push_str(&tmp_rev_seq);
                             rev_seq.push_str("\0\n");
                             seq_writer.write_all(&rev_seq.as_bytes());
                             rev_seq = String::from("");
+                            tmp_rev_seq = String::from("");
                         }
                         rev_seq.push_str(str::from_utf8(&self.encode(r-1,wlen)).unwrap());
                         rev_seq.push_str("A^");
                     }
-                    let rev_line = match rev_lines.next() {
+                    let mut rev_line = match rev_lines.next() {
                         Some(p) => self.revcomp(p),
                         None => "0".to_string(),
                     };
-                    rev_seq.push_str(&rev_line);
+                    //rev_seq.push_str(&rev_line);
+                    rev_line.push_str(&tmp_rev_seq);
+                    tmp_rev_seq = rev_line;
                 }
                 new_record = false;
                 continue;
             }
         }
         fwd_seq.push_str("\0\n");
-        if self.paired == true {rev_seq.push_str("\0\n");}
+        if self.paired == true {
+            rev_seq.push_str(&tmp_rev_seq);
+            rev_seq.push_str("\0\n");
+        }
         seq_writer.write_all(&fwd_seq.as_bytes());
         seq_writer.write_all(&rev_seq.as_bytes());
 
@@ -119,37 +125,51 @@ impl Fdb{
         let mut buff = vec![0u8; y];
 
         //writer.write_all(&self.get_fastq());
+        let length: u32 = self.get_fasta().iter().len() as u32;
+        let mut position: u32 = 0;
 
-
+        // loop over all characters in dataset
         for ch in self.get_fasta().iter() {
+            // check he position in the iterator
+            position += 1;
             match *ch {
-
+                // we are at the end of the line
                 10u8 => {
+                    // bw == 1 and ssw == true means this is reverse sequence for interleaved
                     if bw == 1 && ssw == true {
                         buff.resize(x,0x00);
                         writer.write_all(&self.revcomp(String::from_utf8(buff.clone()).unwrap()).as_bytes()).unwrap();
-                        y=x;
-                        x=0;
+                        y = x;
+                        x = 0;
                     }
                     write!(writer, "{}", *ch as char).unwrap();
-                    bw+=1;
-                    if sw == 82u8 {
-                        ssw = true;
-                    }else{
-                        ssw = false;
-                    }
-                    if bw == 2{bw = 0}
+                    bw += 1;
+                    // if previous character is "R", that was the end of reverse header, we are now
+                    // in reverse sequence
+                    if sw == 82u8 { ssw = true;}
+                    else {ssw = false;}
+
+                    if bw == 2 {bw = 0;}
                 },
+                // we are not at the end of the line, unless position == length
+                // then we are at the end of the iterator
                 _   => {
-                    if bw == 1 && ssw == true{
+                    // for reverse sequence, fill the buffer vector, it will have to be reversed
+                    // at the end of the line or iterator and written in one step
+                    if bw == 1 && ssw == true {
                         if x == y{
                             buff.extend(vec![0u8;y]);
-                            y*=2;
+                            y *= 2;
                         }
                         buff[x] = *ch;
-                        x+=1;
+                        x += 1;
+                        // bugfix to print the last sequence in reverse file
+                        if position == length {
+                            buff.resize(x,0x00);
+                            writer.write_all(&self.revcomp(String::from_utf8(buff.clone()).unwrap()).as_bytes()).unwrap();
+                        }
 
-                    }else {
+                    } else {
                         write!(writer, "{}", *ch as char).unwrap();
                     }
                 }

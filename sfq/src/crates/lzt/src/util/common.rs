@@ -15,7 +15,6 @@ pub fn read_tmp(filename: &str, vec: &mut Vec<u8>, start: u64, end: &mut u64, av
     let mut line_number: u64 = 0;
     let mut last_line: bool = false;
     for line in file.lines(){
-        //eprintln!("*end = {:?}", *end);
         if line_number >= start {
             // if there are more bytes in the vector than available mem, break the loop
             // also make sure we stop at even number of records (mod is 1 bc we start at 0)
