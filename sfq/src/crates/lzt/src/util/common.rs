@@ -18,7 +18,7 @@ pub fn read_tmp(filename: &str, vec: &mut Vec<u8>, start: u64, end: &mut u64, av
         if line_number >= start {
             // if there are more bytes in the vector than available mem, break the loop
             // also make sure we stop at even number of records (mod is 1 bc we start at 0)
-            if (vec.len() as u64 > *available_mem) && (*end%2 == 1) {break;}
+            if (vec.len() as u64 > *available_mem) && (*end%2 == 0) {break;}
             // transform the line in a vector of bytes
             let mut u8_line: Vec<u8> = line.unwrap().as_bytes().to_vec();
             // last line (stats) found if it doesn't end in zero
