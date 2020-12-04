@@ -4,16 +4,13 @@ use crate::util::common::*;
 
 use std::time::Instant;
 use std::str::FromStr;
-use std::mem;
 use std::fs;
 use std::path::Path;
 use std::ffi::OsStr;
 
 use seq::{
     Fdb,
-    Get,
     Load,
-    Set
 };
 use lzt::{
     FFI,
@@ -46,7 +43,7 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
     let fwd_input: &str = cli.value_of("input").unwrap();
     let mut rev_input: &str = "";
     // if reverse file is given, take its name
-    if let Some(x) = cli.value_of("input-rev") {
+    if let Some(_x) = cli.value_of("input-rev") {
         rev_input = cli.value_of("input-rev").unwrap();
     }
 
@@ -54,10 +51,10 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
     // otherwise: if it is paired-end take input-file name - ext + _FR.sfq
     //            if it is not paired-end, take input-file name - ext + .sfq
     let mut stem_name = String::from(Path::new(fwd_input).file_stem().and_then(OsStr::to_str).unwrap());
-    let mut output: &str = if let Some(x) = cli.value_of("output") {
+    let output: &str = if let Some(_x) = cli.value_of("output") {
         cli.value_of("output").unwrap()
     } else {
-        if let Some(y) = cli.value_of("input-rev") {    
+        if let Some(_y) = cli.value_of("input-rev") {    
             stem_name.push_str(".FR");
             &stem_name
         }
@@ -98,16 +95,6 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
         },
         None    => {panic!("File type not defined");}
     };
-    let mut i = 0;
-    let mut line_length: usize = fdb.line_length;
-
-    // numrec serves when reading tmp files for compression
-    // we need to know when we have read the entire file
-    // if it is paired, the entire file is 2*fdb.numrec
-    let mut numrec: usize = match fdb.paired {
-        true => 2*fdb.numrec,
-        false => fdb.numrec
-    };
     // erase the FDB structure to free the RAM
     fdb.clear();
     eprintln!("Time spent on data preprocessing: {:.2?}", before.elapsed());
@@ -115,13 +102,13 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
     let before = Instant::now();
     // repeat the loop to read tmp files and compress the data
     eprintln!("Compressing ... ");
-    i = 0;
+    let mut i = 0;
     while i < j {
         let inner_before = Instant::now();
         let mut out = String::new();
         let mut tmp = String::new();
 
-        let mut x = match i {
+        let _x = match i {
             0 => {
                 out = format!("{}/{}.{}",outdir,output,"seq.sfq");
                 tmp = format!("{}/{}.{}",outdir,output,"seq.tmp");
@@ -136,10 +123,10 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
             }
         };
 
-        let mut lzt = FFI::new(&out,&tmp,mymem,memmod,line_length,numrec);
-        //fs::remove_file(&tmp).unwrap();
+        let mut lzt = FFI::new(&out,&tmp,mymem,memmod);
+        fs::remove_file(&tmp).unwrap();
         lzt.drop();
-        let mut x = match i {
+        let _x = match i {
             0 => {
                 eprintln!("Time spent on sequence compression: {:.2?}", inner_before.elapsed());
             },
@@ -150,7 +137,7 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
                 eprintln!("Time spent on quality compression: {:.2?}", inner_before.elapsed());
             }
         };
-        i+=1;
+        i += 1;
     }
 
     eprintln!("Total time spent on data compression: {:.2?}", before.elapsed());

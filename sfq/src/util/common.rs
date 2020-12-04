@@ -1,12 +1,11 @@
-use std::io::{self, prelude::*, stdout, Write, Read, BufReader, BufWriter};
-use std::fs::{File,metadata,remove_file,remove_dir_all,create_dir};
+//use std::io::{prelude::*, stdout, Write, Read, BufReader, BufWriter};
+use std::fs::{metadata,remove_file,remove_dir_all,create_dir};
 use std::str;
-use std::mem;
 use regex::Regex;
 use rand::prelude::*;
 use fxhash::FxHashSet;
 
-pub fn save_tmp(filename: &str, vec: &mut Vec<u8>) -> bool{
+/*pub fn save_tmp(filename: &str, vec: &mut Vec<u8>) -> bool{
 
     let mut file = File::create(filename).expect("Unable to create file");
     for elem in vec {
@@ -24,7 +23,7 @@ pub fn save_tmp(filename: &str, vec: &mut Vec<u8>) -> bool{
 
     }
     true
-}
+}*/
 
 pub fn make_dir(dirname: &str) -> bool{
     if metadata(&dirname).is_ok() == true {
@@ -36,14 +35,14 @@ pub fn make_dir(dirname: &str) -> bool{
     } else {
         eprintln!("Creating output directory {}.", dirname);
     }
-    let result = match create_dir(dirname){
-        Ok(result) => result,
-        Err(e) => panic!("Error in creating directory {}", dirname),
+    let _result = match create_dir(dirname){
+        Ok(_result) => _result,
+        Err(_e) => panic!("Error in creating directory {}", dirname),
     };
     true
 }
 
-pub fn make_key(pos: usize, alpha: usize, word: usize) -> String{
+/*pub fn make_key(pos: usize, alpha: usize, word: usize) -> String{
 
     let mut i = pos;
     let mut s = "".to_string();
@@ -281,7 +280,7 @@ pub fn tsv_encode(v: &Vec<u8>, p: bool) -> Vec<u8> {
 
     vec
 
-}
+}*/
 
 
 
@@ -395,7 +394,7 @@ pub fn decode (code: &Vec<u8>, alpha: &Vec<u8> ) -> usize {
     in: hhhhhh\tbbbbbb\thhhhhh\tbbbbbb\thhhhhh\tbbbbbb\n
     out: hhhhhh\thhhhhh\thhhhhh\n
 */
-pub fn parse_head(v: Vec<u8>) -> Vec<u8> {
+/*pub fn parse_head(v: Vec<u8>) -> Vec<u8> {
 
     let mut vec = vec![0u8;v.len()];
     let mut x = 0;
@@ -444,23 +443,23 @@ pub fn parse_codex (codex: &str) -> (usize,String) {
     let vec : Vec<_> = codex.split('|').collect();
     (vec[1].parse::<usize>().unwrap(),vec[0].to_string())
 
-}
+}*/
 
 
 pub fn get_stats(st: &Vec<u8>) -> (usize,Vec<u8>,usize, bool) {
 
-    let mut stats_vec: Vec<_> = st.split(|i| *i == 94u8).collect();
+    let stats_vec: Vec<_> = st.split(|i| *i == 94u8).collect();
 
     let num_of_rec = std::str::from_utf8(stats_vec[1]).unwrap().parse::<usize>().unwrap();
     let alpha      = stats_vec[2].to_owned();
     let padding    = std::str::from_utf8(stats_vec[3]).unwrap().parse::<usize>().unwrap();
     // if unpaired. model is 48u8 (false), if paired 49u8 (true)
     let model = if stats_vec[4][0] == 48u8 {false} else  {true};
-    (num_of_rec,alpha,padding,model)
 
+    (num_of_rec,alpha,padding,model)
 }
 
-pub fn make_stats(num_of_rec: usize, alpha: String, padding: usize, model: bool) -> Vec<u8> {
+/*pub fn make_stats(num_of_rec: usize, alpha: String, padding: usize, model: bool) -> Vec<u8> {
 
     let mut vec : Vec<u8> = Vec::new();
 
@@ -478,7 +477,7 @@ pub fn make_stats(num_of_rec: usize, alpha: String, padding: usize, model: bool)
     }
 
     vec
-}
+}*/
 
 pub fn parse_conditional(text: &str) -> (String,String){
 

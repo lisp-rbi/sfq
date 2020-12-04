@@ -25,7 +25,6 @@ impl Load for Fdb {
 
         let fwd_reader = self.make_reader(fwd_path);
         let rev_reader = self.make_reader(rev_path);
-        let mut direction: bool = true;
         if rev_path.len() > 0 {self.paired = true;}
         let mut num_of_lines = self.count_lines(&fwd_path).unwrap();
         let mut rev_num_of_lines: u64 = 0;

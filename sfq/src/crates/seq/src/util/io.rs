@@ -17,7 +17,7 @@
  */
 
 use crate::Fdb;
-use std::io::{self, prelude::*, stdout, Write, Read, BufReader, BufWriter};
+use std::io::{self, prelude::*, Write, Read, BufReader, BufWriter};
 use std::fs::{File,OpenOptions};
 use std::fs;
 
@@ -30,7 +30,7 @@ impl Fdb{
                 Box::new(io::stdin())
             },
             "" => {
-                let mut dummyfile: &str = "dummy.txt";
+                let dummyfile: &str = "dummy.txt";
                 File::create(dummyfile)
                     .expect(&(format!("Error creating {} file",dummyfile)));
                 Box::new(File::open(dummyfile)

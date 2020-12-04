@@ -5,7 +5,6 @@ use crate::util::common::*;
 use std::time::Instant;
 use std::path::Path;
 use std::ffi::OsStr;
-use std::mem;
 use seq::{
     Fdb,
     Set,
@@ -31,13 +30,12 @@ pub fn export (cli: ArgMatches<'static>) -> bool {
 
     let mut fdb = Fdb::new(cli.value_of("infmt").unwrap());
 
-    let mut output: &str;
     // if keyword -o is defined, use that name,
-    // otherwise send result to stdout
-    match cli.value_of("output") {
-        Some(x) => { output = cli.value_of("output").unwrap(); }
-        None => { output = "stdout"; }
-    }
+    // otherwise send query output to stdout
+    let output: &str = match cli.value_of("output") {
+        Some(_x) => { cli.value_of("output").unwrap() }
+        None => { "stdout" }
+    };
 
     if fdb.rm_file(output) == false {
         panic!("cannot rm file ");
@@ -54,7 +52,7 @@ pub fn export (cli: ArgMatches<'static>) -> bool {
                     let mut seq = String::new();
 
                     if let Some(x) = cli.value_of("input") {
-                        let mut stem_name = String::from(Path::new(cli.value_of("input").unwrap())
+                        let stem_name = String::from(Path::new(cli.value_of("input").unwrap())
                                             .file_stem().and_then(OsStr::to_str).unwrap());
                         head = format!("{}/{}.{}",x,stem_name,"head.sfq");
                         seq  = format!("{}/{}.{}",x,stem_name,"seq.sfq");
@@ -65,7 +63,8 @@ pub fn export (cli: ArgMatches<'static>) -> bool {
                     let mut seq_lzt  = FFI::open(&seq,memmod);
                     let mut qual_lzt = if q {FFI::open(&qual,memmod)}else{FFI::empty()};
 
-                    let ( mut count, mut alpha, mut wlen, mut model, mut num_lzt_rec) = (0,Vec::new(),0, false, 0i32);
+                    //let ( mut count, mut alpha, mut wlen, mut model, mut num_lzt_rec) = (0,Vec::new(),0, false, 0i32);
+                    let ( mut count, mut alpha, mut wlen) = (0,Vec::new(),0);
 
                     {
                         // get stats in the last multitrie
@@ -140,13 +139,13 @@ pub fn export (cli: ArgMatches<'static>) -> bool {
                         {
                             //let mut head_out = head_lzt.get_records(&enc,&pos);
                             let mut head_out = head_lzt.get_records(&enc,&-1);
-                            let dis = deindex(&mut head_out);
+                            let _dis = deindex(&mut head_out);
                             fdb.set_head(head_out);
                         }
                         if q {
                             //let mut qual_out = qual_lzt.get_records(&enc,&pos);
                             let mut qual_out = qual_lzt.get_records(&enc,&-1);
-                            let dis = deindex(&mut qual_out);
+                            let _dis = deindex(&mut qual_out);
                             fdb.set_qual(qual_out);
 
                             if let Some(y) = cli.value_of("cmode") {

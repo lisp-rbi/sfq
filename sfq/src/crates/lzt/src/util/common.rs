@@ -1,4 +1,4 @@
-use std::io::{self, prelude::*, Read, BufReader};
+use std::io::{prelude::*, BufReader};
 use std::fs::{File,metadata};
 use crate::ffi::LztObj;
 

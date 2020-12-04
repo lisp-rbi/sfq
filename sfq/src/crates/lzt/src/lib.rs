@@ -16,7 +16,7 @@ use util::common::{
 };
 
 // global variable -> maybe move into objects ?
-static CASHSIZE: usize = 1000000;
+static CASHSIZE: usize = 10000;
 
 #[cfg(test)]
 mod tests;
@@ -33,7 +33,7 @@ pub struct FFI {
 
 impl FFI {
 
-    pub fn new( path : &str, tmp_path: &str, mem: usize, mmode: bool, line_length: usize, numrec: usize) -> Self {
+    pub fn new( path : &str, tmp_path: &str, mem: usize, mmode: bool) -> Self {
 
         // convert available memory into bytes, one sign is one byte
         // for each byte of data, we need ~52 bytes of RAM, put 55 for safety

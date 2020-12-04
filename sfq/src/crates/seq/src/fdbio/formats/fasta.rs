@@ -26,7 +26,6 @@ use std::str;
 impl Fdb{
     pub fn fasta_up<R: BufRead>(&mut self,  fwd_reader:  R, rev_reader: R, outdir: &str, output: &str) -> Result<bool,Error> {
 
-        let mut cnt=0;
         let mut r: usize = 1;
         let tmp_head = format!("{}/{}.head.tmp", outdir, output);
         let tmp_seq = format!("{}/{}.seq.tmp", outdir, output);
@@ -35,15 +34,17 @@ impl Fdb{
        
         let mut fwd_lines = fwd_reader.lines().map(|l| l.unwrap());
         let mut rev_lines = rev_reader.lines().map(|l| l.unwrap());
-        let (count, wlen) = self.comp_wlen();
+        let (_count, wlen) = self.comp_wlen();
         let mut new_record: bool = true;
-        let mut seq_lines: usize = 0;
         let mut fwd_seq = String::from("");
         let mut rev_seq = String::from("");
         let mut tmp_rev_seq = String::from("");
  
+        // loop over lines of forward file
         for fwd_line in fwd_lines {
+            // header line must begin with ">"
             if  &fwd_line[..1] == ">" {
+                // header means we are in a new record
                 new_record = true;
                 let mut fwd_head = String::from("");
                 fwd_head.push_str(str::from_utf8(&self.encode(r,wlen)).unwrap());
@@ -51,7 +52,7 @@ impl Fdb{
                 fwd_head.push_str(&fwd_line);
                 if self.paired == true {fwd_head.push_str("F\0\n");}
                 else {fwd_head.push_str("\0\n");}
-                head_writer.write_all(&fwd_head.as_bytes());
+                head_writer.write_all(&fwd_head.as_bytes()).expect("writing error!");
                 if self.paired == true {
                     let mut rev_head = String::from("");
                     rev_head.push_str(str::from_utf8(&self.encode(r,wlen)).unwrap());
@@ -62,40 +63,48 @@ impl Fdb{
                     };
                     rev_head.push_str(&rev_line);
                     rev_head.push_str("R\0\n");
-                    head_writer.write_all(&rev_head.as_bytes());
+                    head_writer.write_all(&rev_head.as_bytes()).expect("writing error!");
                 }
                 r += 1;
                 continue;
             } else {
+                // if we are in a new record
                 if new_record == true {
+                    // since we don't know when a new record ends, we write sequence backwards
                     if r > 2 {
+                        // finish the previous record and write it to tmp file, begin new
                         fwd_seq.push_str("\0\n");
                         if r == 3 {self.line_length = fwd_seq.len()-1;}
-                        seq_writer.write_all(&fwd_seq.as_bytes());
+                        seq_writer.write_all(&fwd_seq.as_bytes()).expect("writing error!");
                         fwd_seq = String::from("");
                     }
                     fwd_seq.push_str(str::from_utf8(&self.encode(r-1,wlen)).unwrap());
                     fwd_seq.push_str("G^");
                 }
                 fwd_seq.push_str(&fwd_line);
+                // in reverse sequence, we need to convert it to complementary sequence
+                // we do it in chunks, one chunk per line in temporary sequence
                 if self.paired == true {
                     if new_record == true {
                         if r > 2 {
+                            // put temporary sequence into prepared line and write it
                             rev_seq.push_str(&tmp_rev_seq);
                             rev_seq.push_str("\0\n");
-                            seq_writer.write_all(&rev_seq.as_bytes());
+                            seq_writer.write_all(&rev_seq.as_bytes()).expect("writing error!");
                             rev_seq = String::from("");
                             tmp_rev_seq = String::from("");
                         }
                         rev_seq.push_str(str::from_utf8(&self.encode(r-1,wlen)).unwrap());
                         rev_seq.push_str("A^");
                     }
+                    // compute complementary line
                     let mut rev_line = match rev_lines.next() {
                         Some(p) => self.revcomp(p),
                         None => "0".to_string(),
                     };
-                    //rev_seq.push_str(&rev_line);
+                    // append temporary sequence onto the end of the current line
                     rev_line.push_str(&tmp_rev_seq);
+                    // this is the new temporary sequence
                     tmp_rev_seq = rev_line;
                 }
                 new_record = false;
@@ -107,12 +116,12 @@ impl Fdb{
             rev_seq.push_str(&tmp_rev_seq);
             rev_seq.push_str("\0\n");
         }
-        seq_writer.write_all(&fwd_seq.as_bytes());
-        seq_writer.write_all(&rev_seq.as_bytes());
+        seq_writer.write_all(&fwd_seq.as_bytes()).expect("writing error!");
+        seq_writer.write_all(&rev_seq.as_bytes()).expect("writing error!");
 
         let stats = self.make_stats(wlen);
-        head_writer.write_all(str::from_utf8(&stats).unwrap().as_bytes());
-        seq_writer.write_all(str::from_utf8(&stats).unwrap().as_bytes());
+        head_writer.write_all(str::from_utf8(&stats).unwrap().as_bytes()).expect("writing error!");
+        seq_writer.write_all(str::from_utf8(&stats).unwrap().as_bytes()).expect("writing error!");
 
         if self.paired == false {self.rm_file("dummy.txt");}
 

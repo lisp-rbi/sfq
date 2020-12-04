@@ -9,7 +9,7 @@ impl Fdb {
         }
 
     }
-    pub(crate) fn qmax (&self, qual: &Vec<u8>, qmax: &mut Vec<u8> ) {
+    /*pub(crate) fn qmax (&self, qual: &Vec<u8>, qmax: &mut Vec<u8> ) {
 
         for (e,q) in qual.iter().enumerate() {
              if *q > qmax[e]{
@@ -26,6 +26,6 @@ impl Fdb {
              }
         }
 
-    }
+    }*/
 
 }

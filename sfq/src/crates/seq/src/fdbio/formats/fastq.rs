@@ -17,7 +17,7 @@
  */
 
 
-use crate::{Fdb,Get,Save};
+use crate::{Fdb,Get};
 use crate::util::error::Error;
 use std::io::{ prelude::*,  Write};
 use std::string::String;
@@ -58,11 +58,9 @@ impl Fdb{
         let mut seq_writer = self.make_append_writer(&tmp_seq);
         let mut qual_writer = self.make_append_writer(&tmp_qual);
 
-        let mut fwd_lines = fwd_reader.lines().map(|l| l.unwrap());
+        let fwd_lines = fwd_reader.lines().map(|l| l.unwrap());
         let mut rev_lines = rev_reader.lines().map(|l| l.unwrap());
-        let (count, wlen) = self.comp_wlen();
-        //let mut lengths: Vec<usize> = Vec::new();
-        //let mut max_seq_length: u32 = 0;
+        let (_count, wlen) = self.comp_wlen();
 
         for fwd_line in fwd_lines {
             if  cnt == 0 {
@@ -72,7 +70,7 @@ impl Fdb{
                 fwd_head.push_str(&fwd_line);
                 if self.paired == true {fwd_head.push_str("F\0\n");}
                 else {fwd_head.push_str("\0\n");}
-                head_writer.write_all(&fwd_head.as_bytes());
+                head_writer.write_all(&fwd_head.as_bytes()).expect("writing error!");
                 if self.paired == true {
                     let mut rev_head = String::from("");
                     rev_head.push_str(str::from_utf8(&self.encode(r,wlen)).unwrap());
@@ -83,7 +81,7 @@ impl Fdb{
                     };
                     rev_head.push_str(&rev_line);
                     rev_head.push_str("R\0\n");
-                    head_writer.write_all(&rev_head.as_bytes());
+                    head_writer.write_all(&rev_head.as_bytes()).expect("writing error!");
                 }
                 cnt += 1;
                 continue;
@@ -96,7 +94,7 @@ impl Fdb{
                 //if ((fwd_seq.len() - 1) as u32) > max_seq_length {max_seq_length = (fwd_seq.len()-1) as u32;}
                 if r == 1 {self.line_length += fwd_seq.len()-1;}
                 //lengths.push(fwd_seq.len()-1);
-                seq_writer.write_all(&fwd_seq.as_bytes());
+                seq_writer.write_all(&fwd_seq.as_bytes()).expect("writing error!");
                 if self.paired == true {
                     let mut rev_seq = String::from("");
                     rev_seq.push_str(str::from_utf8(&self.encode(r,wlen)).unwrap());
@@ -107,13 +105,13 @@ impl Fdb{
                     };
                     rev_seq.push_str(&rev_line);
                     rev_seq.push_str("\0\n");
-                    seq_writer.write_all(&rev_seq.as_bytes());
+                    seq_writer.write_all(&rev_seq.as_bytes()).expect("writing error!");
                 }
                 cnt += 1;
                 continue;
             } else if cnt == 2 {
                 if self.paired == true {
-                    let rev_line = match rev_lines.next() {
+                    let _rev_line = match rev_lines.next() {
                         Some(p) => p,
                         None => "0".to_string(),
                     };
@@ -126,7 +124,7 @@ impl Fdb{
                 fwd_qual.push_str("G^");
                 fwd_qual.push_str(&fwd_line);
                 fwd_qual.push_str("\0\n");
-                qual_writer.write_all(&fwd_qual.as_bytes());
+                qual_writer.write_all(&fwd_qual.as_bytes()).expect("writing error!");
                 if self.paired == true {
                     let mut rev_qual = String::from("");
                     rev_qual.push_str(str::from_utf8(&self.encode(r,wlen)).unwrap());
@@ -137,7 +135,7 @@ impl Fdb{
                     };
                     rev_qual.push_str(&rev_line);
                     rev_qual.push_str("\0\n");
-                    qual_writer.write_all(&rev_qual.as_bytes());
+                    qual_writer.write_all(&rev_qual.as_bytes()).expect("writing error!");
                 } 
                 r += 1;
                 cnt = 0;
@@ -156,7 +154,7 @@ impl Fdb{
                             rev_head.push_str("A^");
                             rev_head.push_str(&rev_line);
                             rev_head.push_str("R\0\n");
-                            head_writer.write_all(&rev_head.as_bytes());
+                            head_writer.write_all(&rev_head.as_bytes()).expect("writing error!");
                             cnt += 1;
                             continue;
                         } else if cnt == 1 {
@@ -165,7 +163,7 @@ impl Fdb{
                             rev_seq.push_str("A^");
                             rev_seq.push_str(&self.revcomp(rev_line));
                             rev_seq.push_str("\0\n");
-                            seq_writer.write_all(&rev_seq.as_bytes());
+                            seq_writer.write_all(&rev_seq.as_bytes()).expect("writing error!");
                             cnt += 1;
                             continue;
                         } else if cnt == 2 {
@@ -177,7 +175,7 @@ impl Fdb{
                             rev_qual.push_str("A^");
                             rev_qual.push_str(&rev_line);
                             rev_qual.push_str("\0\n");
-                            qual_writer.write_all(&rev_qual.as_bytes());
+                            qual_writer.write_all(&rev_qual.as_bytes()).expect("writing error!");
                             r += 1;
                             cnt = 0;
                             continue;
@@ -188,12 +186,10 @@ impl Fdb{
             }
         }
 
-        //for length in &lengths {eprint!("{:?} ", length);}
-        //eprintln!("len of lengths = {:?}, max_seq_length = {:?}", lengths.len(), max_seq_length);
         let stats = self.make_stats(wlen);
-        head_writer.write_all(str::from_utf8(&stats).unwrap().as_bytes());
-        seq_writer.write_all(str::from_utf8(&stats).unwrap().as_bytes());
-        qual_writer.write_all(str::from_utf8(&stats).unwrap().as_bytes());
+        head_writer.write_all(str::from_utf8(&stats).unwrap().as_bytes()).expect("writing error!");
+        seq_writer.write_all(str::from_utf8(&stats).unwrap().as_bytes()).expect("writing error!");
+        qual_writer.write_all(str::from_utf8(&stats).unwrap().as_bytes()).expect("writing error!");
 
         //println!("{}:{}\n{:?}\n{:?}\n{:?}", self.seq.len(), self.seq[self.seq.len()-1], String::from_utf8(self.seq.clone()), String::from_utf8(self.qual.clone()), String::from_utf8(self.head.clone()));
         if self.paired == false {self.rm_file("dummy.txt");}

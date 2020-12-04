@@ -15,3 +15,6 @@ sys-info = "*"
 rand = "*"
 regex = "*"
 fxhash= "*"
+
+[profile.release]
+debug = true
