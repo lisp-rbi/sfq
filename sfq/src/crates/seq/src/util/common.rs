@@ -16,7 +16,12 @@
  * <http://www.doctrine-project.org>.
  */
 
+use std::fs;
 use crate::Fdb;
+use std::process::Command;
+use fs2;
+use std::env;
+use sys_info::mem_info;
 
 
 impl Fdb{
@@ -99,4 +104,78 @@ impl Fdb{
 
     }
 
+    // sorts lines of a file through external bash commands
+    // 1) separates file into subfiles; according to available RAM and disk
+    // 2) sort each subfile into a copy and move the copy back to subfile
+    // 3) merge-sort subfiles into the original file
+    pub fn sort_lines(&self,filename: &str, outdir: &str) -> bool {
+
+        // list the current directory and see available memory
+        let current_dir = env::current_dir().unwrap();
+        let free_disk_space = fs2::free_space(current_dir).unwrap() as f32;
+        // check size of the file
+        let file_size = fs::metadata(filename).unwrap().len() as f32;
+        // if file takes more than 1/3 of disk, it will it may clogg up the disk
+        let ratio = (free_disk_space / file_size).ceil() as u32;
+        if ratio < (4.0 as u32) {panic!("Not enough disk space for sorting!");}
+        // check available RAM, take half of it
+        let avail_ram = ((mem_info().unwrap().total * 1024) / 2) as f32;
+        let ram_ratio = (avail_ram / file_size).ceil() as f32;
+        // how many lines will be in sub-files for sorting
+        let mut num_of_lines: String = "-l ".to_owned();
+        num_of_lines.push_str(&((ram_ratio * (self.numrec as f32)) as u64).to_string());
+        let mut tmp_filename: String = "".to_owned();
+        tmp_filename.push_str(filename);
+        tmp_filename.push_str("_");
+        // use bash to split original file into subfiles for sorting
+        let _split_file = Command::new("split").args(&["-a 10", &num_of_lines])
+            .arg(filename).arg(tmp_filename.clone())
+            .status().expect("Error in splitting file");
+        // list created temporary files, it returns vector of ASCII u8
+        let list_tmp = Command::new("ls").arg(outdir).output().expect("error!");
+        let tmp_files: Vec<_> = list_tmp.stdout.split(|i| *i == 10u8).collect();
+        // create a vector of temporary file names
+        let mut tmp_filename_list = Vec::<String>::new();
+        // loop over temporary files
+        for tmp_file in tmp_files {
+            let mut tmp_filename = outdir.to_string();
+            tmp_filename.push_str("/");
+            tmp_filename.push_str(&String::from_utf8(tmp_file.to_vec()).unwrap());
+            // sort only subfiles containing "tmp_"
+            if tmp_filename.contains("tmp_") {
+                let mut tmp_tmp_filename: String = "-o".to_owned();
+                tmp_tmp_filename.push_str(&tmp_filename);
+                tmp_tmp_filename.push_str(".cp");
+                tmp_filename_list.push(tmp_filename.clone());
+                // sort the subfiles, send output to tmp_tmp_filename
+                let _sort_tmp = Command::new("sort").arg(tmp_filename.clone()).arg(tmp_tmp_filename.clone()).output().expect("Error in sorting.");
+                tmp_tmp_filename.replace_range(..2,"");
+                // overwrite original temporary filenames with sorted ones
+                let _overwrite = Command::new("mv").arg(&tmp_tmp_filename).arg(&tmp_filename).status().expect("Error in overwriting!");
+            }
+        }
+        // end_filename should be equal to the original input-file (with -o)
+        let mut end_filename: String = "-o".to_owned();
+        end_filename.push_str(filename);
+        // merge sorted subfiles into the original file
+        let _sort_tmp = Command::new("sort").arg("-m")
+            .args(&tmp_filename_list.clone()).arg(end_filename)
+            .status().expect("Error in merging!");
+        // delete the subfiles
+        let _delete = Command::new("rm").args(&tmp_filename_list).status().expect("Error in deleting!");
+        true
+    }
+
+    pub fn reduce_qualities(&self, qualities: &str) -> bool {
+        assert!(fs::metadata(qualities).unwrap().is_file());
+        let file = File::open(qualities).expect("Unable to read tmp file");
+        let file = BufReader::new(qualities);
+        let mut tmp_qual_writer = self.make_append_writer(&"tmp_qualities");
+        for line in qualities.lines() {
+            let mut u8_line: Vec<u8> = line.unwrap().as_bytes().to_vec();
+            self.illumina_8lev_map(&u8_line);
+            tmp_qual_writer.write_all(str::from_utf8(&u8_line).unwrap().as_bytes()).expect("writing error!");
+        }
+        let _overwrite = Command::new("mv").arg(&"tmp_qualities").arg(&qualities).status().expect("Error in overwriting!");
+    }
 }

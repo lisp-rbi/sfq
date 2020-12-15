@@ -66,21 +66,11 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
     if make_dir(&outdir) == false{ panic!("Creating output directory failed"); };
 
     let mut fdb = Fdb::new(cli.value_of("infmt").unwrap());
+    if let Some(x) = cli.value_of("cmode") {
+        if x == "lossy" {fdb.lossy = true;}
+    }
     fdb.load(fwd_input,rev_input,&outdir,output);
 
-/*
-    if let Some(x) = cli.value_of("cmode") {
-
-        if x == "lossy"{
-            fdb.colaps();
-        }else{
-            fdb.sort("h");
-            fdb.set_cpcnt(vec![1;(fdb.get_numrec()+2)*2]);
-        }
-    }else{
-        panic!("Compression compromised!");
-    }
-*/
     eprintln!(" {:.2?}", before.elapsed());
 
     eprintln!("Preprocessing the input data ... ");

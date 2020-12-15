@@ -17,6 +17,7 @@
  */
 
 use crate::{Load, Fdb};
+use std::process;
 
 
 impl Load for Fdb {
@@ -42,10 +43,16 @@ impl Load for Fdb {
             "fastq" => {
                 self.numrec = (num_of_lines as usize) / 4;
                 self.cpcnt = vec![1;(self.numrec+2)*2];
-                if let Ok(false) = self.fastq_up(fwd_reader,rev_reader,outdir,output) {
-                    panic!("{} file not uploaded !", self.format);
-                };
-
+                if self.lossy == true {
+                    if let Ok(false) = self.fastq_up_lossy(fwd_reader,rev_reader,outdir,output) {
+                        panic!("{} file not uploaded !", self.format);
+                    };
+                    process::exit(0);
+                } else {
+                    if let Ok(false) = self.fastq_up(fwd_reader,rev_reader,outdir,output) {
+                        panic!("{} file not uploaded !", self.format);
+                    };
+                }
             },
             "fasta" => {
                 self.numrec = num_of_lines as usize;

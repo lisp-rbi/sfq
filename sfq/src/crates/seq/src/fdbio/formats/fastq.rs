@@ -26,27 +26,6 @@ use std::str;
 // function to read fastq files
 impl Fdb{
 
-/*    pub fn fq_write_line(&self, writer: BufWriter, line: str, lt: str, direction: str, r: u64, wlen: usize) {
-        let mut line_vec: Vec<u8> = Vec::new();
-        if direction == "fwd" {
-            line_vec.extend(self.encode(r,wlen));
-            line_vec.extend(b"G");
-        } else if direction == "rev" {
-            line_vec.extend(self.encode(r+1,wlen));
-            line_vec.extend(b"A");
-        }
-        
-        line_vec.extend(b"^");
-        line_vec.extend(line.as_bytes());
-        if (self.paired == true) && (lt == "head") && (direction == "fwd") {line_vec.extend(b"F\0");}
-        else if (lt == "head") && (direction == "rev") {line_vec.extend(b"R\0");}
-        else {line_vec.extend(b"\0");}
-        for elem in line_vec{
-            if elem == 0 {write!(writer,"{:?}\n",elem);} 
-            else {write!(writer,"{:?} ",elem);}
-        }
-    }
-*/
     pub fn fastq_up<R: BufRead>(&mut self, fwd_reader: R, rev_reader: R, outdir: &str, output: &str) -> Result<bool,Error> {
 
         let mut cnt=0;
@@ -198,6 +177,77 @@ impl Fdb{
         else{Ok(false)}
     }
 
+    pub fn fastq_up_lossy<R: BufRead>(&mut self, fwd_reader: R, rev_reader: R, outdir: &str, output: &str) -> Result<bool,Error> {
+
+        let mut cnt=0;
+        let mut r: usize = 1;
+        let tmp_lossy = format!("{}/{}.lossy.tmp", outdir, output);
+        let mut lossy_writer = self.make_append_writer(&tmp_lossy);
+
+        let fwd_lines = fwd_reader.lines().map(|l| l.unwrap());
+        let mut rev_lines = rev_reader.lines().map(|l| l.unwrap());
+        let (_count, wlen) = self.comp_wlen();
+        let mut line_string = String::from("");
+
+        for fwd_line in fwd_lines {
+            if  cnt == 0 {
+                cnt += 1;
+                continue;
+            } else if cnt == 1 {
+                line_string = String::from("");
+                line_string.push_str(&fwd_line);
+                line_string.push_str(" ");
+                cnt += 1;
+                continue;
+            } else if cnt == 2 {
+                cnt += 1;
+                continue;
+            } else if cnt == 3 {
+                line_string.push_str(&fwd_line);
+                r += 1;
+                cnt = 0;
+                if self.paired == true {
+                    line_string.push_str("%");
+                    loop {
+                        match rev_lines.next() {
+                            Some(rev_line) => {
+                                if  cnt == 0 {
+                                    cnt += 1;
+                                    continue;
+                                } else if cnt == 1 {
+                                    line_string.push_str(&self.revcomp(rev_line));
+                                    line_string.push_str(" ");
+                                    cnt += 1;
+                                    continue;
+                                } else if cnt == 2 {
+                                    cnt += 1;
+                                    continue;
+                                } else if cnt == 3 {
+                                    line_string.push_str(&rev_line);
+                                    line_string.push_str("\n");
+                                    cnt = 0;
+                                    break;
+                                }
+                            }
+                            None => {break;}
+                        }
+                    }
+                } else {line_string.push_str("\n");}
+                lossy_writer.write_all(&line_string.as_bytes()).expect("writing error!");
+                continue;
+            }
+        }
+
+        let stats = self.make_stats(wlen);
+        if self.sort_lines(&tmp_lossy,outdir) == false {panic!("Sorting not successful");}
+        lossy_writer.write_all(str::from_utf8(&stats).unwrap().as_bytes()).expect("writing error!");
+
+        //println!("{}:{}\n{:?}\n{:?}\n{:?}", self.seq.len(), self.seq[self.seq.len()-1], String::from_utf8(self.seq.clone()), String::from_utf8(self.qual.clone()), String::from_utf8(self.head.clone()));
+        if self.paired == false {self.rm_file("dummy.txt");}
+
+        if self.numrec > 0 {Ok(true)}
+        else{Ok(false)}
+    }
 
     pub fn fastq_dw<W: Write> (&mut self, mut writer:  W) -> Result<bool,Error>  {
         let (mut sw , mut ssw, mut x, mut y, mut bw)= (0u8, true, 0, 1000, 0);

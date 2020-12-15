@@ -9,6 +9,22 @@ impl Fdb {
         }
 
     }
+
+    pub(crate) fn illumina_8lev_map(&self, qual: &mut Vec<u8>) {
+        for i in 0..qual.len() {
+            let elem: u8 = qual[i];
+            match elem {
+                2..=9 => {qual[i] = 6;},
+                11..=19 => {qual[i] = 15;},
+                20..=24 => {qual[i] = 22;},
+                25..=29 => {qual[i] = 27;},
+                30..=34 => {qual[i] = 33;},
+                35..=39 => {qual[i] = 37;},
+                40.. => {qual[i] = 40;},
+            }
+        }
+    }
+
     /*pub(crate) fn qmax (&self, qual: &Vec<u8>, qmax: &mut Vec<u8> ) {
 
         for (e,q) in qual.iter().enumerate() {

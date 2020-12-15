@@ -15,6 +15,7 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+extern crate num_cpus;
 
 #[cfg(test)]
 mod tests;
@@ -83,6 +84,7 @@ pub struct Fdb {
     pub line_length: usize,
     alpha: String,
     pub paired: bool,
+    pub lossy: bool,
     head: Vec<u8>,
     seq: Vec<u8>,
     qual: Vec<u8>,
@@ -105,6 +107,7 @@ impl Fdb {
             line_length: 0,
             alpha: "ACGT".to_string(),
             paired: false,
+            lossy: false,
             head: Vec::new(),
             seq: Vec::new(),
             qual: Vec::new(),

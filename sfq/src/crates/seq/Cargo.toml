@@ -9,3 +9,6 @@ edition = "2018"
 [dependencies]
 snafu = "*"
 fxhash = "*"
+num_cpus = "1.13.0"
+fs2 = "0.4.3"
+sys-info = "*"

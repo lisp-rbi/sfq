@@ -90,9 +90,23 @@ pub fn export (cli: ArgMatches<'static>) -> bool {
                         if fs::metadata(y).is_ok() == true{
                             let reader = fdb.clone().make_reader(y);
                             for line in reader.lines() {
-                                let id = line.unwrap().parse::<usize>().unwrap();
-                                if id > count {continue;}
-                                grep.push(id);
+                                let uline = line.unwrap();
+                                // if uline contains -, a range of records is given: handle it
+                                if uline.contains("-") {
+                                    let ids: Vec<&str> = uline.split("-").collect();
+                                    assert!(ids.len() == 2);
+                                    let start_id: usize =  ids[0].trim().parse::<usize>().unwrap();
+                                    let end_id: usize = ids[1].trim().parse::<usize>().unwrap() + 1;
+                                    for id in start_id..end_id {
+                                        if id > count {continue;}
+                                        grep.push(id);
+                                    }
+                                // otherwise, a single record is given
+                                } else {
+                                    let id = uline.parse::<usize>().unwrap();
+                                    if id > count {continue;}
+                                    grep.push(id);
+                                }
                             }
                         } else {
                             let (f, v) = parse_conditional(y);
