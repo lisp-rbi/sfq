@@ -253,7 +253,6 @@ dependencies = [
  "clap",
  "fxhash",
  "lzt",
- "num_cpus",
  "rand",
  "regex",
  "seq",

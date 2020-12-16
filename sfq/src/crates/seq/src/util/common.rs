@@ -165,17 +165,4 @@ impl Fdb{
         let _delete = Command::new("rm").args(&tmp_filename_list).status().expect("Error in deleting!");
         true
     }
-
-    pub fn reduce_qualities(&self, qualities: &str) -> bool {
-        assert!(fs::metadata(qualities).unwrap().is_file());
-        let file = File::open(qualities).expect("Unable to read tmp file");
-        let file = BufReader::new(qualities);
-        let mut tmp_qual_writer = self.make_append_writer(&"tmp_qualities");
-        for line in qualities.lines() {
-            let mut u8_line: Vec<u8> = line.unwrap().as_bytes().to_vec();
-            self.illumina_8lev_map(&u8_line);
-            tmp_qual_writer.write_all(str::from_utf8(&u8_line).unwrap().as_bytes()).expect("writing error!");
-        }
-        let _overwrite = Command::new("mv").arg(&"tmp_qualities").arg(&qualities).status().expect("Error in overwriting!");
-    }
 }
