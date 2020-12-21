@@ -40,7 +40,7 @@ extern "C" {
     bool make_lzt( uchar* words, unsigned long wln, uchar* path, int pln) {
 
 // Debug
-
+/*
       cout <<  wln << " Start" << endl;
       for (int i = 0; i < (int) wln; i++)
       {
@@ -57,7 +57,7 @@ extern "C" {
       (cout <<".  ."<< (unsigned int) words[wln-1] <<".  ."<< (unsigned int) words[wln] <<".  ."<< (unsigned int) words[wln+1]<<".  ."<< (unsigned int) words[wln+2] <<  "zero") :
       (cout <<".  ."<< (unsigned int) words[wln-1]<<".  ."<< (unsigned int) words[wln] <<".  ."<< (unsigned int) words[wln+1]<<".  ."<< (unsigned int) words[wln+2]<<"not ");
       cout <<"\nStop" << endl;
-
+*/
 // Debug
 
       // Get output path
