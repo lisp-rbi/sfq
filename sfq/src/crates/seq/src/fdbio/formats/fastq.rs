@@ -197,7 +197,7 @@ impl Fdb{
             } else if cnt == 1 {
                 line_string = String::from("");
                 line_string.push_str(&fwd_line);
-                line_string.push_str(" ");
+                line_string.push_str("z");
                 cnt += 1;
                 continue;
             } else if cnt == 2 {
@@ -208,7 +208,7 @@ impl Fdb{
                 r += 1;
                 cnt = 0;
                 if self.paired == true {
-                    line_string.push_str(" ");
+                    line_string.push_str("z");
                     loop {
                         match rev_lines.next() {
                             Some(rev_line) => {
@@ -217,7 +217,7 @@ impl Fdb{
                                     continue;
                                 } else if cnt == 1 {
                                     line_string.push_str(&self.revcomp(rev_line));
-                                    line_string.push_str(" ");
+                                    line_string.push_str("z");
                                     cnt += 1;
                                     continue;
                                 } else if cnt == 2 {
@@ -240,11 +240,14 @@ impl Fdb{
         }
 
         let stats = self.make_stats(wlen);
-        if self.sort_lines(&tmp_lossy,outdir) == false {panic!("Sorting not successful");}
+        self.sort_file(&tmp_lossy,&outdir).expect("Error in sorting file!");
+        //if self.sort_lines(&tmp_lossy,outdir) == false {panic!("Sorting not successful");}
+        //if self.sort_lines_simple(&tmp_lossy,outdir) == false {panic!("Sorting not successful");}
         let tmp_seq_name: &str = &tmp_lossy.replace("lossy","seq");
         let tmp_qual_name: &str = &tmp_lossy.replace("lossy","qual");
         let mut seq_writer = self.make_append_writer(&tmp_seq_name);
         let mut qual_writer = self.make_append_writer(&tmp_qual_name);
+        eprintln!("before separate lossy");
         if  self.separate_lossy_tmp(&tmp_lossy,seq_writer,qual_writer,wlen,stats) == false {panic!("Error!");}
         //println!("{}:{}\n{:?}\n{:?}\n{:?}", self.seq.len(), self.seq[self.seq.len()-1], String::from_utf8(self.seq.clone()), String::from_utf8(self.qual.clone()), String::from_utf8(self.head.clone()));
         if self.paired == false {self.rm_file("dummy.txt");}
@@ -259,14 +262,14 @@ impl Fdb{
         let lines = lossy_reader.lines().map(|l| l.unwrap());
         let mut r: usize = 1;
         for line in lines {
-            eprintln!("r = {:?}, {:?}",r,line);
+            //eprintln!("r = {:?}, {:?}",r,line);
             let mut sequence = String::from("");
             let mut quality = String::from("");
             sequence.push_str(str::from_utf8(&self.encode(r,wlen)).unwrap());
             quality.push_str(str::from_utf8(&self.encode(r,wlen)).unwrap());
             sequence.push_str("G^");
             quality.push_str("G^");
-            let line_components: Vec<&str> = line.split(" ").collect();
+            let line_components: Vec<&str> = line.split("z").collect();
             sequence.push_str(&line_components[0]);
             sequence.push_str("\n");
             let mut u8_quality = line_components[1].as_bytes();

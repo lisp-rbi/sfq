@@ -15,15 +15,17 @@ impl Fdb {
         for i in 0..qual.len() {
             let elem: u8 = qual[i];
             match elem {
-                0..=1 => {},
-                2..=9 => {red_qual.push(6);},
+                0..=9 => {},
                 10 => {red_qual.push(10);},
-                11..=19 => {red_qual.push(15);},
-                20..=24 => {red_qual.push(22);},
-                25..=29 => {red_qual.push(27);},
-                30..=34 => {red_qual.push(33);},
-                35..=39 => {red_qual.push(37);},
-                40..=255 => {red_qual.push(40);},
+                11..=34 => {},
+                35..=43 => {red_qual.push(39);},
+                44..=52 => {red_qual.push(48);},
+                53..=57 => {red_qual.push(55);},
+                57..=62 => {red_qual.push(60);},
+                63..=67 => {red_qual.push(66);},
+                68..=72 => {red_qual.push(70);},
+                73..=126 => {red_qual.push(73);},
+                127u8..=std::u8::MAX => {},
             }
         }
         red_qual
