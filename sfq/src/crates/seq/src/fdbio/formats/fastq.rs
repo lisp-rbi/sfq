@@ -197,7 +197,7 @@ impl Fdb{
             } else if cnt == 1 {
                 line_string = String::from("");
                 line_string.push_str(&fwd_line);
-                line_string.push_str("z");
+                line_string.push_str(" ");
                 cnt += 1;
                 continue;
             } else if cnt == 2 {
@@ -208,7 +208,7 @@ impl Fdb{
                 r += 1;
                 cnt = 0;
                 if self.paired == true {
-                    line_string.push_str("z");
+                    line_string.push_str(" ");
                     loop {
                         match rev_lines.next() {
                             Some(rev_line) => {
@@ -217,7 +217,7 @@ impl Fdb{
                                     continue;
                                 } else if cnt == 1 {
                                     line_string.push_str(&self.revcomp(rev_line));
-                                    line_string.push_str("z");
+                                    line_string.push_str(" ");
                                     cnt += 1;
                                     continue;
                                 } else if cnt == 2 {
@@ -239,9 +239,10 @@ impl Fdb{
             }
         }
 
+        lossy_writer.flush().expect("Error in flushing");
         let stats = self.make_stats(wlen);
-        self.sort_file(&tmp_lossy,&outdir).expect("Error in sorting file!");
-        //if self.sort_lines(&tmp_lossy,outdir) == false {panic!("Sorting not successful");}
+        //self.sort_file(&tmp_lossy,&outdir).expect("Error in sorting file!");
+        if self.sort_lines(&tmp_lossy,outdir) == false {panic!("Sorting not successful");}
         //if self.sort_lines_simple(&tmp_lossy,outdir) == false {panic!("Sorting not successful");}
         let tmp_seq_name: &str = &tmp_lossy.replace("lossy","seq");
         let tmp_qual_name: &str = &tmp_lossy.replace("lossy","qual");
@@ -269,7 +270,7 @@ impl Fdb{
             quality.push_str(str::from_utf8(&self.encode(r,wlen)).unwrap());
             sequence.push_str("G^");
             quality.push_str("G^");
-            let line_components: Vec<&str> = line.split("z").collect();
+            let line_components: Vec<&str> = line.split(" ").collect();
             sequence.push_str(&line_components[0]);
             sequence.push_str("\n");
             let mut u8_quality = line_components[1].as_bytes();
@@ -294,8 +295,10 @@ impl Fdb{
         }
         seq_writer.write_all(str::from_utf8(&stats).unwrap().as_bytes()).expect("writing error!");
         qual_writer.write_all(str::from_utf8(&stats).unwrap().as_bytes()).expect("writing error!");
-       //fs::remove_file(filename).expect("Error in removing file!"); 
-       true
+        seq_writer.flush().expect("Error in flushing");
+        qual_writer.flush().expect("Error in flushing");
+        fs::remove_file(filename).expect("Error in removing file!"); 
+        true
     }
 
     pub fn fastq_dw<W: Write> (&mut self, mut writer:  W) -> Result<bool,Error>  {

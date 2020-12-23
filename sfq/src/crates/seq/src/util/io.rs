@@ -84,8 +84,9 @@ impl Fdb{
 
     pub fn count_lines(&mut self, path: &str) -> Result<u64, String> {
     
-        let mut reader = BufReader::new(Box::new(File::open(path)
-                    .expect(&(format!("Error opening {} file",path)))));
+        let mut reader = self.make_reader(&path);
+        //let mut reader = BufReader::new(Box::new(File::open(path)
+        //            .expect(&(format!("Error opening {} file",path)))));
         let mut num_of_lines: u64 = 0;
         let mut line = String::from("");
     
@@ -110,7 +111,7 @@ impl Fdb{
         //let mut file = OpenOptions::new().read(true).write(true).open(path).expect("Error opening file");
         //let mut file = File::open(path).expect("file error");
         //let reader = BufReader::new(&mut file);
-        let reader = self.make_reader(&path);
+        let mut reader = self.make_reader(&path);
         //let mut lines: Vec<_> = reader.lines().map(|l| l.expect("Couldn't read a line")).collect();
         let mut lines = reader.lines().map(|l| l.unwrap());
         //if lines.len() == 0 { return Err("Empty file".to_string());}

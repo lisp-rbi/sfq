@@ -121,7 +121,6 @@ impl Fdb{
         // check available RAM, take half of it
         let avail_ram = ((mem_info().unwrap().total * 1024) / 2) as f32;
         let ram_ratio = (avail_ram / file_size).ceil() as f32;
-        eprintln!("avail_ram = {:?}, ram_ratio = {:?}, file_size = {:?}, filename = {:?}", avail_ram, ram_ratio, file_size, filename);
         // how many lines will be in sub-files for sorting
         let mut num_of_lines: String = "-l ".to_owned();
         num_of_lines.push_str(&((ram_ratio * (self.numrec as f32)) as u64).to_string());
@@ -139,12 +138,10 @@ impl Fdb{
         // create a vector of temporary file names
         let mut tmp_filename_list = Vec::<String>::new();
         // loop over temporary files
-        eprintln!("tmp_files = {:?}", tmp_files);
         for tmp_file in tmp_files {
             let mut tmp_filename = outdir.to_string();
             tmp_filename.push_str("/");
             tmp_filename.push_str(&String::from_utf8(tmp_file.to_vec()).unwrap());
-            eprintln!("tmp_filename = {:?}", tmp_filename);
             // sort only subfiles containing "tmp_"
             if tmp_filename.contains("tmp_") {
                 let mut tmp_tmp_filename: String = "-o".to_owned();
@@ -158,37 +155,29 @@ impl Fdb{
                 let _overwrite = Command::new("mv").arg(&tmp_tmp_filename).arg(&tmp_filename).status().expect("Error in overwriting!");
             }
         }
-        eprintln!("kurac 1");
         assert!(tmp_filename_list.len() > 0);
         // end_filename should be equal to the original input-file (with -o)
         let mut end_filename: String = "-o".to_owned();
-        eprintln!("kurac 2");
         end_filename.push_str(filename);
-        eprintln!("tmp_filename_list = {:?}", tmp_filename_list);
-        eprintln!("end_filename = {:?}", end_filename);
         // merge sorted subfiles into the original file
         let _sort_tmp = Command::new("sort").arg("-m")
             .args(&tmp_filename_list.clone()).arg(end_filename)
             .status().expect("Error in merging!");
         // delete the subfiles
-        eprintln!("kurac 4");
         let _delete = Command::new("rm").args(&tmp_filename_list).status().expect("Error in deleting!");
-        eprintln!("kurac 5");
         true
     }
 
-    pub fn sort_lines_simple(&self,filename: &str, outdir: &str) -> bool {
+    /*pub fn sort_lines_simple(&self,filename: &str, outdir: &str) -> bool {
         let mut tmp_filename: String = "-o".to_owned();
         tmp_filename.push_str(&outdir.to_string());
         tmp_filename.push_str("/sorted.tmp");
-        eprintln!("filename = {:?}, tmp_filename = {:?}", filename, tmp_filename);
         let _sort_file = Command::new("sort").arg(filename.clone()).arg(tmp_filename.clone()).status().expect("Error in sorting.");
         //let _sort_file = Command::new("sort").arg(filename.clone()).status().expect("Error in sorting.");
         tmp_filename.replace_range(..2,"");
-        eprintln!("filename = {:?}, tmp_filename = {:?}", filename, tmp_filename);
         let mut end_filename: String = "-o".to_owned();
         end_filename.push_str(filename);
         let _overwrite = Command::new("mv").arg(&tmp_filename).arg(&filename).status().expect("Error in overwriting!");
         true
-    }
+    }*/
 }
