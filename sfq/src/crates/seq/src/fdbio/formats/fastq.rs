@@ -243,14 +243,11 @@ impl Fdb{
         let stats = self.make_stats(wlen);
         //self.sort_file(&tmp_lossy,&outdir).expect("Error in sorting file!");
         if self.sort_lines(&tmp_lossy,outdir) == false {panic!("Sorting not successful");}
-        //if self.sort_lines_simple(&tmp_lossy,outdir) == false {panic!("Sorting not successful");}
         let tmp_seq_name: &str = &tmp_lossy.replace("lossy","seq");
         let tmp_qual_name: &str = &tmp_lossy.replace("lossy","qual");
         let mut seq_writer = self.make_append_writer(&tmp_seq_name);
         let mut qual_writer = self.make_append_writer(&tmp_qual_name);
-        eprintln!("before separate lossy");
         if  self.separate_lossy_tmp(&tmp_lossy,seq_writer,qual_writer,wlen,stats) == false {panic!("Error!");}
-        //println!("{}:{}\n{:?}\n{:?}\n{:?}", self.seq.len(), self.seq[self.seq.len()-1], String::from_utf8(self.seq.clone()), String::from_utf8(self.qual.clone()), String::from_utf8(self.head.clone()));
         if self.paired == false {self.rm_file("dummy.txt");}
 
         if self.numrec > 0 {Ok(true)}
@@ -258,12 +255,10 @@ impl Fdb{
     }
 
     pub fn separate_lossy_tmp<W: Write>(&mut self, filename: &str, mut seq_writer: W, mut qual_writer: W, wlen: usize, stats: Vec<u8>) -> bool {
-        eprintln!("filename = {:?}",filename);
         let mut lossy_reader = self.make_reader(filename);
         let lines = lossy_reader.lines().map(|l| l.unwrap());
         let mut r: usize = 1;
         for line in lines {
-            //eprintln!("r = {:?}, {:?}",r,line);
             let mut sequence = String::from("");
             let mut quality = String::from("");
             sequence.push_str(str::from_utf8(&self.encode(r,wlen)).unwrap());
@@ -306,7 +301,6 @@ impl Fdb{
         let mut buff = vec![0u8; y];
 
         //writer.write_all(&self.get_fastq());
-
 
         for ch in self.get_fastq().iter() {
 

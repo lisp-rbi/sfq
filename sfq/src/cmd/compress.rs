@@ -70,6 +70,7 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
         if x == "lossy" {fdb.lossy = true;}
     }
     fdb.load(fwd_input,rev_input,&outdir,output);
+    let lossy: bool = fdb.lossy;
 
     eprintln!(" {:.2?}", before.elapsed());
 
@@ -104,6 +105,10 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
                 tmp = format!("{}/{}.{}",outdir,output,"seq.tmp");
             },                                                          
             1 => {                                                      
+                if lossy == true {
+                    i += 1;
+                    continue;
+                }
                 out = format!("{}/{}.{}",outdir,output,"head.sfq");
                 tmp = format!("{}/{}.{}",outdir,output,"head.tmp");
             },                                                          

@@ -109,7 +109,6 @@ impl Fdb{
     // 2) sort each subfile into a copy and move the copy back to subfile
     // 3) merge-sort subfiles into the original file
     pub fn sort_lines(&self,filename: &str, outdir: &str) -> bool {
-
         // list the current directory and see available memory
         let current_dir = env::current_dir().unwrap();
         let free_disk_space = fs2::free_space(current_dir).unwrap() as f32;
@@ -124,7 +123,6 @@ impl Fdb{
         // how many lines will be in sub-files for sorting
         let mut num_of_lines: String = "-l ".to_owned();
         num_of_lines.push_str(&((ram_ratio * (self.numrec as f32)) as u64).to_string());
-        eprintln!("num_of_lines = {:?}", num_of_lines);
         let mut tmp_filename: String = "".to_owned();
         tmp_filename.push_str(filename);
         tmp_filename.push_str("_");

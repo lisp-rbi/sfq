@@ -44,6 +44,11 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
         None => {6}
     };
 
+    if let Some(y) = cli.value_of("cmode") {
+        if y == "lossy"{fdb.lossy = true;}
+    } else {
+        panic!("Decompression compromised!");
+    }
     if fdb.rm_file(output) == false {panic!("cannot rm file ");}
 
     match cli.value_of("infmt") {
@@ -60,22 +65,23 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
 
                     if let Some(x) = cli.value_of("input") {
                         let stem_name = String::from(Path::new(cli.value_of("input").unwrap()).file_stem().and_then(OsStr::to_str).unwrap());
-                        head = format!("{}/{}.{}",x,stem_name,"head.sfq");
+                        if fdb.lossy == false {head = format!("{}/{}.{}",x,stem_name,"head.sfq");}
                         seq  = format!("{}/{}.{}",x,stem_name,"seq.sfq");
                         qual = format!("{}/{}.{}",x,stem_name,"qual.sfq");
                     }
 
                     let ( mut count, mut alpha, mut wlen) = (0,Vec::new(),0);
 
-                    let mut head_lzt = FFI::open(&head,memmod); //// escape header
+                    let mut head_lzt = if fdb.lossy {FFI::empty()} else {FFI::open(&head,memmod)};
                     let mut seq_lzt  = FFI::open(&seq,memmod);
                     let mut qual_lzt = if q {FFI::open(&qual,memmod)} else {FFI::empty()};
 
                     {
-                        let head_stats  = get_stats(&head_lzt.get_records("~~~~~^",&-1)); //// escape header
+                        let mut head_stats = (0 as usize, Vec::new(), 0 as usize, false);
+                        if fdb.lossy == false { head_stats = get_stats(&head_lzt.get_records("~~~~~^",&-1));}
                         let seq_stats   = get_stats( &seq_lzt.get_records("~~~~~^",&-1));
 
-                        assert_eq!(seq_stats,head_stats);
+                        if fdb.lossy == false {assert_eq!(seq_stats,head_stats);}
 
                         count = seq_stats.0;
                         alpha = seq_stats.1;
@@ -95,10 +101,6 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
                         let enc_start = encode(i, wlen, &alpha);
                         let enc_stop  = encode(j, wlen, &alpha);
 
-                        j += inc;
-                        i += inc;
-
-                        if j > count {j=count;}
                         let mut e = 0;
 
                         // see at which digit start and stop prefixes begin to differ
@@ -137,12 +139,16 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
                         {
                             //eprint!("Head ... ");
                             //let st = Instant::now();
+                            if fdb.lossy == false {
+                                let mut head_out = head_lzt.get_records(&enc,&-1);
+                                //eprintln!("Rec/sec: {:.2?}", (((pp) as u64)/((st.elapsed().as_millis() +1) as u64 ))*1000);
 
-                            let mut head_out = head_lzt.get_records(&enc,&-1);
-                            //eprintln!("Rec/sec: {:.2?}", (((pp) as u64)/((st.elapsed().as_millis() +1) as u64 ))*1000);
-
-                            let _dis = deindex(&mut head_out);
-                            fdb.set_head(head_out);
+                                let _dis = deindex(&mut head_out);
+                                fdb.set_head(head_out);
+                            } else {
+                                let mut head_out = head_lzt.generate_header(i,j,fdb.paired); 
+                                fdb.set_head(head_out);
+                            }
 
                         }
                         if q {
@@ -155,16 +161,17 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
 
                             fdb.set_qual(qual_out);
 
-                            if let Some(y) = cli.value_of("cmode") {
-                                if y == "lossy"{fdb.expand();}
-                            }else{
-                                panic!("Decompression compromised!");
-                            }
 
                         }else{
                             let qvec = vec!['\n' as u8; fdb.get_numrec()];
                             fdb.set_qual(qvec);
                         }
+
+                        j += inc;
+                        i += inc;
+
+                        if j > count {j=count;}
+
                         fdb.save_append(output, cli.value_of("outfmt").unwrap());
                         fdb.clear();
                     }

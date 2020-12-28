@@ -47,7 +47,7 @@ impl Load for Fdb {
                     if let Ok(false) = self.fastq_up_lossy(fwd_reader,rev_reader,outdir,output) {
                         panic!("{} file not uploaded !", self.format);
                     };
-                    process::exit(0);
+                    //process::exit(0);
                 } else {
                     if let Ok(false) = self.fastq_up(fwd_reader,rev_reader,outdir,output) {
                         panic!("{} file not uploaded !", self.format);

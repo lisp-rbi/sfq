@@ -152,6 +152,7 @@ impl FFI {
             }
         // otherwise, search only given LZT for the pattern
             _ => {
+                eprintln!("position: {:?}", position);
                 assert!(position >= &1);
                 unsafe{
                     let size = query_lzt(
@@ -176,6 +177,27 @@ impl FFI {
         }
 //        println!("{:?}", String::from_utf8(qres.clone()).unwrap()  );
         qres
+    }
+
+    pub fn generate_header(&self, i: usize, j: usize, paired: bool) -> Vec<u8> {
+        let mut vec: Vec<u8> = Vec::new();
+        for k in i..=j {
+            if k > 0 {
+                if paired == true {
+                    let  header_f = format!(">@SFQ generated header, record nr. {:?} F \n",k);
+                    vec.extend(header_f.as_bytes().to_vec());
+                    let header_r = format!(">@SFQ generated header, record nr. {:?} R \n",k);
+                    vec.extend(header_r.as_bytes().to_vec());
+                } else {
+                    let header = format!(">@SFQ generated header, record nr. {:?} \n",k);
+                    vec.extend(header.as_bytes().to_vec());
+                }
+            }
+        }
+        if vec[vec.len()-1] == '\n' as u8{
+            vec.resize(vec.len()-1, 0x00);
+        }
+        vec
     }
 }
 
