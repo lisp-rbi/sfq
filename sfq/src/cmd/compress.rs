@@ -113,6 +113,10 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
                 tmp = format!("{}/{}.{}",outdir,output,"head.tmp");
             },                                                          
             _ => {                                                      
+                if lossy == true {
+                    i += 1;
+                    continue;
+                }
                 out = format!("{}/{}.{}",outdir,output,"qual.sfq");
                 tmp = format!("{}/{}.{}",outdir,output,"qual.tmp");
             }
