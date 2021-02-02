@@ -1,6 +1,7 @@
 //use std::io::{prelude::*, stdout, Write, Read, BufReader, BufWriter};
 use std::fs::{metadata,remove_file,remove_dir_all,create_dir};
 use std::str;
+use std::mem;
 use regex::Regex;
 use rand::prelude::*;
 use fxhash::FxHashSet;
@@ -310,26 +311,27 @@ pub fn deindex(v: &mut Vec<u8>) -> Vec<usize>  {
             v[j] = *i;j+=1;
             print = false;
 
-        }else if  *i == 94u8 {
+        }else if *i == 94u8 {
             if print == false{
                 print = true;
-            }else{
+            } else {
                 print = false;
-                b= e+1;
+                b = e + 1;
             }
             continue;
         }
 
         if print == true {
-            v[j] = *i;j+=1;
+            v[j] = *i;
+            j += 1;
         }
     }
 
     //if singleton {eprintln!("Singleton is true");}
 
-    if print == true  || singleton == true{
+    if print == true || singleton == true {
         vec[x] = 1;
-    }else{
+    } else {
         vec[x] = decode(&v[b..v.len()].to_vec(), &b"ACGT".to_vec())+1;
         //j+=1;
     }
@@ -446,7 +448,7 @@ pub fn parse_codex (codex: &str) -> (usize,String) {
 }*/
 
 
-pub fn get_stats(st: &Vec<u8>) -> (usize,Vec<u8>,usize, bool) {
+pub fn get_stats(st: &Vec<u8>) -> (usize,Vec<u8>,usize,bool,usize) {
 
     let stats_vec: Vec<_> = st.split(|i| *i == 94u8).collect();
 
@@ -455,8 +457,12 @@ pub fn get_stats(st: &Vec<u8>) -> (usize,Vec<u8>,usize, bool) {
     let padding    = std::str::from_utf8(stats_vec[3]).unwrap().parse::<usize>().unwrap();
     // if unpaired. model is 48u8 (false), if paired 49u8 (true)
     let model = if stats_vec[4][0] == 48u8 {false} else  {true};
+    let mut lossy = 0; 
+    if stats_vec.len() == 6 {
+        lossy = std::str::from_utf8(stats_vec[5]).unwrap().parse::<usize>().unwrap();
+    }
 
-    (num_of_rec,alpha,padding,model)
+    (num_of_rec,alpha,padding,model,lossy)
 }
 
 /*pub fn make_stats(num_of_rec: usize, alpha: String, padding: usize, model: bool) -> Vec<u8> {
@@ -506,4 +512,36 @@ pub fn make_rand_uvec(num: usize, max: usize) -> Vec<usize>{
     }
 
     uvec
+}
+
+/*  function to remove the number of repeated sequences in binary
+ *  before: ACTTGCb0000000001
+ *  after:  ACTTGC
+ *  note: 98u8 is ASCII for b, 10u8 is for \n
+ */
+pub fn remove_cpcnt(v: &mut Vec<u8>) -> Vec<usize> {
+    let mut cpcnt: Vec<usize> = Vec::new();
+    let mut tmp_count: Vec<u8> = Vec::new();
+    let mut result: Vec<u8> = Vec::new();
+    let mut copy: bool = true;
+    let mut i: usize = 1;
+    for element in v.clone() {
+        if element == 98u8 {
+            copy = false;
+            i += 1;
+            continue;
+        } else if element == 10u8 || i == v.len() { 
+            if i == v.len() { tmp_count.push(element);}
+            let count = isize::from_str_radix(std::str::from_utf8(&tmp_count).unwrap(),2).unwrap();
+            cpcnt.push(count as usize);
+            tmp_count = Vec::new();
+            if element == 10u8 { copy = true; }
+        }
+        if copy == true { result.push(element); }
+        else { if i < v.len() {tmp_count.push(element);} }
+        i += 1;
+    }
+    let mut old_v = mem::replace(v, result);
+    old_v.clear();
+    cpcnt
 }

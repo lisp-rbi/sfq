@@ -93,6 +93,8 @@ impl Fdb{
         vec.push(94u8);
         if self.paired == true {vec.push(49u8);}
         else {vec.push(48u8);}
+        vec.push(94u8);
+        vec.extend(self.lossy.to_string().as_bytes().to_vec());
         vec
 }
 

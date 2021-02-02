@@ -17,7 +17,7 @@
  */
 
 use crate::{Get, Fdb};
-
+use std::str;
 
 impl Get for Fdb {
 
@@ -51,12 +51,12 @@ impl Get for Fdb {
 
     fn get_fastq(&self) -> Vec<u8> {
 
-        let ( hlt,  slt,  qlt) = (self.head.len(),self.seq.len(),self.qual.len());
-        let (mut i, mut q, mut s, mut h, mut x,  mut c) = (0,0,0,0,0,0u8);
+        let (hlt, slt, qlt) = (self.head.len(),self.seq.len(),self.qual.len());
+        let (mut i, mut q, mut s, mut h, mut x, mut c) = (0,0,0,0,0,0u8);
 
         let count = self.head.iter().filter(|&n| *n == 10u8).count() +1;
-        let len = hlt+slt+qlt+ (count*2)+20;
-        let mut vec : Vec<u8> = vec![0u8; len];
+        let len = hlt + slt + qlt + (count*2) + 20;
+        let mut vec: Vec<u8> = vec![0u8; len];
 
 
         loop{
@@ -75,20 +75,20 @@ impl Get for Fdb {
                 }
             }
 
-            if c == 10u8  || h == hlt || s == slt || q == qlt{
+            if c == 10u8 || h == hlt || s == slt || q == qlt {
                 if h == hlt || s == slt || q == qlt {
                     vec[x] = c;
-                    x+=1;
-                    if h == hlt {h=0;};
-                    if s == slt {s=0;};
-                    if q == qlt {i=9;};
+                    x += 1;
+                    if h == hlt {h = 0;};
+                    if s == slt {s = 0;};
+                    if q == qlt {i = 9;};
                     c=10u8;
 
                 }
-                if i  < 2 || i==9 {
-                    i+=1;
-                }else{
-                    i=0;
+                if i < 2 || i == 9 {
+                    i += 1;
+                } else {
+                    i = 0;
                 }
                 if i == 2 {
                     vec[x] = 10u8;x+=1;
@@ -96,63 +96,12 @@ impl Get for Fdb {
                 }
             }
             vec[x] = c;
-            x+=1;
+            x += 1;
         }
 
         vec.resize(x-1, 0x00);  // -1 rm \n
         vec
     }
-
-    /*fn get_fastq_lossy(&self) -> Vec<u8> {
-
-        let ( slt,  qlt) = (self.seq.len(),self.qual.len());
-        let (mut i, mut q, mut s, mut x,  mut c) = (0,0,0,0,0u8);
-
-        let count = self.seq.iter().filter(|&n| *n == 10u8).count() +1;
-        let len = slt+qlt+ (count*2)+20;
-        let mut vec : Vec<u8> = vec![0u8; len];
-
-
-        loop{
-            match i {
-                0 => {
-                    c = self.seq[s];s+=1;
-                },
-                1 => {
-                    c = self.qual[q];q+=1;
-                }
-                _ => {
-                    break;
-                }
-            }
-
-            if c == 10u8  || s == slt || q == qlt{
-                if s == slt || q == qlt {
-                    vec[x] = c;
-                    x += 1;
-                    if s == slt {s=0;};
-                    if q == qlt {i=9;};
-                    c=10u8;
-
-                }
-                if i  < 1 || i==9 {
-                    i+=1;
-                }else{
-                    i=0;
-                }
-                if i == 1 {
-                    vec[x] = 10u8;x+=1;
-                    vec[x] = '+' as u8;x+=1;
-                }
-            }
-            vec[x] = c;
-            x+=1;
-        }
-
-        vec.resize(x-1, 0x00);  // -1 rm \n
-        vec
-    }*/
-
 
     fn get_fasta(&self) -> Vec<u8> {
 

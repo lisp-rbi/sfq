@@ -152,7 +152,6 @@ impl FFI {
             }
         // otherwise, search only given LZT for the pattern
             _ => {
-                eprintln!("position: {:?}", position);
                 assert!(position >= &1);
                 unsafe{
                     let size = query_lzt(
@@ -179,18 +178,34 @@ impl FFI {
         qres
     }
 
-    pub fn generate_header(&self, i: usize, j: usize, paired: bool) -> Vec<u8> {
+    pub fn generate_header(&self, i: usize, j: usize, paired: bool, cpcnt: Vec<usize>) -> Vec<u8> {
         let mut vec: Vec<u8> = Vec::new();
+        let mut l = 0;
         for k in i..=j {
             if k > 0 {
                 if paired == true {
-                    let  header_f = format!(">@SFQ generated header, record nr. {:?} F \n",k);
-                    vec.extend(header_f.as_bytes().to_vec());
-                    let header_r = format!(">@SFQ generated header, record nr. {:?} R \n",k);
-                    vec.extend(header_r.as_bytes().to_vec());
+                    if cpcnt.len() == 0 {
+                        let  header_f = format!(">@SFQ generated header, record nr. {:?} F\n",k);
+                        let header_r = format!(">@SFQ generated header, record nr. {:?} R\n",k);
+                        vec.extend(header_f.as_bytes().to_vec());
+                        vec.extend(header_r.as_bytes().to_vec());
+                    } else {
+                        let  header_f = format!(">@SFQ generated header, record nr. {:?}, copies: {:?} F\n",k,cpcnt[l]);
+                        l += 1;
+                        let header_r = format!(">@SFQ generated header, record nr. {:?}, copies: {:?} R\n",k,cpcnt[l]);
+                        l += 1;
+                        vec.extend(header_f.as_bytes().to_vec());
+                        vec.extend(header_r.as_bytes().to_vec());
+                    }
                 } else {
-                    let header = format!(">@SFQ generated header, record nr. {:?} \n",k);
-                    vec.extend(header.as_bytes().to_vec());
+                    if cpcnt.len() == 0 {
+                        let header = format!(">@SFQ generated header, record nr. {:?}\n",k);
+                        vec.extend(header.as_bytes().to_vec());
+                    } else {
+                        let header = format!(">@SFQ generated header, record nr. {:?}, copies: {:?}\n",k,cpcnt[l]);
+                        vec.extend(header.as_bytes().to_vec());
+                        l += 1;
+                    }
                 }
             }
         }

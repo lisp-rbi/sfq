@@ -47,30 +47,35 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
         rev_input = cli.value_of("input-rev").unwrap();
     }
 
+    let mut fdb = Fdb::new(cli.value_of("infmt").unwrap());
+    fdb.lossy = if let Some(x) = cli.value_of("cmode") {
+        usize::from_str(x).unwrap()
+    } else {0 as usize};
+
     // If output name is defined in cli, use that
-    // otherwise: if it is paired-end take input-file name - ext + _FR.sfq
+    // otherwise: if it is paired-end take input-file name - ext + .FR.sfq
     //            if it is not paired-end, take input-file name - ext + .sfq
+    //            if lossy > 0, take input-file name - ext + .L<lossy>.sfq
     let mut stem_name = String::from(Path::new(fwd_input).file_stem().and_then(OsStr::to_str).unwrap());
     let output: &str = if let Some(_x) = cli.value_of("output") {
         cli.value_of("output").unwrap()
     } else {
         if let Some(_y) = cli.value_of("input-rev") {    
             stem_name.push_str(".FR");
-            &stem_name
         }
-        else {&stem_name}
+        if fdb.lossy > 0 {
+            stem_name.push_str(".L");
+            stem_name.push_str(&fdb.lossy.to_string());
+        }
+        &stem_name
     };
     let mut outdir = String::from(output);
     outdir.push_str(".sfq");
 
     if make_dir(&outdir) == false{ panic!("Creating output directory failed"); };
 
-    let mut fdb = Fdb::new(cli.value_of("infmt").unwrap());
-    if let Some(x) = cli.value_of("cmode") {
-        if x == "lossy" {fdb.lossy = true;}
-    }
     fdb.load(fwd_input,rev_input,&outdir,output);
-    let lossy: bool = fdb.lossy;
+    let lossy: usize = fdb.lossy;
 
     eprintln!(" {:.2?}", before.elapsed());
 
@@ -105,15 +110,19 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
                 tmp = format!("{}/{}.{}",outdir,output,"seq.tmp");
             },                                                          
             1 => {                                                      
-                if lossy == true {
+                out = format!("{}/{}.{}",outdir,output,"head.sfq");
+                tmp = format!("{}/{}.{}",outdir,output,"head.tmp");
+                if lossy == 2 {
+                    fs::remove_file(&tmp).unwrap();
+                    i += 1;
+                    continue;
+                } else if lossy > 2 {
                     i += 1;
                     continue;
                 }
-                out = format!("{}/{}.{}",outdir,output,"head.sfq");
-                tmp = format!("{}/{}.{}",outdir,output,"head.tmp");
             },                                                          
             _ => {                                                      
-                if lossy == true {
+                if lossy > 3 {
                     i += 1;
                     continue;
                 }

@@ -84,17 +84,16 @@ pub struct Fdb {
     pub line_length: usize,
     alpha: String,
     pub paired: bool,
-    pub lossy: bool,
+    pub lossy: usize,
     head: Vec<u8>,
     seq: Vec<u8>,
     qual: Vec<u8>,
     cpcnt: Vec<usize>
-
 }
 
 
 impl Fdb {
-    pub fn new (filetype: &str)-> Self{
+    pub fn new (filetype: &str) -> Self{
 
         let ftype : String   = match filetype {
             "fasta" | "fastq" => filetype.to_string(),
@@ -107,15 +106,13 @@ impl Fdb {
             line_length: 0,
             alpha: "ACGT".to_string(),
             paired: false,
-            lossy: false,
+            lossy: 0,
             head: Vec::new(),
             seq: Vec::new(),
             qual: Vec::new(),
             cpcnt: Vec::new()
         }
     }
-
-
 
     pub fn sort (&mut self, key: &str) ->  &mut Self  {
 

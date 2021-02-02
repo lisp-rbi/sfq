@@ -74,12 +74,21 @@ pub(crate) fn parse_cli ()->  clap::ArgMatches<'static> {
             .help("Action: (c) compress, (d) decompress, (g) get <requires --list > ")
             .takes_value(true))
 
-        .arg(Arg::with_name("cmode")
+        /*.arg(Arg::with_name("cmode")
             .short("s")
             .long("compression-mode")
             .default_value("complete")
             .required(false)
             .value_name("complete|lossy")
+            .help("Compression mode")
+            .takes_value(true))
+*/
+        .arg(Arg::with_name("cmode")
+            .short("s")
+            .long("compression-mode")
+            .default_value("0")
+            .required(false)
+            .value_name("1-7")
             .help("Compression mode")
             .takes_value(true))
 
