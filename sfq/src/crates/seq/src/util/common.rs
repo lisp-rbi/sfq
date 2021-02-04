@@ -61,7 +61,7 @@ impl Fdb{
 
     }
 
-    pub fn  encode (&mut self, a: usize, b: usize) -> Vec<u8>{
+    pub fn  encode (&mut self, a: usize, b: usize) -> Vec<u8> {
 
         let c = self.alpha.as_bytes().to_vec();
         let (mut v, mut res) = (vec![0u8;b],a);
@@ -96,7 +96,7 @@ impl Fdb{
         vec.push(94u8);
         vec.extend(self.lossy.to_string().as_bytes().to_vec());
         vec
-}
+    }
 
     pub(crate) fn compare_vslice(&self, va: &[u8], vb: &[u8]) -> bool {
 
@@ -116,7 +116,7 @@ impl Fdb{
         let free_disk_space = fs2::free_space(current_dir).unwrap() as f32;
         // check size of the file
         let file_size = fs::metadata(filename).unwrap().len() as f32;
-        // if file takes more than 1/3 of disk, it will it may clogg up the disk
+        // if file takes more than 1/3 of disk, it may clogg up the disk
         let ratio = (free_disk_space / file_size).ceil() as u32;
         if ratio < (4.0 as u32) {panic!("Not enough disk space for sorting!");}
         // check available RAM, take half of it
