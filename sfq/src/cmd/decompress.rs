@@ -110,6 +110,8 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
                             else {break;}
                         }
 
+                        if j > count {j = count;}
+
                         // take start prefix up to the point start and stop are equal
                         let prefix = enc_start[..e].to_vec();
                         let enc = str::from_utf8(&prefix).unwrap();
@@ -125,6 +127,10 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
                             let dis = deindex(&mut seq_out);
                             if fdb.lossy > 2 {cpcnt = remove_cpcnt(&mut seq_out);}
                             //eprintln!("LZT  {:?} \ndis:{:?}", String::from_utf8(seq_out.clone()).unwrap(),dis);
+                            /*let mut sum: u64 = 0;
+                            for nj in 0..cpcnt.len() {
+                                sum += cpcnt[nj] as u64;
+                            }*/
 
                             let mut numcnt  = 0;
                             for p in seq_out.iter(){
@@ -173,7 +179,6 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
                         j += inc;
                         i += inc;
 
-                        if j > count {j = count;}
 
                         fdb.save_append(output, cli.value_of("outfmt").unwrap());
                         fdb.clear();

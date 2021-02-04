@@ -203,7 +203,7 @@ impl Fdb{
     pub fn fastq_up_lossy<R: BufRead>(&mut self, fwd_reader: R, rev_reader: R, outdir: &str, output: &str) -> Result<bool,Error> {
 
         let mut cnt=0;
-        let mut r: usize = 1;
+        let mut r: usize = 0;
         let tmp_lossy = format!("{}/{}.lossy.tmp", outdir, output);
         let mut lossy_writer = self.make_append_writer(&tmp_lossy);
 
@@ -281,7 +281,7 @@ impl Fdb{
         //let mut head_writer = self.make_append_writer(&tmp_head_name);
         let mut seq_writer = self.make_append_writer(&tmp_seq_name);
         let mut qual_writer = self.make_append_writer(&tmp_qual_name);
-        if self.separate_lossy_tmp(&tmp_lossy,seq_writer,qual_writer,wlen) == false {panic!("Error!");}
+        if self.separate_lossy_tmp(&tmp_lossy,seq_writer,qual_writer,wlen,r) == false {panic!("Error!");}
         //if self.separate_lossy_tmp(&tmp_lossy,seq_writer,wlen,stats) == false {panic!("Error!");}
         //let _overwrite = Command::new("mv").arg(&tmp_lossy).arg(&tmp_seq_name).status().expect("Error in overwriting!");
         if self.paired == false {self.rm_file("dummy.txt");}
@@ -290,7 +290,7 @@ impl Fdb{
         else{Ok(false)}
     }
 
-    pub fn separate_lossy_tmp<W: Write>(&mut self, filename: &str, mut seq_writer: W, mut qual_writer: W, wlen: usize) -> bool {
+    pub fn separate_lossy_tmp<W: Write>(&mut self, filename: &str, mut seq_writer: W, mut qual_writer: W, wlen: usize, num_of_lines: usize) -> bool {
         let mut lossy_reader = self.make_reader(filename);
         let lines = lossy_reader.lines().map(|l| l.unwrap());
         let mut r: usize = 0;
@@ -300,7 +300,9 @@ impl Fdb{
         let mut fwd_qualities: Vec<u8> = Vec::new();
         let mut rev_qualities: Vec<u8> = Vec::new();
         let mut num_of_copies: usize = 0;
+        let mut line_number: usize = 0;
         for line in lines {
+            line_number += 1;
             let line_components: Vec<&str> = line.split(" ").collect();
             let fwd_seq_vector = line_components[0].as_bytes().to_vec();
             let mut rev_seq_vector: Vec<u8> = Vec::new();
@@ -380,6 +382,41 @@ impl Fdb{
                 qual_writer.write_all(&quality.as_bytes()).expect("Writing error!");
                 r += 1;
             }
+        }
+        {
+            let mut avrg_fwd_qual: Vec<u8> = Vec::new();
+            let mut avrg_rev_qual: Vec<u8> = Vec::new();
+            let mut sequence = String::from("");
+            let mut quality = String::from("");
+            sequence.push_str(str::from_utf8(&self.encode(r+1,wlen)).unwrap());
+            quality.push_str(str::from_utf8(&self.encode(r+1,wlen)).unwrap());
+            sequence.push_str("G^");
+            quality.push_str("G^");
+            sequence.push_str(str::from_utf8(&old_fwd_seq).unwrap());
+            sequence.push_str("b");
+            sequence.push_str(&*format!("{:010b}",num_of_copies));
+            sequence.push_str("\n");
+            avrg_fwd_qual = self.average_qualities(&fwd_qualities,num_of_copies);
+            let red_u8_quality = self.illumina_8lev_map(&mut avrg_fwd_qual);
+            quality.push_str(str::from_utf8(&red_u8_quality).unwrap());
+            quality.push_str("\n");
+            if self.paired == true {
+                sequence.push_str(str::from_utf8(&self.encode(r+1,wlen)).unwrap());
+                quality.push_str(str::from_utf8(&self.encode(r+1,wlen)).unwrap());
+                sequence.push_str("A^");
+                quality.push_str("A^");
+                sequence.push_str(str::from_utf8(&old_rev_seq).unwrap());
+                sequence.push_str("b");
+                sequence.push_str(&*format!("{:010b}",num_of_copies));
+                sequence.push_str("\n");
+                avrg_rev_qual = self.average_qualities(&rev_qualities,num_of_copies);
+                let red_u8_quality = self.illumina_8lev_map(&mut avrg_rev_qual);
+                quality.push_str(str::from_utf8(&red_u8_quality).unwrap());
+                quality.push_str("\n");
+            }
+            seq_writer.write_all(&sequence.as_bytes()).expect("Writing error!");
+            qual_writer.write_all(&quality.as_bytes()).expect("Writing error!");
+            r += 1;
         }
         self.numrec = r;
         let stats = self.make_stats(wlen);
