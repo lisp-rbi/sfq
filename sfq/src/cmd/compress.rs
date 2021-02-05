@@ -51,6 +51,11 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
     fdb.lossy = if let Some(x) = cli.value_of("cmode") {
         usize::from_str(x).unwrap()
     } else {0 as usize};
+    if fdb.lossy > 6 {
+        eprintln!("WARNING: allowed values of --lossy, -s are 0-6!");
+        eprintln!("I will return value to default (0), abort program if you disagree.");
+        fdb.lossy = 0;
+    }
 
     // If output name is defined in cli, use that
     // otherwise: if it is paired-end take input-file name - ext + .FR.sfq
@@ -122,7 +127,7 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
                 }
             },                                                          
             _ => {                                                      
-                if lossy > 3 {
+                if lossy > 4 {
                     i += 1;
                     continue;
                 }
@@ -132,7 +137,7 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
         };
 
         let mut lzt = FFI::new(&out,&tmp,mymem,memmod);
-        fs::remove_file(&tmp).unwrap();
+        //fs::remove_file(&tmp).unwrap();
         lzt.drop();
         let _x = match i {
             0 => {

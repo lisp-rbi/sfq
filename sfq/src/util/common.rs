@@ -358,11 +358,11 @@ pub fn deindex(v: &mut Vec<u8>) -> Vec<usize>  {
 pub fn encode (num: usize, word: usize, alpha: &Vec<u8> ) -> Vec<u8> {
 
     let mut v = vec![0u8;word];
-    let mut rmd = 0;
+    //let mut rmd = 0;
     let mut res = num;
 
     for i in 0..word {
-        rmd = res%4;
+        let rmd = res%4;
         res = res/4;
         v[word-(i+1)] = alpha[rmd];
     }

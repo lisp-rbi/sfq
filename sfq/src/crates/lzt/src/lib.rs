@@ -28,7 +28,7 @@ pub trait Drop{
 #[derive(Debug, Clone)]
 pub struct FFI {
     raw: Vec<*mut LztObj>,
-    pub num_of_lzt: u8,
+    pub num_of_lzt: u64,
 }
 
 impl FFI {
@@ -81,7 +81,7 @@ impl FFI {
 
         FFI {
             raw: lzt_vec,
-            num_of_lzt: (j-1) as u8,
+            num_of_lzt: (j-1),
         }
     }
 

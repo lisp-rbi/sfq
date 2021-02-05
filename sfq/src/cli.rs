@@ -88,7 +88,7 @@ pub(crate) fn parse_cli ()->  clap::ArgMatches<'static> {
             .long("compression-mode")
             .default_value("0")
             .required(false)
-            .value_name("1-7")
+            .value_name("0-6")
             .help("Compression mode")
             .takes_value(true))
 

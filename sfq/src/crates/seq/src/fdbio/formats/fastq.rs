@@ -272,22 +272,19 @@ impl Fdb{
         }
 
         lossy_writer.flush().expect("Error in flushing");
-        //let stats = self.make_stats(wlen);
         //self.sort_file(&tmp_lossy,&outdir).expect("Error in sorting file!");
         if self.sort_lines(&tmp_lossy,outdir) == false {panic!("Sorting not successful");}
-        //lossy_writer.write_all(str::from_utf8(&stats).unwrap().as_bytes()).expect("writing error!");
-        //lossy_writer.flush().expect("Error in flushing");
-        //let tmp_c_name: &str = &tmp_lossy.replace("lossy","head");
+        //let tmp_head_name: &str = &tmp_lossy.replace("lossy","head");
         let tmp_seq_name: &str = &tmp_lossy.replace("lossy","seq");
         let tmp_qual_name: &str = &tmp_lossy.replace("lossy","qual");
         //let mut head_writer = self.make_append_writer(&tmp_head_name);
         let mut seq_writer = self.make_append_writer(&tmp_seq_name);
-        if self.lossy == 3 { 
+        if self.lossy == 3 || self.lossy == 4 { 
             let mut qual_writer = self.make_append_writer(&tmp_qual_name);
-            if self.separate_lossy_tmp(&tmp_lossy,seq_writer,qual_writer,wlen,r) == false {panic!("Error!");}
+            if self.separate_lossy_tmp(&tmp_lossy,seq_writer,qual_writer,wlen) == false {panic!("Error!");}
         }
-        else if self.lossy > 3 {
-            if self.prepare_very_lossy_tmp(&tmp_lossy,seq_writer,wlen,r) == false {panic!("Error!");}
+        else if self.lossy > 4 {
+            if self.prepare_very_lossy_tmp(&tmp_lossy,seq_writer,wlen) == false {panic!("Error!");}
         }
         //let _overwrite = Command::new("mv").arg(&tmp_lossy).arg(&tmp_seq_name).status().expect("Error in overwriting!");
         if self.paired == false {self.rm_file("dummy.txt");}
@@ -296,7 +293,7 @@ impl Fdb{
         else{Ok(false)}
     }
 
-    pub fn separate_lossy_tmp<W: Write>(&mut self, filename: &str, mut seq_writer: W, mut qual_writer: W, wlen: usize, num_of_lines: usize) -> bool {
+    pub fn separate_lossy_tmp<W: Write>(&mut self, filename: &str, mut seq_writer: W, mut qual_writer: W, wlen: usize) -> bool {
         let mut lossy_reader = self.make_reader(filename);
         let lines = lossy_reader.lines().map(|l| l.unwrap());
         let mut r: usize = 0;
@@ -306,9 +303,7 @@ impl Fdb{
         let mut fwd_qualities: Vec<u8> = Vec::new();
         let mut rev_qualities: Vec<u8> = Vec::new();
         let mut num_of_copies: usize = 0;
-        let mut line_number: usize = 0;
         for line in lines {
-            line_number += 1;
             let line_components: Vec<&str> = line.split(" ").collect();
             let fwd_seq_vector = line_components[0].as_bytes().to_vec();
             let mut rev_seq_vector: Vec<u8> = Vec::new();
@@ -346,8 +341,12 @@ impl Fdb{
                 sequence.push_str(&*format!("{:010b}",num_of_copies));
                 sequence.push_str("\n");
                 avrg_fwd_qual = self.average_qualities(&fwd_qualities,num_of_copies);
-                let red_u8_quality = self.illumina_8lev_map(&mut avrg_fwd_qual);
-                quality.push_str(str::from_utf8(&red_u8_quality).unwrap());
+                if self.lossy == 3 {
+                    quality.push_str(str::from_utf8(&avrg_fwd_qual).unwrap());
+                } else if self.lossy == 4 {
+                    let red_u8_quality = self.illumina_8lev_map(&mut avrg_fwd_qual);
+                    quality.push_str(str::from_utf8(&red_u8_quality).unwrap());
+                }
                 quality.push_str("\n");
                 if self.paired == true {
                     sequence.push_str(str::from_utf8(&self.encode(r+1,wlen)).unwrap());
@@ -359,8 +358,12 @@ impl Fdb{
                     sequence.push_str(&*format!("{:010b}",num_of_copies));
                     sequence.push_str("\n");
                     avrg_rev_qual = self.average_qualities(&rev_qualities,num_of_copies);
-                    let red_u8_quality = self.illumina_8lev_map(&mut avrg_rev_qual);
-                    quality.push_str(str::from_utf8(&red_u8_quality).unwrap());
+                    if self.lossy == 3 {
+                        quality.push_str(str::from_utf8(&avrg_rev_qual).unwrap());
+                    } else if self.lossy == 4 {
+                        let red_u8_quality = self.illumina_8lev_map(&mut avrg_rev_qual);
+                        quality.push_str(str::from_utf8(&red_u8_quality).unwrap());
+                    }
                     quality.push_str("\n");
                 }
                 num_of_copies = 1;
@@ -395,8 +398,12 @@ impl Fdb{
             sequence.push_str(&*format!("{:010b}",num_of_copies));
             sequence.push_str("\n");
             avrg_fwd_qual = self.average_qualities(&fwd_qualities,num_of_copies);
-            let red_u8_quality = self.illumina_8lev_map(&mut avrg_fwd_qual);
-            quality.push_str(str::from_utf8(&red_u8_quality).unwrap());
+            if self.lossy == 3 {
+                quality.push_str(str::from_utf8(&avrg_fwd_qual).unwrap());
+            } else if self.lossy == 4 {
+                let red_u8_quality = self.illumina_8lev_map(&mut avrg_fwd_qual);
+                quality.push_str(str::from_utf8(&red_u8_quality).unwrap());
+            }
             quality.push_str("\n");
             if self.paired == true {
                 sequence.push_str(str::from_utf8(&self.encode(r+1,wlen)).unwrap());
@@ -408,8 +415,12 @@ impl Fdb{
                 sequence.push_str(&*format!("{:010b}",num_of_copies));
                 sequence.push_str("\n");
                 avrg_rev_qual = self.average_qualities(&rev_qualities,num_of_copies);
-                let red_u8_quality = self.illumina_8lev_map(&mut avrg_rev_qual);
-                quality.push_str(str::from_utf8(&red_u8_quality).unwrap());
+                if self.lossy == 3 {
+                    quality.push_str(str::from_utf8(&avrg_rev_qual).unwrap());
+                } else if self.lossy == 4 {
+                    let red_u8_quality = self.illumina_8lev_map(&mut avrg_rev_qual);
+                    quality.push_str(str::from_utf8(&red_u8_quality).unwrap());
+                }
                 quality.push_str("\n");
             }
             seq_writer.write_all(&sequence.as_bytes()).expect("Writing error!");
@@ -422,11 +433,11 @@ impl Fdb{
         qual_writer.write_all(str::from_utf8(&stats).unwrap().as_bytes()).expect("writing error!");
         seq_writer.flush().expect("Error in flushing");
         qual_writer.flush().expect("Error in flushing");
-        fs::remove_file(filename).expect("Error in removing file!"); 
+        //fs::remove_file(filename).expect("Error in removing file!"); 
         true
     }
 
-    pub fn prepare_very_lossy_tmp<W: Write>(&mut self, filename: &str, mut seq_writer: W, wlen: usize, num_of_lines: usize) -> bool {
+    pub fn prepare_very_lossy_tmp<W: Write>(&mut self, filename: &str, mut seq_writer: W, wlen: usize) -> bool {
         let mut lossy_reader = self.make_reader(filename);
         let lines = lossy_reader.lines().map(|l| l.unwrap());
         let mut r: usize = 0;
@@ -436,9 +447,7 @@ impl Fdb{
         let mut fwd_qualities: Vec<u8> = Vec::new();
         let mut rev_qualities: Vec<u8> = Vec::new();
         let mut num_of_copies: usize = 0;
-        let mut line_number: usize = 0;
         for line in lines {
-            line_number += 1;
             let line_components: Vec<&str> = line.split(" ").collect();
             let fwd_seq_vector = line_components[0].as_bytes().to_vec();
             let mut rev_seq_vector: Vec<u8> = Vec::new();
@@ -471,9 +480,9 @@ impl Fdb{
                 sequence.push_str(&*format!("{:010b}",num_of_copies));
                 sequence.push_str(" ");
                 avrg_fwd_qual = self.average_qualities(&fwd_qualities,num_of_copies);
-                if self.lossy == 4 {
+                if self.lossy == 5 {
                     sequence.push_str(str::from_utf8(&avrg_fwd_qual).unwrap());
-                } else if self.lossy == 5 {
+                } else if self.lossy == 6 {
                     let red_u8_quality = self.illumina_8lev_map(&mut avrg_fwd_qual);
                     sequence.push_str(str::from_utf8(&red_u8_quality).unwrap());
                 }
@@ -484,9 +493,9 @@ impl Fdb{
                     sequence.push_str(&*format!("{:010b}",num_of_copies));
                     sequence.push_str(" ");
                     avrg_rev_qual = self.average_qualities(&rev_qualities,num_of_copies);
-                    if self.lossy == 4 {
+                    if self.lossy == 5 {
                         sequence.push_str(str::from_utf8(&avrg_rev_qual).unwrap());
-                    } else if self.lossy == 5 {
+                    } else if self.lossy == 6 {
                         let red_u8_quality = self.illumina_8lev_map(&mut avrg_rev_qual);
                         sequence.push_str(str::from_utf8(&red_u8_quality).unwrap());
                     }
@@ -518,9 +527,9 @@ impl Fdb{
             sequence.push_str(&*format!("{:010b}",num_of_copies));
             sequence.push_str(" ");
             avrg_fwd_qual = self.average_qualities(&fwd_qualities,num_of_copies);
-            if self.lossy == 4 {
+            if self.lossy == 5 {
                 sequence.push_str(str::from_utf8(&avrg_fwd_qual).unwrap());
-            } else if self.lossy == 5 {
+            } else if self.lossy == 6 {
                 let red_u8_quality = self.illumina_8lev_map(&mut avrg_fwd_qual);
                 sequence.push_str(str::from_utf8(&red_u8_quality).unwrap());
             }
@@ -531,9 +540,9 @@ impl Fdb{
                 sequence.push_str(&*format!("{:010b}",num_of_copies));
                 sequence.push_str(" ");
                 avrg_rev_qual = self.average_qualities(&rev_qualities,num_of_copies);
-                if self.lossy == 4 {
+                if self.lossy == 5 {
                     sequence.push_str(str::from_utf8(&avrg_rev_qual).unwrap());
-                } else if self.lossy == 5 {
+                } else if self.lossy == 6 {
                     let red_u8_quality = self.illumina_8lev_map(&mut avrg_rev_qual);
                     sequence.push_str(str::from_utf8(&red_u8_quality).unwrap());
                 }
