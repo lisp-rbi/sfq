@@ -433,7 +433,7 @@ impl Fdb{
         qual_writer.write_all(str::from_utf8(&stats).unwrap().as_bytes()).expect("writing error!");
         seq_writer.flush().expect("Error in flushing");
         qual_writer.flush().expect("Error in flushing");
-        //fs::remove_file(filename).expect("Error in removing file!"); 
+        fs::remove_file(filename).expect("Error in removing file!"); 
         true
     }
 
