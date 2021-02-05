@@ -65,30 +65,33 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
 
                     if let Some(x) = cli.value_of("input") {
                         let stem_name = String::from(Path::new(cli.value_of("input").unwrap()).file_stem().and_then(OsStr::to_str).unwrap());
-                        if fdb.lossy < 2 {head = format!("{}/{}.{}",x,stem_name,"head.sfq");}
+                        head = format!("{}/{}.{}",x,stem_name,"head.sfq");
                         seq  = format!("{}/{}.{}",x,stem_name,"seq.sfq");
                         qual = format!("{}/{}.{}",x,stem_name,"qual.sfq");
                     }
 
                     let ( mut count, mut alpha, mut wlen) = (0,Vec::new(),0);
 
-                    let mut head_lzt = if fdb.lossy > 1 {FFI::empty()} else {FFI::open(&head,memmod)};
                     let mut seq_lzt  = FFI::open(&seq,memmod);
                     let mut qual_lzt = if q {FFI::open(&qual,memmod)} else {FFI::empty()};
 
-                    {
-                        let mut head_stats = (0 as usize, Vec::new(), 0 as usize, false, 0 as usize);
-                        if fdb.lossy < 2 { head_stats = get_stats(&head_lzt.get_records("~~~~~^",&-1));}
-                        let seq_stats = get_stats( &seq_lzt.get_records("~~~~~^",&-1));
+                    let seq_stats = get_stats( &seq_lzt.get_records("~~~~~^",&-1));
 
-                        if fdb.lossy < 2 {assert_eq!(seq_stats,head_stats);}
+                    count = seq_stats.0;
+                    alpha = seq_stats.1.clone();
+                    wlen  = seq_stats.2;
+                    fdb.set_model(seq_stats.3);
+                    if fdb.lossy != seq_stats.4 {
+                        eprintln!("WARNING: lossy level written in Trie not reflected in naming convention.");
+                        eprintln!("I will consider lossy level from Trie as correct");
+                        fdb.lossy = seq_stats.4;
+                    }
 
-                        count = seq_stats.0;
-                        alpha = seq_stats.1;
-                        wlen  = seq_stats.2;
-                        fdb.set_model(seq_stats.3);
-                        assert_eq!(fdb.lossy, seq_stats.4);
-
+                    let mut head_lzt = if fdb.lossy > 1 {FFI::empty()} else {FFI::open(&head,memmod)};
+                    let mut head_stats = (0 as usize, Vec::new(), 0 as usize, false, 0 as usize);
+                    if fdb.lossy < 2 { 
+                        head_stats = get_stats(&head_lzt.get_records("~~~~~^",&-1));
+                        assert_eq!(seq_stats,head_stats);
                     }
 
                     let pow : usize = if wlen <= exponent {(wlen as usize)-1} else {exponent};

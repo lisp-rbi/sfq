@@ -61,25 +61,24 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
     // otherwise: if it is paired-end take input-file name - ext + .FR.sfq
     //            if it is not paired-end, take input-file name - ext + .sfq
     //            if lossy > 0, take input-file name - ext + .L<lossy>.sfq
-    let mut stem_name = String::from(Path::new(fwd_input).file_stem().and_then(OsStr::to_str).unwrap());
-    let output: &str = if let Some(_x) = cli.value_of("output") {
-        cli.value_of("output").unwrap()
+    let mut output = if let Some(_x) = cli.value_of("output") {
+        String::from(cli.value_of("output").unwrap())
     } else {
-        if let Some(_y) = cli.value_of("input-rev") {    
-            stem_name.push_str(".FR");
-        }
-        if fdb.lossy > 0 {
-            stem_name.push_str(".L");
-            stem_name.push_str(&fdb.lossy.to_string());
-        }
-        &stem_name
+        String::from(Path::new(fwd_input).file_stem().and_then(OsStr::to_str).unwrap())
     };
-    let mut outdir = String::from(output);
+    if let Some(_y) = cli.value_of("input-rev") {    
+        output.push_str(".FR");
+    }
+    if fdb.lossy > 0 {
+        output.push_str(".L");
+        output.push_str(&fdb.lossy.to_string());
+    }
+    let mut outdir = output.clone();
     outdir.push_str(".sfq");
 
     if make_dir(&outdir) == false{ panic!("Creating output directory failed"); };
 
-    fdb.load(fwd_input,rev_input,&outdir,output);
+    fdb.load(fwd_input,rev_input,&outdir,&output);
     let lossy: usize = fdb.lossy;
 
     eprintln!(" {:.2?}", before.elapsed());
