@@ -7,6 +7,7 @@ use std::str::FromStr;
 use std::fs;
 use std::path::Path;
 use std::ffi::OsStr;
+use std::process;
 
 use seq::{
     Fdb,
@@ -52,9 +53,9 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
         usize::from_str(x).unwrap()
     } else {0 as usize};
     if fdb.lossy > 6 {
-        eprintln!("WARNING: allowed values of --lossy, -s are 0-6!");
-        eprintln!("I will return value to default (0), abort program if you disagree.");
-        fdb.lossy = 0;
+        eprintln!("ERROR: allowed values of --lossy, -s are 0-6!");
+        eprintln!("Inserted value: {:?}\nAborting...", fdb.lossy);
+        process::exit(0);
     }
 
     // If output name is defined in cli, use that
