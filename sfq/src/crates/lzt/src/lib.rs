@@ -33,13 +33,12 @@ pub struct FFI {
 
 impl FFI {
 
-    pub fn new( path : &str, tmp_path: &str, mem: usize, mmode: bool) -> Self {
+    pub fn new( path : &str, tmp_path: &str, mem: usize, mmode: bool) {
 
         // convert available memory into bytes, one sign is one byte
         // for each byte of data, we need ~52 bytes of RAM, put 55 for safety
         let mut available_mem: u64 = ((mem * 1024) / 55).try_into().unwrap();
 
-        let mut lzt_vec : Vec<*mut LztObj> = Vec::new();
         let mut end_of_file : bool = false;
         let mut start: u64 = 0;
         let mut end: u64 = 0;
@@ -63,25 +62,11 @@ impl FFI {
                     // FXME: add it to error management
                         panic!("Error with creating lzt index!");
                 };
-
-                lzt_vec.push(
-                    open_lzt(
-                        pth.as_ptr(),
-                        pth.len() as libc::c_int,
-                        CASHSIZE as libc::c_int,
-                        mmode
-                    )
-                );
             }
 
             // in new Trie, start where we last stopped
             start = end;
             j += 1;
-        }
-
-        FFI {
-            raw: lzt_vec,
-            num_of_lzt: (j-1),
         }
     }
 

@@ -164,7 +164,7 @@ vector<vector<TSymbol> >* readWordsFromFileVecVec(string file) {
 bool write_list(string path, FlatWordList<TSymbol> fwords, unsigned long wln){
     string listname = path + "/list";
     ofstream listfile;
-    listfile.open(listname);
+    listfile.open(listname.c_str());
     bool write = true;
 
     for (size_t i = 0; i < fwords.length; ++i) {

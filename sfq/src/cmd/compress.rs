@@ -136,9 +136,8 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
             }
         };
 
-        let mut lzt = FFI::new(&out,&tmp,mymem,memmod);
+        FFI::new(&out,&tmp,mymem,memmod);
         fs::remove_file(&tmp).unwrap();
-        lzt.drop();
         let _x = match i {
             0 => {
                 eprintln!("Time spent on sequence compression: {:.2?}", inner_before.elapsed());
