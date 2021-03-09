@@ -27,13 +27,19 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
     eprintln!("Total RAM at your disposal = {:?} KB", mem_info().unwrap().total);
     // a flag to signal whether we count memory for compression or we take lines
     // from the input
-    let mymem : usize = if let Some(x) = cli.value_of("fragment-size") {
+    let mut mymem : usize = if let Some(x) = cli.value_of("fragment-size") {
         // use all available RAM minus 100MB for safety
         if x == "Max" {(mem_info().unwrap().total - 102400) as usize}
         // user assigns RAM to compress at a time, convert to KB
         else{usize::from_str(x).unwrap() * 1024}
     // if nothing is defined, take 100MB RAM and work with that
     } else {102400};
+
+    if mymem > (mem_info().unwrap().total - 102400) as usize {
+        eprintln!("WARNING: you assigned more RAM than available!");
+        eprintln!("I will reduce it to an acceptable ammount...");
+        mymem = (mem_info().unwrap().total - 102400) as usize;
+    }
 
     let memmod : bool = if let Some(x) = cli.value_of("mem-mod") {
         if x == "R" {true}
@@ -76,10 +82,15 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
     }
     let mut outdir = output.clone();
     outdir.push_str(".sfq");
+    let restart: bool = if let Some(x) = cli.value_of("restart") {
+        if x == "yes" {true}
+        else {false}
+    } else {false};
+    if restart == false {
+        if make_dir(&outdir) == false{ panic!("Creating output directory failed"); };
 
-    if make_dir(&outdir) == false{ panic!("Creating output directory failed"); };
-
-    fdb.load(fwd_input,rev_input,&outdir,&output);
+        fdb.load(fwd_input,rev_input,&outdir,&output);
+    }
     let lossy: usize = fdb.lossy;
 
     eprintln!(" {:.2?}", before.elapsed());
@@ -135,8 +146,11 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
                 tmp = format!("{}/{}.{}",outdir,output,"qual.tmp");
             }
         };
+        // if we want to restart compression and tmp-file doesn't exist, 
+        // we assume it is already compressed and thus, erased
+        if restart == true && fs::metadata(&out).is_ok() == false { continue; }
 
-        FFI::new(&out,&tmp,mymem,memmod);
+        FFI::new(&out,&tmp,mymem,memmod,restart);
         fs::remove_file(&tmp).unwrap();
         let _x = match i {
             0 => {

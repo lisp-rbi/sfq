@@ -33,7 +33,7 @@ pub struct FFI {
 
 impl FFI {
 
-    pub fn new( path : &str, tmp_path: &str, mem: usize, mmode: bool) {
+    pub fn new( path : &str, tmp_path: &str, mem: usize, mmode: bool, restart: bool) {
 
         // convert available memory into bytes, one sign is one byte
         // for each byte of data, we need ~52 bytes of RAM, put 55 for safety
@@ -49,8 +49,28 @@ impl FFI {
             end_of_file = read_tmp(&tmp_path,&mut v,start,&mut end,&mut available_mem);
             let pth = format!("{}.{}", path, j.to_string());
             if fs::metadata(&pth).is_ok() == true {
-                if fs::metadata(&pth).unwrap().is_file() == true {fs::remove_file(&pth).unwrap();}
-                else {fs::remove_dir_all(&pth).unwrap();}
+                if restart == true && 
+                fs::metadata(&format!("{}/{}",path,"CompactArrayFields.bin")).unwrap().is_file() == true &&
+                fs::metadata(&format!("{}/array/{}",path,"BitSequenceArray.bin")).unwrap().is_file() == true &&
+                fs::metadata(&format!("{}/array/{}",path,"DiskCharArrayChars.bin")).unwrap().is_file() == true &&
+                fs::metadata(&format!("{}/array/{}",path,"DiskCharArrayFields.bin")).unwrap().is_file() == true &&
+                fs::metadata(&format!("{}/numofwords/{}",path,"BitSequenceArray.bin")).unwrap().is_file() == true &&
+                fs::metadata(&format!("{}/numofwords/{}",path,"DiskCharArrayChars.bin")).unwrap().is_file() == true &&
+                fs::metadata(&format!("{}/numofwords/{}",path,"DiskCharArrayFields.bin")).unwrap().is_file() == true &&
+                fs::metadata(&format!("{}/siblings/{}",path,"BitSequenceArray.bin")).unwrap().is_file() == true &&
+                fs::metadata(&format!("{}/siblings/{}",path,"DiskCharArrayChars.bin")).unwrap().is_file() == true &&
+                fs::metadata(&format!("{}/siblings/{}",path,"DiskCharArrayFields.bin")).unwrap().is_file() == true &&
+                fs::metadata(&format!("{}/symbols/{}",path,"BitSequenceArray.bin")).unwrap().is_file() == true &&
+                fs::metadata(&format!("{}/symbols/{}",path,"CompactSymbolArrayFields.bin")).unwrap().is_file() == true &&
+                fs::metadata(&format!("{}/symbols/{}",path,"CompactSymbolArraySymbols.bin")).unwrap().is_file() == true &&
+                fs::metadata(&format!("{}/symbols/{}",path,"DiskCharArrayChars.bin")).unwrap().is_file() == true &&
+                fs::metadata(&format!("{}/symbols/{}",path,"DiskCharArrayFields.bin")).unwrap().is_file() == true {
+                    j += 1;
+                    continue;
+                } else {
+                    if fs::metadata(&pth).unwrap().is_file() == true {fs::remove_file(&pth).unwrap();}
+                    else {fs::remove_dir_all(&pth).unwrap();}
+                }
             }
             unsafe {
                 if make_lzt(

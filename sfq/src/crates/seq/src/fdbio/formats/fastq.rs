@@ -192,6 +192,9 @@ impl Fdb{
         if self.lossy < 2 {head_writer.write_all(str::from_utf8(&stats).unwrap().as_bytes()).expect("writing error!");}
         seq_writer.write_all(str::from_utf8(&stats).unwrap().as_bytes()).expect("writing error!");
         qual_writer.write_all(str::from_utf8(&stats).unwrap().as_bytes()).expect("writing error!");
+        head_writer.flush().expect("Error in flushing");
+        seq_writer.flush().expect("Error in flushing");
+        qual_writer.flush().expect("Error in flushing");
 
         //println!("{}:{}\n{:?}\n{:?}\n{:?}", self.seq.len(), self.seq[self.seq.len()-1], String::from_utf8(self.seq.clone()), String::from_utf8(self.qual.clone()), String::from_utf8(self.head.clone()));
         if self.paired == false {self.rm_file("dummy.txt");}

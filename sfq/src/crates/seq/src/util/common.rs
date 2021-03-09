@@ -27,9 +27,10 @@ use sys_info::mem_info;
 impl Fdb{
 
     pub fn clear(&mut self) -> &mut Self {
-        self.head.resize(0,0x00);
-        self.seq.resize(0,0x00);
-        self.qual.resize(0,0x00);
+        self.head = Vec::new();
+        self.seq = Vec::new();
+        self.qual = Vec::new();
+        self.cpcnt = Vec::new();
         self.numrec = 0;
 
         self

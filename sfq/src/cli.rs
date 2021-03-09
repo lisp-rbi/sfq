@@ -158,6 +158,16 @@ pub(crate) fn parse_cli ()->  clap::ArgMatches<'static> {
             .help("Exponent of the alphabet length, that determines the size of the batch for simultaneous decompression. Works only with -a d.")
             .takes_value(true))
 
+        .arg(Arg::with_name("restart")
+            .short("r")
+            .long("restart")
+            .required(false)
+            .default_value("no")
+            .value_name("no|yes")
+            .hidden(true)
+            .help("Restart process from tmp files.")
+            .takes_value(true))
+
         .get_matches();
 
     matches
