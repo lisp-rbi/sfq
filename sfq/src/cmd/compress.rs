@@ -14,8 +14,7 @@ use seq::{
     Load,
 };
 use lzt::{
-    FFI,
-    Drop
+    FFI
 };
 
 pub fn compress (cli: ArgMatches<'static>) -> bool {
@@ -147,10 +146,12 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
             }
         };
         // if we want to restart compression and tmp-file doesn't exist, 
-        // we assume it is already compressed and thus, erased
-        if restart == true && fs::metadata(&out).is_ok() == false { continue; }
+        // we assume the component is already compressed and, thus, tmp erased
+        if restart == true && fs::metadata(&tmp).is_ok() == false { 
+            i += 1;
+            continue; }
 
-        FFI::new(&out,&tmp,mymem,memmod,restart);
+        FFI::new(&out,&tmp,mymem,restart);
         fs::remove_file(&tmp).unwrap();
         let _x = match i {
             0 => {

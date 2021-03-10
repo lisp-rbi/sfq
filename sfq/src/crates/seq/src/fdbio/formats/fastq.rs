@@ -19,11 +19,10 @@
 
 use crate::{Fdb,Get};
 use crate::util::error::Error;
-use std::io::{self, prelude::*,  Write, BufWriter};
+use std::io::{prelude::*,  Write};
 use std::string::String;
 use std::str;
 use std::fs;
-use std::process::Command;
 
 // function to read fastq files
 impl Fdb{
@@ -206,7 +205,6 @@ impl Fdb{
     pub fn fastq_up_lossy<R: BufRead>(&mut self, fwd_reader: R, rev_reader: R, outdir: &str, output: &str) -> Result<bool,Error> {
 
         let mut cnt=0;
-        let mut r: usize = 0;
         let tmp_lossy = format!("{}/{}.lossy.tmp", outdir, output);
         let mut lossy_writer = self.make_append_writer(&tmp_lossy);
 
@@ -235,7 +233,6 @@ impl Fdb{
                     line_string.push_str(str::from_utf8(&red_u8_quality).unwrap());
                 } else if self.lossy == 3 {line_string.push_str(&fwd_line);}*/
                 line_string.push_str(&fwd_line);
-                r += 1;
                 cnt = 0;
                 if self.paired == true {
                     line_string.push_str(" ");
@@ -275,12 +272,9 @@ impl Fdb{
         }
 
         lossy_writer.flush().expect("Error in flushing");
-        //self.sort_file(&tmp_lossy,&outdir).expect("Error in sorting file!");
         if self.sort_lines(&tmp_lossy,outdir) == false {panic!("Sorting not successful");}
-        //let tmp_head_name: &str = &tmp_lossy.replace("lossy","head");
         let tmp_seq_name: &str = &tmp_lossy.replace("lossy","seq");
         let tmp_qual_name: &str = &tmp_lossy.replace("lossy","qual");
-        //let mut head_writer = self.make_append_writer(&tmp_head_name);
         let mut seq_writer = self.make_append_writer(&tmp_seq_name);
         if self.lossy == 3 || self.lossy == 4 { 
             let mut qual_writer = self.make_append_writer(&tmp_qual_name);
@@ -289,7 +283,6 @@ impl Fdb{
         else if self.lossy > 4 {
             if self.prepare_very_lossy_tmp(&tmp_lossy,seq_writer,wlen) == false {panic!("Error!");}
         }
-        //let _overwrite = Command::new("mv").arg(&tmp_lossy).arg(&tmp_seq_name).status().expect("Error in overwriting!");
         if self.paired == false {self.rm_file("dummy.txt");}
 
         if self.numrec > 0 {Ok(true)}

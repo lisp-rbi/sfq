@@ -33,7 +33,7 @@ pub struct FFI {
 
 impl FFI {
 
-    pub fn new( path : &str, tmp_path: &str, mem: usize, mmode: bool, restart: bool) {
+    pub fn new( path : &str, tmp_path: &str, mem: usize, restart: bool) {
 
         // convert available memory into bytes, one sign is one byte
         // for each byte of data, we need ~52 bytes of RAM, put 55 for safety
@@ -50,21 +50,25 @@ impl FFI {
             let pth = format!("{}.{}", path, j.to_string());
             if fs::metadata(&pth).is_ok() == true {
                 if restart == true && 
-                fs::metadata(&format!("{}/{}",path,"CompactArrayFields.bin")).unwrap().is_file() == true &&
-                fs::metadata(&format!("{}/array/{}",path,"BitSequenceArray.bin")).unwrap().is_file() == true &&
-                fs::metadata(&format!("{}/array/{}",path,"DiskCharArrayChars.bin")).unwrap().is_file() == true &&
-                fs::metadata(&format!("{}/array/{}",path,"DiskCharArrayFields.bin")).unwrap().is_file() == true &&
-                fs::metadata(&format!("{}/numofwords/{}",path,"BitSequenceArray.bin")).unwrap().is_file() == true &&
-                fs::metadata(&format!("{}/numofwords/{}",path,"DiskCharArrayChars.bin")).unwrap().is_file() == true &&
-                fs::metadata(&format!("{}/numofwords/{}",path,"DiskCharArrayFields.bin")).unwrap().is_file() == true &&
-                fs::metadata(&format!("{}/siblings/{}",path,"BitSequenceArray.bin")).unwrap().is_file() == true &&
-                fs::metadata(&format!("{}/siblings/{}",path,"DiskCharArrayChars.bin")).unwrap().is_file() == true &&
-                fs::metadata(&format!("{}/siblings/{}",path,"DiskCharArrayFields.bin")).unwrap().is_file() == true &&
-                fs::metadata(&format!("{}/symbols/{}",path,"BitSequenceArray.bin")).unwrap().is_file() == true &&
-                fs::metadata(&format!("{}/symbols/{}",path,"CompactSymbolArrayFields.bin")).unwrap().is_file() == true &&
-                fs::metadata(&format!("{}/symbols/{}",path,"CompactSymbolArraySymbols.bin")).unwrap().is_file() == true &&
-                fs::metadata(&format!("{}/symbols/{}",path,"DiskCharArrayChars.bin")).unwrap().is_file() == true &&
-                fs::metadata(&format!("{}/symbols/{}",path,"DiskCharArrayFields.bin")).unwrap().is_file() == true {
+                fs::metadata(&format!("{}/array",pth)).is_ok() == true &&
+                fs::metadata(&format!("{}/numofwords",pth)).is_ok() == true &&
+                fs::metadata(&format!("{}/siblings",pth)).is_ok() == true &&
+                fs::metadata(&format!("{}/symbols",pth)).is_ok() == true &&
+                fs::metadata(&format!("{}/CompactArrayFields.bin",pth)).unwrap().is_file() == true &&
+                fs::metadata(&format!("{}/array/BitSequenceArray.bin",pth)).unwrap().is_file() == true &&
+                fs::metadata(&format!("{}/array/DiskCharArrayChars.bin",pth)).unwrap().is_file() == true &&
+                fs::metadata(&format!("{}/array/DiskCharArrayFields.bin",pth)).unwrap().is_file() == true &&
+                fs::metadata(&format!("{}/numofwords/BitSequenceArray.bin",pth)).unwrap().is_file() == true &&
+                fs::metadata(&format!("{}/numofwords/DiskCharArrayChars.bin",pth)).unwrap().is_file() == true &&
+                fs::metadata(&format!("{}/numofwords/DiskCharArrayFields.bin",pth)).unwrap().is_file() == true &&
+                fs::metadata(&format!("{}/siblings/BitSequenceArray.bin",pth)).unwrap().is_file() == true &&
+                fs::metadata(&format!("{}/siblings/DiskCharArrayChars.bin",pth)).unwrap().is_file() == true &&
+                fs::metadata(&format!("{}/siblings/DiskCharArrayFields.bin",pth)).unwrap().is_file() == true &&
+                fs::metadata(&format!("{}/symbols/BitSequenceArray.bin",pth)).unwrap().is_file() == true &&
+                fs::metadata(&format!("{}/symbols/CompactSymbolArrayFields.bin",pth)).unwrap().is_file() == true &&
+                fs::metadata(&format!("{}/symbols/CompactSymbolArraySymbols.bin",pth)).unwrap().is_file() == true &&
+                fs::metadata(&format!("{}/symbols/DiskCharArrayChars.bin",pth)).unwrap().is_file() == true &&
+                fs::metadata(&format!("{}/symbols/DiskCharArrayFields.bin",pth)).unwrap().is_file() == true {
                     j += 1;
                     continue;
                 } else {
