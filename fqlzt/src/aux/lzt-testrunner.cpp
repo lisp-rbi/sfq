@@ -9,10 +9,10 @@
 using namespace std;
 
 int main(int argc, char** argv) {
-    //runSerializationTests();
-    //runSymbolArrayTests();
+    runSerializationTests();
+    runSymbolArrayTests();
     runCompactArrayTests();
-    //runCacheTests();
+    runCacheTests();
     return 0;
 }
 
