@@ -157,3 +157,35 @@ vector<vector<TSymbol> >* readWordsFromFileVecVec(string file) {
     delete words;
     return vvwords;
 }
+
+/**
+ * Writes a list of corresponding prefixes to a file.
+ */
+bool write_list(string path, FlatWordList<TSymbol> fwords, unsigned long wln){
+    string listname = path + "/list";
+    ofstream listfile;
+    listfile.open(listname.c_str());
+    bool write = true;
+
+    for (size_t i = 0; i < fwords.length; ++i) {
+        if (*fwords.words == zeroSymbol<TSymbol>()){
+	    write = true;
+            fwords.words++;
+	    continue;
+	} 
+	else if (*fwords.words == *stringToTSymbolString("^")){
+	    listfile << endl;
+            write = false;
+            fwords.words++;
+	    continue;
+	} 
+	else if (*fwords.words == *stringToTSymbolString("~")){
+	    break;
+	}
+        if (write) listfile << *fwords.words;
+        fwords.words++;
+    }
+
+    listfile.close();
+    return true;
+}

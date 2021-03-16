@@ -286,7 +286,6 @@ void CompactArray<TSymbol, TIndex, TBitSequenceArray>::writeFieldsToStream(ostre
 
 template <typename TSymbol, typename TIndex, typename TBitSequenceArray>
 void CompactArray<TSymbol, TIndex, TBitSequenceArray>::readFieldsFromStream(istream& stream) {
-    // numOfDistinct = SerializationUtils::integerFromStream<size_t>(stream);
     numOfDistinct = SerializationUtils::integerFromStream<size_t>(stream);
     numOfNodes = SerializationUtils::integerFromStream<size_t>(stream);
     bitsPerIndex = SerializationUtils::integerFromStream<size_t>(stream);

@@ -1,10 +1,49 @@
-use std::io::{self, prelude::*, stdout, Write, Read, BufReader, BufWriter};
-use std::fs::File;
+//use std::io::{prelude::*, stdout, Write, Read, BufReader, BufWriter};
+use std::fs::{metadata,remove_file,remove_dir_all,create_dir};
+use std::str;
+use std::mem;
 use regex::Regex;
 use rand::prelude::*;
 use fxhash::FxHashSet;
 
-pub fn make_key(pos: usize, alpha: usize, word: usize) -> String{
+/*pub fn save_tmp(filename: &str, vec: &mut Vec<u8>) -> bool{
+
+    let mut file = File::create(filename).expect("Unable to create file");
+    for elem in vec {
+        if *elem == 0u8 { 
+            let result = match write!(file,"{}\n",elem){
+                Ok(result) => result,
+                Err(e) => panic!("Error in writing to file {}", filename),
+            };
+        } else {
+            let result = match write!(file,"{} ",elem){
+                Ok(result) => result,
+                Err(e) => panic!("Error in writing to file {}", filename),
+            };
+        }
+
+    }
+    true
+}*/
+
+pub fn make_dir(dirname: &str) -> bool{
+    if metadata(&dirname).is_ok() == true {
+        if metadata(&dirname).unwrap().is_file() == true {
+            remove_file(&dirname).unwrap();
+        }else {
+            remove_dir_all(&dirname).unwrap();
+        }
+    } else {
+        eprintln!("Creating output directory {}.", dirname);
+    }
+    let _result = match create_dir(dirname){
+        Ok(_result) => _result,
+        Err(_e) => panic!("Error in creating directory {}", dirname),
+    };
+    true
+}
+
+/*pub fn make_key(pos: usize, alpha: usize, word: usize) -> String{
 
     let mut i = pos;
     let mut s = "".to_string();
@@ -89,7 +128,7 @@ pub fn index(v: &Vec<u8>, cp: &Vec<usize>) -> (Vec<u8>, usize, usize,String) {
     let alpha ="ACGT".to_string(); // this should be dynamyc
 
     let (cnt,wlen)= comp_wlen(&cp, alpha.clone());
-        eprintln!("Bug in common l:89");
+        //eprintln!("Bug in common l:89");
     let mut vec = vec![0u8;v.len()+ ((cnt+1)*wlen*3)+(2*cnt)+2];
 
     let (mut x, mut y, r, f, t ) = (0,0,'A' as u8, 'G' as u8, '^' as u8);
@@ -142,7 +181,7 @@ pub fn hindex(v: &Vec<u8>, cp: &Vec<usize>) ->  (Vec<u8>, usize, usize,String)  
     let alpha ="ACGT".to_string(); // this should be dynamyc
     let (cnt,wlen)= comp_wlen(&cp, alpha.clone());
 
-    eprintln!("Bug in common l:140 {} {}", cnt, wlen);
+    //eprintln!("Bug in common l:140 {} {}", cnt, wlen);
     let mut vec = vec![0u8;v.len()*2 + ((cnt+1)*6*wlen)+2*(cnt+2)];
     let (mut x, mut y, r, f, t ) = (0,0,'A' as u8, 'G' as u8, '^' as u8);
 
@@ -242,7 +281,7 @@ pub fn tsv_encode(v: &Vec<u8>, p: bool) -> Vec<u8> {
 
     vec
 
-}
+}*/
 
 
 
@@ -272,26 +311,27 @@ pub fn deindex(v: &mut Vec<u8>) -> Vec<usize>  {
             v[j] = *i;j+=1;
             print = false;
 
-        }else if  *i == 94u8 {
+        }else if *i == 94u8 {
             if print == false{
                 print = true;
-            }else{
+            } else {
                 print = false;
-                b= e+1;
+                b = e + 1;
             }
             continue;
         }
 
         if print == true {
-            v[j] = *i;j+=1;
+            v[j] = *i;
+            j += 1;
         }
     }
 
-    if singleton {eprintln!("Singleton is true");}
+    //if singleton {eprintln!("Singleton is true");}
 
-    if print == true  || singleton == true{
+    if print == true || singleton == true {
         vec[x] = 1;
-    }else{
+    } else {
         vec[x] = decode(&v[b..v.len()].to_vec(), &b"ACGT".to_vec())+1;
         //j+=1;
     }
@@ -318,11 +358,11 @@ pub fn deindex(v: &mut Vec<u8>) -> Vec<usize>  {
 pub fn encode (num: usize, word: usize, alpha: &Vec<u8> ) -> Vec<u8> {
 
     let mut v = vec![0u8;word];
-    let mut rmd = 0;
+    //let mut rmd = 0;
     let mut res = num;
 
     for i in 0..word {
-        rmd = res%4;
+        let rmd = res%4;
         res = res/4;
         v[word-(i+1)] = alpha[rmd];
     }
@@ -356,7 +396,7 @@ pub fn decode (code: &Vec<u8>, alpha: &Vec<u8> ) -> usize {
     in: hhhhhh\tbbbbbb\thhhhhh\tbbbbbb\thhhhhh\tbbbbbb\n
     out: hhhhhh\thhhhhh\thhhhhh\n
 */
-pub fn parse_head(v: Vec<u8>) -> Vec<u8> {
+/*pub fn parse_head(v: Vec<u8>) -> Vec<u8> {
 
     let mut vec = vec![0u8;v.len()];
     let mut x = 0;
@@ -405,23 +445,27 @@ pub fn parse_codex (codex: &str) -> (usize,String) {
     let vec : Vec<_> = codex.split('|').collect();
     (vec[1].parse::<usize>().unwrap(),vec[0].to_string())
 
-}
+}*/
 
 
-pub fn get_stats(st: &Vec<u8>) -> (usize,Vec<u8>,usize, bool) {
+pub fn get_stats(st: &Vec<u8>) -> (usize,Vec<u8>,usize,bool,usize) {
 
-    let mut stats_vec: Vec<_> = st.split(|i| *i == 94u8).collect();
+    let stats_vec: Vec<_> = st.split(|i| *i == 94u8).collect();
 
     let num_of_rec = std::str::from_utf8(stats_vec[1]).unwrap().parse::<usize>().unwrap();
     let alpha      = stats_vec[2].to_owned();
     let padding    = std::str::from_utf8(stats_vec[3]).unwrap().parse::<usize>().unwrap();
+    // if unpaired. model is 48u8 (false), if paired 49u8 (true)
     let model = if stats_vec[4][0] == 48u8 {false} else  {true};
+    let mut lossy = 0; 
+    if stats_vec.len() == 6 {
+        lossy = std::str::from_utf8(stats_vec[5]).unwrap().parse::<usize>().unwrap();
+    }
 
-    (num_of_rec,alpha,padding, model)
-
+    (num_of_rec,alpha,padding,model,lossy)
 }
 
-pub fn make_stats(num_of_rec: usize, alpha: String, padding: usize, model: bool) -> Vec<u8> {
+/*pub fn make_stats(num_of_rec: usize, alpha: String, padding: usize, model: bool) -> Vec<u8> {
 
     let mut vec : Vec<u8> = Vec::new();
 
@@ -438,12 +482,8 @@ pub fn make_stats(num_of_rec: usize, alpha: String, padding: usize, model: bool)
         vec.push(48u8);
     }
 
-
     vec
-
-
-
-}
+}*/
 
 pub fn parse_conditional(text: &str) -> (String,String){
 
@@ -472,4 +512,36 @@ pub fn make_rand_uvec(num: usize, max: usize) -> Vec<usize>{
     }
 
     uvec
+}
+
+/*  function to remove the number of repeated sequences in binary
+ *  before: ACTTGCb0000000001
+ *  after:  ACTTGC
+ *  note: 98u8 is ASCII for b, 10u8 is for \n
+ */
+pub fn remove_cpcnt(v: &mut Vec<u8>) -> Vec<usize> {
+    let mut cpcnt: Vec<usize> = Vec::new();
+    let mut tmp_count: Vec<u8> = Vec::new();
+    let mut result: Vec<u8> = Vec::new();
+    let mut copy: bool = true;
+    let mut i: usize = 1;
+    for element in v.clone() {
+        if element == 98u8 {
+            copy = false;
+            i += 1;
+            continue;
+        } else if element == 10u8 || i == v.len() { 
+            if i == v.len() { tmp_count.push(element);}
+            let count = isize::from_str_radix(std::str::from_utf8(&tmp_count).unwrap(),2).unwrap();
+            cpcnt.push(count as usize);
+            tmp_count = Vec::new();
+            if element == 10u8 { copy = true; }
+        }
+        if copy == true { result.push(element); }
+        else { if i < v.len() {tmp_count.push(element);} }
+        i += 1;
+    }
+    let mut old_v = mem::replace(v, result);
+    old_v.clear();
+    cpcnt
 }

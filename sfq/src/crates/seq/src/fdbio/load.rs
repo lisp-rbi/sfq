@@ -17,39 +17,50 @@
  */
 
 use crate::{Load, Fdb};
+use std::process;
 
 
 impl Load for Fdb {
 
-    fn load(&mut self, path: &str, direction: bool) -> &mut Self{
+    fn load(&mut self, fwd_path: &str, rev_path: &str, outdir: &str, output: &str) -> &mut Self{
 
-        let reader = self.make_reader(path);
-
-        if self.head.len() > 0 {
-            self.head.extend(b"\n");
-        }
-        if self.seq.len() > 0 {
-            self.seq.extend(b"\n");
-        }
-        if self.qual.len() > 0 {
-            self.qual.extend(b"\n");
+        let fwd_reader = self.make_reader(fwd_path);
+        let rev_reader = self.make_reader(rev_path);
+        if rev_path.len() > 0 {self.paired = true;}
+        let mut num_of_lines = self.count_lines(&fwd_path).unwrap();
+        let mut rev_num_of_lines: u64 = 0;
+        if self.paired == true {rev_num_of_lines = self.count_lines(&rev_path).unwrap();}
+        if (self.paired == true) && num_of_lines > rev_num_of_lines {
+            eprintln!("WARNING: Numrec in reverse file < numrec in forward!");
+            eprintln!("I will proceed anyways....");
+        } else if (self.paired == true) && num_of_lines < rev_num_of_lines {
+            eprintln!("WARNING: Numrec in reverse file > numrec in forward!");
+            eprintln!("I will proceed anyways....");
+            num_of_lines = rev_num_of_lines;
         }
 
         match &self.format[..] {
             "fastq" => {
-
-                if let Ok(false) = self.fastq_up(reader,direction) {
-                    panic!("{} file not uploaded !", self.format);
-                };
-
-
+                self.numrec = (num_of_lines as usize) / 4;
+                self.cpcnt = vec![1;(self.numrec+2)*2];
+                if self.lossy > 2 {
+                    if let Ok(false) = self.fastq_up_lossy(fwd_reader,rev_reader,outdir,output) {
+                        panic!("{} file not uploaded !", self.format);
+                    };
+                    //process::exit(0);
+                } else {
+                    if let Ok(false) = self.fastq_up(fwd_reader,rev_reader,outdir,output) {
+                        panic!("{} file not uploaded !", self.format);
+                    };
+                    //process::exit(0);
+                }
             },
             "fasta" => {
-
-                if let Ok(false) = self.fasta_up(reader,direction) {
+                self.numrec = num_of_lines as usize;
+                self.cpcnt = vec![1;(self.numrec+2)*2];
+                if let Ok(false) = self.fasta_up(fwd_reader,rev_reader,outdir,output) {
                     panic!("{} file not uploaded !", self.format);
                 };
-
             },
             _       => {
                 panic!("format not supported!");

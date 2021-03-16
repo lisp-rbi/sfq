@@ -21,11 +21,11 @@ use crate::util::error::Error;
 use fxhash::FxHashMap;
 
 // utility of this function is to sort sequences by their dna strings and and compute
-// hom many copies of a same string exists  -> this information is returned to the main program
+// how many copies of a same string exists  -> this information is returned to the main program
 // and once encountered -> the first is written down and the number of copies is added using the
-// same codec while oll the rest are skippedd  // qualities are not touched
+// same codec while all the rest are skippedd  // qualities are not touched
 //
-// this makes no sence :
+// this makes no sense :
 
 impl Counter for Fdb {
 

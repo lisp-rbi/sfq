@@ -238,7 +238,7 @@ void LCPTreeCompressor<TNodeArray>::createIntervalTree() {
 //    cout << endl << endl;
     assert(lcpTreeSize <= N);
     // resize lcpTree array to actual number of nodes
-    lcpTree = (TLcpTreeNode *)realloc(lcpTree, lcpTreeSize * sizeof(TLcpTreeNode));
+    //lcpTree = (TLcpTreeNode *)realloc(lcpTree, lcpTreeSize * sizeof(TLcpTreeNode));
     if (config.pyramid) {
         start = (TIndex *)realloc(start, lcpTreeSize * sizeof(TIndex));
         end = (TIndex *)realloc(end, lcpTreeSize * sizeof(TIndex));
@@ -931,7 +931,16 @@ void LCPTreeCompressor<TNodeArray>::freeMemAfterCompress() {
 // free memory at the end of the entire compression process
 template <typename TNodeArray>
 void LCPTreeCompressor<TNodeArray>::freeMemory() {
-    replaced.resize(0);
+
+//replaced.resize(0);
+    replaced.freeBlocks();
+    repStart.freeBlocks();
+    repEnd.freeBlocks();
+
+
+    // longest common prefix array
+    TIndex* lcp;
+
     if (config.visualize) vstream.close();
 }
 

@@ -16,11 +16,11 @@
  * <http://www.doctrine-project.org>.
  */
 
-use snafu::{ErrorCompat, ResultExt, Snafu};
+//use snafu::{ErrorCompat, ResultExt, Snafu};
+use snafu::{Snafu};
 
 use std::{
-    fs,
-    path::{Path, PathBuf},
+    path::{PathBuf},
 };
 
 #[derive(Debug, Snafu)]

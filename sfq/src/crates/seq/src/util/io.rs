@@ -17,7 +17,7 @@
  */
 
 use crate::Fdb;
-use std::io::{self, prelude::*, stdout, Write, Read, BufReader, BufWriter};
+use std::io::{self, prelude::*, Write, Read, BufReader, BufWriter};
 use std::fs::{File,OpenOptions};
 use std::fs;
 
@@ -28,6 +28,13 @@ impl Fdb{
         let tmp : Box<dyn Read> = match file {
             "stdin" => {
                 Box::new(io::stdin())
+            },
+            "" => {
+                let dummyfile: &str = "dummy.txt";
+                File::create(dummyfile)
+                    .expect(&(format!("Error creating {} file",dummyfile)));
+                Box::new(File::open(dummyfile)
+                    .expect(&(format!("Error opening {:?} file",dummyfile))))
             },
             _       => {
                 Box::new(File::open(file)
@@ -69,13 +76,57 @@ impl Fdb{
     }
 
     pub fn rm_file (&mut self, file: &str)-> bool {
-
         if fs::metadata(file).is_ok() == true {
                 fs::remove_file(file).unwrap();
-
         }
-
         true
     }
 
+    pub fn count_lines(&mut self, path: &str) -> Result<u64, String> {
+    
+        let mut reader = self.make_reader(&path);
+        //let mut reader = BufReader::new(Box::new(File::open(path)
+        //            .expect(&(format!("Error opening {} file",path)))));
+        let mut num_of_lines: u64 = 0;
+        let mut line = String::from("");
+    
+        loop{
+            match reader.read_line(&mut line) {
+                Ok( _ ) => {
+                        if line.len() == 0 {break;}
+                        if &self.format == "fasta" {
+                            if &line[..1] == ">" {num_of_lines += 1;}
+                        } else if &self.format == "fastq" {
+                            num_of_lines += 1;
+                        }
+                        line.clear();
+                },
+                Err(why) => return Err(why.to_string())
+            };
+        }
+        Ok(num_of_lines)
+    }
+
+    pub fn sort_file(&mut self, path: &str, outdir: &str) -> Result<bool, String> {
+        //let mut file = OpenOptions::new().read(true).write(true).open(path).expect("Error opening file");
+        //let mut file = File::open(path).expect("file error");
+        //let reader = BufReader::new(&mut file);
+        let mut reader = self.make_reader(&path);
+        //let mut lines: Vec<_> = reader.lines().map(|l| l.expect("Couldn't read a line")).collect();
+        let mut lines = reader.lines().map(|l| l.unwrap());
+        //if lines.len() == 0 { return Err("Empty file".to_string());}
+        //eprintln!("lines.len() = {:?}", lines.len());
+        //lines.sort();
+        //eprintln!("lines.len() = {:?}", lines.len());
+        for line in lines {eprintln!("{:?}", line);}
+        let mut tmp_path = outdir.to_owned();
+        tmp_path.push_str("sorted.tmp");
+        /*let mut tmp_file = File::create(tmp_path.clone()).expect("file error");
+        for mut line in lines {
+            line.push_str("\n");
+            tmp_file.write_all(line.as_bytes()).expect("Couldn't write to file");
+        }
+        fs::rename(tmp_path, path).expect("Error in renaming temporary file.");*/
+        Ok(true)
+   }
 }

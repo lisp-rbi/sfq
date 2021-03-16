@@ -69,7 +69,7 @@ private:
             }
 
             // last (fictional) character (at index N) is smaller than all the others
-            if (i2 == N) return false;            
+            if (i2 == N) return false;
             else return true;
         }
 
@@ -114,7 +114,7 @@ template <typename TNodeArray>
 void SuffixStructCreator<TNodeArray>::readSuffixArray() {
     ifstream ifile(saFileName.c_str());
     ifile >> N;
-    suffArray = new TIndex[N+1];    
+    suffArray = new TIndex[N+1];
     for (TIndex i = 0; i <= N; ++i)
         ifile >> suffArray[i];
 }
@@ -139,7 +139,7 @@ typename TNodeArray::Index* SuffixStructCreator<TNodeArray>::createSAwithSort() 
 
         SACompare comp(*nodes);
         sort(suffArray, suffArray + N, comp);
-        
+
         if (saFile) writeSuffixArray();
     }
 
@@ -177,7 +177,7 @@ int* SuffixStructCreator<TNodeArray>::indexNodes() {
     map<TNode, int> inodes; // map of nodes to their ordinal number
 
     for (TIndex i = 0; i < N; ++i)
-        inodes[(*nodes)[i]] = 0;    
+        inodes[(*nodes)[i]] = 0;
 
     typename  map<TNode, int>::iterator it; int i = 0;
     for (it = inodes.begin(); it != inodes.end(); ++it, ++i) {
@@ -192,7 +192,7 @@ int* SuffixStructCreator<TNodeArray>::indexNodes() {
     }
     indexArray[N] = 0;
 
-    return indexArray;    
+    return indexArray;
 }
 
 template <typename TNodeArray>
@@ -242,6 +242,7 @@ typename TNodeArray::Index* SuffixStructCreator<TNodeArray>::createLCPArray() {
         l = l > 1 ? l-1 : 0;
     }
     lcp[N] = 0;
+    delete [] inverseSA;
 
     return lcp;
 }
@@ -341,4 +342,3 @@ typename TNodeArray::Index* SuffixStructCreator<TNodeArray>::createLPFPosArray()
 }
 
 #endif	/* SACOMPRESSORBASE_HPP */
-

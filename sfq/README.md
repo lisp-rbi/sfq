@@ -2,16 +2,15 @@
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)]( )
 
-With the advent of next generation sequencing, challenges associate with storage, transmission, and analysis of the generated HTS data have became a major stepping stone, preventing the fast pace research within the field.  Terabytes of uncompressed data per individual per experiment have deprecated transmission protocols down to shipping WGS data via cheap HDD through regular mail. This holds even in cases when files are being compressed with state of the art compression algorithms.
 
-Though compressing the data alleviates storage associated difficulties and downscale the cost of transmission, it does nothing when it comes to analyses. Especially in situations when only a fraction of data is required for executing an analysis. In such cases, each compression strategy requires for an entire dataset to be, at least temporarily, extracted. This introduces two new challenges:
 
-  a) a lower limit on computational resources required when conducting a given analysis   
-  b) a breach of regulatory requirements as set by GDPR
+With the advent of high throughput sequencing (HTS), challenges associate with storage, transmission, and analysis of generated HTS data has became a major stepping stone for fast pace processing as that required in clinical diagnostics. Terabytes of uncompressed data per individual/experiment have deprecated transmission protocols down to transactions involving cheap HDD’s and classic post-office delivery. This holds true even for compressed records!
 
-SFQ is a succinct data structure for fast(a/q) flat file formatted data sets. In size it rivals even the most advanced compression data models while at the same time supports random access to individual records. Random access is a main prerequisite for achieving strict GDPR compliance and thus SFQ presents the only tool on the market able to support GDPR complaint queries over personal gnomic information. Moreover, the same feature allows for downstream analysis to be executed without "a priori" data assembly as done by most of the compression solutions currently available.
+Compression is a process of downsizing the information content of a given record down to its bare minimum, sufficient for full (optimal) reconstruction of the original source. As such its primary focus is on models and functions that can be utilized to achieve this goal. While the functionality is sufficient for designing and implementing general purpose data storage solutions, HTS data facility usually requires more that that. Frequent access to reads from various experiments/samples require specific data sets typically to be kept separately as ZIP-ed files preventing redundancy between files to be utilized in compression. sfq is a succinct data structure for representing fast(a/q) flat file formatted data which is designed not to only store files, but to provide an option to randomly access stored records without "a prior" decompressing the stored file. This is a crucial feature for targeted bioinformatics analyses where only specific records need to be retrieved in order to be processed. Consider an analysis where samples are multiplexed. Usually the first step in handling such data is to extract each derived fastq file, demultiplex samples and compress them individually. With sfq one has the opportunity to capitalize on redundancy between samples, given no separation step is required thus increasing a compression rate while containing the entire batch associated to one experiment in a single file. Moreover, such feature provides an option to directly access and transmit the information over a network form a single source, thus simplifying the design and cost of maintaining HTS storage facilities, while at the same time increasing the yeald of transmitted useful information.
 
-As such SFQ represents a novel solution and a leap in data storage, transmission and analysis, of HTS information.
+sfq in size rivals even the most advanced compression strategies outperforming current compression algorithms by more that 15% with no memory overhead associated to retrieval and decompression of targeted records and O(N) compression/decompression time (N - the size the input file).
+
+As such sfq represents a novel solution and a leap in data storage, transmission and analysis, of HTS information.
 
 
 ## Installation protocol
@@ -51,7 +50,7 @@ This will compile the source to `./target/release/`
 
 
 
-sfq 0.1.7
+sfq 0.2.2
 Robert Bakaric <rbakaric@irb.hr>, Damir Korencic<dkorencic@irb.hr>
 
     ______     ______   ______    	
@@ -605,9 +604,10 @@ sfq	HiSeq	Decompress	Disc	NoLimit	-	47.046225
 sfq	HiSeq	Decompress	Disc	NoLimit	-	582.450215
 sfq	HiSeq	Decompress	Disc	NoLimit	-	6894.860908
 
+
 #Memory
 
-#Tool	Data	Process	Mode	Size	IO	MemMax(B)
+#Tool	Data	Process	Mode	Size	IO	MemMax(MB)
 spring	NovaSeq	Compress	-	NoLimit	-	1
 spring	NovaSeq	Compress	-	NoLimit	sp35	360697856.00
 spring	NovaSeq	Compress	-	NoLimit	sp350	520544256.00
@@ -655,64 +655,72 @@ sfq	HiSeq	Decompress	Disc	NoLimit	-	109764608.00
 # Disc
 
 #Tool	Data	Process	Mode	Size	IO	DiscUsageFlags:Input	Output
-spring	NovaSeq	Compress	-	NoLimit	-	7088000	820000
-spring	NovaSeq	Compress	-	NoLimit	sp35	70808000	7452000
-spring	NovaSeq	Compress	-	NoLimit	sp350	707944000	56752000
-spring	NovaSeq	Compress	-	NoLimit	sp3500	7079840000	390076000
-spring	NovaSeq	Decompress	DR	NoLimit	-	820000	7088000
-spring	NovaSeq	Decompress	DR	NoLimit	-	7452000	70808000
-spring	NovaSeq	Decompress	DR	NoLimit	-	56752000	707944000
-spring	NovaSeq	Decompress	DR	NoLimit	-	390076000	7079840000
-sfq	NovaSeq	Compress	-	NoLimit	-	7088000	1772000
-sfq	NovaSeq	Compress	-	NoLimit	sf35	70808000	15144000
-sfq	NovaSeq	Compress	-	NoLimit	sf350	707952000	136220000
-sfq	NovaSeq	Compress	-	NoLimit	sf3500	7079840000	1195592000
-sfq	NovaSeq	Decompress	Ram	NoLimit	-	1772000	7088000
-sfq	NovaSeq	Decompress	Ram	NoLimit	-	15144000	70808000
-sfq	NovaSeq	Decompress	Ram	NoLimit	-	136220000	707952000
-sfq	NovaSeq	Decompress	Ram	NoLimit	-	1195592000	7059176000
-sfq	NovaSeq	Decompress	Disc	NoLimit	-	1772000	5836000
-sfq	NovaSeq	Decompress	Disc	NoLimit	-	15144000	69596000
-sfq	NovaSeq	Decompress	Disc	NoLimit	-	136220000	705604000
-sfq	NovaSeq	Decompress	Disc	NoLimit	-	1195592000	7059176000
-spring	HiSeq	Compress	-	NoLimit	-	6248000	580000
-spring	HiSeq	Compress	-	NoLimit	-	62832000	5572000
-spring	HiSeq	Compress	-	NoLimit	-	632656000	56180000
-spring	HiSeq	Compress	-	NoLimit	-	6366320000	579144000
-spring	HiSeq	Decompress	DR	NoLimit	-	580000	6248000
-spring	HiSeq	Decompress	DR	NoLimit	-	5572000	62732000
-spring	HiSeq	Decompress	DR	NoLimit	-	56180000	632656000
-spring	HiSeq	Decompress	DR	NoLimit	-	579144000	6366320000
-sfq	HiSeq	Compress	-	NoLimit	-	6248000	1604000
-sfq	HiSeq	Compress	-	NoLimit	-	62732000	14088000
-sfq	HiSeq	Compress	-	NoLimit	-	632656000	145740000
-sfq	HiSeq	Compress	-	NoLimit	-	6366320000	1520592000
-sfq	HiSeq	Decompress	Ram	NoLimit	-	1604000	6248000
-sfq	HiSeq	Decompress	Ram	NoLimit	sf35	14088000	62732000
-sfq	HiSeq	Decompress	Ram	NoLimit	sf350	145740000	632656000
-sfq	HiSeq	Decompress	Ram	NoLimit	sf3500	1520592000	6366320000
-sfq	HiSeq	Decompress	Disc	NoLimit	-	1604000	6248000
-sfq	HiSeq	Decompress	Disc	NoLimit	-	14088000	62732000
-sfq	HiSeq	Decompress	Disc	NoLimit	-	145740000	632656000
-sfq	HiSeq	Decompress	Disc	NoLimit	-	1520592000	6366320000
-
+spring	NovaSeq	Compress	-	NoLimit	-	7252960	839680
+spring	NovaSeq	Compress	-	NoLimit	sp35	72499216	7628800
+spring	NovaSeq	Compress	-	NoLimit	sp350	724934628	58112000
+spring	NovaSeq	Compress	-	NoLimit	sp3500	7249746500	399431680
+spring	NovaSeq	Decompress	DR	NoLimit	-	839680	7252960
+spring	NovaSeq	Decompress	DR	NoLimit	-	7628800	72499216
+spring	NovaSeq	Decompress	DR	NoLimit	-	58112000	724934628
+spring	NovaSeq	Decompress	DR	NoLimit	-	399431680	7249746500
+sfq	NovaSeq	Compress	-	NoLimit	-	7252960	1661026
+sfq	NovaSeq	Compress	-	NoLimit	sf35	72499216	15347138
+sfq	NovaSeq	Compress	-	NoLimit	sf350	724934628	139345172
+sfq	NovaSeq	Compress	-	NoLimit	sf3500	7249746500	1224129828
+sfq	NovaSeq	Decompress	Ram	NoLimit	-	1661026	7272960
+sfq	NovaSeq	Decompress	Ram	NoLimit	-	15347138	72699216
+sfq	NovaSeq	Decompress	Ram	NoLimit	-	139345172	726934628
+sfq	NovaSeq	Decompress	Ram	NoLimit	-	1224129828	7269746500
+sfq	NovaSeq	Decompress	Disc	NoLimit	-	1661026	7272960
+sfq	NovaSeq	Decompress	Disc	NoLimit	-	15347138	72699216
+sfq	NovaSeq	Decompress	Disc	NoLimit	-	139345172	726934628
+sfq	NovaSeq	Decompress	Disc	NoLimit	-	1224129828	7269746500
+spring	HiSeq	Compress	-	NoLimit	-	6411604	593920
+spring	HiSeq	Compress	-	NoLimit	-	64411192	5703680
+spring	HiSeq	Compress	-	NoLimit	-	649221192	57528320
+spring	HiSeq	Compress	-	NoLimit	-	6533764532	593039360
+spring	HiSeq	Decompress	DR	NoLimit	-	593920	6396038
+spring	HiSeq	Decompress	DR	NoLimit	-	5703680	64235422
+spring	HiSeq	Decompress	DR	NoLimit	-	57528320	647837634
+spring	HiSeq	Decompress	DR	NoLimit	-	593039360	6519102018
+sfq	HiSeq	Compress	-	NoLimit	-	6411604	1497349
+sfq	HiSeq	Compress	-	NoLimit	-	64411192	14268545
+sfq	HiSeq	Compress	-	NoLimit	-	649221192	149079430
+sfq	HiSeq	Compress	-	NoLimit	-	6533764532	1556927028
+sfq	HiSeq	Decompress	Ram	NoLimit	-	1497349	6416038
+sfq	HiSeq	Decompress	Ram	NoLimit	sf35	14268545	64435422
+sfq	HiSeq	Decompress	Ram	NoLimit	sf350	149079430	649837634
+sfq	HiSeq	Decompress	Ram	NoLimit	sf3500	1556927028	6539102018
+sfq	HiSeq	Decompress	Disc	NoLimit	-	1497349	6416038
+sfq	HiSeq	Decompress	Disc	NoLimit	-	14268545	64435422
+sfq	HiSeq	Decompress	Disc	NoLimit	-	149079430	649837634
+sfq	HiSeq	Decompress	Disc	NoLimit	-	1556927028	6539102018
 
 ```
 
-
-### results
-
-
-InputSize X Time
-
-### Memory measurments  
-
-InputSize X memory
+Random Access VS Sequential Access   
 
 
-### Disk usage
+Plot illustrated Runtime preformance of random access to 1000 records as a function of number of compressed records. Illustration was repeated 5 times with averages being only plotted
 
- InputSize X CompressedSize
+
+
+![Results](https://bitbucket.org/mirda_root/fastqlzt/downloads/RandomAccVSSeqAcc.png)
+
+
+SSD Access VS HDD Access   
+
+
+Plot illustrated Runtime performance associated to access to records stored on SSD  vs those stored on HDD. No difference was observed
+
+
+
+![Results](https://bitbucket.org/mirda_root/fastqlzt/downloads/Runtime_SSD_vs_HDD.svg.png)
+
+
+
+
+
 
 
 ## CLI Integration Testing

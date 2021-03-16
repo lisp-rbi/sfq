@@ -32,6 +32,7 @@ FlatWordList<TSymbol> wordList2Flatwords(WordList<TSymbol>* words);
 /**************** MISC HELPER FUNCTIONS ****************/
 FlatWordList<TSymbol> readWordsFromFile(string file);
 vector<vector<TSymbol> >* readWordsFromFileVecVec(string file);
+bool write_list(string path, FlatWordList<TSymbol> fwords, unsigned long wln);
 /**************************************************************/
 
 #endif /* LZT_UTILS_H */

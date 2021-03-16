@@ -29,8 +29,9 @@ public:
 
     void writeToStream(ostream& stream) const;
     void readFromStream(istream& stream);
+    void freeBlocks();
 
-private:    
+private:
 
     // size in bits
     size_t size;
@@ -40,10 +41,10 @@ private:
     static int const BLOCK_SIZE = sizeof(char);
     static char const ONE = 1;
 
-    char* blocks;   
+    char* blocks;
 
     void reallocateBlocks();
-    void freeBlocks();
+    
 
 };
 
@@ -94,4 +95,3 @@ inline void BitVector::setSequence(size_t startBit, BitSequence seq, int seqSize
 }
 
 #endif	/* BITVECTOR_H */
-

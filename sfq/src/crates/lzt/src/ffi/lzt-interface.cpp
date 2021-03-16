@@ -17,10 +17,13 @@ bool createTrie(TSymbol* words, long length, string fname, bool sortWords) {
     // create folder if it does not exist
     if (accessible_filename(fname, "") == "") {
         bool res = create_directory(fname);
+	// write a list of prefixes to a CSV, not needed for now
+        //bool list_written = write_list(fname,fwords,length);
         if (!res) return false;
     }
     bool res = builder.buildSaveCompactArray(wlist, fname, "");
     delete wlist;
+
     return res;
 }
 
@@ -32,7 +35,6 @@ TLzTrie* loadTrie(string trieFolder, bool mem) {
     TCompactArrayDisk* nodeArrayDisk = new TCompactArrayDisk();
     TCompactArrayMem* nodeArrayMem = NULL;
     TCompactArray* nodeArray = NULL;
-    //cout<<"Trie folder:"<<trieFolder<<endl;
     nodeArrayDisk->load(trieFolder);
     if (mem) {
         CompactArrayBuilder<TSymbol, TIndex, TCompactArrayDisk> builder;
@@ -55,9 +57,10 @@ TLzTrie* loadTrie(string trieFolder, bool mem) {
  */
 vector<TSymbol > queryTrie(TLzTrie* trie, vector<TSymbol> query) {
     TSymbol* nativeQuery = symbolVec2array(query);
+    vector<TSymbol > result;
     WordList<TSymbol>* words = trie->getWordsByPrefix(nativeQuery);
-
-    vector<TSymbol > result = wordList2Vec(words);
+    if (words != NULL)
+      result = wordList2Vec(words);
     delete words;
     delete [] nativeQuery;
     return result;

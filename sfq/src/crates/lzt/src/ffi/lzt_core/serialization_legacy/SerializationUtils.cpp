@@ -57,4 +57,5 @@ template <>
 bool SerializationUtils::integerFromStream<bool>(istream& stream) {
     unsigned char ch = integerFromStream<unsigned char>(stream);
     bool b = (ch == 0) ? false : true;
+    return b;
 }
