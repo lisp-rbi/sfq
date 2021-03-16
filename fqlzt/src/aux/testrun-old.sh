@@ -10,7 +10,7 @@ testfile=$dictfolder/$dictfile
 #testfile=test-dicts/german.txt
 outdict=$dictfile.old.lzt
 outfile=$dictfile.old.out.txt
-numSequentialTests=4
+numSequentialTests=1
 
 rm $cliexec
 cp $buildfolder/$cliexec .
@@ -23,9 +23,9 @@ echo "list all words ..."
 time ./$cliexec l -d $outdict > $outfile
 cmp $testfile $outfile
 # test class interface
-#echo "class interface ..."
-#./$cliexec cls -i $testfile -d $outdict > $outfile
-#cmp $testfile $outfile
+echo "class interface ..."
+./$cliexec cls -i $testfile -d $outdict > $outfile
+cmp $testfile $outfile
 
 echo "sequential queries ..."
 ./$cliexec sq -d $outdict -n $numSequentialTests
