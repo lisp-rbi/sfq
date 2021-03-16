@@ -107,10 +107,10 @@ impl Fdb{
 
     }
 
-    // sorts lines of a file through external bash commands
-    // 1) separates file into subfiles; according to available RAM and disk
-    // 2) sort each subfile into a copy and move the copy back to subfile
-    // 3) merge-sort subfiles into the original file
+    /* sorts lines of a file through external bash commands
+       1) separates file into subfiles; according to available RAM and disk
+       2) sort each subfile into a copy and move the copy back to subfile
+       3) merge-sort subfiles into the original file */
     pub fn sort_lines(&self,filename: &str, outdir: &str) -> bool {
         // list the current directory and see available memory
         let current_dir = env::current_dir().unwrap();
@@ -122,10 +122,10 @@ impl Fdb{
         if ratio < (4.0 as u32) {panic!("Not enough disk space for sorting!");}
         // check available RAM, take half of it
         let avail_ram = ((mem_info().unwrap().total * 1024) / 2) as f32;
-        let ram_ratio = (avail_ram / file_size).ceil() as f32;
+        let ram_ratio = (avail_ram / file_size) as f32;
         // how many lines will be in sub-files for sorting
         let mut num_of_lines: String = "-l ".to_owned();
-        num_of_lines.push_str(&((ram_ratio * (self.numrec as f32)) as u64).to_string());
+        num_of_lines.push_str(&((ram_ratio * (self.numrec as f32)).ceil() as u64).to_string());
         let mut tmp_filename: String = "".to_owned();
         tmp_filename.push_str(filename);
         tmp_filename.push_str("_");
