@@ -17,13 +17,13 @@ pub fn read_tmp(filename: &str, vec: &mut Vec<u8>, start: u64, end: &mut u64, av
     for line in file.lines(){
         if line_number >= start {
             // if there are more bytes in the vector than available mem, break the loop
-            // also make sure we stop at even number of records (mod is 1 bc we start at 0)
+            // also make sure we stop at even number of records
             if (vec.len() as u64 > *available_mem) && (*end%2 == 0) {break;}
             // transform the line in a vector of bytes
             let mut u8_line: Vec<u8> = line.unwrap().as_bytes().to_vec();
             // last line (stats) found if it doesn't end in zero
             last_line = u8_line[u8_line.len()-1] != 0u8;
-            // add a zero to the first line
+            // add a zero to the last line
             if last_line {u8_line.push(0u8);}
             // append the transformed line to the vector
             vec.extend(u8_line);

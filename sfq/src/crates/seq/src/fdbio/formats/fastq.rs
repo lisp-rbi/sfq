@@ -335,7 +335,7 @@ impl Fdb{
                 sequence.push_str(str::from_utf8(&old_fwd_seq).unwrap());
                 sequence.push_str("b");
                 sequence.push_str(&*format!("{:010b}",num_of_copies));
-                sequence.push_str("\n");
+                sequence.push_str("\0\n");
                 avrg_fwd_qual = self.average_qualities(&fwd_qualities,num_of_copies);
                 if self.lossy == 3 {
                     quality.push_str(str::from_utf8(&avrg_fwd_qual).unwrap());
@@ -343,7 +343,7 @@ impl Fdb{
                     let red_u8_quality = self.illumina_8lev_map(&mut avrg_fwd_qual);
                     quality.push_str(str::from_utf8(&red_u8_quality).unwrap());
                 }
-                quality.push_str("\n");
+                quality.push_str("\0\n");
                 if self.paired == true {
                     sequence.push_str(str::from_utf8(&self.encode(r+1,wlen)).unwrap());
                     quality.push_str(str::from_utf8(&self.encode(r+1,wlen)).unwrap());
@@ -352,7 +352,7 @@ impl Fdb{
                     sequence.push_str(str::from_utf8(&old_rev_seq).unwrap());
                     sequence.push_str("b");
                     sequence.push_str(&*format!("{:010b}",num_of_copies));
-                    sequence.push_str("\n");
+                    sequence.push_str("\0\n");
                     avrg_rev_qual = self.average_qualities(&rev_qualities,num_of_copies);
                     if self.lossy == 3 {
                         quality.push_str(str::from_utf8(&avrg_rev_qual).unwrap());
@@ -360,7 +360,7 @@ impl Fdb{
                         let red_u8_quality = self.illumina_8lev_map(&mut avrg_rev_qual);
                         quality.push_str(str::from_utf8(&red_u8_quality).unwrap());
                     }
-                    quality.push_str("\n");
+                    quality.push_str("\0\n");
                 }
                 num_of_copies = 1;
                 fwd_qualities = Vec::new();
@@ -392,7 +392,7 @@ impl Fdb{
             sequence.push_str(str::from_utf8(&old_fwd_seq).unwrap());
             sequence.push_str("b");
             sequence.push_str(&*format!("{:010b}",num_of_copies));
-            sequence.push_str("\n");
+            sequence.push_str("\0\n");
             avrg_fwd_qual = self.average_qualities(&fwd_qualities,num_of_copies);
             if self.lossy == 3 {
                 quality.push_str(str::from_utf8(&avrg_fwd_qual).unwrap());
@@ -400,7 +400,7 @@ impl Fdb{
                 let red_u8_quality = self.illumina_8lev_map(&mut avrg_fwd_qual);
                 quality.push_str(str::from_utf8(&red_u8_quality).unwrap());
             }
-            quality.push_str("\n");
+            quality.push_str("\0\n");
             if self.paired == true {
                 sequence.push_str(str::from_utf8(&self.encode(r+1,wlen)).unwrap());
                 quality.push_str(str::from_utf8(&self.encode(r+1,wlen)).unwrap());
@@ -409,7 +409,7 @@ impl Fdb{
                 sequence.push_str(str::from_utf8(&old_rev_seq).unwrap());
                 sequence.push_str("b");
                 sequence.push_str(&*format!("{:010b}",num_of_copies));
-                sequence.push_str("\n");
+                sequence.push_str("\0\n");
                 avrg_rev_qual = self.average_qualities(&rev_qualities,num_of_copies);
                 if self.lossy == 3 {
                     quality.push_str(str::from_utf8(&avrg_rev_qual).unwrap());
@@ -417,7 +417,7 @@ impl Fdb{
                     let red_u8_quality = self.illumina_8lev_map(&mut avrg_rev_qual);
                     quality.push_str(str::from_utf8(&red_u8_quality).unwrap());
                 }
-                quality.push_str("\n");
+                quality.push_str("\0\n");
             }
             seq_writer.write_all(&sequence.as_bytes()).expect("Writing error!");
             qual_writer.write_all(&quality.as_bytes()).expect("Writing error!");
@@ -496,7 +496,7 @@ impl Fdb{
                         sequence.push_str(str::from_utf8(&red_u8_quality).unwrap());
                     }
                 }
-                sequence.push_str("\n");
+                sequence.push_str("\0\n");
                 num_of_copies = 1;
                 fwd_qualities = Vec::new();
                 rev_qualities = Vec::new();
@@ -543,7 +543,7 @@ impl Fdb{
                     sequence.push_str(str::from_utf8(&red_u8_quality).unwrap());
                 }
             }
-            sequence.push_str("\n");
+            sequence.push_str("\0\n");
             seq_writer.write_all(&sequence.as_bytes()).expect("Writing error!");
             r += 1;
         }
