@@ -8,7 +8,7 @@ With the advent of high throughput sequencing (HTS), challenges associate with s
 
 Compression is a process of downsizing the information content of a given record down to its bare minimum, sufficient for full (optimal) reconstruction of the original source. As such its primary focus is on models and functions that can be utilized to achieve this goal. While the functionality is sufficient for designing and implementing general purpose data storage solutions, HTS data facility usually requires more that that. Frequent access to reads from various experiments/samples require specific data sets typically to be kept separately as ZIP-ed files preventing redundancy between files to be utilized in compression. sfq is a succinct data structure for representing fast(a/q) flat file formatted data which is designed not to only store files, but to provide an option to randomly access stored records without "a prior" decompressing the stored file. This is a crucial feature for targeted bioinformatics analyses where only specific records need to be retrieved in order to be processed. Consider an analysis where samples are multiplexed. Usually the first step in handling such data is to extract each derived fastq file, demultiplex samples and compress them individually. With sfq one has the opportunity to capitalize on redundancy between samples, given no separation step is required thus increasing a compression rate while containing the entire batch associated to one experiment in a single file. Moreover, such feature provides an option to directly access and transmit the information over a network form a single source, thus simplifying the design and cost of maintaining HTS storage facilities, while at the same time increasing the yeald of transmitted useful information.
 
-sfq in size rivals even the most advanced compression strategies outperforming current compression algorithms by more that 15% with no memory overhead associated to retrieval and decompression of targeted records and O(N) compression/decompression time (N - the size the input file).
+sfq in size rivals even the most advanced compression strategies outperforming current compression algorithms by more than 15% with no memory overhead associated to retrieval and decompression of targeted records and O(N) compression/decompression time (N - the size the input file).
 
 As such sfq represents a novel solution and a leap in data storage, transmission and analysis, of HTS information.
 
@@ -25,13 +25,13 @@ Current version of the software requires Rust (> v1.38) and g++ (> v4.9.1). `sfq
  1 . Download the library:
 
 ```
-git clone path...
+git clone https://www.bitbucket.org/mirda_root/fastqlzt.git
 ```
  2 . Compile binaries:
 
 
 ```
-cd ./sfq/
+cd ./sfq/src/
 
 cargo build --release
 ```
@@ -43,6 +43,7 @@ This will compile the source to `./target/release/`
 ```
 ./target/release/sfq -h
 ```
+or by adding it to your PATH
 
 ## Usage
 
@@ -50,62 +51,55 @@ This will compile the source to `./target/release/`
 
 
 
-sfq 0.2.2
-Robert Bakaric <rbakaric@irb.hr>, Damir Korencic<dkorencic@irb.hr>
-
+sfq 0.3.0
+Robert Bakaric <rbakaric@irb.hr>, Dalibor Hrsak <dalibor.hrsak@irb.hr>, Damir Korencic <dkorencic@irb.hr>
+ 	
     ______     ______   ______    	
    /\  ___\   /\  ___\ /\  __ \   	
    \ \___  \  \ \  __\ \ \ \/\_\  	
     \/\_____\  \ \_\    \ \___\_\ 	
      \/_____/   \/_/     \/___/_/ 	
-
-
-            Auth: Bakaric R. Korencic, D. & Ristov, S.
+                                  	
+                                                      	
+            Authors: Bakaric R., Hrsak D., Korencic, D. & Ristov, S.
 
 USAGE:
     sfq [OPTIONS]
-              --action <c|d|q>
-              --compression-mode <complete|lossy>
-              --infmt <fastq|fasta|raw>
-              --list <file.csv|rand(10)>
-              --make-index <hd|>3>
-              --max-memory-used <Max|3600,5000>
-              --memory-mode <D|R>
-              --outfmt <fq|fa|s|q|h|...>
 
 FLAGS:
     -h, --help       Prints help information
     -V, --version    Prints version information
 
 OPTIONS:
-    -a, --action <c|d|q>                       Action: (c) compress, (d) decompress, (g) get <requires --list >
-                                               [default: c]
-    -s, --compression-mode <complete|lossy>    Compression mode [default: complete]
-    -t, --infmt <fastq|fasta|raw>              File types supported [default: fastq]
-    -i, --input <FILE>                         Input file (fasta,fastq,lzt) [default: stdin]
-    -j, --input-rev <FILE>                     Input file of a revers file (fastq)
-    -l, --list <file.csv|rand(10)>             Please provide a list of prefixes, records of which are to be extracted
-                                               (works only with -a g) [default: rand(10)]
-    -y, --make-index <hd|>3>                   Make index (4,5,6,... - kmer size, hd - high dimensional kmer index)
-                                               [default: 7]
-    -M, --max-memory-used <Max|3600,5000>      Max Memory to be used (in MB, Max - use all available) [default: Max]
-    -m, --memory-mode <D|R>                    Memory mode: defines memory type  (D - disc, R - RAM) [default: R]
-    -f, --outfmt <fq|fa|s|q|h|...>             Output format:
-
-                                               	fq   	  :fastq,
-                                               	fa  	  :fasta,
-                                               	s         :sequence,
-                                               	q         :quality,
-                                               	h  	      :head,
-                                               	s+q   	  :sequence quality,
-                                               	h+q   	  :head quality,
-                                               	h+s  	    :head sequence,
-                                               	h+s+q  	  :head sequence quality,
-                                               	s+h+q  	  :sequence head quality,
-                                               	...
-                                                [default: fa]
-    -o, --output <FILE>                        Output file: interleved if paired fastq, dict.lzt if compressed [default:
-                                               stdout]
+    -a, --action <c|d|g>                 Action: (c) compress, (d) decompress, (g) grep <requires --list >  [default: c]
+    -s, --compression-mode <0-4>         Compression mode [default: 0]
+    -F, --fragment-size <Max|integer>    Amount of RAM in MB allocated for the compression. Max = use all available RAM.
+                                         [default: Max]
+    -t, --infmt <fastq|fasta>            File types supported [default: fastq]
+    -i, --input <FILE>                   Input file (fasta,fastq,sfastq)
+    -j, --input-rev <FILE>               Filename of a reverse file (fastq, fasta)
+    -l, --list <filename|rand(10)>       Please provide a list of prefixes (numbers or ranges), in separate lines. SFQ
+                                         returns records associated with the input prefixes. Works only with -a g.
+                                         [default: rand(10)]
+    -m, --memory-mode <D|R>              Memory mode: defines memory type  (D - disc, R - RAM) [default: D]  [possible
+                                         values: D, R]
+    -f, --outfmt <fq|fa|s|q|h|...>       Output format: 
+                                          
+                                         	fq   	:fastq, 
+                                         	fa  	:fasta, 
+                                         	s  	:sequence, 
+                                         	q  	:quality, 
+                                         	h  	:head, 
+                                         	s+q  	:sequence quality, 
+                                         	h+q  	:head quality, 
+                                         	h+s  	:head sequence, 
+                                         	h+s+q  	:head sequence quality, 
+                                         	s+h+q  	:sequence head quality, 
+                                         	...
+                                          [default: fq]
+    -o, --output <FILE>                  Output file; interleaved if input is two paired end fastq files
+    -r, --restart <no|yes>               Restart compression from temporary files. Works only with -a c. NOTE: Temporary
+                                         files must be complete and correct! [default: no]
 
 
 ```
