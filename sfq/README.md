@@ -4,7 +4,7 @@
 
 
 
-With the advent of high xx throughput sequencing (HTS), challenges associate with storage, transmission, and analysis of generated HTS data has became a major stepping stone for fast pace processing as that required in clinical diagnostics. Terabytes of uncompressed data per individual/experiment have deprecated transmission protocols down to transactions involving cheap HDD’s and classic post-office delivery. This holds true even for compressed records!
+With the advent of high throughput sequencing (HTS), challenges associate with storage, transmission, and analysis of generated HTS data has became a major stepping stone for fast pace processing as that required in clinical diagnostics. Terabytes of uncompressed data per individual/experiment have deprecated transmission protocols down to transactions involving cheap HDD’s and classic post-office delivery. This holds true even for compressed records!
 
 Compression is a process of downsizing the information content of a given record down to its bare minimum, sufficient for full (optimal) reconstruction of the original source. As such its primary focus is on models and functions that can be utilized to achieve this goal. While the functionality is sufficient for designing and implementing general purpose data storage solutions, HTS data facility usually requires more that that. Frequent access to reads from various experiments/samples require specific data sets typically to be kept separately as ZIP-ed files preventing redundancy between files to be utilized in compression. sfq is a succinct data structure for representing fast(a/q) flat file formatted data which is designed not to only store files, but to provide an option to randomly access stored records without "a prior" decompressing the stored file. This is a crucial feature for targeted bioinformatics analyses where only specific records need to be retrieved in order to be processed. Consider an analysis where samples are multiplexed. Usually the first step in handling such data is to extract each derived fastq file, demultiplex samples and compress them individually. With sfq one has the opportunity to capitalize on redundancy between samples, given no separation step is required thus increasing a compression rate while containing the entire batch associated to one experiment in a single file. Moreover, such feature provides an option to directly access and transmit the information over a network form a single source, thus simplifying the design and cost of maintaining HTS storage facilities, while at the same time increasing the yeald of transmitted useful information.
 
@@ -36,12 +36,12 @@ cd ./fastqlzt/sfq/src/
 cargo build --release
 ```
 
-This will compile the source to `./target/release/`
+This will compile the source to `../target/release/`
 
  3 . Execute binary by running:
 
 ```
-./target/release/sfq -h
+../target/release/sfq -h
 ```
 or by adding it to your PATH
 
@@ -160,10 +160,10 @@ Example No.9 - Extract a particular set of records listed in list.file as sequen
 sfq -i FwdRevIdx -a g -f "s" -t fastq -o s.out -l list.file
 ```
 
-Example No.10 - Compress pair-end fasta file by limiting memory to 8GB (experimental)
+Example No.10 - Compress pair-end fasta file while limiting available RAM to 8 GB
 
 ```
-sfq -i ./data.in/fa.fa -a c -t fasta -o fa.out -M 8000
+sfq -i ./data.in/fa.fa -a c -t fasta -o fa.out -F 8000
 ```
 
 Example No.11 - Extract a random set of 4 records in sequence + head  format
