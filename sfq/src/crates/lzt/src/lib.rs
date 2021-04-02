@@ -76,6 +76,7 @@ impl FFI {
                     else {fs::remove_dir_all(&pth).unwrap();}
                 }
             }
+
             unsafe {
                 if make_lzt(
                         v.as_ptr(),

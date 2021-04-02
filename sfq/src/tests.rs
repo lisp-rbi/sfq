@@ -126,9 +126,9 @@ fn deindexing() {
 #[test]
 fn lossy_compress_decompress() {
 
-    let out_q = "./data/qual-l.sfq";
-    let out_s = "./data/seq-l.sfq";
-    let out_h = "./data/head-l.sfq";
+    let out_q = "./data/qual-l.sfastq";
+    let out_s = "./data/seq-l.sfastq";
+    let out_h = "./data/head-l.sfastq";
 
     let head  = b"@h_1F\n@h_1R\n@h_2F\n@h_2R\n@h_3F\n@h_3R\n@h_4F\n@h_4R".to_vec();
     let seq   = b"ATGC\nATGT\nATGC\nATGG\nAGGG\nTGGG\nAGGG\nTGGG".to_vec();
@@ -211,9 +211,9 @@ fn lossy_compress_decompress() {
 #[test]
 fn full_compress_decompress() {
 
-    let out_q = "./data/qual-f.sfq";
-    let out_s = "./data/seq-f.sfq";
-    let out_h = "./data/head-f.sfq";
+    let out_q = "./data/qual-f.sfastq";
+    let out_s = "./data/seq-f.sfastq";
+    let out_h = "./data/head-f.sfastq";
 
     let head  = b"@h_1F\n@h_1R\n@h_2F\n@h_2R\n@h_3F\n@h_3R\n@h_4F\n@h_4R".to_vec();
     let seq   = b"ATGC\nATGT\nATGC\nATGG\nAGGG\nTGGG\nAGGG\nTGGG".to_vec();
@@ -288,7 +288,7 @@ fn full_compress_decompress() {
 
 #[test]
 fn grep_by_index (){
-    let out_s = "./data/seq-f-f.sfq";
+    let out_s = "./data/seq-f-f.sfastq";
     let mut string = FFI::open(&out_s,true).get_records("A");
     let mut fdb = Fdb::new("fastq");
     fdb.set_model(true);

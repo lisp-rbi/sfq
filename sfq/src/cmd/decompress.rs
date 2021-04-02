@@ -65,9 +65,9 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
 
                     if let Some(x) = cli.value_of("input") {
                         let stem_name = String::from(Path::new(cli.value_of("input").unwrap()).file_stem().and_then(OsStr::to_str).unwrap());
-                        head = format!("{}/{}.{}",x,stem_name,"head.sfq");
-                        seq  = format!("{}/{}.{}",x,stem_name,"seq.sfq");
-                        qual = format!("{}/{}.{}",x,stem_name,"qual.sfq");
+                        head = format!("{}/{}.{}",x,stem_name,"head.sfastq");
+                        seq  = format!("{}/{}.{}",x,stem_name,"seq.sfastq");
+                        qual = format!("{}/{}.{}",x,stem_name,"qual.sfastq");
                     }
 
                     let ( mut count, mut alpha, mut wlen) = (0,Vec::new(),0);

@@ -1,6 +1,6 @@
 [package]
 name = "seq"
-version = "0.1.5"
+version = "1.0.0"
 authors = ["Robert Bakaric <rbakaric@exaltum.eu>"]
 edition = "2018"
 

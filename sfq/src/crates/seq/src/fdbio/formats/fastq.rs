@@ -215,58 +215,50 @@ impl Fdb{
 
         for fwd_line in fwd_lines {
             if  cnt == 0 {
+                if self.paired == true {
+                    let _rev_line = match rev_lines.next() {
+                        Some(p) => p,
+                        None => "0".to_string(),
+                    };
+                }
                 cnt += 1;
                 continue;
             } else if cnt == 1 {
                 line_string = String::from("");
                 line_string.push_str(&fwd_line);
                 line_string.push_str(" ");
+                if self.paired == true {
+                    let rev_line = match rev_lines.next() {
+                        Some(p) => self.revcomp(p),
+                        None => {cnt += 1; continue;},
+                    };
+                    line_string.push_str(&rev_line);
+                    line_string.push_str(" ");
+                }
                 cnt += 1;
                 continue;
             } else if cnt == 2 {
+                if self.paired == true {
+                    let _rev_line = match rev_lines.next() {
+                        Some(p) => p,
+                        None => "0".to_string(),
+                    };
+                }
                 cnt += 1;
                 continue;
             } else if cnt == 3 {
-                /*if self.lossy > 3 {
-                    let mut u8_quality = fwd_line.as_bytes();
-                    let red_u8_quality = self.illumina_8lev_map(&mut u8_quality.to_vec());
-                    line_string.push_str(str::from_utf8(&red_u8_quality).unwrap());
-                } else if self.lossy == 3 {line_string.push_str(&fwd_line);}*/
                 line_string.push_str(&fwd_line);
-                cnt = 0;
                 if self.paired == true {
                     line_string.push_str(" ");
-                    loop {
-                        match rev_lines.next() {
-                            Some(rev_line) => {
-                                if  cnt == 0 {
-                                    cnt += 1;
-                                    continue;
-                                } else if cnt == 1 {
-                                    line_string.push_str(&self.revcomp(rev_line));
-                                    line_string.push_str(" ");
-                                    cnt += 1;
-                                    continue;
-                                } else if cnt == 2 {
-                                    cnt += 1;
-                                    continue;
-                                } else if cnt == 3 {
-                                   /*if self.lossy > 3 {
-                                        let mut u8_quality = rev_line.as_bytes();
-                                        let red_u8_quality = self.illumina_8lev_map(&mut u8_quality.to_vec());
-                                        line_string.push_str(str::from_utf8(&red_u8_quality).unwrap());
-                                    } else if self.lossy == 3 { line_string.push_str(&rev_line); }*/
-                                    line_string.push_str(&rev_line);
-                                    line_string.push_str("\n");
-                                    cnt = 0;
-                                    break;
-                                }
-                            }
-                            None => {break;}
-                        }
-                    }
-                } else {line_string.push_str("\n");}
+                    let rev_line = match rev_lines.next() {
+                        Some(p) => p,
+                        None => {cnt = 0; continue;},
+                    };
+                    line_string.push_str(&rev_line);
+                }
+                line_string.push_str("\n");
                 lossy_writer.write_all(&line_string.as_bytes()).expect("writing error!");
+                cnt = 0;
                 continue;
             }
         }
@@ -281,7 +273,7 @@ impl Fdb{
             if self.separate_lossy_tmp(&tmp_lossy,seq_writer,qual_writer,wlen) == false {panic!("Error!");}
         }
         else if self.lossy > 4 {
-            if self.prepare_very_lossy_tmp(&tmp_lossy,seq_writer,wlen) == false {panic!("Error!");}
+            if self.prepare_very_lossy_tmp(&tmp_lossy,seq_writer,tmp_seq_name,outdir,wlen) == false {panic!("Error!");}
         }
         if self.paired == false {self.rm_file("dummy.txt");}
 
@@ -303,7 +295,7 @@ impl Fdb{
             let line_components: Vec<&str> = line.split(" ").collect();
             let fwd_seq_vector = line_components[0].as_bytes().to_vec();
             let mut rev_seq_vector: Vec<u8> = Vec::new();
-            if self.paired == true {rev_seq_vector = line_components[2].as_bytes().to_vec();}
+            if self.paired == true {rev_seq_vector = line_components[1].as_bytes().to_vec();}
             let mut avrg_fwd_qual: Vec<u8> = Vec::new();
             let mut avrg_rev_qual: Vec<u8> = Vec::new();
             let repeated_sequence: bool = match self.paired {
@@ -313,7 +305,7 @@ impl Fdb{
             };
             if repeated_sequence == true || first_line == 1 {
                 num_of_copies += 1;
-                let mut current_fwd_quality = line_components[1].as_bytes().to_vec();
+                let mut current_fwd_quality = line_components[2].as_bytes().to_vec();
                 current_fwd_quality.push(0u8);
                 fwd_qualities.extend(current_fwd_quality);
                 old_fwd_seq = fwd_seq_vector.to_vec();
@@ -335,7 +327,7 @@ impl Fdb{
                 sequence.push_str(str::from_utf8(&old_fwd_seq).unwrap());
                 sequence.push_str("b");
                 sequence.push_str(&*format!("{:010b}",num_of_copies));
-                sequence.push_str("\n");
+                sequence.push_str("\0\n");
                 avrg_fwd_qual = self.average_qualities(&fwd_qualities,num_of_copies);
                 if self.lossy == 3 {
                     quality.push_str(str::from_utf8(&avrg_fwd_qual).unwrap());
@@ -343,7 +335,7 @@ impl Fdb{
                     let red_u8_quality = self.illumina_8lev_map(&mut avrg_fwd_qual);
                     quality.push_str(str::from_utf8(&red_u8_quality).unwrap());
                 }
-                quality.push_str("\n");
+                quality.push_str("\0\n");
                 if self.paired == true {
                     sequence.push_str(str::from_utf8(&self.encode(r+1,wlen)).unwrap());
                     quality.push_str(str::from_utf8(&self.encode(r+1,wlen)).unwrap());
@@ -352,7 +344,7 @@ impl Fdb{
                     sequence.push_str(str::from_utf8(&old_rev_seq).unwrap());
                     sequence.push_str("b");
                     sequence.push_str(&*format!("{:010b}",num_of_copies));
-                    sequence.push_str("\n");
+                    sequence.push_str("\0\n");
                     avrg_rev_qual = self.average_qualities(&rev_qualities,num_of_copies);
                     if self.lossy == 3 {
                         quality.push_str(str::from_utf8(&avrg_rev_qual).unwrap());
@@ -360,12 +352,12 @@ impl Fdb{
                         let red_u8_quality = self.illumina_8lev_map(&mut avrg_rev_qual);
                         quality.push_str(str::from_utf8(&red_u8_quality).unwrap());
                     }
-                    quality.push_str("\n");
+                    quality.push_str("\0\n");
                 }
                 num_of_copies = 1;
                 fwd_qualities = Vec::new();
                 rev_qualities = Vec::new();
-                let mut current_fwd_quality = line_components[1].as_bytes().to_vec();
+                let mut current_fwd_quality = line_components[2].as_bytes().to_vec();
                 current_fwd_quality.push(0u8);
                 fwd_qualities.extend(current_fwd_quality);
                 old_fwd_seq = fwd_seq_vector.to_vec();
@@ -392,7 +384,7 @@ impl Fdb{
             sequence.push_str(str::from_utf8(&old_fwd_seq).unwrap());
             sequence.push_str("b");
             sequence.push_str(&*format!("{:010b}",num_of_copies));
-            sequence.push_str("\n");
+            sequence.push_str("\0\n");
             avrg_fwd_qual = self.average_qualities(&fwd_qualities,num_of_copies);
             if self.lossy == 3 {
                 quality.push_str(str::from_utf8(&avrg_fwd_qual).unwrap());
@@ -400,7 +392,7 @@ impl Fdb{
                 let red_u8_quality = self.illumina_8lev_map(&mut avrg_fwd_qual);
                 quality.push_str(str::from_utf8(&red_u8_quality).unwrap());
             }
-            quality.push_str("\n");
+            quality.push_str("\0\n");
             if self.paired == true {
                 sequence.push_str(str::from_utf8(&self.encode(r+1,wlen)).unwrap());
                 quality.push_str(str::from_utf8(&self.encode(r+1,wlen)).unwrap());
@@ -409,7 +401,7 @@ impl Fdb{
                 sequence.push_str(str::from_utf8(&old_rev_seq).unwrap());
                 sequence.push_str("b");
                 sequence.push_str(&*format!("{:010b}",num_of_copies));
-                sequence.push_str("\n");
+                sequence.push_str("\0\n");
                 avrg_rev_qual = self.average_qualities(&rev_qualities,num_of_copies);
                 if self.lossy == 3 {
                     quality.push_str(str::from_utf8(&avrg_rev_qual).unwrap());
@@ -417,7 +409,7 @@ impl Fdb{
                     let red_u8_quality = self.illumina_8lev_map(&mut avrg_rev_qual);
                     quality.push_str(str::from_utf8(&red_u8_quality).unwrap());
                 }
-                quality.push_str("\n");
+                quality.push_str("\0\n");
             }
             seq_writer.write_all(&sequence.as_bytes()).expect("Writing error!");
             qual_writer.write_all(&quality.as_bytes()).expect("Writing error!");
@@ -429,11 +421,11 @@ impl Fdb{
         qual_writer.write_all(str::from_utf8(&stats).unwrap().as_bytes()).expect("writing error!");
         seq_writer.flush().expect("Error in flushing");
         qual_writer.flush().expect("Error in flushing");
-        fs::remove_file(filename).expect("Error in removing file!"); 
+        //fs::remove_file(filename).expect("Error in removing file!"); 
         true
     }
 
-    pub fn prepare_very_lossy_tmp<W: Write>(&mut self, filename: &str, mut seq_writer: W, wlen: usize) -> bool {
+    pub fn prepare_very_lossy_tmp<W: Write>(&mut self, filename: &str, mut seq_writer: W, tmp_seq_name: &str, outdir: &str, wlen: usize) -> bool {
         let mut lossy_reader = self.make_reader(filename);
         let lines = lossy_reader.lines().map(|l| l.unwrap());
         let mut r: usize = 0;
@@ -447,7 +439,7 @@ impl Fdb{
             let line_components: Vec<&str> = line.split(" ").collect();
             let fwd_seq_vector = line_components[0].as_bytes().to_vec();
             let mut rev_seq_vector: Vec<u8> = Vec::new();
-            if self.paired == true {rev_seq_vector = line_components[2].as_bytes().to_vec();}
+            if self.paired == true {rev_seq_vector = line_components[1].as_bytes().to_vec();}
             let mut avrg_fwd_qual: Vec<u8> = Vec::new();
             let mut avrg_rev_qual: Vec<u8> = Vec::new();
             let repeated_sequence: bool = match self.paired {
@@ -457,7 +449,7 @@ impl Fdb{
             };
             if repeated_sequence == true || first_line == 1 {
                 num_of_copies += 1;
-                let mut current_fwd_quality = line_components[1].as_bytes().to_vec();
+                let mut current_fwd_quality = line_components[2].as_bytes().to_vec();
                 current_fwd_quality.push(0u8);
                 fwd_qualities.extend(current_fwd_quality);
                 old_fwd_seq = fwd_seq_vector.to_vec();
@@ -474,7 +466,11 @@ impl Fdb{
                 sequence.push_str(str::from_utf8(&old_fwd_seq).unwrap());
                 sequence.push_str("b");
                 sequence.push_str(&*format!("{:010b}",num_of_copies));
-                sequence.push_str(" ");
+                sequence.push_str("q");
+                if self.paired == true {
+                    sequence.push_str(str::from_utf8(&old_rev_seq).unwrap());
+                    sequence.push_str("q");
+                }
                 avrg_fwd_qual = self.average_qualities(&fwd_qualities,num_of_copies);
                 if self.lossy == 5 {
                     sequence.push_str(str::from_utf8(&avrg_fwd_qual).unwrap());
@@ -483,11 +479,7 @@ impl Fdb{
                     sequence.push_str(str::from_utf8(&red_u8_quality).unwrap());
                 }
                 if self.paired == true {
-                    sequence.push_str(" ");
-                    sequence.push_str(str::from_utf8(&old_rev_seq).unwrap());
-                    sequence.push_str("b");
-                    sequence.push_str(&*format!("{:010b}",num_of_copies));
-                    sequence.push_str(" ");
+                    sequence.push_str("q");
                     avrg_rev_qual = self.average_qualities(&rev_qualities,num_of_copies);
                     if self.lossy == 5 {
                         sequence.push_str(str::from_utf8(&avrg_rev_qual).unwrap());
@@ -496,11 +488,11 @@ impl Fdb{
                         sequence.push_str(str::from_utf8(&red_u8_quality).unwrap());
                     }
                 }
-                sequence.push_str("\n");
+                sequence.push_str("\0\n");
                 num_of_copies = 1;
                 fwd_qualities = Vec::new();
                 rev_qualities = Vec::new();
-                let mut current_fwd_quality = line_components[1].as_bytes().to_vec();
+                let mut current_fwd_quality = line_components[2].as_bytes().to_vec();
                 current_fwd_quality.push(0u8);
                 fwd_qualities.extend(current_fwd_quality);
                 old_fwd_seq = fwd_seq_vector.to_vec();
@@ -521,7 +513,11 @@ impl Fdb{
             sequence.push_str(str::from_utf8(&old_fwd_seq).unwrap());
             sequence.push_str("b");
             sequence.push_str(&*format!("{:010b}",num_of_copies));
-            sequence.push_str(" ");
+            sequence.push_str("q");
+            if self.paired == true {
+                sequence.push_str(str::from_utf8(&old_rev_seq).unwrap());
+                sequence.push_str("q");
+            }
             avrg_fwd_qual = self.average_qualities(&fwd_qualities,num_of_copies);
             if self.lossy == 5 {
                 sequence.push_str(str::from_utf8(&avrg_fwd_qual).unwrap());
@@ -530,11 +526,7 @@ impl Fdb{
                 sequence.push_str(str::from_utf8(&red_u8_quality).unwrap());
             }
             if self.paired == true {
-                sequence.push_str(" ");
-                sequence.push_str(str::from_utf8(&old_rev_seq).unwrap());
-                sequence.push_str("b");
-                sequence.push_str(&*format!("{:010b}",num_of_copies));
-                sequence.push_str(" ");
+                sequence.push_str("q");
                 avrg_rev_qual = self.average_qualities(&rev_qualities,num_of_copies);
                 if self.lossy == 5 {
                     sequence.push_str(str::from_utf8(&avrg_rev_qual).unwrap());
@@ -543,10 +535,11 @@ impl Fdb{
                     sequence.push_str(str::from_utf8(&red_u8_quality).unwrap());
                 }
             }
-            sequence.push_str("\n");
+            sequence.push_str("\0\n");
             seq_writer.write_all(&sequence.as_bytes()).expect("Writing error!");
             r += 1;
         }
+        seq_writer.flush().expect("Error in flushing");
         self.numrec = r;
         let stats = self.make_stats(wlen);
         seq_writer.write_all(str::from_utf8(&stats).unwrap().as_bytes()).expect("writing error!");

@@ -45,7 +45,7 @@ pub(crate) fn parse_cli ()->  clap::ArgMatches<'static> {
             .long("input")
             .required(false)
             .value_name("FILE")
-            .help("Input file (fasta,fastq,sfq)")
+            .help("Input file (fasta,fastq,sfastq)")
             .takes_value(true))
 
         .arg(Arg::with_name("input-rev")
@@ -71,7 +71,7 @@ pub(crate) fn parse_cli ()->  clap::ArgMatches<'static> {
             .default_value("c")
             .required(false)
             .value_name("c|d|g")
-            .help("Action: (c) compress, (d) decompress, (g) get <requires --list > ")
+            .help("Action: (c) compress, (d) decompress, (g) grep <requires --list > ")
             .takes_value(true))
 
         /*.arg(Arg::with_name("cmode")
@@ -88,8 +88,8 @@ pub(crate) fn parse_cli ()->  clap::ArgMatches<'static> {
             .long("compression-mode")
             .default_value("0")
             .required(false)
-            .value_name("0-6")
-            .help("Compression mode")
+            .value_name("0-4")
+            .help("Compression mode. Lossless: 0, lossy: 1 to 4.")
             .takes_value(true))
 
         .arg(Arg::with_name("outfmt")
@@ -133,10 +133,10 @@ pub(crate) fn parse_cli ()->  clap::ArgMatches<'static> {
             .short("F")
             .long("fragment-size")
             .default_value("Max")
+            .value_name("Max|<integer>")
+            .hidden(false)
+            .help("Amount of RAM in MB allocated for the compression. Max = use all available RAM.")
             .required(false)
-            .value_name("Max|3600,5000")
-            .hidden(true)
-            .help("Number of lines to be processed at a time (Max - use all available)")
             .takes_value(true))
 
         .arg(Arg::with_name("list")
@@ -145,7 +145,7 @@ pub(crate) fn parse_cli ()->  clap::ArgMatches<'static> {
             .required(false)
             .default_value("rand(10)")
             .value_name("filename|rand(10)")
-            .help("Please provide a list of prefixes (numbers), in separate lines. SFQ returns records associated with the input prefixes. Works only with -a g.")
+            .help("Please provide a list of prefixes (numbers or ranges), in separate lines. SFQ returns records associated with the input prefixes. Works only with -a g.")
             .takes_value(true))
 
         .arg(Arg::with_name("decompress-exponent")
@@ -164,8 +164,8 @@ pub(crate) fn parse_cli ()->  clap::ArgMatches<'static> {
             .required(false)
             .default_value("no")
             .value_name("no|yes")
-            .hidden(true)
-            .help("Restart process from tmp files.")
+            .hidden(false)
+            .help("Restart compression from temporary files. Works only with -a c. NOTE: Temporary files must be complete and correct!")
             .takes_value(true))
 
         .get_matches();

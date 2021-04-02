@@ -64,9 +64,9 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
     }
 
     // If output name is defined in cli, use that
-    // otherwise: if it is paired-end take input-file name - ext + .FR.sfq
-    //            if it is not paired-end, take input-file name - ext + .sfq
-    //            if lossy > 0, take input-file name - ext + .L<lossy>.sfq
+    // otherwise: if it is paired-end take input-file name - ext + .FR.sfastq
+    //            if it is not paired-end, take input-file name - ext + .sfastq
+    //            if lossy > 0, take input-file name - ext + .L<lossy>.sfastq
     let mut output = if let Some(_x) = cli.value_of("output") {
         String::from(cli.value_of("output").unwrap())
     } else {
@@ -80,7 +80,7 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
         output.push_str(&fdb.lossy.to_string());
     }
     let mut outdir = output.clone();
-    outdir.push_str(".sfq");
+    outdir.push_str(".sfastq");
     let restart: bool = if let Some(x) = cli.value_of("restart") {
         if x == "yes" {true}
         else {false}
@@ -120,12 +120,14 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
         let mut tmp = String::new();
 
         let _x = match i {
+
             0 => {
-                out = format!("{}/{}.{}",outdir,output,"seq.sfq");
+                out = format!("{}/{}.{}",outdir,output,"seq.sfastq");
                 tmp = format!("{}/{}.{}",outdir,output,"seq.tmp");
             },                                                          
+
             1 => {                                                      
-                out = format!("{}/{}.{}",outdir,output,"head.sfq");
+                out = format!("{}/{}.{}",outdir,output,"head.sfastq");
                 tmp = format!("{}/{}.{}",outdir,output,"head.tmp");
                 if lossy == 2 {
                     fs::remove_file(&tmp).unwrap();
@@ -136,12 +138,13 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
                     continue;
                 }
             },                                                          
+
             _ => {                                                      
                 if lossy > 4 {
                     i += 1;
                     continue;
                 }
-                out = format!("{}/{}.{}",outdir,output,"qual.sfq");
+                out = format!("{}/{}.{}",outdir,output,"qual.sfastq");
                 tmp = format!("{}/{}.{}",outdir,output,"qual.tmp");
             }
         };
@@ -149,7 +152,8 @@ pub fn compress (cli: ArgMatches<'static>) -> bool {
         // we assume the component is already compressed and, thus, tmp erased
         if restart == true && fs::metadata(&tmp).is_ok() == false { 
             i += 1;
-            continue; }
+            continue; 
+        }
 
         FFI::new(&out,&tmp,mymem,restart);
         fs::remove_file(&tmp).unwrap();

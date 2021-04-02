@@ -114,18 +114,23 @@ impl Fdb{
     pub fn sort_lines(&self,filename: &str, outdir: &str) -> bool {
         // list the current directory and see available memory
         let current_dir = env::current_dir().unwrap();
-        let free_disk_space = fs2::free_space(current_dir).unwrap() as f32;
+        let free_disk_space = fs2::free_space(current_dir).unwrap() as f64;
         // check size of the file
-        let file_size = fs::metadata(filename).unwrap().len() as f32;
+        let file_size = fs::metadata(filename).unwrap().len() as f64;
         // if file takes more than 1/3 of disk, it may clogg up the disk
         let ratio = (free_disk_space / file_size).ceil() as u32;
         if ratio < (4.0 as u32) {panic!("Not enough disk space for sorting!");}
         // check available RAM, take half of it
-        let avail_ram = ((mem_info().unwrap().total * 1024) / 2) as f32;
-        let ram_ratio = (avail_ram / file_size) as f32;
+        let mut avail_ram = ((mem_info().unwrap().total * 1024) / 2) as f64;
+        // if available RAM is more than 20 GB, limit to that amount
+        // the idea is that sorting very large files takes too much time
+        // and it goes wrong easier
+        // it is better to sort many smaller files than few large ones
+        if avail_ram > 21474836480. as f64 {avail_ram = 21474836480. as f64;}
+        let ram_ratio = (avail_ram / file_size) as f64;
         // how many lines will be in sub-files for sorting
         let mut num_of_lines: String = "-l ".to_owned();
-        num_of_lines.push_str(&((ram_ratio * (self.numrec as f32)).ceil() as u64).to_string());
+        num_of_lines.push_str(&((ram_ratio * (self.numrec as f64)).ceil() as u64).to_string());
         let mut tmp_filename: String = "".to_owned();
         tmp_filename.push_str(filename);
         tmp_filename.push_str("_");

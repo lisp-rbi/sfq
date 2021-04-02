@@ -51,7 +51,7 @@ fn main() {
        (cli.occurrences_of("fragment-size") == 0) && (cli.occurrences_of("infmt") == 0) && 
        (cli.occurrences_of("list") == 0) && (cli.occurrences_of("memory-mode") == 0) && 
        (cli.occurrences_of("outfmt") == 0) && (cli.occurrences_of("output") == 0) &&
-       (cli.occurrences_of("decompress-exponent") == 0) {
+       (cli.occurrences_of("decompress-exponent") == 0) && (cli.occurrences_of("restart") == 0) {
         print_help();
         process::exit(0);
     }
@@ -99,43 +99,46 @@ fn main() {
 fn print_help(){
     println!("sfq 0.3.0");
     println!("Robert Bakaric <rbakaric@irb.hr>, Dalibor Hrsak <dalibor.hrsak@irb.hr>, Damir Korencic <dkorencic@irb.hr>\n");
-    println!("       ______     ______   ______    	");
-    println!("      /\\  ___\\   /\\  ___\\ /\\  __ \\   	");
-    println!("      \\ \\___  \\  \\ \\  __\\ \\ \\ \\/\\_\\  	");
-    println!("       \\/\\_____\\  \\ \\_\\    \\ \\___\\_\\ 	");
-    println!("        \\/_____/   \\/_/     \\/___/_/ \n\n");	
-    println!("   Authors: Bakaric R., Hrsak D., Korencic, D. & Ristov, S.\n");
+    println!("    ______     ______   ______    	");
+    println!("   /\\  ___\\   /\\  ___\\ /\\  __ \\   	");
+    println!("   \\ \\___  \\  \\ \\  __\\ \\ \\ \\/\\_\\  	");
+    println!("    \\/\\_____\\  \\ \\_\\    \\ \\___\\_\\ 	");
+    println!("     \\/_____/   \\/_/     \\/___/_/ \n\n");	
+    println!("            Authors: Bakaric R., Hrsak D., Korencic, D. & Ristov, S.\n");
     println!("USAGE:");
     println!("    sfq [OPTIONS]\n");
     println!("FLAGS:");
     println!("    -h, --help       Prints help information");
     println!("    -V, --version    Prints version information\n");
     println!("OPTIONS:");
-    println!("    -a, --action <c|d|g>                       Action: (c) compress, (d) decompress, (g) get <requires --list >");
-    println!("                                               [default: c]");
-    println!("    -s, --compression-mode <complete|lossy>    Compression mode [default: complete]");
-    println!("    -t, --infmt <fastq|fasta>                  File types supported [default: fastq]");
-    println!("    -i, --input <FILE>                         Input file (fasta,fastq,sfq)");
-    println!("    -j, --input-rev <FILE>                     Filename of a reverse file (fastq, fasta)");
-    println!("    -l, --list <filename|rand(10)>             Please provide a list of prefixes (numbers), in separate lines. SFQ");
-    println!("                                               returns records associated with the input prefixes. Works only with -a g.");
-    println!("                                               [default: rand(10)]");
-    println!("    -m, --memory-mode <D|R>                    Memory mode: defines memory type  (D - disc, R - RAM) [default: D]");
-    println!("                                               [possible values: D, R]");
-    println!("    -f, --outfmt <fq|fa|s|q|h|...>             Output format: \n");
-    println!("                                               	fq   	:fastq, ");
-    println!("                                               	fa  	:fasta, ");
-    println!("                                               	s  	:sequence, ");
-    println!("                                               	q  	:quality, ");
-    println!("                                               	h  	:head, ");
-    println!("                                               	s+q  	:sequence quality, ");
-    println!("                                               	h+q  	:head quality, ");
-    println!("                                               	h+s  	:head sequence, ");
-    println!("                                               	h+s+q  	:head sequence quality, ");
-    println!("                                               	s+h+q  	:sequence head quality, ");
-    println!("                                               	...");
-    println!("                                                [default: fq]");
-    println!("    -o, --output <FILE>                        Output file; interleaved if input is two paired end fastq files");
-
+    println!("    -a, --action <c|d|g>                   Action: (c) compress, (d) decompress, (g) grep <requires --list >  [default:");
+    println!("                                           c]");
+    println!("    -s, --compression-mode <0-4>           Compression mode. Lossless: 0, lossy: 1 to 4. [default: 0]");
+    println!("    -F, --fragment-size <Max|<integer>>    Amount of RAM in MB allocated for the compression. Max = use all available");
+    println!("                                           RAM. [default: Max]");
+    println!("    -t, --infmt <fastq|fasta>              File types supported [default: fastq]");
+    println!("    -i, --input <FILE>                     Input file (fasta,fastq,sfastq)");
+    println!("    -j, --input-rev <FILE>                 Filename of a reverse file (fastq, fasta)");
+    println!("    -l, --list <filename|rand(10)>         Please provide a list of prefixes (numbers or ranges), in separate lines. SFQ");
+    println!("                                           returns records associated with the input prefixes. Works only with -a g.");
+    println!("                                           [default: rand(10)]");
+    println!("    -m, --memory-mode <D|R>                Memory mode: defines memory type  (D - disc, R - RAM) [default: D]  [possible");
+    println!("                                           values: D, R]");
+    println!("    -f, --outfmt <fq|fa|s|q|h|...>         Output format: \n");
+    println!("                                           	fq   	:fastq, ");
+    println!("                                           	fa  	:fasta, ");
+    println!("                                           	s  	:sequence, ");
+    println!("                                           	q  	:quality, ");
+    println!("                                           	h  	:head, ");
+    println!("                                           	s+q  	:sequence quality, ");
+    println!("                                           	h+q  	:head quality, ");
+    println!("                                           	h+s  	:head sequence, ");
+    println!("                                           	h+s+q  	:head sequence quality, ");
+    println!("                                           	s+h+q  	:sequence head quality, ");
+    println!("                                           	...");
+    println!("                                            [default: fq]");
+    println!("    -o, --output <FILE>                    Output file; interleaved if input is two paired end fastq files");
+    println!("    -r, --restart <no|yes>                 Restart compression from temporary files. Works only with -a c. NOTE:");
+    println!("                                           Temporary files must be complete and correct! [default: no]");
 }
 
