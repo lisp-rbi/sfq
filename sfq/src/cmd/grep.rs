@@ -97,6 +97,9 @@ pub fn export (cli: ArgMatches<'static>) -> bool {
                             let reader = fdb.clone().make_reader(y);
                             for line in reader.lines() {
                                 let uline = line.unwrap();
+                                // ignore empty line
+                                if uline.len() == 0 {continue;}
+                                eprintln!("uline = {:?}, uline.len = {:?}", uline, uline.len());
                                 // if uline contains -, a range of records is given: handle it
                                 if uline.contains("-") {
                                     let ids: Vec<&str> = uline.split("-").collect();
