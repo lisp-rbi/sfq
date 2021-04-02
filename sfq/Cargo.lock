@@ -127,7 +127,7 @@ checksum = "2448f6066e80e3bfc792e9c98bf705b4b0fc6e8ef5b43e5889aff0eaa9c58743"
 
 [[package]]
 name = "lzt"
-version = "0.1.6"
+version = "1.0.0"
 dependencies = [
  "cc",
  "fxhash",
@@ -237,7 +237,7 @@ checksum = "8cab7a364d15cde1e505267766a2d3c4e22a843e1a601f0fa7564c0f82ced11c"
 
 [[package]]
 name = "seq"
-version = "0.1.5"
+version = "1.0.0"
 dependencies = [
  "fs2",
  "fxhash",
@@ -248,7 +248,7 @@ dependencies = [
 
 [[package]]
 name = "sfq"
-version = "0.3.0"
+version = "1.0.0"
 dependencies = [
  "clap",
  "fxhash",

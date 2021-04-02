@@ -69,6 +69,7 @@ impl FFI {
                 fs::metadata(&format!("{}/symbols/CompactSymbolArraySymbols.bin",pth)).unwrap().is_file() == true &&
                 fs::metadata(&format!("{}/symbols/DiskCharArrayChars.bin",pth)).unwrap().is_file() == true &&
                 fs::metadata(&format!("{}/symbols/DiskCharArrayFields.bin",pth)).unwrap().is_file() == true {
+                    start = end;
                     j += 1;
                     continue;
                 } else {
