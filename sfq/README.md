@@ -1,6 +1,6 @@
 # SFQ
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)]( )
+[![License](https://img.shields.io/crates/l/rustc-serialize/0.3.24)]( )
 
 
 
