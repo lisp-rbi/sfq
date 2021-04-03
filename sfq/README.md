@@ -3,13 +3,13 @@
 [![License](https://img.shields.io/crates/l/rustc-serialize/0.3.24)]( )
 
 
-SFQ is a software that produces and reads sFASTQ format for the compression and online decompression of FASTQ files. The compressed sFASTQ format is stored on disk as a top level directory with subdirectories. The size of sFASTQ is approximately the same as that of the GZIP file. The sFASTQ format can be used as a flat FASTQ file, and it supports random access to the specific records.
+SFQ is a software that produces and reads sFASTQ format for the compression and online decompression of FASTQ files. The succinct sFASTQ representation of a FASTQ file is stored on disk as a top level directory with subdirectories. The size of sFASTQ is approximately the same as that of the GZIP file. The sFASTQ format supports random access to the specific records, and it can be used in place of a flat FASTQ file as the input for downstream applications.
 
 
 ## Installation protocol
 
 
-If youâ€™re running macOS, Linux, or another Unix-like OS. To download Rustup and install Rust, run the following in your terminal, then follow the on-screen instructions.
+If you’re running macOS, Linux, or another Unix-like OS. To download Rustup and install Rust, run the following in your terminal, then follow the on-screen instructions.
 ```
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 ```
