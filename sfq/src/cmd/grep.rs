@@ -99,7 +99,6 @@ pub fn export (cli: ArgMatches<'static>) -> bool {
                                 let uline = line.unwrap();
                                 // ignore empty line
                                 if uline.len() == 0 {continue;}
-                                eprintln!("uline = {:?}, uline.len = {:?}", uline, uline.len());
                                 // if uline contains -, a range of records is given: handle it
                                 if uline.contains("-") {
                                     let ids: Vec<&str> = uline.split("-").collect();
@@ -118,7 +117,6 @@ pub fn export (cli: ArgMatches<'static>) -> bool {
                                 }
                             }
                         } else {
-                            eprintln!("else..");
                             let (f, v) = parse_conditional(y);
                             match &f[..] {
                                 "rand" => {
