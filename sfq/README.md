@@ -3,20 +3,13 @@
 [![License](https://img.shields.io/crates/l/rustc-serialize/0.3.24)]( )
 
 
-
-With the advent of high throughput sequencing (HTS), challenges associate with storage, transmission, and analysis of generated HTS data has became a major stepping stone for fast pace processing as that required in clinical diagnostics. Terabytes of uncompressed data per individual/experiment have deprecated transmission protocols down to transactions involving cheap HDD’s and classic post-office delivery. This holds true even for compressed records!
-
-Compression is a process of downsizing the information content of a given record down to its bare minimum, sufficient for full (optimal) reconstruction of the original source. As such its primary focus is on models and functions that can be utilized to achieve this goal. While the functionality is sufficient for designing and implementing general purpose data storage solutions, HTS data facility usually requires more that that. Frequent access to reads from various experiments/samples require specific data sets typically to be kept separately as ZIP-ed files preventing redundancy between files to be utilized in compression. sfq is a succinct data structure for representing fast(a/q) flat file formatted data which is designed not to only store files, but to provide an option to randomly access stored records without "a prior" decompressing the stored file. This is a crucial feature for targeted bioinformatics analyses where only specific records need to be retrieved in order to be processed. Consider an analysis where samples are multiplexed. Usually the first step in handling such data is to extract each derived fastq file, demultiplex samples and compress them individually. With sfq one has the opportunity to capitalize on redundancy between samples, given no separation step is required thus increasing a compression rate while containing the entire batch associated to one experiment in a single file. Moreover, such feature provides an option to directly access and transmit the information over a network form a single source, thus simplifying the design and cost of maintaining HTS storage facilities, while at the same time increasing the yeald of transmitted useful information.
-
-sfq in size rivals even the most advanced compression strategies outperforming current compression algorithms by more than 15% with no memory overhead associated to retrieval and decompression of targeted records and O(N) compression/decompression time (N - the size the input file).
-
-As such sfq represents a novel solution and a leap in data storage, transmission and analysis, of HTS information.
+SFQ is a software that produces and reads sFASTQ format for the compression and online decompression of FASTQ files. The succinct sFASTQ representation of a FASTQ file is stored on disk as a top level directory with subdirectories. The size of sFASTQ is approximately the same as that of the GZIP file. The sFASTQ format supports random access to the specific records, and it can be used in place of a flat FASTQ file as the input for downstream applications.
 
 
 ## Installation protocol
 
 
-If you’re running macOS, Linux, or another Unix-like OS. To download Rustup and install Rust, run the following in your terminal, then follow the on-screen instructions.
+If you�re running macOS, Linux, or another Unix-like OS. To download Rustup and install Rust, run the following in your terminal, then follow the on-screen instructions.
 ```
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 ```
