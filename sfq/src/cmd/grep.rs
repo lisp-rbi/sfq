@@ -60,9 +60,11 @@ pub fn export (cli: ArgMatches<'static>) -> bool {
                     if let Some(x) = cli.value_of("input") {
                         let stem_name = String::from(Path::new(cli.value_of("input").unwrap())
                                             .file_stem().and_then(OsStr::to_str).unwrap());
-                        head = format!("{}/{}.{}",x,stem_name,"head.sfastq");
-                        seq  = format!("{}/{}.{}",x,stem_name,"seq.sfastq");
-                        qual = format!("{}/{}.{}",x,stem_name,"qual.sfastq");
+                        let extension = String::from(Path::new(cli.value_of("input").unwrap())
+                                            .extension().and_then(OsStr::to_str).unwrap());
+                        head = format!("{}/{}.head.{}",x,stem_name,extension);
+                        seq  = format!("{}/{}.seq.{}",x,stem_name,extension);
+                        qual = format!("{}/{}.qual.{}",x,stem_name,extension);
                     }
 
                     let mut seq_lzt  = FFI::open(&seq,memmod);

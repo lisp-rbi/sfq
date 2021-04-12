@@ -41,7 +41,7 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
     // of records len(alphabet)^exponent
     let exponent: usize = match cli.value_of("decompress-exponent") {
         Some(x) => {usize::from_str(x).unwrap()}
-        None => {6}
+        None => {4}
     };
 
     if let Some(y) = cli.value_of("input").unwrap().find(".L") {
@@ -65,9 +65,11 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
 
                     if let Some(x) = cli.value_of("input") {
                         let stem_name = String::from(Path::new(cli.value_of("input").unwrap()).file_stem().and_then(OsStr::to_str).unwrap());
-                        head = format!("{}/{}.{}",x,stem_name,"head.sfastq");
-                        seq  = format!("{}/{}.{}",x,stem_name,"seq.sfastq");
-                        qual = format!("{}/{}.{}",x,stem_name,"qual.sfastq");
+                        let extension = String::from(Path::new(cli.value_of("input").unwrap())
+                                            .extension().and_then(OsStr::to_str).unwrap());
+                        head = format!("{}/{}.head.{}",x,stem_name,extension);
+                        seq  = format!("{}/{}.seq.{}",x,stem_name,extension);
+                        qual = format!("{}/{}.qual.{}",x,stem_name,extension);
                     }
 
                     let ( mut count, mut alpha, mut wlen) = (0,Vec::new(),0);
