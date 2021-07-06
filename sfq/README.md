@@ -65,7 +65,7 @@ FLAGS:
 
 OPTIONS:
     -a, --action <c|d|g>                 Action: (c) compress, (d) decompress, (g) grep <requires --list >  [default: c]
-    -s, --compression-mode <0-4>         Compression mode [default: 0]
+    -s, --compression-mode <0-4>         Compression mode [1-4 produce different lossy versions, default: 0]
     -F, --fragment-size <Max|integer>    Amount of RAM in MB allocated for the compression. Max = use all available RAM.
                                          [default: Max]
     -t, --infmt <fastq|fasta>            File types supported [default: fastq]
@@ -105,7 +105,7 @@ Example No.1 - Compress single stranded fastq file
 sfq -i ./data/fwd.fq -a c -t fastq -o FwdIdx
 ```
 
-Example No.2 - Compress pair-end fastq file
+Example No.2 - Compress paired-end fastq file
 
 ```
 sfq -i ./data/fwd.fq -j ./data/rev.fq -a c -t fastq -o FwdRevIdx
@@ -117,7 +117,7 @@ Example No.3 - Decompress single stranded fastq files by printing full records
 sfq -i FwdIdx -a d -f fq -t fastq -o fw.fq
 ```
 
-Example No.4 - Decompress pair-end fastq files by printing full records
+Example No.4 - Decompress paired-end fastq files by printing full records
 
 ```
 sfq -i FwdRevIdx -a d -f fq -t fastq -o fw_rv.fq
@@ -129,7 +129,7 @@ Example No.5 - Decompress single stranded fastq files by printing fasta records
 sfq -i FwdIdx -a d -f fa -t fastq -o fw.fa
 ```
 
-Example No.6 - Decompress pair-end fastq files by printing fasta records
+Example No.6 - Decompress paired-end fastq files by printing fasta records
 
 ```
 sfq -i FwdRevIdx -a d -f fa -t fastq -o fw-re.fa
@@ -141,19 +141,19 @@ Example No.7 - Decompress single stranded fastq files by printing tsv formatted:
 sfq -i FwdIdx -a d -f "h+s" -t fastq -o fw_hs.tsv
 ```
 
-Example No.8 - Decompress pair-end fastq files by printing tsv formatted: quality \\tab head
+Example No.8 - Decompress paired-end fastq files by printing tsv formatted: quality \\tab head
 
 ```
 sfq -i FwdRevIdx -a d -f "q+h" -t fastq -o fw_qh.tsv
 ```
 
-Example No.9 - Extract a particular set of records listed in list.file as sequence only format
+Example No.9 - Extract a specific set of records listed in list.file as sequence only format
 
 ```
 sfq -i FwdRevIdx -a g -f "s" -t fastq -o s.out -l list.file
 ```
 
-Example No.10 - Compress pair-end fasta file while limiting available RAM to 8 GB
+Example No.10 - Compress paired-end fasta file while limiting available RAM to 8 GB
 
 ```
 sfq -i ./data.in/fa.fa -a c -t fasta -o fa.out -F 8000
