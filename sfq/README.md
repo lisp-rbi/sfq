@@ -59,10 +59,6 @@ Robert Bakaric <rbakaric@irb.hr>, Dalibor Hrsak <dalibor.hrsak@irb.hr>, Damir Ko
 USAGE:
     sfq [OPTIONS]
 
-FLAGS:
-    -h, --help       Prints help information
-    -V, --version    Prints version information
-
 OPTIONS:
     -a, --action <c|d|g>                 Action: (c) compress, (d) decompress, (g) grep <requires --list >  [default: c]
     -s, --compression-mode <0-4>         Compression mode [1-4 produce different lossy versions, default: 0]
@@ -93,7 +89,8 @@ OPTIONS:
     -o, --output <FILE>                  Output file; interleaved if input is two paired end fastq files
     -r, --restart <no|yes>               Restart compression from temporary files. Works only with -a c. NOTE: Temporary
                                          files must be complete and correct! [default: no]
-
+    -h, --help                           Prints help information
+    -V, --version                        Prints version information
 
 ```
 
