@@ -56,8 +56,25 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
         Some(x) => {
             match x {
                 "fasta" | "fastq" => {
-
-                    let q = if x == "fastq" {true} else{false};
+                    let q = if x == "fasta" 
+                            || cli.value_of("outfmt").unwrap() == "h"
+                            || cli.value_of("outfmt").unwrap() == "s"
+                            || cli.value_of("outfmt").unwrap() == "h+s"
+                            || cli.value_of("outfmt").unwrap() == "s+h" {
+                                false
+                            } else{ true };
+                    let s = if cli.value_of("outfmt").unwrap() == "h"
+                            || cli.value_of("outfmt").unwrap() == "q"
+                            || cli.value_of("outfmt").unwrap() == "h+q"
+                            || cli.value_of("outfmt").unwrap() == "q+h" {
+                                false
+                            } else { true };
+                    let h = if cli.value_of("outfmt").unwrap() == "s"
+                            || cli.value_of("outfmt").unwrap() == "q"
+                            || cli.value_of("outfmt").unwrap() == "s+q"
+                            || cli.value_of("outfmt").unwrap() == "q+s" {
+                                false
+                            } else { true };
 
                     let mut head = String::new();
                     let mut seq = String::new();
@@ -122,7 +139,7 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
                         let enc = str::from_utf8(&prefix).unwrap();
 
                         let mut cpcnt: Vec<usize> = Vec::new();
-                        {
+                        if s {
                             //eprint!("Seq ... ");
                             //let st = Instant::now();
                             let mut seq_out: Vec<u8> = seq_lzt.get_records(&enc,&-1);
@@ -151,7 +168,7 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
                             else { fdb.set_cpcnt(dis); }
 
                         }
-                        {
+                        if h {
                             //eprint!("Head ... ");
                             //let st = Instant::now();
                             if fdb.lossy < 2 {
@@ -176,10 +193,10 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
 
                             fdb.set_qual(qual_out);
 
-                        }else{
+                        } /*else{
                             let qvec = vec!['\n' as u8; fdb.get_numrec()];
                             fdb.set_qual(qvec);
-                        }
+                        }*/
 
                         j += inc;
                         i += inc;

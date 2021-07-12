@@ -51,7 +51,25 @@ pub fn export (cli: ArgMatches<'static>) -> bool {
         Some(x) => {
             match x {
                 "fastq" | "fasta" => {
-                    let q = if x == "fastq" {true} else{false};
+                    let q = if x == "fasta" 
+                            || cli.value_of("outfmt").unwrap() == "h"
+                            || cli.value_of("outfmt").unwrap() == "s"
+                            || cli.value_of("outfmt").unwrap() == "h+s"
+                            || cli.value_of("outfmt").unwrap() == "s+h" {
+                                false
+                            } else{ true };
+                    let s = if cli.value_of("outfmt").unwrap() == "h"
+                            || cli.value_of("outfmt").unwrap() == "q"
+                            || cli.value_of("outfmt").unwrap() == "h+q"
+                            || cli.value_of("outfmt").unwrap() == "q+h" {
+                                false
+                            } else { true };
+                    let h = if cli.value_of("outfmt").unwrap() == "s"
+                            || cli.value_of("outfmt").unwrap() == "q"
+                            || cli.value_of("outfmt").unwrap() == "s+q"
+                            || cli.value_of("outfmt").unwrap() == "q+s" {
+                                false
+                            } else { true };
 
                     let mut head = String::new();
                     let mut qual = String::new();
@@ -148,7 +166,7 @@ pub fn export (cli: ArgMatches<'static>) -> bool {
                         //if &head_lzt.num_of_lzt < &(pos as u8) {pos = -1;}
 
                         let mut cpcnt: Vec<usize> = Vec::new();
-                        {
+                        if s {
                             let mut seq_out = seq_lzt.get_records(&enc,&-1);
                             let dis = deindex(&mut seq_out);
                             if fdb.lossy > 2 { cpcnt = remove_cpcnt(&mut seq_out); }
@@ -162,7 +180,7 @@ pub fn export (cli: ArgMatches<'static>) -> bool {
                             if fdb.lossy > 2 { fdb.set_cpcnt(cpcnt.clone()); }
                             else { fdb.set_cpcnt(dis); }
                         }
-                        {
+                        if h {
                             if fdb.lossy < 2 {
                                 let mut head_out = head_lzt.get_records(&enc,&-1);
                                 let _dis = deindex(&mut head_out);
@@ -176,9 +194,6 @@ pub fn export (cli: ArgMatches<'static>) -> bool {
                             let mut qual_out = qual_lzt.get_records(&enc,&-1);
                             let _dis = deindex(&mut qual_out);
                             fdb.set_qual(qual_out);
-                        }else{
-                            let qvec = vec!['\n' as u8; fdb.get_numrec()];
-                            fdb.set_qual(qvec);
                         }
 
                         fdb.save_append(output,cli.value_of("outfmt").unwrap());
