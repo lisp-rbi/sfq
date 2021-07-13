@@ -47,23 +47,4 @@ impl Fdb {
         red_qual
     }
 
-    /*pub(crate) fn qmax (&self, qual: &Vec<u8>, qmax: &mut Vec<u8> ) {
-
-        for (e,q) in qual.iter().enumerate() {
-             if *q > qmax[e]{
-                  qmax[e] = *q;
-             }
-        }
-
-    }
-    pub(crate) fn qmin (&self, qual: &Vec<u8>, qmin: &mut Vec<u8>) {
-
-        for (e,q) in qual.iter().enumerate() {
-             if *q < qmin[e] {
-                  qmin[e] = *q;
-             }
-        }
-
-    }*/
-
 }

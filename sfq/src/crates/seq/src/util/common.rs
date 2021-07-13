@@ -174,16 +174,4 @@ impl Fdb{
         true
     }
 
-    /*pub fn sort_lines_simple(&self,filename: &str, outdir: &str) -> bool {
-        let mut tmp_filename: String = "-o".to_owned();
-        tmp_filename.push_str(&outdir.to_string());
-        tmp_filename.push_str("/sorted.tmp");
-        let _sort_file = Command::new("sort").arg(filename.clone()).arg(tmp_filename.clone()).status().expect("Error in sorting.");
-        //let _sort_file = Command::new("sort").arg(filename.clone()).status().expect("Error in sorting.");
-        tmp_filename.replace_range(..2,"");
-        let mut end_filename: String = "-o".to_owned();
-        end_filename.push_str(filename);
-        let _overwrite = Command::new("mv").arg(&tmp_filename).arg(&filename).status().expect("Error in overwriting!");
-        true
-    }*/
 }
