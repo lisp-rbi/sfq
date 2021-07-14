@@ -18,7 +18,7 @@ Current version of the software requires Rust (> v1.38) and g++ (> v4.9.1). `sfq
  1 . Download the library:
 
 ```
-git clone git@github.com:lisp-rbi/sfq.git
+git clone https://github.com/lisp-rbi/sfq.git
 ```
  2 . Compile binaries:
 
