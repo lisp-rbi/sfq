@@ -24,7 +24,7 @@ git clone https://github.com/lisp-rbi/sfq.git
 
 
 ```
-cd ./fastqlzt/sfq/src/
+cd ./sfq/sfq/src/
 
 cargo build --release
 ```
