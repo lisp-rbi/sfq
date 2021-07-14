@@ -9,7 +9,7 @@ SFQ is a software that produces and reads sFASTQ format for the compression and 
 ## Installation protocol
 
 
-If you’re running macOS, Linux, or another Unix-like OS. To download Rustup and install Rust, run the following in your terminal, then follow the on-screen instructions.
+If youâ€™re running macOS, Linux, or another Unix-like OS. To download Rustup and install Rust, run the following in your terminal, then follow the on-screen instructions.
 ```
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 ```
@@ -18,7 +18,7 @@ Current version of the software requires Rust (> v1.38) and g++ (> v4.9.1). `sfq
  1 . Download the library:
 
 ```
-git clone https://www.bitbucket.org/mirda_root/fastqlzt.git
+git clone git@github.com:lisp-rbi/sfq.git
 ```
  2 . Compile binaries:
 
