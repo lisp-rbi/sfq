@@ -46,51 +46,55 @@ or by adding it to your PATH
 
 sfq 0.3.0
 Robert Bakaric <rbakaric@irb.hr>, Dalibor Hrsak <dalibor.hrsak@irb.hr>, Damir Korencic <dkorencic@irb.hr>
- 	
+
     ______     ______   ______    	
    /\  ___\   /\  ___\ /\  __ \   	
    \ \___  \  \ \  __\ \ \ \/\_\  	
     \/\_____\  \ \_\    \ \___\_\ 	
-     \/_____/   \/_/     \/___/_/ 	
-                                  	
-                                                      	
+     \/_____/   \/_/     \/___/_/ 
+
+
             Authors: Bakaric R., Hrsak D., Korencic, D. & Ristov, S.
 
 USAGE:
     sfq [OPTIONS]
 
+FLAGS:
+    -h, --help       Prints help information
+    -V, --version    Prints version information
+
 OPTIONS:
-    -a, --action <c|d|g>                 Action: (c) compress, (d) decompress, (g) grep <requires --list >  [default: c]
-    -s, --compression-mode <0-4>         Compression mode [1-4 produce different lossy versions, default: 0]
-    -F, --fragment-size <Max|integer>    Amount of RAM in MB allocated for the compression. Max = use all available RAM.
-                                         [default: Max]
-    -t, --infmt <fastq|fasta>            File types supported [default: fastq]
-    -i, --input <FILE>                   Input file (fasta,fastq,sfastq)
-    -j, --input-rev <FILE>               Filename of a reverse file (fastq, fasta)
-    -l, --list <filename|rand(10)>       Please provide a list of prefixes (numbers or ranges), in separate lines. SFQ
-                                         returns records associated with the input prefixes. Works only with -a g.
-                                         [default: rand(10)]
-    -m, --memory-mode <D|R>              Memory mode: defines memory type  (D - disc, R - RAM) [default: D]  [possible
-                                         values: D, R]
-    -f, --outfmt <fq|fa|s|q|h|...>       Output format: 
-                                          
-                                         	fq   	:fastq, 
-                                         	fa  	:fasta, 
-                                         	s  	:sequence, 
-                                         	q  	:quality, 
-                                         	h  	:head, 
-                                         	s+q  	:sequence quality, 
-                                         	h+q  	:head quality, 
-                                         	h+s  	:head sequence, 
-                                         	h+s+q  	:head sequence quality, 
-                                         	s+h+q  	:sequence head quality, 
-                                         	...
-                                          [default: fq]
-    -o, --output <FILE>                  Output file; interleaved if input is two paired end fastq files
-    -r, --restart <no|yes>               Restart compression from temporary files. Works only with -a c. NOTE: Temporary
-                                         files must be complete and correct! [default: no]
-    -h, --help                           Prints help information
-    -V, --version                        Prints version information
+    -a, --action <c|d|g>                   Action: (c) compress, (d) decompress, (g) grep <requires --list >  [default:
+                                           c]
+    -s, --compression-mode <0-4>           Compression mode. Lossless: 0, lossy: 1 to 4. [default: 0]
+    -F, --fragment-size <Max|<integer>>    Amount of RAM in MB allocated for the compression. Max = use all available
+                                           RAM. [default: Max]
+    -t, --infmt <fastq|fasta>              File types supported [default: fastq]
+    -i, --input <FILE>                     Input file (fasta,fastq,sfastq)
+    -j, --input-rev <FILE>                 Filename of a reverse file (fastq, fasta)
+    -l, --list <filename|rand(10)>         Please provide a list of prefixes (numbers or ranges), in separate lines. SFQ
+                                           returns records associated with the input prefixes. Works only with -a g.
+                                           [default: rand(10)]
+    -m, --memory-mode <D|R>                Memory mode: defines memory type  (D - disc, R - RAM) [default: D]  [possible
+                                           values: D, R]
+    -f, --outfmt <fq|fa|s|q|h|...>         Output format: 
+
+                                           	fq   	:fastq, 
+                                           	fa  	:fasta, 
+                                           	s  	:sequence, 
+                                           	q  	:quality, 
+                                           	h  	:head, 
+                                           	s+q  	:sequence quality, 
+                                           	h+q  	:head quality, 
+                                           	h+s  	:head sequence, 
+                                           	h+s+q  	:head sequence quality, 
+                                           	s+h+q  	:sequence head quality, 
+                                           	...
+                                            [default: fq]
+    -o, --output <FILE>                    Output file; interleaved if input is two paired end fastq files
+    -r, --restart <no|yes>                 Restart compression from temporary files. Works only with -a c. NOTE:
+                                           Temporary files must be complete and correct! [default: no]
+
 
 ```
 
