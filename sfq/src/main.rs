@@ -124,7 +124,8 @@ fn print_help(){
     println!("                                           [default: rand(10)]");
     println!("    -m, --memory-mode <D|R>                Memory mode: defines memory type  (D - disc, R - RAM) [default: D]  [possible");
     println!("                                           values: D, R]");
-    println!("    -f, --outfmt <fq|fa|s|q|h|...>         Output format: \n");
+    println!("    -f, --outfmt <fq|fa|s|q|h|...>         Output format when decompressing or grepping.");
+    println!("                                           Options s+q, h+q, etc. produce TSV format.\n");
     println!("                                           	fq   	:fastq, ");
     println!("                                           	fa  	:fasta, ");
     println!("                                           	s  	:sequence, ");

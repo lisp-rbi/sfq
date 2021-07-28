@@ -41,7 +41,7 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
     // of records len(alphabet)^exponent
     let exponent: usize = match cli.value_of("decompress-exponent") {
         Some(x) => {usize::from_str(x).unwrap()}
-        None => {4}
+        None => {6}
     };
 
     if let Some(y) = cli.value_of("input").unwrap().find(".L") {
@@ -114,12 +114,11 @@ pub fn extract(cli: ArgMatches<'static>) -> bool {
                     }
 
                     let pow : usize = if wlen <= exponent {(wlen as usize)-1} else {exponent};
-                    let inc = alpha.len().pow(pow as u32); // set to 5th iteration
+                    let inc = alpha.len().pow(pow as u32);
 
-                    //let (mut i, mut j, mut pp) = (0,inc-1, 0);
-                    let (mut i, mut j) = (0,inc-1);
+                    let (mut i, mut j) = if pow == 0 {(1,inc)} else {(0,inc-1)} ;
 
-                    while i < count {
+                    while i <= count {
 
                         let enc_start = encode(i, wlen, &alpha);
                         let enc_stop  = encode(j, wlen, &alpha);

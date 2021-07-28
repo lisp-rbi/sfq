@@ -98,7 +98,7 @@ pub(crate) fn parse_cli ()->  clap::ArgMatches<'static> {
             .default_value("fq")
             .required(false)
             .value_name("fq|fa|s|q|h|...")
-            .help("Output format: \n \n\tfq   \t:fastq, \n\tfa  \t:fasta, \n\ts  \t:sequence, \n\tq  \t:quality, \n\th  \t:head, \n\ts+q  \t:sequence quality, \n\th+q  \t:head quality, \n\th+s  \t:head sequence, \n\th+s+q  \t:head sequence quality, \n\ts+h+q  \t:sequence head quality, \n\t...\n")
+            .help("Output format when decompressing or grepping.\nOptions s+q, h+q, etc. produce TSV format.\n \n\tfq   \t:fastq, \n\tfa  \t:fasta, \n\ts  \t:sequence, \n\tq  \t:quality, \n\th  \t:head, \n\ts+q  \t:sequence quality, \n\th+q  \t:head quality, \n\th+s  \t:head sequence, \n\th+s+q  \t:head sequence quality, \n\ts+h+q  \t:sequence head quality, \n\t...\n")
             .takes_value(true))
 
         .arg(Arg::with_name("infmt")
