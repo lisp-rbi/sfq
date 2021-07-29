@@ -75,7 +75,7 @@ OPTIONS:
     -l, --list <filename|rand(10)>         Please provide a list of prefixes (numbers or ranges), in separate lines. SFQ
                                            returns records associated with the input prefixes. Works only with -a g.
                                            [default: rand(10)]
-    -m, --memory-mode <D|R>                Memory mode: defines memory type  (D - disc, R - RAM) [default: D]  [possible
+    -m, --memory-mode <D|R>                Memory mode: defines memory type  (D - disk, R - RAM) [default: D]  [possible
                                            values: D, R]
     -f, --outfmt <fq|fa|s|q|h|...>         Output format: 
 

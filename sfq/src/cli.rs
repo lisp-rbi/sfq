@@ -126,7 +126,7 @@ pub(crate) fn parse_cli ()->  clap::ArgMatches<'static> {
             .required(false)
             .possible_values(&["D","R"])
             .value_name("D|R")
-            .help("Memory mode: defines memory type  (D - disc, R - RAM)")
+            .help("Memory mode: defines memory type  (D - disk, R - RAM)")
             .takes_value(true))
 
         .arg(Arg::with_name("fragment-size")

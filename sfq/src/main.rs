@@ -122,7 +122,7 @@ fn print_help(){
     println!("    -l, --list <filename|rand(10)>         Please provide a list of prefixes (numbers or ranges), in separate lines. SFQ");
     println!("                                           returns records associated with the input prefixes. Works only with -a g.");
     println!("                                           [default: rand(10)]");
-    println!("    -m, --memory-mode <D|R>                Memory mode: defines memory type  (D - disc, R - RAM) [default: D]  [possible");
+    println!("    -m, --memory-mode <D|R>                Memory mode: defines memory type  (D - disk, R - RAM) [default: D]  [possible");
     println!("                                           values: D, R]");
     println!("    -f, --outfmt <fq|fa|s|q|h|...>         Output format when decompressing or grepping.");
     println!("                                           Options s+q, h+q, etc. produce TSV format.\n");
