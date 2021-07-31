@@ -305,7 +305,9 @@ impl Fdb{
             };
             if repeated_sequence == true || first_line == 1 {
                 num_of_copies += 1;
-                let mut current_fwd_quality = line_components[2].as_bytes().to_vec();
+                let mut current_fwd_quality = if self.paired {
+                    line_components[2].as_bytes().to_vec() } else {
+                    line_components[1].as_bytes().to_vec() };
                 current_fwd_quality.push(0u8);
                 fwd_qualities.extend(current_fwd_quality);
                 old_fwd_seq = fwd_seq_vector.to_vec();
@@ -357,7 +359,9 @@ impl Fdb{
                 num_of_copies = 1;
                 fwd_qualities = Vec::new();
                 rev_qualities = Vec::new();
-                let mut current_fwd_quality = line_components[2].as_bytes().to_vec();
+                let mut current_fwd_quality = if self.paired {
+                    line_components[2].as_bytes().to_vec() } else {;
+                    line_components[1].as_bytes().to_vec() };
                 current_fwd_quality.push(0u8);
                 fwd_qualities.extend(current_fwd_quality);
                 old_fwd_seq = fwd_seq_vector.to_vec();
