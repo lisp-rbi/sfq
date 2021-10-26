@@ -72,9 +72,9 @@ OPTIONS:
     -t, --infmt <fastq|fasta>              File types supported [default: fastq]
     -i, --input <FILE>                     Input file (fasta,fastq,sfastq)
     -j, --input-rev <FILE>                 Filename of a reverse file (fastq, fasta)
-    -l, --list <filename|rand(10)>         Please provide a list of prefixes (numbers or ranges), in separate lines. SFQ
-                                           returns records associated with the input prefixes. Works only with -a g.
-                                           [default: rand(10)]
+    -l, --list <filename|"rand(N)">        Please provide a file with a list of prefixes (numbers or ranges) or choose N 
+                                           random prefixes with "rand(N)". SFQ returns records associated with the input 
+                                           prefixes. Works only with -a g. [default: rand(10)]
     -m, --memory-mode <D|R>                Memory mode: defines memory type  (D - disk, R - RAM) [default: D]  [possible
                                            values: D, R]
     -f, --outfmt <fq|fa|s|q|h|...>         Output format: 
@@ -160,7 +160,7 @@ Example No.10 - Compress paired-end fasta file while limiting available RAM to 8
 sfq -i ./data.in/fa.fa -a c -t fasta -o fa.out -F 8000
 ```
 
-Example No.11 - Extract a random set of 4 records in sequence + head  format
+Example No.11 - Extract a random set of 4 records in sequence + head  format (note: use parenthesis!)
 
 ```
 sfq -i ./FwdRevIdx -a g -t fastq -o fa.out -l "rand(4)" -f "s+h"

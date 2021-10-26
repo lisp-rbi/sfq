@@ -158,8 +158,7 @@ pub fn parse_conditional(text: &str) -> (String,String){
 
 pub fn make_rand_uvec(num: usize, max: usize) -> Vec<usize>{
 
-
-    let mut  uvec = vec![0;num];
+    let mut uvec: Vec <usize> = Vec::new();
     let mut fx : FxHashSet<usize> = FxHashSet::default();
     let (mut rng, mut i) = (rand::thread_rng(), 0);
 

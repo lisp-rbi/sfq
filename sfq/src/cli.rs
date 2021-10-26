@@ -144,8 +144,8 @@ pub(crate) fn parse_cli ()->  clap::ArgMatches<'static> {
             .long("list")
             .required(false)
             .default_value("rand(10)")
-            .value_name("filename|rand(10)")
-            .help("Please provide a list of prefixes (numbers or ranges), in separate lines. SFQ returns records associated with the input prefixes. Works only with -a g.")
+            .value_name("filename|'rand(N)'")
+            .help("Please provide a file with a list of prefixes (numbers or ranges) or choose N random prefixes with \"rand(N)\". SFQ returns records associated with the input prefixes. Works only with -a g.")
             .takes_value(true))
 
         .arg(Arg::with_name("decompress-exponent")
