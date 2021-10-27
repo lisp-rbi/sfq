@@ -144,7 +144,7 @@ pub(crate) fn parse_cli ()->  clap::ArgMatches<'static> {
             .long("list")
             .required(false)
             .default_value("rand(10)")
-            .value_name("filename|'rand(N)'")
+            .value_name("filename|\"rand(N)\"")
             .help("Please provide a file with a list of prefixes (numbers or ranges) or choose N random prefixes with \"rand(N)\". SFQ returns records associated with the input prefixes. Works only with -a g.")
             .takes_value(true))
 

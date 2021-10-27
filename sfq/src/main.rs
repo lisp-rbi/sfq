@@ -119,7 +119,7 @@ fn print_help(){
     println!("    -t, --infmt <fastq|fasta>              File types supported [default: fastq]");
     println!("    -i, --input <FILE>                     Input file (fasta,fastq,sfastq)");
     println!("    -j, --input-rev <FILE>                 Filename of a reverse file (fastq, fasta)");
-    println!("    -l, --list <filename|rand(10)>         Please provide a file with a list of prefixes (numbers or ranges) or choose N");
+    println!("    -l, --list <filename|\"rand(N)\">        Please provide a file with a list of prefixes (numbers or ranges) or choose N");
     println!("                                           random prefixes with \"rand(N)\". SFQ returns records associated with the input");
     println!("                                           prefixes. Works only with -a g. [default: rand(10)]");
     println!("    -m, --memory-mode <D|R>                Memory mode: defines memory type  (D - disk, R - RAM) [default: D]  [possible");
